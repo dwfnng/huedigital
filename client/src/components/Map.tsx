@@ -1,11 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Search, Navigation, Layers, MapPin, Info, Camera } from "lucide-react";
 import type { Location } from "@shared/schema";
+import { Loader } from "@googlemaps/js-api-loader";
+import { DEFAULT_CENTER, DEFAULT_ZOOM, getMarkerIcon } from "@/lib/mapUtils";
 
 interface MapProps {
   onMarkerClick?: (location: Location) => void;
@@ -15,11 +17,76 @@ export default function Map({ onMarkerClick }: MapProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
   const [filteredLocations, setFilteredLocations] = useState<Location[]>([]);
+  const mapRef = useRef<HTMLDivElement>(null);
+  const [map, setMap] = useState<google.maps.Map | null>(null);
+  const [markers, setMarkers] = useState<google.maps.Marker[]>([]);
 
   const { data: locations = [] } = useQuery<Location[]>({
     queryKey: ["/api/locations"],
   });
 
+  // Initialize Google Maps
+  useEffect(() => {
+    const initMap = async () => {
+      const loader = new Loader({
+        apiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY || "",
+        version: "weekly",
+      });
+
+      try {
+        const google = await loader.load();
+        if (mapRef.current) {
+          const map = new google.maps.Map(mapRef.current, {
+            center: DEFAULT_CENTER,
+            zoom: DEFAULT_ZOOM,
+            styles: [
+              {
+                featureType: "poi",
+                elementType: "labels",
+                stylers: [{ visibility: "off" }],
+              },
+            ],
+            mapTypeControl: false,
+            fullscreenControl: false,
+            streetViewControl: false,
+          });
+          setMap(map);
+        }
+      } catch (error) {
+        console.error("Error loading Google Maps:", error);
+      }
+    };
+
+    initMap();
+  }, []);
+
+  // Update markers when locations change
+  useEffect(() => {
+    if (!map || !locations.length) return;
+
+    // Clear existing markers
+    markers.forEach(marker => marker.setMap(null));
+    const newMarkers: google.maps.Marker[] = [];
+
+    locations.forEach(location => {
+      const marker = new google.maps.Marker({
+        position: { lat: parseFloat(location.latitude), lng: parseFloat(location.longitude) },
+        map,
+        title: location.name,
+        animation: google.maps.Animation.DROP,
+      });
+
+      marker.addListener("click", () => {
+        handleLocationSelect(location);
+      });
+
+      newMarkers.push(marker);
+    });
+
+    setMarkers(newMarkers);
+  }, [map, locations]);
+
+  // Filter locations based on search
   useEffect(() => {
     if (searchQuery.trim() === "") {
       setFilteredLocations(locations);
@@ -37,9 +104,17 @@ export default function Map({ onMarkerClick }: MapProps) {
 
   const handleLocationSelect = (location: Location) => {
     setSelectedLocation(location);
+    if (map) {
+      map.panTo({ lat: parseFloat(location.latitude), lng: parseFloat(location.longitude) });
+      map.setZoom(17);
+    }
     if (onMarkerClick) {
       onMarkerClick(location);
     }
+  };
+
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    e.currentTarget.src = '/attached_assets/placeholder-image.jpg';
   };
 
   return (
@@ -60,7 +135,30 @@ export default function Map({ onMarkerClick }: MapProps) {
               <Button variant="outline" size="icon" title="Lớp bản đồ">
                 <Layers className="h-4 w-4" />
               </Button>
-              <Button variant="outline" size="icon" title="Vị trí của bạn">
+              <Button 
+                variant="outline" 
+                size="icon" 
+                title="Vị trí của bạn"
+                onClick={() => {
+                  if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(
+                      (position) => {
+                        const pos = {
+                          lat: position.coords.latitude,
+                          lng: position.coords.longitude,
+                        };
+                        if (map) {
+                          map.panTo(pos);
+                          map.setZoom(15);
+                        }
+                      },
+                      (error) => {
+                        console.error("Error getting location:", error);
+                      }
+                    );
+                  }
+                }}
+              >
                 <Navigation className="h-4 w-4" />
               </Button>
             </div>
@@ -78,10 +176,11 @@ export default function Map({ onMarkerClick }: MapProps) {
                   onClick={() => handleLocationSelect(location)}
                 >
                   <div className="flex items-start gap-3">
-                    <div className="w-16 h-16 rounded-lg overflow-hidden">
+                    <div className="w-16 h-16 rounded-lg overflow-hidden bg-muted">
                       <img
                         src={location.imageUrl}
                         alt={location.name}
+                        onError={handleImageError}
                         className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
                       />
                     </div>
@@ -106,46 +205,7 @@ export default function Map({ onMarkerClick }: MapProps) {
 
       <Card className="md:col-span-2 h-full overflow-hidden glass">
         <CardContent className="p-0 h-full relative">
-          {selectedLocation ? (
-            <div className="absolute inset-0 bg-background/80 backdrop-blur-sm p-6 overflow-auto custom-scrollbar">
-              <div className="max-w-2xl mx-auto space-y-6">
-                <div className="relative h-80 rounded-lg overflow-hidden">
-                  <img
-                    src={selectedLocation.imageUrl}
-                    alt={selectedLocation.name}
-                    className="w-full h-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent">
-                    <div className="absolute bottom-0 p-6 text-white">
-                      <h2 className="text-2xl font-bold mb-2">{selectedLocation.name}</h2>
-                      <p className="text-sm opacity-90">{selectedLocation.nameEn}</p>
-                    </div>
-                  </div>
-                </div>
-                <div className="prose prose-sm max-w-none">
-                  <p className="text-muted-foreground">{selectedLocation.description}</p>
-                  <p className="text-muted-foreground">{selectedLocation.descriptionEn}</p>
-                </div>
-                <div className="flex gap-4">
-                  <Button variant="outline" className="gap-2">
-                    <Camera className="h-4 w-4" />
-                    Thư viện ảnh
-                  </Button>
-                  <Button variant="outline" className="gap-2">
-                    <Info className="h-4 w-4" />
-                    Thông tin thêm
-                  </Button>
-                </div>
-              </div>
-            </div>
-          ) : (
-            <div className="absolute inset-0 bg-muted/30 flex items-center justify-center">
-              <div className="text-center">
-                <MapPin className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
-                <p className="text-muted-foreground">Chọn một địa điểm để xem thông tin chi tiết</p>
-              </div>
-            </div>
-          )}
+          <div ref={mapRef} className="w-full h-full" />
         </CardContent>
       </Card>
     </div>
