@@ -159,7 +159,7 @@ export default function ForumPage() {
     try {
       return `https://avatar.vercel.sh/${encodeURIComponent(author || 'anonymous')}`;
     } catch (error) {
-      return 'https://avatar.vercel.sh/anonymous';
+      return '/images/placeholder-avatar.jpg';
     }
   };
 
