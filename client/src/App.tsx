@@ -5,7 +5,6 @@ import { Toaster } from "@/components/ui/toaster";
 import { NavigationMenu, NavigationMenuItem, NavigationMenuList } from "@/components/ui/navigation-menu";
 import { Link } from "wouter";
 import { Library, MapPin, MessageSquare, Gamepad2, Activity, Ticket, Upload, BookText } from 'lucide-react';
-import ParticleBackground from "@/components/ParticleBackground";
 import Home from "@/pages/home";
 import Chat from "@/pages/chat";
 import MapPage from "@/pages/Map";
@@ -18,66 +17,66 @@ import NotFound from "@/pages/not-found";
 
 function MainNav() {
   return (
-    <NavigationMenu className="bg-card/80 backdrop-blur-sm border-b sticky top-0 z-50 transition-all duration-300">
+    <NavigationMenu className="bg-card/90 backdrop-blur-sm border-b sticky top-0 z-50">
       <div className="container mx-auto flex h-16 items-center px-4">
         <NavigationMenuList className="gap-4">
           <NavigationMenuItem>
-            <Link href="/" className="text-lg font-bold hover:text-primary transition-colors">
+            <Link href="/" className="text-lg font-bold hover:text-primary transition-smooth">
               Hue Digital
             </Link>
           </NavigationMenuItem>
 
           <NavigationMenuItem>
-            <Link href="/map" className="flex items-center gap-2 transition-all duration-300 hover:text-primary hover:translate-y-[-2px]">
+            <Link href="/map" className="flex items-center gap-2 hover:text-primary hover-lift">
               <MapPin className="h-4 w-4" />
               Bản đồ số
             </Link>
           </NavigationMenuItem>
 
           <NavigationMenuItem>
-            <Link href="/forum" className="flex items-center gap-2 transition-all duration-300 hover:text-primary hover:translate-y-[-2px]">
+            <Link href="/forum" className="flex items-center gap-2 hover:text-primary hover-lift">
               <BookText className="h-4 w-4" />
               Diễn đàn
             </Link>
           </NavigationMenuItem>
 
           <NavigationMenuItem>
-            <Link href="/contributions" className="flex items-center gap-2 transition-all duration-300 hover:text-primary hover:translate-y-[-2px]">
+            <Link href="/contributions" className="flex items-center gap-2 hover:text-primary hover-lift">
               <Upload className="h-4 w-4" />
               Đóng góp tư liệu
             </Link>
           </NavigationMenuItem>
 
           <NavigationMenuItem>
-            <Link href="/" className="flex items-center gap-2 transition-all duration-300 hover:text-primary hover:translate-y-[-2px]">
+            <Link href="/" className="flex items-center gap-2 hover:text-primary hover-lift">
               <Library className="h-4 w-4" />
               Kho học liệu số
             </Link>
           </NavigationMenuItem>
 
           <NavigationMenuItem>
-            <Link href="/chat" className="flex items-center gap-2 transition-all duration-300 hover:text-primary hover:translate-y-[-2px]">
+            <Link href="/chat" className="flex items-center gap-2 hover:text-primary hover-lift">
               <MessageSquare className="h-4 w-4" />
               Trò chuyện AI
             </Link>
           </NavigationMenuItem>
 
           <NavigationMenuItem>
-            <Link href="/game" className="flex items-center gap-2 transition-all duration-300 hover:text-primary hover:translate-y-[-2px]">
+            <Link href="/game" className="flex items-center gap-2 hover:text-primary hover-lift">
               <Gamepad2 className="h-4 w-4" />
               Game giáo dục
             </Link>
           </NavigationMenuItem>
 
           <NavigationMenuItem>
-            <Link href="/live-data" className="flex items-center gap-2 transition-all duration-300 hover:text-primary hover:translate-y-[-2px]">
+            <Link href="/live-data" className="flex items-center gap-2 hover:text-primary hover-lift">
               <Activity className="h-4 w-4" />
               Dữ liệu thực
             </Link>
           </NavigationMenuItem>
 
           <NavigationMenuItem>
-            <Link href="/ticket" className="flex items-center gap-2 transition-all duration-300 hover:text-primary hover:translate-y-[-2px]">
+            <Link href="/ticket" className="flex items-center gap-2 hover:text-primary hover-lift">
               <Ticket className="h-4 w-4" />
               Đặt vé
             </Link>
@@ -107,10 +106,9 @@ function Router() {
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="min-h-screen bg-background relative">
-        <ParticleBackground />
+      <div className="min-h-screen bg-background">
         <MainNav />
-        <main className="py-6 relative">
+        <main className="py-6 fade-in">
           <Router />
         </main>
       </div>
