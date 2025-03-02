@@ -37,7 +37,10 @@ app.use((req, res, next) => {
   next();
 });
 
-(async () => {
+const MAX_RETRIES = 3;
+const RETRY_DELAY = 2000; // 2 seconds
+
+async function startServer(retryCount = 0) {
   try {
     log("Starting server initialization...");
     log(`Environment: ${process.env.NODE_ENV}, FAST_START: ${process.env.FAST_START}`);
@@ -75,35 +78,61 @@ app.use((req, res, next) => {
       log("Static serving setup complete");
     }
 
-    // Always listen on port 5000
-    const port = process.env.PORT || 5000;
-    log(`Attempting to start server on port ${port}...`);
+    // Try to start on preferred port first
+    const preferredPort = parseInt(process.env.PORT || "5000", 10);
+    const portRange = [preferredPort, 5001, 5002, 5003]; // Fallback ports
+    let port = preferredPort;
+    let started = false;
 
-    // Add a timeout for server startup
-    const startupTimeout = setTimeout(() => {
-      log("Server startup timed out after 10 seconds");
-      process.exit(1);
-    }, 10000);
+    for (const tryPort of portRange) {
+      try {
+        log(`Attempting to start server on port ${tryPort}...`);
 
-    server.listen({
-      port,
-      host: "0.0.0.0",
-    }, () => {
-      clearTimeout(startupTimeout);
-      log(`Server started successfully on port ${port}`);
-    }).on('error', (err: NodeJS.ErrnoException) => {
-      clearTimeout(startupTimeout);
-      if (err.code === 'EADDRINUSE') {
-        log(`Port ${port} is already in use. Please free up the port and try again.`);
-        process.exit(1);
-      } else {
-        log(`Failed to start server: ${err.message}`);
-        process.exit(1);
+        await new Promise((resolve, reject) => {
+          const startupTimeout = setTimeout(() => {
+            reject(new Error("Server startup timed out after 10 seconds"));
+          }, 10000);
+
+          server.listen({
+            port: tryPort,
+            host: "0.0.0.0",
+          }, () => {
+            clearTimeout(startupTimeout);
+            port = tryPort;
+            started = true;
+            log(`Server started successfully on port ${port}`);
+            resolve(true);
+          }).on('error', (err: NodeJS.ErrnoException) => {
+            clearTimeout(startupTimeout);
+            if (err.code === 'EADDRINUSE') {
+              log(`Port ${tryPort} is already in use, trying next port...`);
+              resolve(false);
+            } else {
+              reject(err);
+            }
+          });
+        });
+
+        if (started) break;
+      } catch (err) {
+        log(`Failed to start on port ${tryPort}: ${err}`);
       }
-    });
+    }
+
+    if (!started) {
+      throw new Error("Failed to start server on any available port");
+    }
 
   } catch (error) {
     console.error("Fatal error during server startup:", error);
-    process.exit(1);
+    if (retryCount < MAX_RETRIES) {
+      log(`Retrying server startup in ${RETRY_DELAY}ms (attempt ${retryCount + 1}/${MAX_RETRIES})...`);
+      setTimeout(() => startServer(retryCount + 1), RETRY_DELAY);
+    } else {
+      log("Maximum retry attempts reached. Server startup failed.");
+      process.exit(1);
+    }
   }
-})();
+}
+
+startServer();
