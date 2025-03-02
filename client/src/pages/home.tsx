@@ -45,9 +45,12 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto p-4">
-        <h1 className="text-2xl font-bold mb-6">Kho học liệu số Huế</h1>
+    <div className="container mx-auto p-4">
+      <div className="max-w-3xl mx-auto">
+        <h1 className="text-2xl font-bold mb-2">Kho học liệu số</h1>
+        <p className="text-muted-foreground mb-6">
+          Khám phá bộ sưu tập tài liệu số hóa, hình ảnh, video và âm thanh về di sản văn hóa Huế
+        </p>
 
         <Tabs defaultValue="browse" className="space-y-4">
           <TabsList>
