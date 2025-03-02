@@ -3,8 +3,14 @@ import { createServer } from "http";
 import { storage } from "./storage";
 import { insertLocationSchema, insertResourceSchema, insertCategorySchema } from "@shared/schema";
 import { getChatResponse } from "./services/openai";
+import forumRouter from "./routes/forum";
+import contributionsRouter from "./routes/contributions";
 
 export async function registerRoutes(app: Express) {
+  // Đăng ký các router mới
+  app.use(forumRouter);
+  app.use(contributionsRouter);
+
   app.get("/api/locations", async (_req, res) => {
     const locations = await storage.getAllLocations();
     res.json(locations);
