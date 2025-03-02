@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { motion } from "framer-motion";
-import { Building2, Columns, PaintBucket, Ruler, Award, Info } from "lucide-react";
+import { Building2, Columns, PaintBucket, Ruler, Award, Info, Palette, TreePine } from "lucide-react";
 
 interface ArchitecturalElement {
   id: string;
@@ -21,7 +21,7 @@ const architecturalElements = {
       id: "stone_base",
       name: "Nền đá xanh Thanh Hóa",
       description: "Nền móng vững chắc từ đá xanh Thanh Hóa, tạo độ bền và thoát nước tốt",
-      historicalInfo: "Đá xanh Thanh Hóa được sử dụng phổ biến trong kiến trúc cung đình Huế vì độ bền và vẻ đẹp tự nhiên",
+      historicalInfo: "Đá xanh Thanh Hóa được sử dụng phổ biến trong kiến trúc cung đình Huế vì độ bền và vẻ đẹp tự nhiên. Đây là loại đá có độ cứng cao, khả năng chống thấm tốt.",
       score: 10,
       icon: <Building2 className="h-6 w-6" />
     },
@@ -29,8 +29,16 @@ const architecturalElements = {
       id: "brick_base",
       name: "Nền gạch nung",
       description: "Nền móng từ gạch nung truyền thống",
-      historicalInfo: "Gạch nung là vật liệu phổ biến trong xây dựng dân gian",
+      historicalInfo: "Gạch nung là vật liệu phổ biến trong xây dựng dân gian, tuy nhiên ít được sử dụng trong các công trình hoàng gia do độ bền thấp hơn.",
       score: 5,
+      icon: <Building2 className="h-6 w-6" />
+    },
+    {
+      id: "elevated_platform",
+      name: "Nền tảng cao",
+      description: "Nền được nâng cao tạo không gian thoáng đãng và tránh ẩm mốc",
+      historicalInfo: "Việc nâng cao nền là đặc trưng của kiến trúc cung đình, thể hiện địa vị và quyền lực, đồng thời giúp bảo vệ công trình khỏi độ ẩm.",
+      score: 8,
       icon: <Building2 className="h-6 w-6" />
     }
   ],
@@ -39,7 +47,7 @@ const architecturalElements = {
       id: "wooden_columns",
       name: "Cột gỗ lim",
       description: "Cột từ gỗ lim quý, được chạm khắc hoa văn truyền thống",
-      historicalInfo: "Gỗ lim được coi là loại gỗ quý, thường dùng trong các công trình quan trọng của triều Nguyễn",
+      historicalInfo: "Gỗ lim được coi là loại gỗ quý, thường dùng trong các công trình quan trọng của triều Nguyễn. Cột gỗ lim có thể tồn tại hàng trăm năm.",
       score: 10,
       icon: <Columns className="h-6 w-6" />
     },
@@ -47,8 +55,16 @@ const architecturalElements = {
       id: "stone_columns",
       name: "Cột đá granite",
       description: "Cột đá granite bền vững",
-      historicalInfo: "Đá granite ít được sử dụng trong kiến trúc cung đình Huế thời Nguyễn",
+      historicalInfo: "Đá granite ít được sử dụng trong kiến trúc cung đình Huế thời Nguyễn, không phù hợp với phong cách kiến trúc truyền thống.",
       score: 5,
+      icon: <Columns className="h-6 w-6" />
+    },
+    {
+      id: "lacquered_columns",
+      name: "Cột gỗ sơn then",
+      description: "Cột gỗ được sơn then đỏ truyền thống",
+      historicalInfo: "Sơn then đỏ là màu sắc đặc trưng trong kiến trúc cung đình, tượng trưng cho quyền uy và phước lộc.",
+      score: 8,
       icon: <Columns className="h-6 w-6" />
     }
   ],
@@ -57,7 +73,7 @@ const architecturalElements = {
       id: "dragon_phoenix",
       name: "Rồng Phượng",
       description: "Hoa văn rồng phượng tượng trưng cho quyền uy hoàng gia",
-      historicalInfo: "Rồng và Phượng là biểu tượng của vua và hoàng hậu trong văn hóa phong kiến Việt Nam",
+      historicalInfo: "Rồng và Phượng là biểu tượng của vua và hoàng hậu trong văn hóa phong kiến Việt Nam. Hoa văn này chỉ được sử dụng trong cung điện.",
       score: 10,
       icon: <PaintBucket className="h-6 w-6" />
     },
@@ -65,9 +81,53 @@ const architecturalElements = {
       id: "lotus",
       name: "Hoa Sen",
       description: "Hoa văn hoa sen thanh tao",
-      historicalInfo: "Hoa sen thường xuất hiện trong nghệ thuật trang trí Phật giáo",
+      historicalInfo: "Hoa sen thường xuất hiện trong nghệ thuật trang trí Phật giáo và kiến trúc dân gian, ít phổ biến trong cung điện chính.",
       score: 5,
       icon: <PaintBucket className="h-6 w-6" />
+    },
+    {
+      id: "clouds_waves",
+      name: "Mây và Sóng",
+      description: "Họa tiết mây và sóng thể hiện sự vĩnh cửu",
+      historicalInfo: "Văn mây và sóng là họa tiết phổ biến trong trang trí cung đình, tượng trưng cho sự trường tồn của triều đại.",
+      score: 8,
+      icon: <PaintBucket className="h-6 w-6" />
+    }
+  ],
+  landscaping: [
+    {
+      id: "feng_shui",
+      name: "Phong thủy truyền thống",
+      description: "Bố cục theo nguyên tắc phong thủy cổ",
+      historicalInfo: "Phong thủy đóng vai trò quan trọng trong việc xây dựng cung điện, đảm bảo sự hài hòa giữa con người và thiên nhiên.",
+      score: 10,
+      icon: <TreePine className="h-6 w-6" />
+    },
+    {
+      id: "gardens",
+      name: "Vườn cảnh",
+      description: "Thiết kế vườn với cây cảnh và thủy đài",
+      historicalInfo: "Vườn cảnh trong cung điện không chỉ để thưởng ngoạn mà còn thể hiện triết lý âm dương, ngũ hành.",
+      score: 8,
+      icon: <TreePine className="h-6 w-6" />
+    }
+  ],
+  colors: [
+    {
+      id: "royal_yellow",
+      name: "Hoàng thiếp",
+      description: "Màu vàng hoàng gia truyền thống",
+      historicalInfo: "Màu vàng là màu của hoàng gia, chỉ được sử dụng trong các công trình quan trọng của triều đình.",
+      score: 10,
+      icon: <Palette className="h-6 w-6" />
+    },
+    {
+      id: "vermillion",
+      name: "Son đỏ",
+      description: "Màu đỏ son truyền thống",
+      historicalInfo: "Màu đỏ son tượng trưng cho phúc lộc, thường được sử dụng trong các chi tiết trang trí quan trọng.",
+      score: 8,
+      icon: <Palette className="h-6 w-6" />
     }
   ]
 };
@@ -189,6 +249,8 @@ export default function BuildingGame() {
                 <TabsTrigger value="foundation">Nền móng</TabsTrigger>
                 <TabsTrigger value="columns">Cột trụ</TabsTrigger>
                 <TabsTrigger value="decoration">Trang trí</TabsTrigger>
+                <TabsTrigger value="landscaping">Cảnh quan</TabsTrigger>
+                <TabsTrigger value="colors">Màu sắc</TabsTrigger>
               </TabsList>
 
               <ScrollArea className="h-[400px] rounded-md border p-4">
@@ -201,13 +263,19 @@ export default function BuildingGame() {
                 <TabsContent value="decoration" className="mt-0">
                   {renderCategorySection("decoration", architecturalElements.decoration)}
                 </TabsContent>
+                <TabsContent value="landscaping" className="mt-0">
+                  {renderCategorySection("landscaping", architecturalElements.landscaping)}
+                </TabsContent>
+                <TabsContent value="colors" className="mt-0">
+                  {renderCategorySection("colors", architecturalElements.colors)}
+                </TabsContent>
               </ScrollArea>
             </Tabs>
 
             <div className="mt-6 flex justify-center">
               <Button
                 onClick={() => setShowResult(true)}
-                disabled={Object.keys(selectedElements).length < 3}
+                disabled={Object.keys(selectedElements).length < 5}
               >
                 <Ruler className="mr-2 h-4 w-4" />
                 Hoàn thành công trình
@@ -232,7 +300,7 @@ export default function BuildingGame() {
                 {getEvaluation(calculateScore()).description}
               </p>
               <div className="mt-4 p-4 bg-muted/30 rounded-lg">
-                <p className="text-sm font-medium">Điểm số của bạn: {calculateScore()}/30</p>
+                <p className="text-sm font-medium">Điểm số của bạn: {calculateScore()}/50</p>
                 <p className="text-xs text-muted-foreground mt-1">
                   Dựa trên sự phù hợp với kiến trúc cung đình thời Nguyễn
                 </p>
