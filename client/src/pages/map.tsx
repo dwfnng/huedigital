@@ -2,8 +2,7 @@ import { useState } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search, MapPin, Info, Calendar, Navigation2 } from 'lucide-react';
-import { motion, AnimatePresence } from "framer-motion";
+import { Search, MapPin } from 'lucide-react';
 import type { Location } from "@shared/schema";
 import Map from "@/components/Map";
 

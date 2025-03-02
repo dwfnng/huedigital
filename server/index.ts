@@ -6,6 +6,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+// Add detailed startup logging middleware
 app.use((req, res, next) => {
   const start = Date.now();
   const path = req.path;
@@ -37,45 +38,58 @@ app.use((req, res, next) => {
 });
 
 (async () => {
-  const server = await registerRoutes(app);
+  try {
+    log("Starting server initialization...");
 
-  app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
-    const status = err.status || err.statusCode || 500;
-    const message = err.message || "Internal Server Error";
+    // Kill any existing process on port 5000
+    try {
+      const { execSync } = require('child_process');
+      execSync('fuser -k 5000/tcp');
+      log("Cleared port 5000");
+    } catch (e) {
+      // Ignore errors if no process was using the port
+    }
 
-    res.status(status).json({ message });
-    throw err;
-  });
+    log("Registering routes...");
+    const server = await registerRoutes(app);
+    log("Routes registered successfully");
 
-  // importantly only setup vite in development and after
-  // setting up all the other routes so the catch-all route
-  // doesn't interfere with the other routes
-  if (app.get("env") === "development") {
-    await setupVite(app, server);
-  } else {
-    serveStatic(app);
-  }
+    // Error handling middleware
+    app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
+      const status = 500;
+      const message = err.message || "Internal Server Error";
+      res.status(status).json({ message });
+      console.error("Server error:", err);
+    });
 
-  // Try to serve the app on port 5000 first, with fallback to other ports
-  let port = 5000;
-  const startServer = () => {
+    // Setup Vite or static serving based on environment and FAST_START flag
+    const fastStart = process.env.FAST_START === "true";
+    if (app.get("env") === "development" && !fastStart) {
+      log("Setting up Vite development server...");
+      await setupVite(app, server);
+      log("Vite setup complete");
+    } else {
+      log("Setting up static file serving...");
+      serveStatic(app);
+      log("Static serving setup complete");
+    }
+
+    // Always listen on port 5000
+    const port = 5000;
+    log(`Attempting to start server on port ${port}...`);
+
     server.listen({
       port,
       host: "0.0.0.0",
-      reusePort: true,
     }, () => {
-      log(`serving on port ${port}`);
-    }).on('error', (err) => {
-      if (err.code === 'EADDRINUSE') {
-        log(`Port ${port} is in use, trying port ${port + 1}`);
-        port++;
-        startServer();
-      } else {
-        log(`Server error: ${err.message}`);
-        throw err;
-      }
+      log(`Server started successfully on port ${port}`);
+    }).on('error', (err: NodeJS.ErrnoException) => {
+      console.error(`Failed to start server: ${err.message}`);
+      process.exit(1);
     });
-  };
-  
-  startServer();
+
+  } catch (error) {
+    console.error("Fatal error during server startup:", error);
+    process.exit(1);
+  }
 })();

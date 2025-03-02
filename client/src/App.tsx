@@ -4,15 +4,13 @@ import { queryClient } from "./lib/queryClient";
 import { Toaster } from "@/components/ui/toaster";
 import { NavigationMenu, NavigationMenuItem, NavigationMenuList } from "@/components/ui/navigation-menu";
 import { Link } from "wouter";
-import { Library, MapPin, MessageSquare, Gamepad2, Activity, Ticket, Upload, BookText } from 'lucide-react';
+import { Library, MapPin, MessageSquare, Gamepad2, Activity, Ticket } from 'lucide-react';
 import Home from "@/pages/home";
 import Chat from "@/pages/chat";
 import MapPage from "@/pages/map";
 import GamePage from "@/pages/game";
 import LiveDataPage from "@/pages/live-data";
 import TicketPage from "@/pages/ticket";
-import ForumPage from "@/pages/forum";
-import ContributionsPage from "@/pages/contributions";
 import NotFound from "@/pages/not-found";
 
 function MainNav() {
@@ -30,20 +28,6 @@ function MainNav() {
             <Link href="/map" className="flex items-center gap-2 transition-colors hover:text-primary">
               <MapPin className="h-4 w-4" />
               Bản đồ số
-            </Link>
-          </NavigationMenuItem>
-
-          <NavigationMenuItem>
-            <Link href="/forum" className="flex items-center gap-2 transition-colors hover:text-primary">
-              <BookText className="h-4 w-4" />
-              Diễn đàn
-            </Link>
-          </NavigationMenuItem>
-
-          <NavigationMenuItem>
-            <Link href="/contributions" className="flex items-center gap-2 transition-colors hover:text-primary">
-              <Upload className="h-4 w-4" />
-              Đóng góp tư liệu
             </Link>
           </NavigationMenuItem>
 
@@ -96,8 +80,6 @@ function Router() {
       <Route path="/game" component={GamePage} />
       <Route path="/live-data" component={LiveDataPage} />
       <Route path="/ticket" component={TicketPage} />
-      <Route path="/forum" component={ForumPage} />
-      <Route path="/contributions" component={ContributionsPage} />
       <Route component={NotFound} />
     </Switch>
   );
