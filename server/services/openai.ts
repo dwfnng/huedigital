@@ -7,7 +7,7 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY || "dummy-key",
 });
 
-// Use a placeholder response for development without API key
+// Use placeholder responses for development without API key
 const placeholderResponses = [
   "Xin chào! Tôi là trợ lý ảo về Cố đô Huế. Bạn muốn biết thêm thông tin gì về lịch sử, văn hóa, hoặc các di tích tại Huế?",
   "Triều Nguyễn là triều đại phong kiến cuối cùng của Việt Nam, từ 1802 đến 1945, với kinh đô đặt tại Huế.",
