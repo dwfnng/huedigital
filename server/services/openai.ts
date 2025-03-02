@@ -1,8 +1,9 @@
+
 import OpenAI from "openai";
 import type { ChatCompletionMessageParam } from "openai/resources/chat";
 import { storage } from "../storage";
 
-// Thiết lập OpenAI với API key
+// Thiết lập OpenAI với API key từ biến môi trường
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
@@ -84,9 +85,8 @@ Trả lời bằng tiếng Việt, trừ khi người dùng hỏi bằng tiếng
 
     // Nếu tất cả các lần thử đều thất bại
     throw new Error("Không thể kết nối đến OpenAI API sau nhiều lần thử");
-
   } catch (error: any) {
-    console.error("Lỗi cuối cùng:", error);
-    return "Xin lỗi, hiện tại hệ thống đang gặp sự cố khi kết nối với dịch vụ AI. Vui lòng thử lại sau hoặc liên hệ quản trị viên hệ thống. Lỗi: " + (error.message || "Không xác định");
+    console.error("Lỗi từ OpenAI service:", error);
+    return "Rất tiếc, tôi đang gặp sự cố kết nối. Vui lòng thử lại sau. Lỗi: " + (error.message || "Không xác định");
   }
 }
