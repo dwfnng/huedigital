@@ -2,13 +2,15 @@ import { pgTable, text, serial, timestamp, jsonb, numeric, boolean } from "drizz
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
-// Categories table definition must come before its usage
+// Categories schema with enhanced cultural focus
 export const categories = pgTable("categories", {
   id: serial("id").primaryKey(),
   name: text("name").notNull(),
   nameEn: text("name_en").notNull(),
   description: text("description"),
   descriptionEn: text("description_en"),
+  parentId: serial("parent_id"),
+  iconUrl: text("icon_url"),
 });
 
 // Rest of the tables
@@ -83,6 +85,7 @@ export const pointTransactions = pgTable("point_transactions", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
+// Resources schema with enhanced cultural metadata
 export const resources = pgTable("resources", {
   id: serial("id").primaryKey(),
   title: text("title").notNull(),
@@ -93,8 +96,15 @@ export const resources = pgTable("resources", {
   category: text("category").notNull(),
   contentUrl: text("content_url").notNull(),
   thumbnailUrl: text("thumbnail_url"),
-  metadata: jsonb("metadata"),
+  metadata: jsonb("metadata").default({}).notNull(),
+  culturalPeriod: text("cultural_period"),
+  historicalContext: text("historical_context"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
+  relatedLocationId: serial("related_location_id"),
+  tags: text("tags").array(),
+  authorInfo: text("author_info"),
+  sourceInfo: text("source_info"),
+  languages: text("languages").array(),
 });
 
 export const messages = pgTable("messages", {
@@ -145,6 +155,21 @@ export const insertCategorySchema = createInsertSchema(categories).omit({
 export const insertResourceSchema = createInsertSchema(resources).omit({
   id: true,
   createdAt: true,
+}).extend({
+  metadata: z.object({
+    format: z.string().optional(),
+    resolution: z.string().optional(),
+    duration: z.string().optional(),
+    size: z.string().optional(),
+    technique: z.string().optional(),
+    materials: z.array(z.string()).optional(),
+    conservation: z.string().optional(),
+    culturalSignificance: z.string().optional(),
+    historicalEvents: z.array(z.string()).optional(),
+    ritualUse: z.string().optional(),
+    seasonalContext: z.string().optional(),
+    traditionalPractices: z.string().optional(),
+  }).optional(),
 });
 
 export const insertMessageSchema = createInsertSchema(messages).omit({
@@ -214,6 +239,33 @@ export type ResourceType =
   | "video"
   | "audio"
   | "research"
-  | "3d_model";
+  | "3d_model"
+  | "manuscript"
+  | "artifact"
+  | "ritual_description"
+  | "folk_song"
+  | "traditional_music"
+  | "dance_performance"
+  | "craft_technique"
+  | "oral_history"
+  | "architecture"
+  | "royal_decree"
+  | "historical_map";
 
 export type ChatRole = "user" | "assistant";
+
+export type ResourceCategory =
+  | "imperial_artifacts"
+  | "royal_ceremonies"
+  | "traditional_crafts"
+  | "folk_customs"
+  | "religious_practices"
+  | "historical_documents"
+  | "architectural_heritage"
+  | "performing_arts"
+  | "culinary_heritage"
+  | "traditional_medicine"
+  | "local_festivals"
+  | "oral_traditions"
+  | "decorative_arts"
+  | "cultural_landscapes";

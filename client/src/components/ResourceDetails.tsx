@@ -7,7 +7,21 @@ import {
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Download, ExternalLink, Info } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
+import { 
+  Download, 
+  ExternalLink, 
+  Info, 
+  Calendar, 
+  MapPin, 
+  Clock,
+  Bookmark,
+  Users,
+  History,
+  Globe,
+  Tag,
+  BookOpen
+} from "lucide-react";
 import type { Resource } from "@shared/schema";
 import { motion } from "framer-motion";
 
@@ -16,7 +30,14 @@ interface ResourceMetadata {
   resolution?: string;
   duration?: string;
   size?: string;
-  [key: string]: unknown;
+  technique?: string;
+  materials?: string[];
+  conservation?: string;
+  culturalSignificance?: string;
+  historicalEvents?: string[];
+  ritualUse?: string;
+  seasonalContext?: string;
+  traditionalPractices?: string;
 }
 
 interface ResourceDetailsProps {
@@ -37,22 +58,73 @@ export default function ResourceDetails({
 
   const formatMetadata = (metadata: ResourceMetadata | null) => {
     if (!metadata) return null;
-    const entries = Object.entries(metadata);
+
+    const renderSection = (title: string, content: React.ReactNode) => (
+      <div className="space-y-2">
+        <h4 className="font-medium text-sm flex items-center gap-2">
+          <Info className="h-4 w-4 text-primary" />
+          {title}
+        </h4>
+        {content}
+      </div>
+    );
+
     return (
       <motion.div 
-        className="space-y-2"
+        className="space-y-4"
         initial="hidden"
         animate="visible"
         variants={fadeIn}
       >
-        {entries.map(([key, value]) => (
-          <div key={key} className="flex justify-between text-sm hover:bg-accent/50 p-2 rounded-lg transition-colors">
-            <span className="text-muted-foreground capitalize">
-              {key.replace(/_/g, ' ')}
-            </span>
-            <span className="font-medium">{String(value)}</span>
+        {metadata.technique && renderSection(
+          "Kỹ thuật",
+          <p className="text-sm text-muted-foreground">{metadata.technique}</p>
+        )}
+
+        {metadata.materials && metadata.materials.length > 0 && renderSection(
+          "Chất liệu",
+          <div className="flex flex-wrap gap-2">
+            {metadata.materials.map((material, index) => (
+              <span key={index} className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">
+                {material}
+              </span>
+            ))}
           </div>
-        ))}
+        )}
+
+        {metadata.culturalSignificance && renderSection(
+          "Ý nghĩa văn hóa",
+          <p className="text-sm text-muted-foreground">{metadata.culturalSignificance}</p>
+        )}
+
+        {metadata.historicalEvents && metadata.historicalEvents.length > 0 && renderSection(
+          "Sự kiện lịch sử liên quan",
+          <ul className="text-sm text-muted-foreground list-disc list-inside space-y-1">
+            {metadata.historicalEvents.map((event, index) => (
+              <li key={index}>{event}</li>
+            ))}
+          </ul>
+        )}
+
+        {metadata.ritualUse && renderSection(
+          "Nghi lễ sử dụng",
+          <p className="text-sm text-muted-foreground">{metadata.ritualUse}</p>
+        )}
+
+        {metadata.seasonalContext && renderSection(
+          "Bối cảnh theo mùa",
+          <p className="text-sm text-muted-foreground">{metadata.seasonalContext}</p>
+        )}
+
+        {metadata.traditionalPractices && renderSection(
+          "Thực hành truyền thống",
+          <p className="text-sm text-muted-foreground">{metadata.traditionalPractices}</p>
+        )}
+
+        {metadata.conservation && renderSection(
+          "Bảo tồn",
+          <p className="text-sm text-muted-foreground">{metadata.conservation}</p>
+        )}
       </motion.div>
     );
   };
@@ -205,28 +277,155 @@ export default function ResourceDetails({
         </SheetHeader>
 
         <ScrollArea className="h-[calc(100vh-8rem)] mt-6 pr-4">
-          <div className="space-y-8">
-            {renderContent()}
+          <div className="space-y-6">
+            {resource.contentUrl && renderContent()}
 
+            {/* Cultural Period Information */}
+            {resource.culturalPeriod && (
+              <motion.div 
+                className="rounded-lg bg-primary/5 p-4"
+                initial="hidden"
+                animate="visible"
+                variants={fadeIn}
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  <History className="h-4 w-4 text-primary" />
+                  <h4 className="font-medium">Thời kỳ văn hóa</h4>
+                </div>
+                <p className="text-sm text-muted-foreground">{resource.culturalPeriod}</p>
+              </motion.div>
+            )}
+
+
+            {/* Description */}
             <motion.div 
               className="space-y-4"
               initial="hidden"
               animate="visible"
               variants={fadeIn}
             >
-              <p className="text-sm leading-relaxed text-muted-foreground">
-                {resource.description}
-              </p>
+              <p className="text-sm leading-relaxed">{resource.description}</p>
               {resource.descriptionEn && (
-                <p className="text-sm leading-relaxed text-muted-foreground">
-                  {resource.descriptionEn}
-                </p>
+                <p className="text-sm leading-relaxed text-muted-foreground">{resource.descriptionEn}</p>
               )}
             </motion.div>
 
+            {/* Historical Context */}
+            {resource.historicalContext && (
+              <motion.div 
+                className="space-y-2 border-t pt-4"
+                initial="hidden"
+                animate="visible"
+                variants={fadeIn}
+              >
+                <div className="flex items-center gap-2">
+                  <BookOpen className="h-4 w-4 text-primary" />
+                  <h4 className="font-medium">Bối cảnh lịch sử</h4>
+                </div>
+                <p className="text-sm text-muted-foreground">{resource.historicalContext}</p>
+              </motion.div>
+            )}
+
+            {/* Tags */}
+            {resource.tags && resource.tags.length > 0 && (
+              <motion.div 
+                className="space-y-2"
+                initial="hidden"
+                animate="visible"
+                variants={fadeIn}
+              >
+                <div className="flex items-center gap-2">
+                  <Tag className="h-4 w-4 text-primary" />
+                  <h4 className="font-medium">Từ khóa</h4>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {resource.tags.map((tag, index) => (
+                    <span key={index} className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+
+            {/* Related Location */}
+            {resource.relatedLocationId && (
+              <motion.div 
+                className="space-y-2 border-t pt-4"
+                initial="hidden"
+                animate="visible"
+                variants={fadeIn}
+              >
+                <div className="flex items-center gap-2">
+                  <MapPin className="h-4 w-4 text-primary" />
+                  <h4 className="font-medium">Địa điểm liên quan</h4>
+                </div>
+                <Button 
+                  variant="outline" 
+                  className="w-full justify-start"
+                  onClick={() => {
+                    // Handle navigation to location
+                  }}
+                >
+                  Xem trên bản đồ
+                </Button>
+              </motion.div>
+            )}
+
+            {/* Author & Source Information */}
+            <motion.div 
+              className="space-y-4 border-t pt-4"
+              initial="hidden"
+              animate="visible"
+              variants={fadeIn}
+            >
+              {resource.authorInfo && (
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <Users className="h-4 w-4 text-primary" />
+                    <h4 className="font-medium">Tác giả</h4>
+                  </div>
+                  <p className="text-sm text-muted-foreground">{resource.authorInfo}</p>
+                </div>
+              )}
+
+              {resource.sourceInfo && (
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <Bookmark className="h-4 w-4 text-primary" />
+                    <h4 className="font-medium">Nguồn tư liệu</h4>
+                  </div>
+                  <p className="text-sm text-muted-foreground">{resource.sourceInfo}</p>
+                </div>
+              )}
+            </motion.div>
+
+            {/* Languages */}
+            {resource.languages && resource.languages.length > 0 && (
+              <motion.div 
+                className="space-y-2 border-t pt-4"
+                initial="hidden"
+                animate="visible"
+                variants={fadeIn}
+              >
+                <div className="flex items-center gap-2">
+                  <Globe className="h-4 w-4 text-primary" />
+                  <h4 className="font-medium">Ngôn ngữ</h4>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {resource.languages.map((language, index) => (
+                    <span key={index} className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">
+                      {language}
+                    </span>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+
+            {/* Technical Metadata */}
             {resource.metadata && (
               <motion.div 
-                className="space-y-4 border-t pt-6"
+                className="space-y-4 border-t pt-4"
                 initial="hidden"
                 animate="visible"
                 variants={fadeIn}
@@ -239,6 +438,7 @@ export default function ResourceDetails({
               </motion.div>
             )}
 
+            {/* Action Buttons */}
             <motion.div 
               className="flex gap-3 pt-4"
               initial="hidden"
