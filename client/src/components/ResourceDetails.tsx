@@ -1,3 +1,4 @@
+
 import {
   Sheet,
   SheetContent,
@@ -7,7 +8,7 @@ import {
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Download, ExternalLink, Info } from "lucide-react";
+import { Download, ExternalLink, Info, Box } from "lucide-react";
 import type { Resource } from "@shared/schema";
 
 interface ResourceDetailsProps {
@@ -93,12 +94,13 @@ export default function ResourceDetails({
                     container.appendChild(fallbackVideo);
                   }
                 }}
-            />
-            {resource.metadata?.resolution && (
-              <div className="absolute top-2 right-2 bg-black/50 text-white px-2 py-1 rounded text-xs">
-                {resource.metadata.resolution}
-              </div>
-            )}
+              />
+              {resource.metadata?.resolution && (
+                <div className="absolute top-2 right-2 bg-black/50 text-white px-2 py-1 rounded text-xs">
+                  {resource.metadata.resolution}
+                </div>
+              )}
+            </div>
           </div>
         );
       case "audio":
@@ -115,36 +117,25 @@ export default function ResourceDetails({
                 }}
               />
             )}
-            <div className="audio-container">
-              <audio
-                key={resource.contentUrl}
-                src={resource.contentUrl}
-                controls
-                className="w-full"
-                preload="metadata"
-                onError={(e) => {
-                  const audioEl = e.currentTarget;
-                  audioEl.style.display = "none";
-                  
-                  // If content URL fails, try to use a working sample audio
-                  const fallbackAudio = document.createElement("audio");
-                  fallbackAudio.src = "https://filesamples.com/samples/audio/mp3/sample1.mp3";
-                  fallbackAudio.controls = true;
-                  fallbackAudio.className = "w-full";
-                  
-                  // Display message
-                  const errorMsg = document.createElement("div");
-                  errorMsg.textContent = "Âm thanh chính không khả dụng - Đang hiển thị âm thanh thay thế";
-                  errorMsg.className = "p-4 bg-gray-100 text-gray-700 rounded-lg text-center mb-3";
-                  
-                  const container = audioEl.parentNode;
-                  if (container) {
-                    container.appendChild(errorMsg);
-                    container.appendChild(fallbackAudio);
-                  }
-                }}
-              />
-            </div>
+            <audio
+              src={resource.contentUrl}
+              controls
+              className="w-full"
+              onError={(e) => {
+                const audioEl = e.currentTarget;
+                audioEl.style.display = "none";
+                
+                // Display error message
+                const errorMsg = document.createElement("div");
+                errorMsg.textContent = "Audio không khả dụng";
+                errorMsg.className = "p-4 bg-gray-100 text-gray-700 rounded-lg text-center";
+                
+                const container = audioEl.parentNode;
+                if (container) {
+                  container.appendChild(errorMsg);
+                }
+              }}
+            />
           </div>
         );
       case "3d_model":
@@ -190,61 +181,80 @@ export default function ResourceDetails({
           />
         ) : (
           <div className="w-full h-48 bg-gray-200 rounded-lg flex items-center justify-center">
-            <FileText className="h-16 w-16 text-gray-500" />
+            <Info className="h-16 w-16 text-gray-500" />
           </div>
         );
     }
   };
 
   return (
-    <Sheet open={!!resource} onOpenChange={onClose}>
-      <SheetContent className="w-full sm:max-w-xl overflow-hidden">
-        <SheetHeader className="space-y-1">
+    <Sheet open={!!resource} onOpenChange={() => onClose()}>
+      <SheetContent className="w-full sm:max-w-lg">
+        <SheetHeader className="pb-4">
           <SheetTitle>{resource.title}</SheetTitle>
-          <SheetDescription>{resource.titleEn}</SheetDescription>
+          {resource.description && (
+            <SheetDescription>{resource.description}</SheetDescription>
+          )}
         </SheetHeader>
-
-        <ScrollArea className="h-[calc(100vh-8rem)] mt-6 pr-4">
-          <div className="space-y-6">
+        <ScrollArea className="h-[calc(100vh-10rem)]">
+          <div className="space-y-6 py-4">
             {renderContent()}
-
+            
             <div className="space-y-4">
-              <p className="text-sm text-muted-foreground">
-                {resource.description}
-              </p>
-              {resource.descriptionEn && (
-                <p className="text-sm text-muted-foreground">
-                  {resource.descriptionEn}
-                </p>
-              )}
-            </div>
-
-            {resource.metadata && (
-              <div className="space-y-3 border-t pt-4">
-                <div className="flex items-center gap-2">
-                  <Info className="h-4 w-4 text-muted-foreground" />
-                  <h4 className="font-medium">Thông tin chi tiết</h4>
-                </div>
-                {formatMetadata(resource.metadata as Record<string, unknown>)}
+              <div className="flex gap-2">
+                <Button 
+                  variant="outline" 
+                  className="flex-1"
+                  onClick={() => window.open(resource.contentUrl, '_blank')}
+                >
+                  <ExternalLink className="mr-2 h-4 w-4" />
+                  Mở trực tiếp
+                </Button>
+                <Button 
+                  variant="outline" 
+                  className="flex-1"
+                  onClick={() => window.open(resource.contentUrl, '_blank', 'download')}
+                >
+                  <Download className="mr-2 h-4 w-4" />
+                  Tải xuống
+                </Button>
               </div>
-            )}
-
-            <div className="flex gap-2">
-              <Button 
-                className="flex-1" 
-                onClick={() => window.open(resource.contentUrl, '_blank')}
-              >
-                <ExternalLink className="mr-2 h-4 w-4" />
-                Xem
-              </Button>
-              <Button
-                variant="outline"
-                className="flex-1"
-                onClick={() => window.open(resource.contentUrl, '_blank')}
-              >
-                <Download className="mr-2 h-4 w-4" />
-                Tải xuống
-              </Button>
+              
+              <div className="p-4 bg-gray-50 rounded-lg space-y-3">
+                <h3 className="font-medium text-sm">Thông tin tài liệu</h3>
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Loại</span>
+                    <span className="capitalize">{resource.type.replace(/_/g, ' ')}</span>
+                  </div>
+                  {resource.category && (
+                    <div className="flex justify-between text-sm">
+                      <span className="text-muted-foreground">Danh mục</span>
+                      <span>{resource.category}</span>
+                    </div>
+                  )}
+                  {resource.sourceUrl && (
+                    <div className="flex justify-between text-sm">
+                      <span className="text-muted-foreground">Nguồn</span>
+                      <a 
+                        href={resource.sourceUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 hover:underline truncate max-w-[200px]"
+                      >
+                        Xem nguồn
+                      </a>
+                    </div>
+                  )}
+                </div>
+              </div>
+              
+              {resource.metadata && (
+                <div className="p-4 bg-gray-50 rounded-lg space-y-3">
+                  <h3 className="font-medium text-sm">Metadata</h3>
+                  {formatMetadata(resource.metadata)}
+                </div>
+              )}
             </div>
           </div>
         </ScrollArea>
