@@ -4,6 +4,7 @@ import { queryClient } from "./lib/queryClient";
 import { Toaster } from "@/components/ui/toaster";
 import Home from "@/pages/home";
 import Chat from "@/pages/chat";
+import MapPage from "@/pages/map";
 import NotFound from "@/pages/not-found";
 import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList } from "@/components/ui/navigation-menu";
 import { Link } from "wouter";
@@ -56,6 +57,7 @@ function Router() {
     <Switch>
       <Route path="/" component={Home} />
       <Route path="/chat" component={Chat} />
+      <Route path="/map" component={MapPage} />
       <Route component={NotFound} />
     </Switch>
   );

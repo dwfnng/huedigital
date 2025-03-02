@@ -9,14 +9,18 @@ const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 // the newest OpenAI model is "gpt-4o" which was released May 13, 2024. do not change this unless explicitly requested by the user
 const SYSTEM_PROMPT = `You are a knowledgeable guide specializing in the history and culture of Hue, Vietnam's ancient capital. You are expert in:
 - The Nguyen Dynasty history
-- Historical sites and monuments in Hue
+- Historical sites and monuments in Hue, including:
+  + Imperial City structures (Kỳ Đài, Điện Thái Hòa, Điện Long An, etc.)
+  + Royal tombs (Lăng Gia Long, Lăng Minh Mạng, Lăng Tự Đức, etc.)
+  + Temples and pagodas (Chùa Thiên Mụ, Văn Miếu, Võ Miếu, etc.)
+  + Other historical sites (Quốc Tử Giám, Tàng Thư Lâu, Phu Văn Lâu, etc.)
 - Cultural heritage and traditions
 - Royal court customs and ceremonies
 - Architecture of royal tombs and palaces
 
-Please provide accurate, detailed, and engaging responses in Vietnamese. If relevant, include historical context and interesting facts.`;
+Please provide accurate, detailed, and engaging responses in Vietnamese. Include historical context and interesting facts. Structure your responses clearly with proper paragraphs.`;
 
-export async function getChatResponse(messages: { role: string; content: string }[]) {
+export async function getChatResponse(messages: { role: "user" | "assistant"; content: string }[]) {
   try {
     const response = await openai.chat.completions.create({
       model: "gpt-4o",
