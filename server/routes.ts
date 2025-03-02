@@ -2,6 +2,7 @@ import type { Express } from "express";
 import { createServer } from "http";
 import { storage } from "./storage";
 import { insertLocationSchema, insertResourceSchema, insertCategorySchema } from "@shared/schema";
+import { getChatResponse } from "./services/openai";
 
 export async function registerRoutes(app: Express) {
   app.get("/api/locations", async (_req, res) => {
@@ -96,6 +97,26 @@ export async function registerRoutes(app: Express) {
     }
     const category = await storage.createCategory(parseResult.data);
     res.status(201).json(category);
+  });
+
+  // Chat routes
+  app.post("/api/chat", async (req, res) => {
+    try {
+      const { message } = req.body;
+      if (!message) {
+        res.status(400).json({ message: "Message is required" });
+        return;
+      }
+
+      const response = await getChatResponse([
+        { role: "user", content: message }
+      ]);
+
+      res.json({ response });
+    } catch (error) {
+      console.error("Chat error:", error);
+      res.status(500).json({ message: "Failed to get chat response" });
+    }
   });
 
   const httpServer = createServer(app);

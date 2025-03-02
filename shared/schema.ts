@@ -81,3 +81,20 @@ export type CategoryType =
   | "artwork"
   | "music"
   | "academic";
+
+export const messages = pgTable("messages", {
+  id: serial("id").primaryKey(),
+  role: text("role").notNull(), // user or assistant
+  content: text("content").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export const insertMessageSchema = createInsertSchema(messages).omit({
+  id: true,
+  createdAt: true,
+});
+
+export type Message = typeof messages.$inferSelect;
+export type InsertMessage = z.infer<typeof insertMessageSchema>;
+
+export type ChatRole = "user" | "assistant";
