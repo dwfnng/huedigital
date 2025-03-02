@@ -355,8 +355,146 @@ export class MemStorage implements IStorage {
           author: "TS. Lê Văn E",
           size: "15.3MB"
         }
-      }
-    ];
+      },
+      {
+    title: "Lịch sử Trường Quốc Tử Giám qua các triều đại",
+    titleEn: "History of Quoc Tu Giam School Through Dynasties",
+    description: "Tài liệu nghiên cứu về lịch sử phát triển của Trường Quốc Tử Giám từ thời vua Gia Long đến cuối triều Nguyễn, bao gồm các giai đoạn phát triển, vai trò giáo dục và ảnh hưởng đến nền học thuật Việt Nam.",
+    descriptionEn: "Research document on the historical development of Quoc Tu Giam School from King Gia Long's reign to the end of Nguyen Dynasty, including development phases, educational role, and influence on Vietnamese scholarship.",
+    type: "document",
+    category: "academic",
+    contentUrl: "https://www.africau.edu/images/default/sample.pdf",
+    thumbnailUrl: "https://hueworldheritage.org.vn/Portals/0/Medias/Nam2020/Thang8/0108/quoc-tu-giam-hue.jpg",
+    metadata: {
+      format: "pdf",
+      pages: 156,
+      year: 2023,
+      author: "PGS.TS. Phan Thanh Hải",
+      size: "28.5MB"
+    }
+  },
+  {
+    title: "Khảo sát kiến trúc Điện Long An",
+    titleEn: "Architectural Survey of Long An Palace",
+    description: "Video tư liệu về công tác khảo sát, đo đạc và nghiên cứu kiến trúc của Điện Long An, hiện là Bảo tàng Mỹ thuật Cung đình Huế. Phim ghi lại chi tiết các đặc điểm kiến trúc độc đáo của công trình.",
+    descriptionEn: "Documentary video about the survey, measurement, and architectural research of Long An Palace, now the Museum of Royal Fine Arts. The film captures detailed unique architectural features of the building.",
+    type: "video",
+    category: "architecture",
+    contentUrl: "https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4",
+    thumbnailUrl: "https://upload.wikimedia.org/wikipedia/commons/9/9e/Long_An_Palace%2C_Hue_%2814018169031%29.jpg",
+    metadata: {
+      format: "mp4",
+      duration: "45:20",
+      resolution: "3840x2160",
+      language: "Vietnamese with English subtitles",
+      size: "2.8GB"
+    }
+  },
+  {
+    title: "Bộ sưu tập hình ảnh Điện Thái Hòa",
+    titleEn: "Thai Hoa Palace Photo Collection",
+    description: "Bộ sưu tập ảnh chất lượng cao về Điện Thái Hòa từ nhiều góc độ khác nhau, ghi lại vẻ đẹp kiến trúc, hoa văn trang trí và không gian nội thất của công trình quan trọng nhất trong Hoàng thành Huế.",
+    descriptionEn: "High-quality photo collection of Thai Hoa Palace from various angles, capturing the architectural beauty, decorative patterns, and interior spaces of the most important building in Hue Imperial City.",
+    type: "image",
+    category: "architecture",
+    contentUrl: "https://upload.wikimedia.org/wikipedia/commons/9/96/Thai_Hoa_palace.jpg",
+    thumbnailUrl: "https://upload.wikimedia.org/wikipedia/commons/9/96/Thai_Hoa_palace.jpg",
+    metadata: {
+      format: "jpg",
+      resolution: "6000x4000",
+      items: 50,
+      year: 2024,
+      photographer: "Nguyễn Đình Đại",
+      size: "850MB"
+    }
+  },
+  {
+    title: "Nghệ thuật trang trí tại Bảo tàng Mỹ thuật Cung đình Huế",
+    titleEn: "Decorative Arts at Hue Royal Fine Arts Museum",
+    description: "Tài liệu nghiên cứu về các hiện vật nghệ thuật được trưng bày tại Bảo tàng Mỹ thuật Cung đình Huế, phân tích giá trị nghệ thuật và lịch sử của các tác phẩm tiêu biểu.",
+    descriptionEn: "Research document on art artifacts displayed at the Hue Royal Fine Arts Museum, analyzing the artistic and historical value of representative works.",
+    type: "document",
+    category: "artwork",
+    contentUrl: "https://www.africau.edu/images/default/sample.pdf",
+    thumbnailUrl: "https://media.mia.vn/uploads/blog-du-lich/bao-tang-my-thuat-cung-dinh-hue-noi-gin-giu-net-dep-van-hoa-co-kinh-1-1637922515.jpg",
+    metadata: {
+      format: "pdf",
+      pages: 92,
+      year: 2024,
+      author: "TS. Phan Thanh Bình",
+      size: "15.8MB"
+    }
+  },
+  {
+    title: "Lễ hội tại Đình Phú Xuân",
+    titleEn: "Festivals at Phu Xuan Communal House",
+    description: "Video tư liệu về các lễ hội truyền thống được tổ chức tại Đình Phú Xuân, ghi lại không khí lễ hội và các nghi thức văn hóa đặc sắc của cộng đồng địa phương.",
+    descriptionEn: "Documentary video about traditional festivals held at Phu Xuan Communal House, capturing the festive atmosphere and unique cultural rituals of the local community.",
+    type: "video",
+    category: "cultural_festivals",
+    contentUrl: "https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4",
+    thumbnailUrl: "https://cdn.tgdd.vn/Files/2021/06/22/1362228/10-dia-diem-du-lich-noi-tieng-o-hue-ban-nen-den-tham-quan-mot-lan-202201041501402042.jpg",
+    metadata: {
+      format: "mp4",
+      duration: "38:15",
+      resolution: "1920x1080",
+      language: "Vietnamese",
+      size: "1.5GB"
+    }
+  },
+  {
+    title: "Hồ Tịnh Tâm - Dấu ấn văn hóa vườn Huế",
+    titleEn: "Tinh Tam Lake - Cultural Mark of Hue Gardens",
+    description: "Phim tài liệu về Hồ Tịnh Tâm, một trong những hồ cảnh quan đẹp nhất trong Kinh thành Huế, khám phá vẻ đẹp kiến trúc cảnh quan và giá trị văn hóa của hồ trong đời sống cung đình xưa.",
+    descriptionEn: "Documentary about Tinh Tam Lake, one of the most beautiful scenic lakes in Hue Citadel, exploring its landscape architectural beauty and cultural value in ancient court life.",
+    type: "video",
+    category: "cultural_heritage",
+    contentUrl: "https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4",
+    thumbnailUrl: "https://upload.wikimedia.org/wikipedia/commons/c/cc/Ho_Tinh_Tam.jpg",
+    metadata: {
+      format: "mp4",
+      duration: "42:30",
+      resolution: "3840x2160",
+      language: "Vietnamese with English subtitles",
+      size: "2.4GB"
+    }
+  },
+  {
+    title: "Viện Cơ Mật và hệ thống hành chính triều Nguyễn",
+    titleEn: "Co Mat Institute and Nguyen Dynasty Administrative System",
+    description: "Nghiên cứu chi tiết về vai trò của Viện Cơ Mật trong hệ thống hành chính triều Nguyễn, phân tích cấu trúc tổ chức và quy trình hoạt động của cơ quan quyền lực này.",
+    descriptionEn: "Detailed study of Co Mat Institute's role in the Nguyen Dynasty administrative system, analyzing the organizational structure and operational procedures of this powerful agency.",
+    type: "document",
+    category: "research",
+    contentUrl: "https://www.africau.edu/images/default/sample.pdf",
+    thumbnailUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Co_Mat_Vien.JPG/1200px-Co_Mat_Vien.JPG",
+    metadata: {
+      format: "pdf",
+      pages: 184,
+      year: 2023,
+      author: "GS.TS. Đặng Văn Bài",
+      size: "32.6MB"
+    }
+  },
+  {
+    title: "Cửu Vị Thần Công - Báu vật của triều Nguyễn",
+    titleEn: "Nine Sacred Cannons - Treasures of Nguyen Dynasty",
+    description: "Bộ sưu tập hình ảnh và tư liệu về chín khẩu đại bác thiêng liêng của triều Nguyễn, ghi lại chi tiết về nghệ thuật đúc đồng, hoa văn trang trí và ý nghĩa biểu tượng của từng khẩu đại bác.",
+    descriptionEn: "Collection of images and documents about the nine sacred cannons of the Nguyen Dynasty, recording details about bronze casting art, decorative patterns, and symbolic meanings of each cannon.",
+    type: "image",
+    category: "historical_site",
+    contentUrl: "https://img.nhandan.com.vn/Files/Images/2021/03/03/a10-1614741129844.jpg",
+    thumbnailUrl: "https://img.nhandan.com.vn/Files/Images/2021/03/03/a10-1614741129844.jpg",
+    metadata: {
+      format: "jpg",
+      resolution: "4096x2730",
+      items: 45,
+      year: 2024,
+      photographer: "Lê Minh Tuấn",
+      size: "650MB"
+    }
+  }
+];
 
     defaultLocations.forEach(location => this.createLocation(location));
     defaultCategories.forEach(category => this.createCategory(category));
