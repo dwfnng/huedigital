@@ -4,8 +4,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Send, Bot, User, RefreshCw } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
 import type { Message } from "@shared/schema";
 import { apiRequest } from "@/lib/queryClient";
+import { sampleQuestions } from "@/data/sampleQuestions";
 
 export default function ChatInterface() {
   const [messages, setMessages] = useState<Message[]>([
@@ -63,6 +65,10 @@ export default function ChatInterface() {
     }
   };
 
+  const handleSampleQuestionClick = (question: string) => {
+    setInput(question);
+  };
+
   const formatTime = (date: Date) => {
     return new Date(date).toLocaleTimeString('vi-VN', { 
       hour: '2-digit', 
@@ -74,6 +80,23 @@ export default function ChatInterface() {
     <div className="flex flex-col h-[calc(100vh-12rem)] border rounded-lg overflow-hidden bg-background">
       <ScrollArea className="flex-1 p-6">
         <div className="space-y-4">
+          {/* Câu hỏi mẫu */}
+          <div className="mb-8">
+            <h3 className="text-sm font-medium mb-3">Các câu hỏi gợi ý:</h3>
+            <div className="flex flex-wrap gap-2">
+              {sampleQuestions.map((question, index) => (
+                <Badge
+                  key={index}
+                  variant="outline"
+                  className="cursor-pointer hover:bg-primary/10 transition-colors"
+                  onClick={() => handleSampleQuestionClick(question.text)}
+                >
+                  {question.text}
+                </Badge>
+              ))}
+            </div>
+          </div>
+
           {messages.map((message) => (
             <div 
               key={message.id}

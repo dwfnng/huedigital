@@ -3,12 +3,13 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Ticket, Gift, Star } from "lucide-react";
+import { Ticket, Gift, Star, ArrowUpRight } from "lucide-react";
 
-function TicketCard({ title, price, description }: {
+function TicketCard({ title, price, description, url }: {
   title: string;
   price: string;
   description: string;
+  url: string;
 }) {
   return (
     <Card className="cursor-pointer hover:bg-accent transition-colors">
@@ -22,17 +23,23 @@ function TicketCard({ title, price, description }: {
             <p className="text-sm text-muted-foreground mb-2">{description}</p>
             <p className="text-lg font-semibold text-primary">{price}</p>
           </div>
-          <Button>Đặt vé</Button>
+          <Button asChild>
+            <a href={url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
+              Đặt vé 
+              <ArrowUpRight className="h-4 w-4" />
+            </a>
+          </Button>
         </div>
       </CardContent>
     </Card>
   );
 }
 
-function SouvenirCard({ name, price, image }: {
+function SouvenirCard({ name, price, image, url }: {
   name: string;
   price: string;
   image: string;
+  url: string;
 }) {
   return (
     <Card className="cursor-pointer hover:bg-accent transition-colors">
@@ -45,9 +52,11 @@ function SouvenirCard({ name, price, image }: {
         <h3 className="font-semibold mb-1">{name}</h3>
         <div className="flex items-center justify-between">
           <p className="text-lg font-semibold text-primary">{price}</p>
-          <Button variant="outline" size="sm">
-            <Gift className="h-4 w-4 mr-2" />
-            Mua ngay
+          <Button variant="outline" size="sm" asChild>
+            <a href={url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
+              <Gift className="h-4 w-4" />
+              Mua ngay
+            </a>
           </Button>
         </div>
       </CardContent>
@@ -85,16 +94,19 @@ export default function TicketPage() {
               title="Vé tham quan Đại Nội"
               price="200.000đ"
               description="Thăm quan Hoàng thành Huế và các công trình trong Đại Nội"
+              url="https://hueworldheritage.org.vn/dat-ve"
             />
             <TicketCard
               title="Vé tham quan Lăng Tự Đức"
               price="150.000đ"
               description="Khám phá kiến trúc độc đáo của lăng Tự Đức"
+              url="https://hueworldheritage.org.vn/dat-ve"
             />
             <TicketCard
               title="Combo 3 điểm tham quan"
               price="400.000đ"
               description="Đại Nội + Lăng Tự Đức + Lăng Minh Mạng"
+              url="https://hueworldheritage.org.vn/dat-ve"
             />
           </TabsContent>
 
@@ -102,22 +114,26 @@ export default function TicketPage() {
             <SouvenirCard
               name="Nón lá Huế thêu hoa"
               price="120.000đ"
-              image="https://example.com/images/non-la.jpg"
+              image="/attached_assets/pexels-karen-w-lim-415441-1089318.jpg"
+              url="https://huetrademarkets.vn/non-la"
             />
             <SouvenirCard
               name="Tranh thủy mặc Huế"
               price="250.000đ"
-              image="https://example.com/images/tranh-thuy-mac.jpg"
-            />
-            <SouvenirCard
-              name="Trà sen Huế"
-              price="180.000đ"
-              image="https://example.com/images/tra-sen.jpg"
+              image="/attached_assets/pexels-uyen-bui-205258074-11937353.jpg"
+              url="https://huetrademarkets.vn/tranh-thuy-mac"
             />
             <SouvenirCard
               name="Áo dài truyền thống"
               price="850.000đ"
-              image="https://example.com/images/ao-dai.jpg"
+              image="/attached_assets/pexels-th-vinh-flute-822138648-21011475.jpg"
+              url="https://huetrademarkets.vn/ao-dai"
+            />
+            <SouvenirCard
+              name="Trầm hương Huế"
+              price="180.000đ"
+              image="/attached_assets/pexels-vietnam-photographer-27418892.jpg"
+              url="https://huetrademarkets.vn/tram-huong"
             />
           </TabsContent>
         </Tabs>
