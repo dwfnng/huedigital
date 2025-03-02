@@ -141,6 +141,8 @@ export default function BuildingGame() {
   const [selectedElements, setSelectedElements] = useState<Record<string, string>>({});
   const [showResult, setShowResult] = useState(false);
   const [showInfo, setShowInfo] = useState<string | null>(null);
+  const [currentCategory, setCurrentCategory] = useState("foundation");
+
 
   const handleElementSelect = (category: string, elementId: string) => {
     setSelectedElements(prev => ({ ...prev, [category]: elementId }));
@@ -178,21 +180,21 @@ export default function BuildingGame() {
   };
 
   const renderCategorySection = (category: string, elements: ArchitecturalElement[]) => (
-    <div className="space-y-4">
+    <div className="space-y-2">
       {elements.map((element) => (
         <motion.div key={element.id} variants={fadeIn}>
           <div className="relative">
             <Button
               variant={selectedElements[category] === element.id ? "default" : "outline"}
-              className="w-full justify-start gap-4 h-auto p-4 text-left"
+              className="w-full justify-start gap-3 h-auto p-3 text-left"
               onClick={() => handleElementSelect(category, element.id)}
             >
-              <div className="p-2 bg-primary/10 rounded-lg shrink-0">
+              <div className="p-1.5 bg-primary/10 rounded-lg shrink-0">
                 {element.icon}
               </div>
               <div>
-                <p className="font-medium">{element.name}</p>
-                <p className="text-sm text-muted-foreground">{element.description}</p>
+                <p className="text-sm font-medium">{element.name}</p>
+                <p className="text-xs text-muted-foreground">{element.description}</p>
               </div>
             </Button>
             <Button
@@ -209,9 +211,9 @@ export default function BuildingGame() {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
-              className="mt-2 p-4 bg-muted/50 rounded-lg"
+              className="mt-2 p-3 bg-muted/50 rounded-lg"
             >
-              <p className="text-sm">{element.historicalInfo}</p>
+              <p className="text-xs">{element.historicalInfo}</p>
             </motion.div>
           )}
         </motion.div>
@@ -221,13 +223,13 @@ export default function BuildingGame() {
 
   return (
     <Card className="w-full max-w-2xl mx-auto">
-      <CardContent className="p-6">
-        <div className="text-center mb-6">
-          <div className="inline-block p-3 bg-primary/10 rounded-full mb-4">
-            <Building2 className="h-8 w-8 text-primary" />
+      <CardContent className="p-4">
+        <div className="text-center mb-4">
+          <div className="inline-block p-2 bg-primary/10 rounded-full mb-2">
+            <Building2 className="h-6 w-6 text-primary" />
           </div>
-          <h2 className="text-2xl font-bold">Xây dựng Điện Cần Chánh</h2>
-          <p className="text-muted-foreground">
+          <h2 className="text-xl font-bold">Xây dựng Điện Cần Chánh</h2>
+          <p className="text-sm text-muted-foreground">
             Chọn các yếu tố kiến trúc để xây dựng lại Điện Cần Chánh theo phong cách cung đình Huế
           </p>
         </div>
@@ -244,62 +246,50 @@ export default function BuildingGame() {
               }
             }}
           >
-            <Tabs defaultValue="foundation" className="space-y-6">
-              <TabsList className="w-full grid grid-cols-5 gap-2">
-                <TabsTrigger value="foundation" className="text-sm">Nền móng</TabsTrigger>
-                <TabsTrigger value="columns" className="text-sm">Cột trụ</TabsTrigger>
-                <TabsTrigger value="decoration" className="text-sm">Trang trí</TabsTrigger>
-                <TabsTrigger value="landscaping" className="text-sm">Cảnh quan</TabsTrigger>
-                <TabsTrigger value="colors" className="text-sm">Màu sắc</TabsTrigger>
+            <Tabs defaultValue="foundation" className="space-y-4" onChange={setCurrentCategory}>
+              <TabsList className="w-full grid grid-cols-5 gap-1">
+                <TabsTrigger value="foundation" className="text-xs py-1.5">Nền móng</TabsTrigger>
+                <TabsTrigger value="columns" className="text-xs py-1.5">Cột trụ</TabsTrigger>
+                <TabsTrigger value="decoration" className="text-xs py-1.5">Trang trí</TabsTrigger>
+                <TabsTrigger value="landscaping" className="text-xs py-1.5">Cảnh quan</TabsTrigger>
+                <TabsTrigger value="colors" className="text-xs py-1.5">Màu sắc</TabsTrigger>
               </TabsList>
 
-              <ScrollArea className="h-[400px] rounded-md border p-4">
-                <TabsContent value="foundation" className="mt-0">
-                  {renderCategorySection("foundation", architecturalElements.foundation)}
-                </TabsContent>
-                <TabsContent value="columns" className="mt-0">
-                  {renderCategorySection("columns", architecturalElements.columns)}
-                </TabsContent>
-                <TabsContent value="decoration" className="mt-0">
-                  {renderCategorySection("decoration", architecturalElements.decoration)}
-                </TabsContent>
-                <TabsContent value="landscaping" className="mt-0">
-                  {renderCategorySection("landscaping", architecturalElements.landscaping)}
-                </TabsContent>
-                <TabsContent value="colors" className="mt-0">
-                  {renderCategorySection("colors", architecturalElements.colors)}
-                </TabsContent>
+              <ScrollArea className="h-[360px] rounded-md border p-3">
+                {renderCategorySection(currentCategory, architecturalElements[currentCategory as keyof typeof architecturalElements])}
               </ScrollArea>
-            </Tabs>
 
-            <div className="mt-6 flex justify-center">
-              <Button
-                onClick={() => setShowResult(true)}
-                disabled={Object.keys(selectedElements).length < 5}
-              >
-                <Ruler className="mr-2 h-4 w-4" />
-                Hoàn thành công trình
-              </Button>
-            </div>
+              <div className="flex justify-center mt-4">
+                <Button
+                  size="sm"
+                  onClick={() => setShowResult(true)}
+                  disabled={Object.keys(selectedElements).length < 5}
+                  className="gap-2"
+                >
+                  <Ruler className="h-4 w-4" />
+                  Hoàn thành công trình
+                </Button>
+              </div>
+            </Tabs>
           </motion.div>
         ) : (
           <motion.div
             initial="hidden"
             animate="visible"
             variants={fadeIn}
-            className="text-center"
+            className="text-center py-4"
           >
-            <div className="mb-6">
-              <div className="inline-block p-3 bg-primary/10 rounded-full mb-4">
-                <Award className="h-8 w-8 text-primary" />
+            <div className="mb-4">
+              <div className="inline-block p-3 bg-primary/10 rounded-full mb-2">
+                <Award className="h-6 w-6 text-primary" />
               </div>
-              <h3 className="text-xl font-bold mb-2">
+              <h3 className="text-lg font-bold mb-2">
                 {getEvaluation(calculateScore()).title}
               </h3>
-              <p className="text-muted-foreground">
+              <p className="text-sm text-muted-foreground">
                 {getEvaluation(calculateScore()).description}
               </p>
-              <div className="mt-4 p-4 bg-muted/30 rounded-lg">
+              <div className="mt-3 p-3 bg-muted/30 rounded-lg">
                 <p className="text-sm font-medium">Điểm số của bạn: {calculateScore()}/50</p>
                 <p className="text-xs text-muted-foreground mt-1">
                   Dựa trên sự phù hợp với kiến trúc cung đình thời Nguyễn
@@ -307,14 +297,16 @@ export default function BuildingGame() {
               </div>
             </div>
 
-            <div className="mt-6">
-              <Button onClick={() => {
+            <Button
+              size="sm"
+              onClick={() => {
                 setSelectedElements({});
                 setShowResult(false);
-              }}>
-                Thử lại
-              </Button>
-            </div>
+              }}
+              className="hover-lift"
+            >
+              Thử lại
+            </Button>
           </motion.div>
         )}
       </CardContent>
