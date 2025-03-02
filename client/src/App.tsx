@@ -7,12 +7,13 @@ import Chat from "@/pages/chat";
 import NotFound from "@/pages/not-found";
 import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList } from "@/components/ui/navigation-menu";
 import { Link } from "wouter";
+import { Library, MapPin, MessageSquare } from "lucide-react";
 
 function MainNav() {
   return (
-    <NavigationMenu className="bg-card border-b">
+    <NavigationMenu className="bg-card border-b sticky top-0 z-50">
       <div className="container mx-auto flex h-16 items-center px-4">
-        <NavigationMenuList>
+        <NavigationMenuList className="gap-4">
           <NavigationMenuItem>
             <Link href="/">
               <NavigationMenuLink className="text-lg font-bold">
@@ -22,21 +23,24 @@ function MainNav() {
           </NavigationMenuItem>
           <NavigationMenuItem>
             <Link href="/map">
-              <NavigationMenuLink>
+              <NavigationMenuLink className="flex items-center gap-2">
+                <MapPin className="h-4 w-4" />
                 Bản đồ số
               </NavigationMenuLink>
             </Link>
           </NavigationMenuItem>
           <NavigationMenuItem>
             <Link href="/">
-              <NavigationMenuLink>
+              <NavigationMenuLink className="flex items-center gap-2">
+                <Library className="h-4 w-4" />
                 Kho học liệu số
               </NavigationMenuLink>
             </Link>
           </NavigationMenuItem>
           <NavigationMenuItem>
             <Link href="/chat">
-              <NavigationMenuLink>
+              <NavigationMenuLink className="flex items-center gap-2">
+                <MessageSquare className="h-4 w-4" />
                 Trò chuyện AI
               </NavigationMenuLink>
             </Link>
@@ -62,7 +66,9 @@ export default function App() {
     <QueryClientProvider client={queryClient}>
       <div className="min-h-screen bg-background">
         <MainNav />
-        <Router />
+        <main className="py-6">
+          <Router />
+        </main>
       </div>
       <Toaster />
     </QueryClientProvider>

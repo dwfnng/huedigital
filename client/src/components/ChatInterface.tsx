@@ -49,19 +49,26 @@ export default function ChatInterface() {
   };
 
   return (
-    <div className="flex flex-col h-[calc(100vh-16rem)] border rounded-lg overflow-hidden">
-      <ScrollArea className="flex-1 p-4">
-        {messages.map((message) => (
-          <ChatMessage key={message.id} message={message} />
-        ))}
+    <div className="flex flex-col h-[calc(100vh-12rem)] border rounded-lg overflow-hidden bg-background">
+      <ScrollArea className="flex-1 p-6">
+        {messages.length === 0 ? (
+          <div className="text-center text-muted-foreground py-8">
+            <p>Chào bạn! Tôi là trợ lý AI chuyên về lịch sử và văn hóa Cố đô Huế.</p>
+            <p className="mt-2">Bạn có thể hỏi tôi về các di tích, lịch sử, phong tục, văn hóa...</p>
+          </div>
+        ) : (
+          messages.map((message) => (
+            <ChatMessage key={message.id} message={message} />
+          ))
+        )}
         {isLoading && (
-          <div className="text-sm text-muted-foreground animate-pulse">
+          <div className="text-sm text-muted-foreground animate-pulse p-3">
             Đang trả lời...
           </div>
         )}
       </ScrollArea>
 
-      <form onSubmit={handleSubmit} className="border-t p-4">
+      <form onSubmit={handleSubmit} className="border-t p-4 bg-card">
         <div className="flex gap-2">
           <Textarea
             value={input}
