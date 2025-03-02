@@ -1,7 +1,8 @@
 import {
   type Location, type User, type Discussion, type Comment, type Contribution, type Review,
   type InsertLocation, type InsertUser, type InsertDiscussion, type InsertComment,
-  type InsertContribution, type InsertReview, type Resource, type Category, type InsertResource, type InsertCategory
+  type InsertContribution, type InsertReview, type Resource, type Category, type InsertResource, type InsertCategory,
+  type Product, type InsertProduct
 } from "@shared/schema";
 
 export interface IStorage {
@@ -56,6 +57,11 @@ export interface IStorage {
   getAllCategories(): Promise<Category[]>;
   getCategoryById(id: number): Promise<Category | undefined>;
   createCategory(category: InsertCategory): Promise<Category>;
+
+  // Products
+  getAllProducts(): Promise<Product[]>;
+  getProductById(id: number): Promise<Product | undefined>;
+  createProduct(product: InsertProduct): Promise<Product>;
 }
 
 export class MemStorage implements IStorage {
@@ -68,6 +74,7 @@ export class MemStorage implements IStorage {
   private locations: Location[] = [];
   private resources: Resource[] = [];
   private categories: Category[] = [];
+  private products: Product[] = [];
   private nextId = 1;
 
   constructor() {
@@ -81,8 +88,8 @@ export class MemStorage implements IStorage {
         id: this.getNextId(),
         name: "Đại Nội Huế",
         description: "Quần thể di tích cung đình triều Nguyễn",
-        latitude: 16.4698,
-        longitude: 107.5796,
+        latitude: "16.4698",
+        longitude: "107.5796",
         imageUrl: "/images/locations/dai-noi-hue.jpg",
         category: "heritage",
         createdAt: new Date()
@@ -91,10 +98,30 @@ export class MemStorage implements IStorage {
         id: this.getNextId(),
         name: "Chùa Thiên Mụ",
         description: "Ngôi chùa cổ nhất Huế",
-        latitude: 16.4539,
-        longitude: 107.5537,
+        latitude: "16.4539",
+        longitude: "107.5537",
         imageUrl: "/images/locations/chua-thien-mu.jpg",
         category: "religious",
+        createdAt: new Date()
+      },
+      {
+        id: this.getNextId(),
+        name: "Lăng Tự Đức",
+        description: "Lăng tẩm của vua Tự Đức triều Nguyễn",
+        latitude: "16.4577",
+        longitude: "107.5514",
+        imageUrl: "/images/locations/lang-tu-duc.jpg",
+        category: "heritage",
+        createdAt: new Date()
+      },
+      {
+        id: this.getNextId(),
+        name: "Cầu Tràng Tiền",
+        description: "Cây cầu lịch sử bắc qua sông Hương",
+        latitude: "16.4712",
+        longitude: "107.5846",
+        imageUrl: "/images/locations/cau-trang-tien.jpg",
+        category: "landmark",
         createdAt: new Date()
       }
     ];
@@ -107,8 +134,11 @@ export class MemStorage implements IStorage {
         description: "Tài liệu về lịch sử triều đại nhà Nguyễn",
         type: "document",
         category: "history",
-        url: "/documents/trieu-nguyen-history.pdf",
-        imageUrl: "/images/resources/trieu-nguyen.jpg",
+        contentUrl: "/documents/trieu-nguyen-history.pdf",
+        thumbnailUrl: "/images/resources/trieu-nguyen.jpg",
+        titleEn: "Nguyen Dynasty History",
+        descriptionEn: "Documents about the history of Nguyen Dynasty",
+        metadata: {},
         createdAt: new Date()
       },
       {
@@ -117,8 +147,58 @@ export class MemStorage implements IStorage {
         description: "Giới thiệu về nghệ thuật cung đình thời Nguyễn",
         type: "video",
         category: "art",
-        url: "/videos/nghe-thuat-cung-dinh.mp4",
-        imageUrl: "/images/resources/nghe-thuat.jpg",
+        contentUrl: "/videos/nghe-thuat-cung-dinh.mp4",
+        thumbnailUrl: "/images/resources/nghe-thuat.jpg",
+        titleEn: "Hue Royal Art",
+        descriptionEn: "Introduction to Nguyen Dynasty royal arts",
+        metadata: {},
+        createdAt: new Date()
+      },
+      {
+        id: this.getNextId(),
+        title: "Trang phục triều Nguyễn",
+        description: "Tài liệu về trang phục cung đình và dân gian",
+        type: "document",
+        category: "culture",
+        contentUrl: "/documents/trang-phuc.pdf",
+        thumbnailUrl: "/images/resources/trang-phuc.jpg",
+        titleEn: "Nguyen Dynasty Costumes",
+        descriptionEn: "Documents about royal and folk costumes",
+        metadata: {},
+        createdAt: new Date()
+      }
+    ];
+
+    // Initialize products (Souvenirs)
+    this.products = [
+      {
+        id: this.getNextId(),
+        name: "Nón lá Huế thêu hoa",
+        description: "Nón lá truyền thống với hoa văn thêu tay",
+        price: "120000",
+        imageUrl: "/images/products/non-la-hue.jpg",
+        category: "traditional",
+        stock: "50",
+        createdAt: new Date()
+      },
+      {
+        id: this.getNextId(),
+        name: "Tranh thủy mặc Huế",
+        description: "Tranh thủy mặc vẽ cảnh Huế",
+        price: "250000",
+        imageUrl: "/images/products/tranh-thuy-mac.jpg",
+        category: "art",
+        stock: "20",
+        createdAt: new Date()
+      },
+      {
+        id: this.getNextId(),
+        name: "Áo dài truyền thống",
+        description: "Áo dài may thủ công với chất liệu lụa Huế",
+        price: "850000",
+        imageUrl: "/images/products/ao-dai.jpg",
+        category: "clothing",
+        stock: "15",
         createdAt: new Date()
       }
     ];
@@ -131,7 +211,7 @@ export class MemStorage implements IStorage {
         content: "Thảo luận về văn hóa ẩm thực cung đình Huế",
         category: "culture",
         userId: 1,
-        views: 0,
+        views: "0",
         imageUrl: "/images/discussions/am-thuc.jpg",
         createdAt: new Date()
       },
@@ -141,8 +221,18 @@ export class MemStorage implements IStorage {
         content: "Bảo tồn và phát huy giá trị di sản Huế",
         category: "heritage",
         userId: 1,
-        views: 0,
+        views: "0",
         imageUrl: "/images/discussions/di-san.jpg",
+        createdAt: new Date()
+      },
+      {
+        id: this.getNextId(),
+        title: "Nghệ thuật điêu khắc Huế",
+        content: "Khám phá nghệ thuật điêu khắc truyền thống",
+        category: "art",
+        userId: 1,
+        views: "0",
+        imageUrl: "/images/discussions/dieu-khac.jpg",
         createdAt: new Date()
       }
     ];
@@ -152,15 +242,25 @@ export class MemStorage implements IStorage {
       {
         id: this.getNextId(),
         name: "Di sản",
+        nameEn: "Heritage",
         description: "Các di sản văn hóa Huế",
-        type: "location",
+        descriptionEn: "Hue cultural heritage",
         createdAt: new Date()
       },
       {
         id: this.getNextId(),
         name: "Văn hóa",
+        nameEn: "Culture",
         description: "Văn hóa và phong tục Huế",
-        type: "discussion",
+        descriptionEn: "Hue culture and customs",
+        createdAt: new Date()
+      },
+      {
+        id: this.getNextId(),
+        name: "Nghệ thuật",
+        nameEn: "Art",
+        description: "Nghệ thuật truyền thống Huế",
+        descriptionEn: "Hue traditional arts",
         createdAt: new Date()
       }
     ];
@@ -181,6 +281,21 @@ export class MemStorage implements IStorage {
 
   private getNextId(): number {
     return this.nextId++;
+  }
+
+  // Products
+  async getAllProducts(): Promise<Product[]> {
+    return this.products;
+  }
+
+  async getProductById(id: number): Promise<Product | undefined> {
+    return this.products.find(p => p.id === id);
+  }
+
+  async createProduct(product: InsertProduct): Promise<Product> {
+    const newProduct = { ...product, id: this.getNextId() } as Product;
+    this.products.push(newProduct);
+    return newProduct;
   }
 
   // Users
