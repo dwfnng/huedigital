@@ -22,7 +22,6 @@ export async function getChatResponse(messages: ChatCompletionMessageParam[]): P
   try {
     // Check if we have a valid API key
     if (!process.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY === "dummy-key") {
-      console.log("Using placeholder response as no valid API key is provided");
       return placeholderResponses[Math.floor(Math.random() * placeholderResponses.length)];
     }
 
@@ -43,19 +42,37 @@ export async function getChatResponse(messages: ChatCompletionMessageParam[]): P
       Trả lời bằng tiếng Việt, trừ khi người dùng hỏi bằng tiếng Anh.
     `;
 
-    const completion = await openai.chat.completions.create({
-      messages: [
-        { role: "system", content: systemPrompt },
-        ...messages
-      ],
-      model: "gpt-3.5-turbo",
-      temperature: 0.7,
-      max_tokens: 500,
-    });
+    // Call OpenAI API with retry mechanism
+    let retries = 3;
+    while (retries > 0) {
+      try {
+        const completion = await openai.chat.completions.create({
+          messages: [
+            { role: "system", content: systemPrompt },
+            ...messages
+          ],
+          model: "gpt-3.5-turbo",
+          temperature: 0.7,
+          max_tokens: 500,
+        });
 
-    return completion.choices[0].message.content || "Xin lỗi, tôi không thể xử lý yêu cầu của bạn lúc này.";
+        return completion.choices[0].message.content || "Xin lỗi, tôi không thể xử lý yêu cầu của bạn lúc này.";
+      } catch (error: any) {
+        console.error(`Attempt ${4 - retries} failed:`, error);
+        if (error.status === 429) {
+          // If rate limited, use placeholder response
+          return placeholderResponses[Math.floor(Math.random() * placeholderResponses.length)];
+        }
+        retries--;
+        if (retries === 0) throw error;
+        // Wait before retrying (exponential backoff)
+        await new Promise(resolve => setTimeout(resolve, (4 - retries) * 1000));
+      }
+    }
+
+    throw new Error("Failed after multiple retries");
   } catch (error) {
     console.error("Error calling OpenAI API:", error);
-    return "Xin lỗi, có lỗi xảy ra khi xử lý yêu cầu của bạn. Vui lòng thử lại sau.";
+    return placeholderResponses[Math.floor(Math.random() * placeholderResponses.length)];
   }
 }
