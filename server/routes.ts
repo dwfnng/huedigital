@@ -1,10 +1,10 @@
 
 import express, { Express } from "express";
-import { Server } from "http";
+import { Server, createServer } from "http";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Create HTTP server
-  const server = require('http').createServer(app);
+  const server = createServer(app);
 
   // Define API routes
   app.get('/api/status', (req, res) => {
