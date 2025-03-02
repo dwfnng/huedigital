@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { motion } from "framer-motion";
 import { Map, Scroll, Search, Book, Compass, Star, Navigation } from "lucide-react";
+import { useLocation } from "wouter";
 
 interface Clue {
   id: string;
@@ -14,10 +15,11 @@ interface Clue {
   answer: string;
   historicalInfo: string;
   location?: {
-    lat: number;
-    lng: number;
+    id: string;
     name: string;
-    address: string;
+    nameEn: string;
+    description: string;
+    type: "heritage" | "monument" | "museum" | "education";
   };
   unlocked: boolean;
 }
@@ -31,10 +33,11 @@ const initialClues: Clue[] = [
     answer: "tang thu lau",
     historicalInfo: "Tàng Thư Lâu là thư viện của triều Nguyễn, nơi lưu trữ các sách vở, tài liệu quan trọng của triều đình. Công trình này được xây dựng vào năm 1825 dưới thời vua Minh Mạng, thể hiện tầm quan trọng của việc giáo dục và lưu trữ văn hóa trong triều đình nhà Nguyễn.",
     location: {
-      lat: 16.470773,
-      lng: 107.578405,
-      name: "Tàng Thư Lâu",
-      address: "Khu di tích Hoàng thành Huế, phường Phú Hậu, thành phố Huế"
+      id: "dai-noi",
+      name: "Đại Nội Huế",
+      nameEn: "Imperial City",
+      description: "Quần thể di tích cung đình rộng hơn 500 hecta, nơi hoàng đế triều Nguyễn sinh sống và làm việc.",
+      type: "heritage"
     },
     unlocked: true
   },
@@ -46,10 +49,11 @@ const initialClues: Clue[] = [
     answer: "can chanh dien",
     historicalInfo: "Điện Cần Chánh là nơi vua làm việc hằng ngày, tiếp kiến các quan và ban hành các chỉ dụ quan trọng. Điện được xây dựng theo kiến trúc truyền thống với nhiều chi tiết nghệ thuật độc đáo, thể hiện quyền uy tối cao của hoàng đế.",
     location: {
-      lat: 16.469783,
-      lng: 107.577912,
-      name: "Điện Cần Chánh",
-      address: "Khu di tích Hoàng thành Huế, phường Phú Hậu, thành phố Huế"
+      id: "dai-noi",
+      name: "Đại Nội Huế",
+      nameEn: "Imperial City",
+      description: "Trung tâm quyền lực của triều Nguyễn, nơi diễn ra các hoạt động chính trị quan trọng.",
+      type: "heritage"
     },
     unlocked: false
   },
@@ -61,10 +65,11 @@ const initialClues: Clue[] = [
     answer: "dan nam giao",
     historicalInfo: "Đàn Nam Giao là công trình kiến trúc tôn giáo quan trọng, nơi vua chủ trì tế lễ Giao - một nghi lễ quan trọng nhất của triều đình nhà Nguyễn. Đây là biểu tượng của quan niệm 'phụng thiên thừa vận' và mối liên hệ giữa nhà vua với trời đất.",
     location: {
-      lat: 16.450912,
-      lng: 107.571521,
+      id: "nam-giao",
       name: "Đàn Nam Giao",
-      address: "Đường Nam Giao, phường Trường An, thành phố Huế"
+      nameEn: "Nam Giao Esplanade",
+      description: "Công trình kiến trúc tôn giáo quan trọng, nơi các vua triều Nguyễn thực hiện nghi lễ tế Giao.",
+      type: "monument"
     },
     unlocked: false
   },
@@ -76,10 +81,11 @@ const initialClues: Clue[] = [
     answer: "duyet thi duong",
     historicalInfo: "Duyệt Thị Đường là nơi vua và hoàng gia thưởng thức các buổi biểu diễn nghệ thuật, đặc biệt là nhã nhạc cung đình Huế - được UNESCO công nhận là di sản văn hóa phi vật thể vào năm 2003. Nơi đây không chỉ là không gian giải trí mà còn là nơi bảo tồn và phát triển nghệ thuật truyền thống.",
     location: {
-      lat: 16.470123,
-      lng: 107.577614,
-      name: "Duyệt Thị Đường",
-      address: "Khu di tích Hoàng thành Huế, phường Phú Hậu, thành phố Huế"
+      id: "dai-noi",
+      name: "Đại Nội Huế",
+      nameEn: "Imperial City",
+      description: "Nơi diễn ra các hoạt động văn hóa nghệ thuật của hoàng cung, đặc biệt là biểu diễn nhã nhạc cung đình.",
+      type: "heritage"
     },
     unlocked: false
   }
@@ -97,6 +103,7 @@ export default function TreasureHuntGame() {
   const [gameComplete, setGameComplete] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [selectedClue, setSelectedClue] = useState<Clue | null>(null);
+  const [, setLocation] = useLocation();
 
   const handleAnswer = () => {
     const currentClue = clues.find(clue => !clue.unlocked);
@@ -133,11 +140,7 @@ export default function TreasureHuntGame() {
 
   const handleShowLocation = (clue: Clue) => {
     if (clue.location) {
-      const query = encodeURIComponent(`${clue.location.name}, ${clue.location.address}`);
-      window.open(
-        `https://www.google.com/maps/search/?api=1&query=${query}`,
-        '_blank'
-      );
+      setLocation(`/map?location=${clue.location.id}`);
     }
   };
 
@@ -197,7 +200,7 @@ export default function TreasureHuntGame() {
                                 onClick={() => handleShowLocation(clue)}
                               >
                                 <Navigation className="h-4 w-4 mr-2" />
-                                Xem vị trí trên bản đồ
+                                Xem vị trí trên bản đồ số
                               </Button>
                             )}
                           </>
