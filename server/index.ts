@@ -40,6 +40,7 @@ app.use((req, res, next) => {
 (async () => {
   try {
     log("Starting server initialization...");
+    log(`Environment: ${process.env.NODE_ENV}, FAST_START: ${process.env.FAST_START}`);
 
     // Kill any existing process on port 5000
     try {
@@ -75,7 +76,7 @@ app.use((req, res, next) => {
     }
 
     // Always listen on port 5000
-    const port = 5000;
+    const port = process.env.PORT || 5000;
     log(`Attempting to start server on port ${port}...`);
 
     // Add a timeout for server startup
@@ -94,10 +95,11 @@ app.use((req, res, next) => {
       clearTimeout(startupTimeout);
       if (err.code === 'EADDRINUSE') {
         log(`Port ${port} is already in use. Please free up the port and try again.`);
+        process.exit(1);
       } else {
         log(`Failed to start server: ${err.message}`);
+        process.exit(1);
       }
-      process.exit(1);
     });
 
   } catch (error) {
