@@ -18,7 +18,26 @@ import {
   Award
 } from 'lucide-react';
 
-const contributionTypes = [
+interface ContributionType {
+  id: string;
+  name: string;
+  icon: React.ElementType;
+  description: string;
+}
+
+interface Contribution {
+  id: number;
+  title: string;
+  description: string;
+  type: string;
+  author: string;
+  status: string;
+  points: number;
+  createdAt: string;
+  thumbnailUrl: string;
+}
+
+const contributionTypes: ContributionType[] = [
   {
     id: 'image',
     name: 'Hình ảnh',
@@ -39,7 +58,7 @@ const contributionTypes = [
   }
 ];
 
-const mockContributions = [
+const mockContributions: Contribution[] = [
   {
     id: 1,
     title: "Bộ ảnh Kỳ Đài năm 1900",
@@ -68,8 +87,7 @@ export default function ContributionsPage() {
   const [selectedType, setSelectedType] = useState("image");
   const [searchTerm, setSearchTerm] = useState("");
 
-  // TODO: Replace with actual API calls
-  const { data: contributions = mockContributions } = useQuery({
+  const { data: contributions = mockContributions } = useQuery<Contribution[]>({
     queryKey: ['/api/contributions', selectedType],
     enabled: false // Disabled until API is implemented
   });

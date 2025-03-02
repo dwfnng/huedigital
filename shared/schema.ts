@@ -2,7 +2,16 @@ import { pgTable, text, serial, timestamp, jsonb, numeric, boolean } from "drizz
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
-// Existing location-related tables
+// Categories table definition must come before its usage
+export const categories = pgTable("categories", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  nameEn: text("name_en").notNull(),
+  description: text("description"),
+  descriptionEn: text("description_en"),
+});
+
+// Rest of the tables
 export const locations = pgTable("locations", {
   id: serial("id").primaryKey(),
   name: text("name").notNull(),
@@ -16,29 +25,26 @@ export const locations = pgTable("locations", {
   isActive: boolean("is_active").default(true).notNull(),
 });
 
-// Users table for community features
 export const users = pgTable("users", {
   id: serial("id").primaryKey(),
   username: text("username").notNull(),
   email: text("email").notNull(),
   password: text("password").notNull(),
-  role: text("role").notNull(), // student, teacher, researcher, visitor
+  role: text("role").notNull(),
   points: numeric("points").default("0").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
-// Forum discussions
 export const discussions = pgTable("discussions", {
   id: serial("id").primaryKey(),
   title: text("title").notNull(),
   content: text("content").notNull(),
   userId: serial("user_id").notNull(),
-  category: text("category").notNull(), // heritage, research, experience, preservation
+  category: text("category").notNull(),
   views: numeric("views").default("0").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
-// Forum comments
 export const comments = pgTable("comments", {
   id: serial("id").primaryKey(),
   content: text("content").notNull(),
@@ -47,20 +53,18 @@ export const comments = pgTable("comments", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
-// Digital contributions
 export const contributions = pgTable("contributions", {
   id: serial("id").primaryKey(),
   title: text("title").notNull(),
   description: text("description").notNull(),
-  type: text("type").notNull(), // image, video, document
+  type: text("type").notNull(),
   url: text("url").notNull(),
   userId: serial("user_id").notNull(),
   locationId: serial("location_id"),
-  status: text("status").default("pending").notNull(), // pending, approved, rejected
+  status: text("status").default("pending").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
-// Location reviews and feedback
 export const reviews = pgTable("reviews", {
   id: serial("id").primaryKey(),
   content: text("content").notNull(),
@@ -70,17 +74,37 @@ export const reviews = pgTable("reviews", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
-// Point transactions
 export const pointTransactions = pgTable("point_transactions", {
   id: serial("id").primaryKey(),
   userId: serial("user_id").notNull(),
   points: numeric("points").notNull(),
-  type: text("type").notNull(), // contribution, discussion, review
-  referenceId: serial("reference_id").notNull(), // ID of the contribution/discussion/review
+  type: text("type").notNull(),
+  referenceId: serial("reference_id").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
-// Zod schemas for inserting data
+export const resources = pgTable("resources", {
+  id: serial("id").primaryKey(),
+  title: text("title").notNull(),
+  titleEn: text("title_en"),
+  description: text("description"),
+  descriptionEn: text("description_en"),
+  type: text("type").notNull(),
+  category: text("category").notNull(),
+  contentUrl: text("content_url").notNull(),
+  thumbnailUrl: text("thumbnail_url"),
+  metadata: jsonb("metadata"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export const messages = pgTable("messages", {
+  id: serial("id").primaryKey(),
+  role: text("role").notNull(),
+  content: text("content").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+// Schemas
 export const insertLocationSchema = createInsertSchema(locations).omit({ 
   id: true,
   isActive: true 
@@ -118,6 +142,15 @@ export const insertCategorySchema = createInsertSchema(categories).omit({
   id: true,
 });
 
+export const insertResourceSchema = createInsertSchema(resources).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertMessageSchema = createInsertSchema(messages).omit({
+  id: true,
+  createdAt: true,
+});
 
 // Types
 export type Location = typeof locations.$inferSelect;
@@ -132,8 +165,12 @@ export type Contribution = typeof contributions.$inferSelect;
 export type InsertContribution = z.infer<typeof insertContributionSchema>;
 export type Review = typeof reviews.$inferSelect;
 export type InsertReview = z.infer<typeof insertReviewSchema>;
-export type InsertCategory = z.infer<typeof insertCategorySchema>;
 export type Category = typeof categories.$inferSelect;
+export type InsertCategory = z.infer<typeof insertCategorySchema>;
+export type Resource = typeof resources.$inferSelect;
+export type InsertResource = z.infer<typeof insertResourceSchema>;
+export type Message = typeof messages.$inferSelect;
+export type InsertMessage = z.infer<typeof insertMessageSchema>;
 
 // Enums
 export type LocationType = 
@@ -170,61 +207,13 @@ export type PointTransactionType =
   | "discussion"
   | "review";
 
-export const categories = pgTable("categories", {
-  id: serial("id").primaryKey(),
-  name: text("name").notNull(),
-  nameEn: text("name_en").notNull(),
-  description: text("description"),
-  descriptionEn: text("description_en"),
-});
-
-export const resources = pgTable("resources", {
-  id: serial("id").primaryKey(),
-  title: text("title").notNull(),
-  titleEn: text("title_en"),
-  description: text("description"),
-  descriptionEn: text("description_en"),
-  type: text("type").notNull(), // document, image, video, audio, research
-  category: text("category").notNull(), // historical_site, architecture, royal_document, etc.
-  contentUrl: text("content_url").notNull(),
-  thumbnailUrl: text("thumbnail_url"),
-  metadata: jsonb("metadata"), // For additional data like duration, size, format
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-});
-
-export const insertResourceSchema = createInsertSchema(resources).omit({
-  id: true,
-  createdAt: true,
-});
-
-export type InsertResource = z.infer<typeof insertResourceSchema>;
-export type Resource = typeof resources.$inferSelect;
-
-
-export const messages = pgTable("messages", {
-  id: serial("id").primaryKey(),
-  role: text("role").notNull(), // user or assistant
-  content: text("content").notNull(),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-});
-
-export const insertMessageSchema = createInsertSchema(messages).omit({
-  id: true,
-  createdAt: true,
-});
-
-export type Message = typeof messages.$inferSelect;
-export type InsertMessage = z.infer<typeof insertMessageSchema>;
-
-export type ChatRole = "user" | "assistant";
-
 export type ResourceType = 
-  | "document"    // For books, manuscripts, royal decrees
-  | "image"       // For photos, architectural drawings
-  | "video"       // For documentaries, historical films
-  | "audio"       // For royal music, voice recordings
-  | "research"    // For academic papers, research works
-  | "3d_model";   // For 3D models of monuments
+  | "document"
+  | "image"
+  | "video"
+  | "audio"
+  | "research"
+  | "3d_model";
 
 export type CategoryType =
   | "historical_site"
@@ -233,3 +222,5 @@ export type CategoryType =
   | "artwork"
   | "music"
   | "academic";
+
+export type ChatRole = "user" | "assistant";

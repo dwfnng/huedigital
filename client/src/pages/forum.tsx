@@ -8,7 +8,25 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { MessageSquare, Award, Plus, Search, BookOpen, School, Heart, Shield } from 'lucide-react';
 
-const categories = [
+interface Category {
+  id: string;
+  name: string;
+  icon: React.ElementType;
+  description: string;
+}
+
+interface Discussion {
+  id: number;
+  title: string;
+  author: string;
+  category: string;
+  views: number;
+  comments: number;
+  points: number;
+  createdAt: string;
+}
+
+const categories: Category[] = [
   {
     id: 'heritage',
     name: 'Di sản văn hóa',
@@ -35,7 +53,7 @@ const categories = [
   }
 ];
 
-const mockDiscussions = [
+const mockDiscussions: Discussion[] = [
   {
     id: 1,
     title: "Giá trị kiến trúc của Kỳ Đài qua các thời kỳ lịch sử",
@@ -62,8 +80,7 @@ export default function ForumPage() {
   const [selectedCategory, setSelectedCategory] = useState("heritage");
   const [searchTerm, setSearchTerm] = useState("");
 
-  // TODO: Replace with actual API calls
-  const { data: discussions = mockDiscussions } = useQuery({
+  const { data: discussions = mockDiscussions } = useQuery<Discussion[]>({
     queryKey: ['/api/discussions', selectedCategory],
     enabled: false // Disabled until API is implemented
   });
