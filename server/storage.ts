@@ -88,8 +88,8 @@ export class MemStorage implements IStorage {
         id: this.getNextId(),
         name: "Đại Nội Huế",
         nameEn: "Hue Imperial City",
-        description: "Quần thể di tích cung đình triều Nguyễn",
-        descriptionEn: "Imperial palace complex of the Nguyen Dynasty",
+        description: "Quần thể di tích cung đình rộng hơn 500 hecta, nơi hoàng đế triều Nguyễn sinh sống và làm việc. Được xây dựng từ năm 1805 dưới thời vua Gia Long, hoàn thiện năm 1832 dưới thời vua Minh Mạng. Bao gồm Hoàng thành và Tử cấm thành với hơn 100 công trình kiến trúc đặc sắc.",
+        descriptionEn: "A 500-hectare complex where Nguyen Dynasty emperors lived and worked. Built from 1805 under Emperor Gia Long, completed in 1832 under Emperor Minh Mang. Features the Citadel and Imperial City with over 100 remarkable architectural works.",
         type: "heritage_site",
         latitude: "16.4698",
         longitude: "107.5796",
@@ -100,8 +100,8 @@ export class MemStorage implements IStorage {
         id: this.getNextId(),
         name: "Chùa Thiên Mụ",
         nameEn: "Thien Mu Pagoda",
-        description: "Ngôi chùa cổ kính nhất tại Huế",
-        descriptionEn: "The oldest pagoda in Hue",
+        description: "Ngôi chùa cổ nhất Huế, được xây dựng năm 1601. Tháp Phước Duyên 7 tầng cao 21m là biểu tượng của Huế. Chùa còn lưu giữ nhiều cổ vật quý như chuông đồng đúc năm 1710 và bia đá khắc thơ của các vua triều Nguyễn.",
+        descriptionEn: "The oldest pagoda in Hue, built in 1601. The 21-meter, 7-story Phuoc Duyen tower is Hue's iconic symbol. The pagoda preserves many precious artifacts including a bronze bell cast in 1710 and stone steles with poems by Nguyen Dynasty emperors.",
         type: "temple",
         latitude: "16.4539",
         longitude: "107.5537",
@@ -112,8 +112,8 @@ export class MemStorage implements IStorage {
         id: this.getNextId(),
         name: "Điện Thái Hòa",
         nameEn: "Thai Hoa Palace",
-        description: "Cung điện chính của Hoàng thành Huế",
-        descriptionEn: "Main palace of Hue Imperial City",
+        description: "Công trình quan trọng nhất trong Hoàng thành Huế, nơi diễn ra các đại lễ và thiết triều của vua. Điện được xây năm 1805, thiết kế theo phong cách cung đình truyền thống với 80 cột gỗ quý sơn son thếp vàng và hoa văn tinh xảo.",
+        descriptionEn: "The most important building in Hue Citadel, where emperors held grand ceremonies and court meetings. Built in 1805, designed in traditional palace style with 80 precious wooden columns lacquered and gilded with intricate patterns.",
         type: "palace",
         latitude: "16.4700",
         longitude: "107.5792",
@@ -124,11 +124,23 @@ export class MemStorage implements IStorage {
         id: this.getNextId(),
         name: "Cổng Ngọ Môn",
         nameEn: "Ngo Mon Gate",
-        description: "Cổng chính vào Hoàng thành Huế",
-        descriptionEn: "Main gate of Hue Imperial City",
+        description: "Cổng chính phía nam của Hoàng thành, xây dựng năm 1833 dưới triều Minh Mạng. Công trình 5 cửa, 2 tầng cao 5,2m, là nơi vua ban chiếu chỉ và xem duyệt binh. Kiến trúc kết hợp hài hòa giữa phong cách phương Đông và phương Tây.",
+        descriptionEn: "The main southern gate of the Citadel, built in 1833 under Emperor Minh Mang. A 5.2m high structure with 5 entrances and 2 levels, where emperors issued edicts and watched military parades. Architecture harmoniously combines Eastern and Western styles.",
         type: "monument",
         latitude: "16.4716",
         longitude: "107.5827",
+        imageUrl: "/attached_assets/pexels-vietnam-photographer-27418892.jpg",
+        isActive: true
+      },
+      {
+        id: this.getNextId(),
+        name: "Lăng Tự Đức",
+        nameEn: "Tu Duc Tomb",
+        description: "Quần thể lăng mộ rộng 12 ha được xây dựng từ 1864-1867, là nơi nghỉ ngơi và làm việc của vua Tự Đức sinh thời. Kiến trúc tinh tế với hồ Lưu Khiêm, điện Luân Khiêm và vườn thơ Xung Khiêm thể hiện tính cách văn nhân của vị vua thi sĩ.",
+        descriptionEn: "A 12-hectare tomb complex built from 1864-1867, served as Emperor Tu Duc's retreat and workplace. Features elegant architecture with Luu Khiem Lake, Luan Khiem Palace and Xung Khiem Poetry Garden reflecting the poet-emperor's scholarly nature.",
+        type: "tomb",
+        latitude: "16.4570",
+        longitude: "107.5530",
         imageUrl: "/attached_assets/pexels-vietnam-photographer-27418892.jpg",
         isActive: true
       }
@@ -140,8 +152,8 @@ export class MemStorage implements IStorage {
         id: this.getNextId(),
         title: "Kiến trúc cung đình Huế",
         titleEn: "Hue Royal Architecture",
-        description: "Hình ảnh về kiến trúc cung đình Huế",
-        descriptionEn: "Images of Hue royal architecture",
+        description: "Bộ sưu tập hình ảnh chi tiết về kiến trúc cung đình Huế, từ tổng thể đến các chi tiết trang trí. Kèm theo các bản vẽ kỹ thuật và thông tin về kỹ thuật xây dựng thời Nguyễn.",
+        descriptionEn: "Detailed photo collection of Hue royal architecture, from overall views to decorative details. Includes technical drawings and information about Nguyen Dynasty construction techniques.",
         type: "image",
         category: "architecture",
         contentUrl: "https://hueworldheritage.org.vn/kien-truc-cung-dinh.html",
@@ -149,40 +161,65 @@ export class MemStorage implements IStorage {
         metadata: {
           format: "jpg",
           resolution: "4K",
-          year: "2024"
-        }
+          year: "2024",
+          count: "50+ images",
+          source: "Trung tâm Bảo tồn Di tích Cố đô Huế"
+        },
+        createdAt: new Date()
       },
       {
         id: this.getNextId(),
-        title: "Chùa Thiên Mụ qua các thời kỳ",
-        titleEn: "Thien Mu Pagoda Through Ages",
-        description: "Tư liệu lịch sử về chùa Thiên Mụ",
-        descriptionEn: "Historical documents about Thien Mu Pagoda",
-        type: "image",
-        category: "religion",
-        contentUrl: "https://hueworldheritage.org.vn/chua-thien-mu.html",
+        title: "Nghệ thuật trang trí cung đình Huế",
+        titleEn: "Hue Royal Decorative Arts",
+        description: "Tư liệu về nghệ thuật trang trí trong cung đình Huế: các họa tiết hoa văn, chạm khắc gỗ, sơn son thếp vàng. Phân tích ý nghĩa biểu tượng và kỹ thuật thực hiện.",
+        descriptionEn: "Documentation of decorative arts in Hue royal palace: patterns, woodcarvings, lacquer and gilding. Analysis of symbolic meanings and execution techniques.",
+        type: "document",
+        category: "art",
+        contentUrl: "https://hueworldheritage.org.vn/nghe-thuat-trang-tri.html",
         thumbnailUrl: "/attached_assets/pexels-th-vinh-flute-822138648-21011475.jpg",
         metadata: {
-          format: "jpg",
-          resolution: "HD",
-          year: "2024"
-        }
+          format: "pdf",
+          pages: "120",
+          language: "Vietnamese, English",
+          author: "PGS.TS. Phan Thanh Hải"
+        },
+        createdAt: new Date()
       },
       {
         id: this.getNextId(),
-        title: "Hoàng thành Huế",
-        titleEn: "Hue Imperial City",
-        description: "Tổng quan về quần thể di tích Hoàng thành Huế",
-        descriptionEn: "Overview of Hue Imperial City heritage complex",
-        type: "image",
-        category: "heritage",
-        contentUrl: "https://hueworldheritage.org.vn/hoang-thanh.html",
+        title: "Nhã nhạc cung đình Huế",
+        titleEn: "Hue Royal Court Music",
+        description: "Bộ sưu tập âm thanh và video về nhã nhạc cung đình Huế - di sản văn hóa phi vật thể của UNESCO. Bao gồm các bản thu âm truyền thống và biểu diễn hiện đại.",
+        descriptionEn: "Audio and video collection of Hue royal court music - UNESCO intangible cultural heritage. Includes traditional recordings and modern performances.",
+        type: "audio",
+        category: "music",
+        contentUrl: "https://hueworldheritage.org.vn/nha-nhac.html",
         thumbnailUrl: "/attached_assets/pexels-vinhb-29790971.jpg",
         metadata: {
-          format: "jpg",
-          resolution: "4K",
-          year: "2024"
-        }
+          format: "mp3, mp4",
+          duration: "6 hours",
+          quality: "Studio",
+          performers: "Nhóm Nhã nhạc Cung đình Huế"
+        },
+        createdAt: new Date()
+      },
+      {
+        id: this.getNextId(),
+        title: "Lễ hội và nghi thức cung đình",
+        titleEn: "Royal Festivals and Rituals",
+        description: "Phim tài liệu về các lễ hội và nghi thức trong cung đình triều Nguyễn. Tái hiện chi tiết các nghi lễ quan trọng như lễ tế Giao, lễ Đại triều và lễ Nguyên đán.",
+        descriptionEn: "Documentary about festivals and rituals in the Nguyen Dynasty court. Detailed reenactments of important ceremonies like Nam Giao Offering, Great Court Ceremony and Lunar New Year.",
+        type: "video",
+        category: "culture",
+        contentUrl: "https://hueworldheritage.org.vn/le-hoi.html",
+        thumbnailUrl: "/attached_assets/pexels-vietnam-photographer-27418892.jpg",
+        metadata: {
+          format: "4K MP4",
+          duration: "120 minutes",
+          producer: "Trung tâm Phát huy Di sản Văn hóa Huế",
+          language: "Vietnamese (English subtitles)"
+        },
+        createdAt: new Date()
       }
     ];
 
