@@ -78,13 +78,25 @@ app.use((req, res, next) => {
     const port = 5000;
     log(`Attempting to start server on port ${port}...`);
 
+    // Add a timeout for server startup
+    const startupTimeout = setTimeout(() => {
+      log("Server startup timed out after 10 seconds");
+      process.exit(1);
+    }, 10000);
+
     server.listen({
       port,
       host: "0.0.0.0",
     }, () => {
+      clearTimeout(startupTimeout);
       log(`Server started successfully on port ${port}`);
     }).on('error', (err: NodeJS.ErrnoException) => {
-      console.error(`Failed to start server: ${err.message}`);
+      clearTimeout(startupTimeout);
+      if (err.code === 'EADDRINUSE') {
+        log(`Port ${port} is already in use. Please free up the port and try again.`);
+      } else {
+        log(`Failed to start server: ${err.message}`);
+      }
       process.exit(1);
     });
 
