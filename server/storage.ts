@@ -1,7 +1,4 @@
-import { db } from "./db";
-import { eq, sql } from "drizzle-orm";
 import {
-  locations, users, discussions, comments, contributions, reviews, pointTransactions, resources, categories,
   type Location, type User, type Discussion, type Comment, type Contribution, type Review,
   type InsertLocation, type InsertUser, type InsertDiscussion, type InsertComment,
   type InsertContribution, type InsertReview, type Resource, type Category, type InsertResource, type InsertCategory
@@ -61,109 +58,120 @@ export interface IStorage {
   createCategory(category: InsertCategory): Promise<Category>;
 }
 
-export class DatabaseStorage implements IStorage {
+export class MemStorage implements IStorage {
+  private users: User[] = [];
+  private discussions: Discussion[] = [];
+  private comments: Comment[] = [];
+  private contributions: Contribution[] = [];
+  private reviews: Review[] = [];
+  private pointTransactions: any[] = [];
+  private locations: Location[] = [];
+  private resources: Resource[] = [];
+  private categories: Category[] = [];
+  private nextId = 1;
+
+  private getNextId(): number {
+    return this.nextId++;
+  }
+
   // Users
   async createUser(user: InsertUser): Promise<User> {
-    const [newUser] = await db.insert(users).values(user).returning();
+    const newUser = { ...user, id: this.getNextId() } as User;
+    this.users.push(newUser);
     return newUser;
   }
 
   async getUserById(id: number): Promise<User | undefined> {
-    const [user] = await db.select().from(users).where(eq(users.id, id));
-    return user;
+    return this.users.find(u => u.id === id);
   }
 
   async getUserByUsername(username: string): Promise<User | undefined> {
-    const [user] = await db.select().from(users).where(eq(users.username, username));
-    return user;
+    return this.users.find(u => u.username === username);
   }
 
   async updateUserPoints(userId: number, points: string): Promise<User> {
-    const [user] = await db
-      .update(users)
-      .set({ points })
-      .where(eq(users.id, userId))
-      .returning();
+    const user = await this.getUserById(userId);
+    if (!user) throw new Error('User not found');
+    user.points = points;
     return user;
   }
 
   // Discussions
   async createDiscussion(discussion: InsertDiscussion): Promise<Discussion> {
-    const [newDiscussion] = await db.insert(discussions).values(discussion).returning();
+    const newDiscussion = { ...discussion, id: this.getNextId(), views: 0 } as Discussion;
+    this.discussions.push(newDiscussion);
     return newDiscussion;
   }
 
   async getDiscussionById(id: number): Promise<Discussion | undefined> {
-    const [discussion] = await db.select().from(discussions).where(eq(discussions.id, id));
-    return discussion;
+    return this.discussions.find(d => d.id === id);
   }
 
   async getDiscussionsByCategory(category: string): Promise<Discussion[]> {
-    return db.select().from(discussions).where(eq(discussions.category, category));
+    return this.discussions.filter(d => d.category === category);
   }
 
   async getAllDiscussions(): Promise<Discussion[]> {
-    return db.select().from(discussions);
+    return this.discussions;
   }
 
   async incrementDiscussionViews(id: number): Promise<void> {
-    await db
-      .update(discussions)
-      .set({ 
-        views: sql`${discussions.views}::numeric + 1` 
-      })
-      .where(eq(discussions.id, id));
+    const discussion = await this.getDiscussionById(id);
+    if (discussion) {
+      discussion.views++;
+    }
   }
 
   // Comments
   async createComment(comment: InsertComment): Promise<Comment> {
-    const [newComment] = await db.insert(comments).values(comment).returning();
+    const newComment = { ...comment, id: this.getNextId() } as Comment;
+    this.comments.push(newComment);
     return newComment;
   }
 
   async getCommentsByDiscussionId(discussionId: number): Promise<Comment[]> {
-    return db.select().from(comments).where(eq(comments.discussionId, discussionId));
+    return this.comments.filter(c => c.discussionId === discussionId);
   }
 
   // Contributions
   async createContribution(contribution: InsertContribution): Promise<Contribution> {
-    const [newContribution] = await db.insert(contributions).values(contribution).returning();
+    const newContribution = { ...contribution, id: this.getNextId() } as Contribution;
+    this.contributions.push(newContribution);
     return newContribution;
   }
 
   async getContributionsByUserId(userId: number): Promise<Contribution[]> {
-    return db.select().from(contributions).where(eq(contributions.userId, userId));
+    return this.contributions.filter(c => c.userId === userId);
   }
 
   async getContributionsByLocationId(locationId: number): Promise<Contribution[]> {
-    return db.select().from(contributions).where(eq(contributions.locationId, locationId));
+    return this.contributions.filter(c => c.locationId === locationId);
   }
 
   async getPendingContributions(): Promise<Contribution[]> {
-    return db.select().from(contributions).where(eq(contributions.status, "pending"));
+    return this.contributions.filter(c => c.status === "pending");
   }
 
   async updateContributionStatus(id: number, status: string): Promise<Contribution> {
-    const [contribution] = await db
-      .update(contributions)
-      .set({ status })
-      .where(eq(contributions.id, id))
-      .returning();
+    const contribution = this.contributions.find(c => c.id === id);
+    if (!contribution) throw new Error('Contribution not found');
+    contribution.status = status;
     return contribution;
   }
 
   // Reviews
   async createReview(review: InsertReview): Promise<Review> {
-    const [newReview] = await db.insert(reviews).values(review).returning();
+    const newReview = { ...review, id: this.getNextId() } as Review;
+    this.reviews.push(newReview);
     return newReview;
   }
 
   async getReviewsByLocationId(locationId: number): Promise<Review[]> {
-    return db.select().from(reviews).where(eq(reviews.locationId, locationId));
+    return this.reviews.filter(r => r.locationId === locationId);
   }
 
   async getReviewsByUserId(userId: number): Promise<Review[]> {
-    return db.select().from(reviews).where(eq(reviews.userId, userId));
+    return this.reviews.filter(r => r.userId === userId);
   }
 
   // Point Transactions
@@ -173,82 +181,86 @@ export class DatabaseStorage implements IStorage {
     type: string,
     referenceId: number
   ): Promise<void> {
-    await db.insert(pointTransactions).values({
+    this.pointTransactions.push({
+      id: this.getNextId(),
       userId,
       points,
       type,
-      referenceId
+      referenceId,
+      createdAt: new Date()
     });
   }
 
   async getPointTransactionsByUserId(userId: number): Promise<any[]> {
-    return db.select().from(pointTransactions).where(eq(pointTransactions.userId, userId));
+    return this.pointTransactions.filter(t => t.userId === userId);
   }
 
   // Locations
   async getAllLocations(): Promise<Location[]> {
-    return db.select().from(locations);
+    return this.locations;
   }
 
   async getLocationById(id: number): Promise<Location | undefined> {
-    const [location] = await db.select().from(locations).where(eq(locations.id, id));
-    return location;
+    return this.locations.find(l => l.id === id);
   }
 
   async searchLocations(query: string): Promise<Location[]> {
-    return db.select().from(locations).where(
-      sql`lower(${locations.name}) like ${`%${query.toLowerCase()}%`}`
+    const lowerQuery = query.toLowerCase();
+    return this.locations.filter(l => 
+      l.name.toLowerCase().includes(lowerQuery)
     );
   }
 
   async createLocation(location: InsertLocation): Promise<Location> {
-    const [newLocation] = await db.insert(locations).values(location).returning();
+    const newLocation = { ...location, id: this.getNextId() } as Location;
+    this.locations.push(newLocation);
     return newLocation;
   }
 
   // Resources
   async getAllResources(): Promise<Resource[]> {
-    return db.select().from(resources);
+    return this.resources;
   }
 
   async getResourceById(id: number): Promise<Resource | undefined> {
-    const [resource] = await db.select().from(resources).where(eq(resources.id, id));
-    return resource;
+    return this.resources.find(r => r.id === id);
   }
 
   async getResourcesByType(type: string): Promise<Resource[]> {
-    return db.select().from(resources).where(eq(resources.type, type));
+    return this.resources.filter(r => r.type === type);
   }
 
   async getResourcesByCategory(category: string): Promise<Resource[]> {
-    return db.select().from(resources).where(eq(resources.category, category));
+    return this.resources.filter(r => r.category === category);
   }
 
   async searchResources(query: string): Promise<Resource[]> {
-    return db.select().from(resources).where(
-      sql`lower(${resources.title}) like ${`%${query.toLowerCase()}%`}`
+    const lowerQuery = query.toLowerCase();
+    return this.resources.filter(r =>
+      r.title.toLowerCase().includes(lowerQuery)
     );
   }
 
   async createResource(resource: InsertResource): Promise<Resource> {
-    const [newResource] = await db.insert(resources).values(resource).returning();
+    const newResource = { ...resource, id: this.getNextId() } as Resource;
+    this.resources.push(newResource);
     return newResource;
   }
 
   // Categories
   async getAllCategories(): Promise<Category[]> {
-    return db.select().from(categories);
+    return this.categories;
   }
 
   async getCategoryById(id: number): Promise<Category | undefined> {
-    const [category] = await db.select().from(categories).where(eq(categories.id, id));
-    return category;
+    return this.categories.find(c => c.id === id);
   }
 
   async createCategory(category: InsertCategory): Promise<Category> {
-    const [newCategory] = await db.insert(categories).values(category).returning();
+    const newCategory = { ...category, id: this.getNextId() } as Category;
+    this.categories.push(newCategory);
     return newCategory;
   }
 }
 
-export const storage = new DatabaseStorage();
+export const storage = new MemStorage();
