@@ -1,11 +1,22 @@
 import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { 
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/hooks/use-toast";
 import { MessageSquare, Award, Plus, Search, BookOpen, School, Heart, Shield } from 'lucide-react';
 
 interface Category {
@@ -18,11 +29,20 @@ interface Category {
 interface Discussion {
   id: number;
   title: string;
+  content: string;
   author: string;
   category: string;
   views: number;
   comments: number;
   points: number;
+  createdAt: string;
+}
+
+interface Comment {
+  id: number;
+  content: string;
+  author: string;
+  discussionId: number;
   createdAt: string;
 }
 
@@ -53,56 +73,136 @@ const categories: Category[] = [
   }
 ];
 
-const mockDiscussions: Discussion[] = [
-  {
-    id: 1,
-    title: "Giá trị kiến trúc của Kỳ Đài qua các thời kỳ lịch sử",
-    author: "NguyenVanA",
-    category: "heritage",
-    views: 156,
-    comments: 23,
-    points: 45,
-    createdAt: "2024-02-28T15:30:00.000Z"
-  },
-  {
-    id: 2,
-    title: "Tư liệu mới về hoạt động giáo dục tại Trường Quốc Tử Giám",
-    author: "TranThiB",
-    category: "research",
-    views: 89,
-    comments: 12,
-    points: 34,
-    createdAt: "2024-02-27T10:15:00.000Z"
-  }
-];
-
 export default function ForumPage() {
   const [selectedCategory, setSelectedCategory] = useState("heritage");
   const [searchTerm, setSearchTerm] = useState("");
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [selectedDiscussion, setSelectedDiscussion] = useState<Discussion | null>(null);
+  const [newComment, setNewComment] = useState("");
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
 
-  const { data: discussions = mockDiscussions } = useQuery<Discussion[]>({
+  const { data: discussions = [] } = useQuery<Discussion[]>({
     queryKey: ['/api/discussions', selectedCategory],
-    enabled: false // Disabled until API is implemented
+    enabled: true
+  });
+
+  const { data: comments = [] } = useQuery<Comment[]>({
+    queryKey: ['/api/comments', selectedDiscussion?.id],
+    enabled: !!selectedDiscussion
+  });
+
+  const createDiscussionMutation = useMutation({
+    mutationFn: async (newDiscussion: { title: string; content: string; category: string }) => {
+      const response = await fetch('/api/discussions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newDiscussion)
+      });
+      if (!response.ok) throw new Error('Failed to create discussion');
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/discussions'] });
+      setIsDialogOpen(false);
+      toast({
+        title: "Thành công",
+        description: "Bài viết đã được tạo.",
+      });
+    }
+  });
+
+  const createCommentMutation = useMutation({
+    mutationFn: async (comment: { content: string; discussionId: number }) => {
+      const response = await fetch('/api/comments', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(comment)
+      });
+      if (!response.ok) throw new Error('Failed to create comment');
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/comments'] });
+      setNewComment("");
+      toast({
+        title: "Thành công",
+        description: "Bình luận đã được thêm.",
+      });
+    }
   });
 
   const filteredDiscussions = discussions.filter(discussion =>
     discussion.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const handleCreateDiscussion = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    createDiscussionMutation.mutate({
+      title: formData.get('title') as string,
+      content: formData.get('content') as string,
+      category: selectedCategory
+    });
+  };
+
+  const handleCreateComment = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!selectedDiscussion) return;
+    createCommentMutation.mutate({
+      content: newComment,
+      discussionId: selectedDiscussion.id
+    });
+  };
+
   return (
     <div className="container mx-auto p-4 min-h-screen bg-background">
       <div className="max-w-7xl mx-auto">
         <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-4xl font-bold mb-2 text-primary">Diễn đàn cộng đồng</h1>
-            <p className="text-lg text-muted-foreground">
+          <div className="space-y-2">
+            <h1 className="text-4xl font-bold text-primary slide-in">Diễn đàn cộng đồng</h1>
+            <p className="text-lg text-muted-foreground slide-in" style={{ animationDelay: '0.1s' }}>
               Trao đổi, thảo luận về di sản văn hóa Huế
             </p>
           </div>
-          <Button className="gap-2">
-            <Plus className="h-4 w-4" />
-            Tạo bài viết mới
-          </Button>
+          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+            <DialogTrigger asChild>
+              <Button className="gap-2 hover-lift">
+                <Plus className="h-4 w-4" />
+                Tạo bài viết mới
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Tạo bài viết mới</DialogTitle>
+                <DialogDescription>
+                  Chia sẻ kiến thức, đặt câu hỏi hoặc thảo luận về di sản văn hóa Huế
+                </DialogDescription>
+              </DialogHeader>
+              <form onSubmit={handleCreateDiscussion} className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="title">Tiêu đề</Label>
+                  <Input id="title" name="title" required placeholder="Nhập tiêu đề bài viết..." />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="content">Nội dung</Label>
+                  <Textarea
+                    id="content"
+                    name="content"
+                    required
+                    placeholder="Nhập nội dung bài viết..."
+                    className="min-h-[200px]"
+                  />
+                </div>
+                <div className="flex justify-end gap-2">
+                  <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)}>
+                    Hủy
+                  </Button>
+                  <Button type="submit">Đăng bài</Button>
+                </div>
+              </form>
+            </DialogContent>
+          </Dialog>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -132,7 +232,13 @@ export default function ForumPage() {
                   <ScrollArea className="h-[600px]">
                     <div className="space-y-4">
                       {filteredDiscussions.map(discussion => (
-                        <Card key={discussion.id} className="cursor-pointer hover:shadow-md transition-shadow">
+                        <Card 
+                          key={discussion.id} 
+                          className={`cursor-pointer hover:shadow-md transition-shadow ${
+                            selectedDiscussion?.id === discussion.id ? 'border-primary' : ''
+                          }`}
+                          onClick={() => setSelectedDiscussion(discussion)}
+                        >
                           <CardContent className="p-4">
                             <div className="flex items-start gap-4">
                               <Avatar>
@@ -166,6 +272,45 @@ export default function ForumPage() {
                 </TabsContent>
               ))}
             </Tabs>
+
+            {selectedDiscussion && (
+              <Card className="mt-6">
+                <CardHeader>
+                  <CardTitle>Bình luận</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {comments.map(comment => (
+                      <div key={comment.id} className="flex gap-3 p-3 rounded-lg hover:bg-muted/50">
+                        <Avatar>
+                          <AvatarImage src={`https://avatar.vercel.sh/${comment.author}`} />
+                          <AvatarFallback>{comment.author[0]}</AvatarFallback>
+                        </Avatar>
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <span className="font-medium">{comment.author}</span>
+                            <span className="text-sm text-muted-foreground">
+                              {new Date(comment.createdAt).toLocaleDateString('vi-VN')}
+                            </span>
+                          </div>
+                          <p className="mt-1">{comment.content}</p>
+                        </div>
+                      </div>
+                    ))}
+                    <form onSubmit={handleCreateComment} className="mt-4">
+                      <div className="flex gap-2">
+                        <Input
+                          value={newComment}
+                          onChange={(e) => setNewComment(e.target.value)}
+                          placeholder="Viết bình luận..."
+                        />
+                        <Button type="submit">Gửi</Button>
+                      </div>
+                    </form>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
           </div>
 
           <div className="space-y-6">
@@ -176,7 +321,7 @@ export default function ForumPage() {
               <CardContent>
                 <div className="space-y-4">
                   {categories.map(category => (
-                    <div key={category.id} className="flex items-start gap-3">
+                    <div key={category.id} className="flex items-start gap-3 interactive-element">
                       <category.icon className="h-5 w-5 text-primary mt-0.5" />
                       <div>
                         <h4 className="font-medium">{category.name}</h4>
@@ -197,20 +342,20 @@ export default function ForumPage() {
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-muted-foreground mb-4">
-                  Tích điểm qua việc đóng góp bài viết, tài liệu và tham gia thảo luận
+                  Tích điểm qua việc đóng góp bài viết và tham gia thảo luận
                 </p>
                 <div className="space-y-2">
-                  <div className="flex justify-between text-sm">
+                  <div className="flex justify-between text-sm p-2 hover:bg-primary/5 rounded-lg transition-colors">
                     <span>Tạo bài viết mới</span>
-                    <span>+10 điểm</span>
+                    <span className="font-medium">+10 điểm</span>
                   </div>
-                  <div className="flex justify-between text-sm">
+                  <div className="flex justify-between text-sm p-2 hover:bg-primary/5 rounded-lg transition-colors">
                     <span>Bình luận hữu ích</span>
-                    <span>+5 điểm</span>
+                    <span className="font-medium">+5 điểm</span>
                   </div>
-                  <div className="flex justify-between text-sm">
-                    <span>Đóng góp tài liệu</span>
-                    <span>+15 điểm</span>
+                  <div className="flex justify-between text-sm p-2 hover:bg-primary/5 rounded-lg transition-colors">
+                    <span>Được đánh giá cao</span>
+                    <span className="font-medium">+15 điểm</span>
                   </div>
                 </div>
               </CardContent>
