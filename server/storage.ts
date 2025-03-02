@@ -94,8 +94,7 @@ export class MemStorage implements IStorage {
         latitude: "16.4698",
         longitude: "107.5796",
         imageUrl: "https://cdn.pixabay.com/photo/2020/03/02/16/12/hue-4896834_1280.jpg",
-        isActive: true,
-        createdAt: new Date()
+        isActive: true
       },
       {
         id: this.getNextId(),
@@ -107,8 +106,7 @@ export class MemStorage implements IStorage {
         latitude: "16.4716",
         longitude: "107.5827",
         imageUrl: "https://cdn.pixabay.com/photo/2020/02/24/14/34/hue-4876229_1280.jpg",
-        isActive: true,
-        createdAt: new Date()
+        isActive: true
       },
       {
         id: this.getNextId(),
@@ -120,8 +118,7 @@ export class MemStorage implements IStorage {
         latitude: "16.4539",
         longitude: "107.5537",
         imageUrl: "https://cdn.pixabay.com/photo/2016/07/13/11/42/vietnam-1514386_1280.jpg",
-        isActive: true,
-        createdAt: new Date()
+        isActive: true
       },
       {
         id: this.getNextId(),
@@ -133,8 +130,7 @@ export class MemStorage implements IStorage {
         latitude: "16.4577",
         longitude: "107.5514",
         imageUrl: "https://cdn.pixabay.com/photo/2020/03/02/16/11/hue-4896832_1280.jpg",
-        isActive: true,
-        createdAt: new Date()
+        isActive: true
       }
     ];
 
@@ -148,14 +144,13 @@ export class MemStorage implements IStorage {
         descriptionEn: "Documents about Nguyen Dynasty history",
         type: "document",
         category: "history",
-        contentUrl: "/documents/trieu-nguyen-history.pdf",
+        contentUrl: "https://cdn.pixabay.com/photo/2020/03/02/16/12/hue-4896834_1280.jpg",
         thumbnailUrl: "https://cdn.pixabay.com/photo/2020/03/02/16/12/hue-4896834_1280.jpg",
         metadata: {
-          format: "pdf",
+          format: "jpg",
           pages: 50,
           language: "vi"
-        },
-        createdAt: new Date()
+        }
       },
       {
         id: this.getNextId(),
@@ -171,8 +166,7 @@ export class MemStorage implements IStorage {
           format: "jpg",
           resolution: "4K",
           year: "2024"
-        },
-        createdAt: new Date()
+        }
       },
       {
         id: this.getNextId(),
@@ -180,16 +174,15 @@ export class MemStorage implements IStorage {
         titleEn: "Thien Mu Pagoda Through Ages",
         description: "Tư liệu lịch sử về chùa Thiên Mụ",
         descriptionEn: "Historical documents about Thien Mu Pagoda",
-        type: "document",
+        type: "image",
         category: "religion",
-        contentUrl: "/documents/chua-thien-mu.pdf",
+        contentUrl: "https://cdn.pixabay.com/photo/2016/07/13/11/42/vietnam-1514386_1280.jpg",
         thumbnailUrl: "https://cdn.pixabay.com/photo/2016/07/13/11/42/vietnam-1514386_1280.jpg",
         metadata: {
-          format: "pdf",
-          pages: 35,
-          language: "vi"
-        },
-        createdAt: new Date()
+          format: "jpg",
+          resolution: "HD",
+          year: "2024"
+        }
       }
     ];
 
@@ -202,8 +195,7 @@ export class MemStorage implements IStorage {
         price: "120000",
         imageUrl: "https://cdn.pixabay.com/photo/2018/07/20/14/02/vietnam-3550189_1280.jpg",
         category: "traditional",
-        stock: "50",
-        createdAt: new Date()
+        stock: "50"
       },
       {
         id: this.getNextId(),
@@ -212,8 +204,7 @@ export class MemStorage implements IStorage {
         price: "250000",
         imageUrl: "https://cdn.pixabay.com/photo/2020/03/02/16/12/hue-4896834_1280.jpg",
         category: "art",
-        stock: "20",
-        createdAt: new Date()
+        stock: "20"
       }
     ];
 
@@ -226,7 +217,6 @@ export class MemStorage implements IStorage {
         category: "culture",
         userId: 1,
         views: "0",
-        imageUrl: "https://cdn.pixabay.com/photo/2020/03/02/16/12/hue-4896834_1280.jpg",
         createdAt: new Date()
       },
       {
@@ -236,7 +226,6 @@ export class MemStorage implements IStorage {
         category: "heritage",
         userId: 1,
         views: "0",
-        imageUrl: "https://cdn.pixabay.com/photo/2016/07/13/11/42/vietnam-1514386_1280.jpg",
         createdAt: new Date()
       }
     ];
