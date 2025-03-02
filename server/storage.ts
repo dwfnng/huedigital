@@ -93,7 +93,7 @@ export class MemStorage implements IStorage {
         type: "heritage",
         latitude: "16.4698",
         longitude: "107.5796",
-        imageUrl: "/images/locations/dai-noi-hue.jpg",
+        imageUrl: "https://cdn.pixabay.com/photo/2020/03/02/16/12/hue-4896834_1280.jpg",
         isActive: true,
         createdAt: new Date()
       },
@@ -106,85 +106,33 @@ export class MemStorage implements IStorage {
         type: "heritage",
         latitude: "16.4716",
         longitude: "107.5827",
-        imageUrl: "/images/locations/ky-dai.jpg",
+        imageUrl: "https://cdn.pixabay.com/photo/2020/02/24/14/34/hue-4876229_1280.jpg",
         isActive: true,
         createdAt: new Date()
       },
       {
         id: this.getNextId(),
-        name: "Trường Quốc Tử Giám",
-        nameEn: "Quoc Tu Giam School",
-        description: "Trường học hoàng gia thời Nguyễn",
-        descriptionEn: "Royal school during Nguyen Dynasty",
+        name: "Chùa Thiên Mụ",
+        nameEn: "Thien Mu Pagoda",
+        description: "Ngôi chùa cổ kính nhất tại Huế",
+        descriptionEn: "The oldest pagoda in Hue",
+        type: "religious",
+        latitude: "16.4539",
+        longitude: "107.5537",
+        imageUrl: "https://cdn.pixabay.com/photo/2016/07/13/11/42/vietnam-1514386_1280.jpg",
+        isActive: true,
+        createdAt: new Date()
+      },
+      {
+        id: this.getNextId(),
+        name: "Lăng Tự Đức",
+        nameEn: "Tu Duc Tomb",
+        description: "Lăng mộ của vua Tự Đức triều Nguyễn",
+        descriptionEn: "Tomb of Emperor Tu Duc",
         type: "heritage",
-        latitude: "16.4703",
-        longitude: "107.5789",
-        imageUrl: "/images/locations/truong-quoc-tu-giam.jpg",
-        isActive: true,
-        createdAt: new Date()
-      },
-      {
-        id: this.getNextId(),
-        name: "Điện Long An",
-        nameEn: "Long An Palace",
-        description: "Cung điện hoàng gia, nay là Bảo tàng Mỹ thuật Cung đình Huế",
-        descriptionEn: "Royal palace, now Hue Royal Fine Arts Museum",
-        type: "heritage",
-        latitude: "16.4701",
-        longitude: "107.5793",
-        imageUrl: "/images/locations/dien-long-an.jpg",
-        isActive: true,
-        createdAt: new Date()
-      },
-      {
-        id: this.getNextId(),
-        name: "Điện Thái Hòa",
-        nameEn: "Thai Hoa Palace",
-        description: "Cung điện chính của Hoàng thành Huế",
-        descriptionEn: "Main palace of Hue Imperial City",
-        type: "heritage",
-        latitude: "16.4700",
-        longitude: "107.5792",
-        imageUrl: "/images/locations/dien-thai-hoa.jpg",
-        isActive: true,
-        createdAt: new Date()
-      },
-      {
-        id: this.getNextId(),
-        name: "Hồ Tịnh Tâm",
-        nameEn: "Tinh Tam Lake",
-        description: "Hồ cảnh quan trong Hoàng thành Huế",
-        descriptionEn: "Scenic lake within Hue Imperial City",
-        type: "landscape",
-        latitude: "16.4705",
-        longitude: "107.5783",
-        imageUrl: "/images/locations/ho-tinh-tam.jpg",
-        isActive: true,
-        createdAt: new Date()
-      },
-      {
-        id: this.getNextId(),
-        name: "Lăng Gia Long",
-        nameEn: "Gia Long Tomb",
-        description: "Lăng mộ của vua Gia Long",
-        descriptionEn: "Tomb of Emperor Gia Long",
-        type: "heritage",
-        latitude: "16.4198",
-        longitude: "107.5438",
-        imageUrl: "/images/locations/lang-gia-long.jpg",
-        isActive: true,
-        createdAt: new Date()
-      },
-      {
-        id: this.getNextId(),
-        name: "Lăng Minh Mạng",
-        nameEn: "Minh Mang Tomb",
-        description: "Lăng mộ của vua Minh Mạng",
-        descriptionEn: "Tomb of Emperor Minh Mang",
-        type: "heritage",
-        latitude: "16.4135",
-        longitude: "107.5392",
-        imageUrl: "/images/locations/lang-minh-mang.jpg",
+        latitude: "16.4577",
+        longitude: "107.5514",
+        imageUrl: "https://cdn.pixabay.com/photo/2020/03/02/16/11/hue-4896832_1280.jpg",
         isActive: true,
         createdAt: new Date()
       }
@@ -201,7 +149,7 @@ export class MemStorage implements IStorage {
         type: "document",
         category: "history",
         contentUrl: "/documents/trieu-nguyen-history.pdf",
-        thumbnailUrl: "/images/resources/trieu-nguyen.jpg",
+        thumbnailUrl: "https://cdn.pixabay.com/photo/2020/03/02/16/12/hue-4896834_1280.jpg",
         metadata: {
           format: "pdf",
           pages: 50,
@@ -211,137 +159,18 @@ export class MemStorage implements IStorage {
       },
       {
         id: this.getNextId(),
-        title: "Âm nhạc cung đình Huế",
-        titleEn: "Hue Royal Music",
-        description: "Bản thu âm nhạc cung đình Huế truyền thống",
-        descriptionEn: "Traditional Hue royal music recordings",
-        type: "audio",
-        category: "music",
-        contentUrl: "/audio/nhac-cung-dinh.mp3",
-        thumbnailUrl: "/images/resources/nhac-cung-dinh.jpg",
-        metadata: {
-          format: "mp3",
-          duration: "45:00",
-          quality: "320kbps"
-        },
-        createdAt: new Date()
-      },
-      {
-        id: this.getNextId(),
-        title: "Kiến trúc Kỳ Đài",
-        titleEn: "Ky Dai Architecture",
-        description: "Hình ảnh và thông tin về Kỳ Đài Huế",
-        descriptionEn: "Images and information about Ky Dai Flag Tower",
+        title: "Kiến trúc cung đình Huế",
+        titleEn: "Hue Royal Architecture",
+        description: "Hình ảnh về kiến trúc cung đình Huế",
+        descriptionEn: "Images of Hue royal architecture",
         type: "image",
         category: "architecture",
-        contentUrl: "/images/resources/ky-dai-detail.jpg",
-        thumbnailUrl: "/images/resources/ky-dai-thumb.jpg",
+        contentUrl: "https://cdn.pixabay.com/photo/2020/02/24/14/34/hue-4876229_1280.jpg",
+        thumbnailUrl: "https://cdn.pixabay.com/photo/2020/02/24/14/34/hue-4876229_1280.jpg",
         metadata: {
           format: "jpg",
           resolution: "4K",
           year: "2024"
-        },
-        createdAt: new Date()
-      },
-      {
-        id: this.getNextId(),
-        title: "Trường Quốc Tử Giám qua các thời kỳ",
-        titleEn: "Quoc Tu Giam School Through History",
-        description: "Tư liệu về trường học hoàng gia xưa",
-        descriptionEn: "Documents about the historic royal school",
-        type: "document",
-        category: "education",
-        contentUrl: "/documents/truong-quoc-tu-giam.pdf",
-        thumbnailUrl: "/images/resources/quoc-tu-giam.jpg",
-        metadata: {
-          format: "pdf",
-          pages: 30,
-          language: "vi"
-        },
-        createdAt: new Date()
-      },
-      {
-        id: this.getNextId(),
-        title: "Điện Long An - Bảo tàng Mỹ thuật",
-        titleEn: "Long An Palace - Fine Arts Museum",
-        description: "Video giới thiệu về Bảo tàng Mỹ thuật Cung đình Huế",
-        descriptionEn: "Video introduction to Hue Royal Fine Arts Museum",
-        type: "video",
-        category: "art",
-        contentUrl: "/videos/dien-long-an.mp4",
-        thumbnailUrl: "/images/resources/dien-long-an-thumb.jpg",
-        metadata: {
-          format: "mp4",
-          duration: "20:00",
-          resolution: "4K"
-        },
-        createdAt: new Date()
-      },
-      {
-        id: this.getNextId(),
-        title: "Điện Thái Hòa và nghi lễ triều đình",
-        titleEn: "Thai Hoa Palace and Court Ceremonies",
-        description: "Tư liệu về nghi lễ triều đình tại Điện Thái Hòa",
-        descriptionEn: "Documents about court ceremonies at Thai Hoa Palace",
-        type: "document",
-        category: "culture",
-        contentUrl: "/documents/dien-thai-hoa.pdf",
-        thumbnailUrl: "/images/resources/thai-hoa.jpg",
-        metadata: {
-          format: "pdf",
-          pages: 40,
-          language: "vi"
-        },
-        createdAt: new Date()
-      },
-      {
-        id: this.getNextId(),
-        title: "Hồ Tịnh Tâm và vườn ngự uyển",
-        titleEn: "Tinh Tam Lake and Royal Gardens",
-        description: "Hình ảnh về Hồ Tịnh Tâm và khu vườn hoàng gia",
-        descriptionEn: "Images of Tinh Tam Lake and royal gardens",
-        type: "image",
-        category: "landscape",
-        contentUrl: "/images/resources/ho-tinh-tam-full.jpg",
-        thumbnailUrl: "/images/resources/ho-tinh-tam-thumb.jpg",
-        metadata: {
-          format: "jpg",
-          resolution: "4K",
-          year: "2024"
-        },
-        createdAt: new Date()
-      },
-      {
-        id: this.getNextId(),
-        title: "Lăng tẩm triều Nguyễn",
-        titleEn: "Nguyen Dynasty Royal Tombs",
-        description: "Phim tài liệu về các lăng tẩm vua chúa triều Nguyễn",
-        descriptionEn: "Documentary about Nguyen Dynasty royal tombs",
-        type: "video",
-        category: "heritage",
-        contentUrl: "/videos/lang-tam.mp4",
-        thumbnailUrl: "/images/resources/lang-tam-thumb.jpg",
-        metadata: {
-          format: "mp4",
-          duration: "45:00",
-          resolution: "4K"
-        },
-        createdAt: new Date()
-      },
-      {
-        id: this.getNextId(),
-        title: "Âm nhạc tại Điện Hòn Chén",
-        titleEn: "Music at Hon Chen Temple",
-        description: "Bản thu âm nhạc lễ hội tại Điện Hòn Chén",
-        descriptionEn: "Music recordings from Hon Chen Temple festivals",
-        type: "audio",
-        category: "music",
-        contentUrl: "/audio/dien-hon-chen.mp3",
-        thumbnailUrl: "/images/resources/hon-chen.jpg",
-        metadata: {
-          format: "mp3",
-          duration: "30:00",
-          quality: "320kbps"
         },
         createdAt: new Date()
       },
@@ -354,7 +183,7 @@ export class MemStorage implements IStorage {
         type: "document",
         category: "religion",
         contentUrl: "/documents/chua-thien-mu.pdf",
-        thumbnailUrl: "/images/resources/thien-mu.jpg",
+        thumbnailUrl: "https://cdn.pixabay.com/photo/2016/07/13/11/42/vietnam-1514386_1280.jpg",
         metadata: {
           format: "pdf",
           pages: 35,
@@ -363,6 +192,7 @@ export class MemStorage implements IStorage {
         createdAt: new Date()
       }
     ];
+
     // Initialize products (Souvenirs)
     this.products = [
       {
@@ -370,7 +200,7 @@ export class MemStorage implements IStorage {
         name: "Nón lá Huế thêu hoa",
         description: "Nón lá truyền thống với hoa văn thêu tay",
         price: "120000",
-        imageUrl: "/images/products/non-la-hue.jpg",
+        imageUrl: "https://cdn.pixabay.com/photo/2018/07/20/14/02/vietnam-3550189_1280.jpg",
         category: "traditional",
         stock: "50",
         createdAt: new Date()
@@ -380,19 +210,9 @@ export class MemStorage implements IStorage {
         name: "Tranh thủy mặc Huế",
         description: "Tranh thủy mặc vẽ cảnh Huế",
         price: "250000",
-        imageUrl: "/images/products/tranh-thuy-mac.jpg",
+        imageUrl: "https://cdn.pixabay.com/photo/2020/03/02/16/12/hue-4896834_1280.jpg",
         category: "art",
         stock: "20",
-        createdAt: new Date()
-      },
-      {
-        id: this.getNextId(),
-        name: "Áo dài truyền thống",
-        description: "Áo dài may thủ công với chất liệu lụa Huế",
-        price: "850000",
-        imageUrl: "/images/products/ao-dai.jpg",
-        category: "clothing",
-        stock: "15",
         createdAt: new Date()
       }
     ];
@@ -406,7 +226,7 @@ export class MemStorage implements IStorage {
         category: "culture",
         userId: 1,
         views: "0",
-        imageUrl: "/images/discussions/am-thuc.jpg",
+        imageUrl: "https://cdn.pixabay.com/photo/2020/03/02/16/12/hue-4896834_1280.jpg",
         createdAt: new Date()
       },
       {
@@ -416,17 +236,7 @@ export class MemStorage implements IStorage {
         category: "heritage",
         userId: 1,
         views: "0",
-        imageUrl: "/images/discussions/di-san.jpg",
-        createdAt: new Date()
-      },
-      {
-        id: this.getNextId(),
-        title: "Nghệ thuật điêu khắc Huế",
-        content: "Khám phá nghệ thuật điêu khắc truyền thống",
-        category: "art",
-        userId: 1,
-        views: "0",
-        imageUrl: "/images/discussions/dieu-khac.jpg",
+        imageUrl: "https://cdn.pixabay.com/photo/2016/07/13/11/42/vietnam-1514386_1280.jpg",
         createdAt: new Date()
       }
     ];
