@@ -115,3 +115,17 @@ export default function MapPage() {
     </div>
   );
 }
+import Map from "@/components/Map";
+
+export default function MapPage() {
+  return (
+    <div className="container mx-auto p-4">
+      <h1 className="text-2xl font-bold mb-2">Bản đồ số</h1>
+      <p className="text-muted-foreground mb-6">
+        Khám phá các di tích, danh lam thắng cảnh và địa điểm du lịch tại Huế
+      </p>
+      
+      <Map />
+    </div>
+  );
+}

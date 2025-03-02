@@ -48,6 +48,10 @@ export default function ResourceDetails({
               alt={resource.title}
               className="w-full rounded-lg"
               loading="lazy"
+              onError={(e) => {
+                e.currentTarget.onerror = null;
+                e.currentTarget.src = '/placeholder-image.png';
+              }}
             />
             {resource.metadata?.resolution && (
               <div className="absolute bottom-2 right-2 bg-black/50 text-white px-2 py-1 rounded text-xs">
@@ -61,10 +65,22 @@ export default function ResourceDetails({
           <div className="relative">
             <video
               src={resource.contentUrl}
-              poster={resource.thumbnailUrl}
+              poster={resource.thumbnailUrl || '/video-placeholder.png'}
               controls
               className="w-full rounded-lg"
-              preload="none"
+              preload="metadata"
+              onError={(e) => {
+                const videoEl = e.currentTarget;
+                videoEl.onerror = null;
+                // Display error message if video fails to load
+                const parent = videoEl.parentElement;
+                if (parent) {
+                  const errorDiv = document.createElement('div');
+                  errorDiv.className = 'p-4 bg-red-50 text-red-500 rounded-lg mt-2 text-center';
+                  errorDiv.innerText = 'Không thể tải video. Vui lòng thử lại sau.';
+                  parent.appendChild(errorDiv);
+                }
+              }}
             />
             {resource.metadata?.resolution && (
               <div className="absolute top-2 right-2 bg-black/50 text-white px-2 py-1 rounded text-xs">
@@ -81,6 +97,10 @@ export default function ResourceDetails({
                 src={resource.thumbnailUrl}
                 alt={resource.title}
                 className="w-full h-48 object-cover rounded-lg"
+                onError={(e) => {
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = '/audio-placeholder.png';
+                }}
               />
             )}
             <audio

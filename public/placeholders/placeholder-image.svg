@@ -1,0 +1,8 @@
+
+<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="600" fill="#f1f5f9" />
+  <rect x="250" y="200" width="300" height="200" rx="8" fill="#e2e8f0" />
+  <path d="M350 300 L400 250 L450 300 L500 230 L550 350 L250 350 L300 280 Z" fill="#cbd5e1" />
+  <circle cx="330" cy="240" r="20" fill="#94a3b8" />
+  <text x="400" y="400" font-family="Arial" font-size="24" text-anchor="middle" fill="#64748b">Ảnh không khả dụng</text>
+</svg>

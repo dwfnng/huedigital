@@ -1,0 +1,8 @@
+
+<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="600" fill="#f1f5f9" />
+  <rect x="250" y="200" width="300" height="200" rx="8" fill="#e2e8f0" />
+  <circle cx="400" cy="300" r="50" fill="#94a3b8" fill-opacity="0.5" />
+  <polygon points="385,275 385,325 425,300" fill="#64748b" />
+  <text x="400" y="400" font-family="Arial" font-size="24" text-anchor="middle" fill="#64748b">Video không khả dụng</text>
+</svg>
