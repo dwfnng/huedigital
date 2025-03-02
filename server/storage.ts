@@ -93,19 +93,7 @@ export class MemStorage implements IStorage {
         type: "heritage_site",
         latitude: "16.4698",
         longitude: "107.5796",
-        imageUrl: "https://cdn.pixabay.com/photo/2020/03/02/16/12/hue-4896834_1280.jpg",
-        isActive: true
-      },
-      {
-        id: this.getNextId(),
-        name: "Kỳ Đài",
-        nameEn: "Ky Dai Flag Tower",
-        description: "Tháp cờ lịch sử của Huế, xây dựng năm 1807",
-        descriptionEn: "Historic flag tower of Hue, built in 1807",
-        type: "monument",
-        latitude: "16.4716",
-        longitude: "107.5827",
-        imageUrl: "https://cdn.pixabay.com/photo/2020/02/24/14/34/hue-4876229_1280.jpg",
+        imageUrl: "/attached_assets/pexels-vinhb-29790971.jpg",
         isActive: true
       },
       {
@@ -117,19 +105,31 @@ export class MemStorage implements IStorage {
         type: "temple",
         latitude: "16.4539",
         longitude: "107.5537",
-        imageUrl: "https://cdn.pixabay.com/photo/2016/07/13/11/42/vietnam-1514386_1280.jpg",
+        imageUrl: "/attached_assets/pexels-th-vinh-flute-822138648-21011475.jpg",
         isActive: true
       },
       {
         id: this.getNextId(),
-        name: "Lăng Tự Đức",
-        nameEn: "Tu Duc Tomb",
-        description: "Lăng mộ của vua Tự Đức triều Nguyễn",
-        descriptionEn: "Tomb of Emperor Tu Duc",
-        type: "tomb",
-        latitude: "16.4577",
-        longitude: "107.5514",
-        imageUrl: "https://cdn.pixabay.com/photo/2020/03/02/16/11/hue-4896832_1280.jpg",
+        name: "Điện Thái Hòa",
+        nameEn: "Thai Hoa Palace",
+        description: "Cung điện chính của Hoàng thành Huế",
+        descriptionEn: "Main palace of Hue Imperial City",
+        type: "palace",
+        latitude: "16.4700",
+        longitude: "107.5792",
+        imageUrl: "/attached_assets/pexels-qhung999-28772283.jpg",
+        isActive: true
+      },
+      {
+        id: this.getNextId(),
+        name: "Cổng Ngọ Môn",
+        nameEn: "Ngo Mon Gate",
+        description: "Cổng chính vào Hoàng thành Huế",
+        descriptionEn: "Main gate of Hue Imperial City",
+        type: "monument",
+        latitude: "16.4716",
+        longitude: "107.5827",
+        imageUrl: "/attached_assets/pexels-vietnam-photographer-27418892.jpg",
         isActive: true
       }
     ];
@@ -138,30 +138,14 @@ export class MemStorage implements IStorage {
     this.resources = [
       {
         id: this.getNextId(),
-        title: "Lịch sử Triều Nguyễn",
-        titleEn: "Nguyen Dynasty History",
-        description: "Tài liệu về lịch sử triều đại nhà Nguyễn",
-        descriptionEn: "Documents about Nguyen Dynasty history",
-        type: "image",
-        category: "history",
-        contentUrl: "https://cdn.pixabay.com/photo/2020/03/02/16/12/hue-4896834_1280.jpg",
-        thumbnailUrl: "https://cdn.pixabay.com/photo/2020/03/02/16/12/hue-4896834_1280.jpg",
-        metadata: {
-          format: "jpg",
-          resolution: "4K",
-          year: "2024"
-        }
-      },
-      {
-        id: this.getNextId(),
         title: "Kiến trúc cung đình Huế",
         titleEn: "Hue Royal Architecture",
         description: "Hình ảnh về kiến trúc cung đình Huế",
         descriptionEn: "Images of Hue royal architecture",
         type: "image",
         category: "architecture",
-        contentUrl: "https://cdn.pixabay.com/photo/2020/02/24/14/34/hue-4876229_1280.jpg",
-        thumbnailUrl: "https://cdn.pixabay.com/photo/2020/02/24/14/34/hue-4876229_1280.jpg",
+        contentUrl: "https://hueworldheritage.org.vn/kien-truc-cung-dinh.html",
+        thumbnailUrl: "/attached_assets/pexels-qhung999-28772283.jpg",
         metadata: {
           format: "jpg",
           resolution: "4K",
@@ -176,11 +160,27 @@ export class MemStorage implements IStorage {
         descriptionEn: "Historical documents about Thien Mu Pagoda",
         type: "image",
         category: "religion",
-        contentUrl: "https://cdn.pixabay.com/photo/2016/07/13/11/42/vietnam-1514386_1280.jpg",
-        thumbnailUrl: "https://cdn.pixabay.com/photo/2016/07/13/11/42/vietnam-1514386_1280.jpg",
+        contentUrl: "https://hueworldheritage.org.vn/chua-thien-mu.html",
+        thumbnailUrl: "/attached_assets/pexels-th-vinh-flute-822138648-21011475.jpg",
         metadata: {
           format: "jpg",
           resolution: "HD",
+          year: "2024"
+        }
+      },
+      {
+        id: this.getNextId(),
+        title: "Hoàng thành Huế",
+        titleEn: "Hue Imperial City",
+        description: "Tổng quan về quần thể di tích Hoàng thành Huế",
+        descriptionEn: "Overview of Hue Imperial City heritage complex",
+        type: "image",
+        category: "heritage",
+        contentUrl: "https://hueworldheritage.org.vn/hoang-thanh.html",
+        thumbnailUrl: "/attached_assets/pexels-vinhb-29790971.jpg",
+        metadata: {
+          format: "jpg",
+          resolution: "4K",
           year: "2024"
         }
       }
@@ -193,7 +193,7 @@ export class MemStorage implements IStorage {
         name: "Nón lá Huế thêu hoa",
         description: "Nón lá truyền thống với hoa văn thêu tay",
         price: "120000",
-        imageUrl: "https://cdn.pixabay.com/photo/2018/07/20/14/02/vietnam-3550189_1280.jpg",
+        imageUrl: "/attached_assets/pexels-karen-w-lim-415441-1089318.jpg",
         category: "traditional",
         stock: "50"
       },
@@ -202,31 +202,9 @@ export class MemStorage implements IStorage {
         name: "Tranh thủy mặc Huế",
         description: "Tranh thủy mặc vẽ cảnh Huế",
         price: "250000",
-        imageUrl: "https://cdn.pixabay.com/photo/2020/03/02/16/12/hue-4896834_1280.jpg",
+        imageUrl: "/attached_assets/pexels-uyen-bui-205258074-11937353.jpg",
         category: "art",
         stock: "20"
-      }
-    ];
-
-    // Initialize discussions
-    this.discussions = [
-      {
-        id: this.getNextId(),
-        title: "Ẩm thực cung đình Huế",
-        content: "Thảo luận về văn hóa ẩm thực cung đình Huế",
-        category: "culture",
-        userId: 1,
-        views: "0",
-        createdAt: new Date()
-      },
-      {
-        id: this.getNextId(),
-        title: "Di sản Huế trong đời sống hiện đại",
-        content: "Bảo tồn và phát huy giá trị di sản Huế",
-        category: "heritage",
-        userId: 1,
-        views: "0",
-        createdAt: new Date()
       }
     ];
 
