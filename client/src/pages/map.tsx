@@ -1,10 +1,11 @@
-import Map from "@/components/Map";
+import { useState } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
-import { Search, Navigation, Layers } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Search, MapPin, Info, Calendar, Navigation2 } from 'lucide-react';
+import { motion, AnimatePresence } from "framer-motion";
 import type { Location } from "@shared/schema";
+import Map from "@/components/Map";
 
 export default function MapPage() {
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
@@ -21,45 +22,38 @@ export default function MapPage() {
       </p>
 
       <div className="grid md:grid-cols-3 gap-4">
-        {/* Location sidebar */}
+        {/* Map area */}
+        <div className="md:col-span-2 h-[calc(100vh-16rem)]">
+          <Map onMarkerClick={handleMarkerClick} />
+        </div>
+
+        {/* Location details */}
         <Card className="md:col-span-1 h-[calc(100vh-16rem)]">
           <CardContent className="p-4">
-            <div className="flex gap-2 mb-4">
-              <div className="relative flex-1">
-                <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input
-                  placeholder="Tìm kiếm địa điểm..."
-                  className="pl-8"
-                />
-              </div>
-              <Button variant="outline" size="icon" title="Lớp bản đồ">
-                <Layers className="h-4 w-4" />
-              </Button>
-              <Button variant="outline" size="icon" title="Vị trí của bạn">
-                <Navigation className="h-4 w-4" />
-              </Button>
-            </div>
-
-            {selectedLocation && (
+            {selectedLocation ? (
               <div className="space-y-4">
-                <h2 className="font-semibold text-lg">{selectedLocation.name}</h2>
-                <p className="text-sm text-muted-foreground">{selectedLocation.description}</p>
-                {selectedLocation.imageUrl && (
+                <div className="w-full h-48 relative rounded-lg overflow-hidden">
                   <img 
                     src={selectedLocation.imageUrl} 
                     alt={selectedLocation.name}
-                    className="w-full h-48 object-cover rounded-lg"
+                    className="absolute inset-0 w-full h-full object-cover"
                   />
-                )}
+                </div>
+                <h2 className="text-xl font-semibold">{selectedLocation.name}</h2>
+                <p className="text-sm text-muted-foreground">{selectedLocation.nameEn}</p>
+                <div className="text-sm text-muted-foreground">
+                  <strong>Loại di tích:</strong> {selectedLocation.type}
+                </div>
+                <p className="text-sm">{selectedLocation.description}</p>
+                <p className="text-sm text-muted-foreground">{selectedLocation.descriptionEn}</p>
+              </div>
+            ) : (
+              <div className="h-full flex items-center justify-center text-muted-foreground">
+                <p>Chọn một địa điểm trên bản đồ để xem thông tin chi tiết</p>
               </div>
             )}
           </CardContent>
         </Card>
-
-        {/* Map */}
-        <div className="md:col-span-2 h-[calc(100vh-16rem)]">
-          <Map onMarkerClick={handleMarkerClick} />
-        </div>
       </div>
     </div>
   );
