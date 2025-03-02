@@ -33,80 +33,57 @@
   }
 }
 
-/* Section-specific backgrounds with enhanced gradients */
+/* Game-specific backgrounds with enhanced gradients */
 .heritage-section {
   @apply relative bg-gradient-to-br from-red-50/95 to-orange-50/95 dark:from-red-950/95 dark:to-orange-950/95;
   background-image: radial-gradient(circle at center, rgba(var(--primary-rgb), 0.05) 0%, transparent 70%),
                     var(--background-pattern-texture);
 }
 
-.culture-section {
+.historical-section {
   @apply relative bg-gradient-to-br from-emerald-50/95 to-teal-50/95 dark:from-emerald-950/95 dark:to-teal-950/95;
   background-image: radial-gradient(circle at center, rgba(var(--primary-rgb), 0.05) 0%, transparent 70%),
                     var(--background-pattern-texture);
 }
 
-.art-section {
+.cultural-section {
   @apply relative bg-gradient-to-br from-purple-50/95 to-indigo-50/95 dark:from-purple-950/95 dark:to-indigo-950/95;
   background-image: radial-gradient(circle at center, rgba(var(--primary-rgb), 0.05) 0%, transparent 70%),
                     var(--background-pattern-texture);
 }
 
-.chat-section {
-  @apply relative bg-gradient-to-br from-blue-50/95 to-violet-50/95 dark:from-blue-950/95 dark:to-violet-950/95;
-  background-image: radial-gradient(circle at center, rgba(var(--primary-rgb), 0.05) 0%, transparent 70%),
-                    var(--background-pattern-texture);
-}
-
-.ticket-section {
-  @apply relative bg-gradient-to-br from-amber-50/95 to-yellow-50/95 dark:from-amber-950/95 dark:to-yellow-950/95;
-  background-image: radial-gradient(circle at center, rgba(var(--primary-rgb), 0.05) 0%, transparent 70%),
-                    var(--background-pattern-texture);
-}
-
-.forum-section {
-  @apply relative bg-gradient-to-br from-cyan-50/95 to-sky-50/95 dark:from-cyan-950/95 dark:to-sky-950/95;
-  background-image: radial-gradient(circle at center, rgba(var(--primary-rgb), 0.05) 0%, transparent 70%),
-                    var(--background-pattern-texture);
-}
-
-.contribution-section {
-  @apply relative bg-gradient-to-br from-lime-50/95 to-green-50/95 dark:from-lime-950/95 dark:to-green-950/95;
-  background-image: radial-gradient(circle at center, rgba(var(--primary-rgb), 0.05) 0%, transparent 70%),
-                    var(--background-pattern-texture);
-}
-
+/* Enhanced transitions and animations */
 .transition-smooth {
-    @apply transition-all duration-300 ease-in-out;
-  }
+  @apply transition-all duration-300 ease-in-out;
+}
 
 .hover-lift {
-    @apply hover:-translate-y-1 transition-transform duration-200;
-  }
+  @apply hover:-translate-y-1 transition-transform duration-200;
+}
 
 .hover-glow {
-    @apply hover:shadow-lg hover:shadow-primary/10 transition-shadow duration-200;
-  }
+  @apply hover:shadow-lg hover:shadow-primary/10 transition-shadow duration-200;
+}
 
 .hover-scale {
-    @apply hover:scale-105 transition-transform duration-200;
-  }
+  @apply hover:scale-105 transition-transform duration-200;
+}
 
 .fade-in {
-    @apply opacity-0 animate-[fadeIn_0.5s_ease-in-out_forwards];
-  }
+  @apply opacity-0 animate-[fadeIn_0.5s_ease-in-out_forwards];
+}
 
 .slide-in {
-    @apply translate-y-4 opacity-0 animate-[slideIn_0.5s_ease-out_forwards];
-  }
+  @apply translate-y-4 opacity-0 animate-[slideIn_0.5s_ease-out_forwards];
+}
 
 .pop-in {
-    @apply scale-95 opacity-0 animate-[popIn_0.3s_ease-out_forwards];
-  }
+  @apply scale-95 opacity-0 animate-[popIn_0.3s_ease-out_forwards];
+}
 
 .floating {
-    animation: floating 3s ease-in-out infinite;
-  }
+  animation: floating 3s ease-in-out infinite;
+}
 
 /* Animation Keyframes */
 @keyframes fadeIn {
@@ -154,34 +131,19 @@
   }
 }
 
-/* Card hover effects */
-.card-hover {
+/* Game card hover effects */
+.game-card {
   @apply transition-all duration-300 ease-in-out;
   @apply hover:shadow-lg hover:shadow-primary/10;
   @apply hover:-translate-y-1;
   @apply active:translate-y-0 active:shadow-md;
 }
 
-/* Glass effect */
+/* Glass effect for game overlays */
 .glass {
   @apply bg-background/80 backdrop-blur-sm;
   @apply border border-white/20;
   @apply shadow-xl shadow-black/5;
-}
-
-/* Smooth scroll behavior */
-html {
-  scroll-behavior: smooth;
-}
-
-/* Loading states */
-.loading {
-  @apply animate-pulse bg-muted/50;
-}
-
-/* Section transitions */
-.section-transition {
-  @apply transition-all duration-500 ease-in-out;
 }
 
 /* Interactive elements */
@@ -191,7 +153,7 @@ html {
   @apply focus:outline-none focus:ring-2 focus:ring-primary/20;
 }
 
-/* Custom scrollbar */
+/* Custom scrollbar for game containers */
 .custom-scrollbar {
   scrollbar-width: thin;
   scrollbar-color: hsl(var(--primary)) transparent;
@@ -208,4 +170,48 @@ html {
 .custom-scrollbar::-webkit-scrollbar-thumb {
   background-color: hsl(var(--primary)/0.3);
   border-radius: 20px;
+}
+
+/* Game image hover effects */
+.game-image {
+  @apply transition-transform duration-300 ease-in-out;
+  @apply hover:scale-105;
+}
+
+/* Choice cards in games */
+.choice-card {
+  @apply transition-all duration-200;
+  @apply hover:bg-primary/5;
+  @apply active:bg-primary/10;
+  @apply border border-transparent;
+  @apply hover:border-primary/20;
+  @apply rounded-lg p-4;
+}
+
+/* Game result animations */
+.result-appear {
+  animation: resultAppear 0.5s ease-out forwards;
+}
+
+@keyframes resultAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Game background patterns */
+.pattern-grid {
+  background-image: linear-gradient(to right, rgba(var(--primary-rgb), 0.1) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(var(--primary-rgb), 0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.pattern-dots {
+  background-image: radial-gradient(rgba(var(--primary-rgb), 0.2) 1px, transparent 1px);
+  background-size: 20px 20px;
 }
