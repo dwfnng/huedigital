@@ -5,10 +5,13 @@ import { Toaster } from "@/components/ui/toaster";
 import Home from "@/pages/home";
 import Chat from "@/pages/chat";
 import MapPage from "@/pages/map";
+import GamePage from "@/pages/game";
+import LiveDataPage from "@/pages/live-data";
+import TicketPage from "@/pages/ticket";
 import NotFound from "@/pages/not-found";
 import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList } from "@/components/ui/navigation-menu";
 import { Link } from "wouter";
-import { Library, MapPin, MessageSquare } from "lucide-react";
+import { Library, MapPin, MessageSquare, Gamepad2, Activity, Ticket } from "lucide-react";
 
 function MainNav() {
   return (
@@ -46,6 +49,30 @@ function MainNav() {
               </NavigationMenuLink>
             </Link>
           </NavigationMenuItem>
+          <NavigationMenuItem>
+            <Link href="/game">
+              <NavigationMenuLink className="flex items-center gap-2">
+                <Gamepad2 className="h-4 w-4" />
+                Game giáo dục
+              </NavigationMenuLink>
+            </Link>
+          </NavigationMenuItem>
+          <NavigationMenuItem>
+            <Link href="/live-data">
+              <NavigationMenuLink className="flex items-center gap-2">
+                <Activity className="h-4 w-4" />
+                Dữ liệu thực
+              </NavigationMenuLink>
+            </Link>
+          </NavigationMenuItem>
+          <NavigationMenuItem>
+            <Link href="/ticket">
+              <NavigationMenuLink className="flex items-center gap-2">
+                <Ticket className="h-4 w-4" />
+                Đặt vé
+              </NavigationMenuLink>
+            </Link>
+          </NavigationMenuItem>
         </NavigationMenuList>
       </div>
     </NavigationMenu>
@@ -58,6 +85,9 @@ function Router() {
       <Route path="/" component={Home} />
       <Route path="/chat" component={Chat} />
       <Route path="/map" component={MapPage} />
+      <Route path="/game" component={GamePage} />
+      <Route path="/live-data" component={LiveDataPage} />
+      <Route path="/ticket" component={TicketPage} />
       <Route component={NotFound} />
     </Switch>
   );

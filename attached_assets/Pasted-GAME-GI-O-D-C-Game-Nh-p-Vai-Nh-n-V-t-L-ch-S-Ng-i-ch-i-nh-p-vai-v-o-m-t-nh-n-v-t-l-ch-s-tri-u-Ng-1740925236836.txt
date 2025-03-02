@@ -1,0 +1,44 @@
+GAME GIÁO DỤC
+Game Nhập Vai Nhân Vật Lịch Sử
+Người chơi nhập vai vào một nhân vật lịch sử triều Nguyễn (vua, quan, lính, cung nữ, nghệ nhân…). Thực hiện nhiệm vụ giải quyết sự kiện lịch sử, tham gia các nghi lễ hoàng cung, điều hành đất nước…Tích hợp cốt truyện tương tác, mỗi lựa chọn của người chơi sẽ dẫn đến một kết quả khác nhau.
+🔹 Ví dụ:
+     Nhập vai vua Gia Long: Người chơi phải đưa ra quyết định xây dựng kinh đô Huế với các lựa chọn về vị trí, phong thủy, kiến trúc.
+     Nhập vai một quan thần thời Minh Mạng: Giúp nhà vua xử lý một vụ án trong triều đình, áp dụng luật pháp thời Nguyễn.
+
+Xây dựng lại công trình cổ bằng mô hình 3D: Xây Dựng Kinh Thành Huế
+
+Người chơi có thể tự tay thiết kế lại Kinh Thành Huế theo phong cách riêng nhưng vẫn dựa trên kiến trúc lịch sử. Chế độ xây dựng thành trì, cung điện, đền đài, hệ thống phong thủy dựa trên tư liệu thực tế. Khi hoàn thành, AI sẽ so sánh với bản gốc và đánh giá mức độ chuẩn xác.
+🔹 Ví dụ:
+      Dựng lại Điện Cần Chánh bằng mô hình 3D và so sánh với kiến trúc gốc.
+      Thiết kế lại hệ thống lăng tẩm hoàng gia theo phong thủy chuẩn thời Nguyễn.
+Game Truy Tìm Kho Báu – Giải Mã Bí Ẩn Lịch Sử
+Người chơi phải thu thập manh mối, giải mã câu đố, tìm kiếm hiện vật bí ẩn trong Hoàng Thành Huế.
+Mỗi thử thách gắn liền với một sự kiện lịch sử có thật.
+Game có chế độ chơi theo nhóm, giúp học sinh, du khách có thể chơi cùng nhau và thi đấu trực tuyến giữa người chơi, các đội chơi
+🔹 Ví dụ:
+Giải mã mật thư của vua Tự Đức để tìm kiếm một bức sắc phong bị thất lạc.
+Lần theo dấu vết của một kho báu trong Đại Nội bằng cách giải các câu đố lịch sử.
+ Game Văn Hóa – Nghệ Thuật Cung Đình Huế
+Người chơi có thể học và biểu diễn Nhã nhạc cung đình Huế, tập viết thư pháp, may trang phục cung đình…
+Trò chơi chế tạo nhạc cụ cung đình, học cách phối hợp nhạc để trình diễn.
+Mini-game vẽ tranh, nhuộm vải, nấu ăn cung đình…
+🔹 Ví dụ:
+     Soạn một bản Nhã nhạc Huế với các nhạc cụ truyền thống và trình diễn bằng công nghệ AR.
+     Thiết kế trang phục cung đình bằng cách lựa chọn màu sắc, hoa văn phù hợp với từng bậc vua, quan, hoàng hậu.
+✅ Ghi nhận thành tích & xếp hạng: Người chơi có thể lưu điểm số, thành tích và chia sẻ với bạn bè.
+
+Dữ liệu thời gian thực ( cập nhật )
+Thời tiết ở địa phương
+Lịch sự kiện, các hoạt động văn hóa, lễ hội
+Mật độ du khách theo thời gian thực
+Giao thông
+CỘNG ĐỒNG VÀ BẢO TỒN SỐ
+Diễn đàn cộng đồng : Cho phép hs, gv, nhà nghiên cứu trao đổi, thảo luận về các chủ đề liên quan đến di sản Huế.
+Đóng góp tư liệu số:  Người dùng có thể tải lên ảnh, video, tài liệu lịch sử để bổ sung vào kho dữ liệu
+Góp ý & Đánh giá : Người dân và du khách có thể đóng góp ý kiến về việc bảo tồn, chia sẻ trải nghiệm, kinh nghiệm tham quan
+       ✅Tích điểm qua mỗi lần đóng góp 
+
+
+eHue Ticket
+Dịch vụ đặt mua vé online đến các địa điểm ở cố đô huế : Lưu vé và quét mã QR để vào cổng. Tích điểm đổi voucher giảm giá vé tham quan
+Mua quà lưu niệm online: các sản phẩm thủ công, đặc sản huế,........
