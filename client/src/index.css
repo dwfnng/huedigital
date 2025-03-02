@@ -3,16 +3,38 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --background-pattern: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23f0f0f0' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+
   * {
     @apply border-border;
   }
 
   body {
-    @apply font-sans antialiased bg-background text-foreground;
+    @apply font-sans antialiased text-foreground;
+    background-color: hsl(var(--background));
+    background-image: var(--background-pattern);
+    background-position: center;
+    background-repeat: repeat;
   }
 }
 
+/* Section-specific backgrounds */
+.heritage-section {
+  @apply bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-950 dark:to-orange-950;
+}
+
+.culture-section {
+  @apply bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-950 dark:to-teal-950;
+}
+
+.art-section {
+  @apply bg-gradient-to-br from-purple-50 to-indigo-50 dark:from-purple-950 dark:to-indigo-950;
+}
+
 @layer utilities {
+  /* Transitions */
   .transition-smooth {
     @apply transition-all duration-300 ease-in-out;
   }
@@ -25,11 +47,25 @@
     @apply hover:shadow-lg hover:shadow-primary/10 transition-shadow duration-200;
   }
 
+  .hover-scale {
+    @apply hover:scale-105 transition-transform duration-200;
+  }
+
+  /* Animations */
   .fade-in {
     @apply opacity-0 animate-[fadeIn_0.5s_ease-in-out_forwards];
   }
+
+  .slide-in {
+    @apply translate-y-4 opacity-0 animate-[slideIn_0.5s_ease-out_forwards];
+  }
+
+  .pop-in {
+    @apply scale-95 opacity-0 animate-[popIn_0.3s_ease-out_forwards];
+  }
 }
 
+/* Animation Keyframes */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -39,4 +75,56 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Card hover effects */
+.card-hover {
+  @apply transition-all duration-300 ease-in-out;
+  @apply hover:shadow-lg hover:shadow-primary/10;
+  @apply hover:-translate-y-1;
+  @apply active:translate-y-0 active:shadow-md;
+}
+
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Loading states */
+.loading {
+  @apply animate-pulse bg-muted/50;
+}
+
+/* Section transitions */
+.section-transition {
+  @apply transition-all duration-500 ease-in-out;
+}
+
+/* Interactive elements */
+.interactive-element {
+  @apply transition-colors duration-200;
+  @apply hover:bg-primary/10 active:bg-primary/20;
+  @apply focus:outline-none focus:ring-2 focus:ring-primary/20;
 }
