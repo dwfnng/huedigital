@@ -139,7 +139,7 @@ export class MemStorage implements IStorage {
         descriptionEn: "Recording of representative royal court music performed in Hue 2023, including famous pieces like Dang Dan Cung and Mung Xuan.",
         type: "audio",
         category: "music",
-        contentUrl: "https://filesamples.com/samples/audio/mp3/sample3.mp3",
+        contentUrl: "https://cdn.huedigital.vn/audio/nha-nhac-2023.mp3",
         thumbnailUrl: "https://i.imgur.com/NNM123.jpg",
         metadata: {
           format: "mp3",
@@ -157,64 +157,14 @@ export class MemStorage implements IStorage {
         descriptionEn: "HD Documentary about the historical development and architectural features of Hue Imperial City, with unique drone footage.",
         type: "video",
         category: "historical_site",
-        contentUrl: "https://filesamples.com/samples/video/mp4/sample_1280x720_5mb.mp4",
+        contentUrl: "https://cdn.huedigital.vn/videos/hoang-cung-hue-2024.mp4",
         thumbnailUrl: "https://i.imgur.com/HCH456.jpg",
         metadata: {
           format: "mp4",
           duration: "35:20",
-          resolution: "1280x720",
+          resolution: "3840x2160",
           language: "Vietnamese with English subtitles",
-          size: "5MB"
-        }
-      },
-      {
-        title: "Trang phục triều Nguyễn qua tài liệu cổ",
-        titleEn: "Nguyen Dynasty Costumes in Historical Documents",
-        description: "Hình ảnh các trang phục cung đình thời Nguyễn, được trích từ các tài liệu gốc và hiện vật bảo tàng.",
-        descriptionEn: "Images of court costumes from the Nguyen Dynasty, extracted from original documents and museum artifacts.",
-        type: "image",
-        category: "culture",
-        contentUrl: "https://picsum.photos/1200/800",
-        thumbnailUrl: "https://picsum.photos/400/300",
-        metadata: {
-          format: "jpg",
-          resolution: "1200x800",
-          year: 2022,
-          source: "Bảo tàng Cổ vật Cung đình Huế"
-        }
-      },
-      {
-        title: "Lịch sử triều Nguyễn",
-        titleEn: "History of the Nguyen Dynasty",
-        description: "Tổng quan về lịch sử triều đại nhà Nguyễn (1802-1945), triều đại phong kiến cuối cùng của Việt Nam.",
-        descriptionEn: "Overview of the history of the Nguyen Dynasty (1802-1945), the last feudal dynasty of Vietnam.",
-        type: "document",
-        category: "history",
-        contentUrl: "https://www.africau.edu/images/default/sample.pdf",
-        thumbnailUrl: "https://i.imgur.com/DOC123.jpg",
-        metadata: {
-          format: "pdf",
-          pages: 24,
-          author: "TS. Nguyễn Văn Minh",
-          year: 2020,
-          size: "3.5MB"
-        }
-      },
-      {
-        title: "Mô hình 3D Cửu Đỉnh",
-        titleEn: "3D Model of the Nine Dynastic Urns",
-        description: "Mô hình 3D chi tiết của Cửu Đỉnh - chín đỉnh đồng lớn đặt trước Thế Miếu trong Đại Nội Huế.",
-        descriptionEn: "Detailed 3D model of the Nine Dynastic Urns - nine large bronze urns placed in front of The Mieu in Hue Imperial City.",
-        type: "3d_model",
-        category: "artifacts",
-        contentUrl: "https://example.com/models/cuu-dinh.glb",
-        thumbnailUrl: "https://picsum.photos/500/500",
-        metadata: {
-          format: "glb",
-          polygons: 150000,
-          textures: "4K",
-          year: 2023,
-          size: "25MB"
+          size: "2.1GB"
         }
       }
     ];

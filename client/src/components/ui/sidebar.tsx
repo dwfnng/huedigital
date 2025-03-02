@@ -552,9 +552,7 @@ const SidebarMenuButton = React.forwardRef<
     },
     ref
   ) => {
-    // Check if props contain href, if so this might be causing nested anchor issues
-    const isLink = 'href' in props;
-    const Comp = asChild ? Slot : (isLink ? "span" : "button")
+    const Comp = asChild ? Slot : "button"
     const { isMobile, state } = useSidebar()
 
     const button = (
