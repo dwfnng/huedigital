@@ -54,7 +54,27 @@ export class MemStorage implements IStorage {
         type: "historical_site",
         latitude: "16.4698",
         longitude: "107.5723",
-        imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Flag_Tower_of_Hu%E1%BA%BF.jpg/1280px-Flag_Tower_of_Hu%E1%BA%BF.jpg"
+        imageUrl: "https://i.imgur.com/FLHx123.jpg"
+      },
+      {
+        name: "Trường Quốc Tử Giám",
+        nameEn: "Quoc Tu Giam School",
+        description: "Trường Quốc Tử Giám là trường học đầu tiên của triều Nguyễn, nơi đào tạo con em các quan lại và những người ưu tú. Được xây dựng năm 1803 dưới thời vua Gia Long.",
+        descriptionEn: "Quoc Tu Giam was the first school of the Nguyen Dynasty, educating children of officials and talented students. Built in 1803 during King Gia Long's reign.",
+        type: "historical_site",
+        latitude: "16.4689",
+        longitude: "107.5735",
+        imageUrl: "https://i.imgur.com/QTG456.jpg"
+      },
+      {
+        name: "Điện Long An",
+        nameEn: "Long An Palace",
+        description: "Điện Long An là nơi trưng bày nhiều cổ vật quý của triều Nguyễn, hiện là Bảo tàng Mỹ thuật Cung đình Huế.",
+        descriptionEn: "Long An Palace now houses the Museum of Royal Fine Arts, displaying precious antiques from the Nguyen Dynasty.",
+        type: "historical_site",
+        latitude: "16.4695",
+        longitude: "107.5774",
+        imageUrl: "https://i.imgur.com/LAN789.jpg"
       },
       {
         name: "Điện Thái Hòa",
@@ -64,31 +84,20 @@ export class MemStorage implements IStorage {
         type: "historical_site",
         latitude: "16.4697",
         longitude: "107.5776",
-        imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Thai_Hoa_Palace.jpg/1280px-Thai_Hoa_Palace.jpg"
+        imageUrl: "https://i.imgur.com/THH123.jpg"
       },
       {
-        name: "Lăng Gia Long",
-        nameEn: "Gia Long Tomb",
-        description: "Lăng Gia Long (Thiên Thọ Lăng) là khu lăng tẩm đầu tiên và lớn nhất của triều Nguyễn, được xây dựng từ năm 1814 đến 1820. Lăng thể hiện sự kết hợp hài hòa giữa kiến trúc và thiên nhiên.",
-        descriptionEn: "Gia Long Tomb (Thien Tho Mausoleum) is the first and largest royal tomb of the Nguyen Dynasty, built from 1814 to 1820. The tomb demonstrates a harmonious blend of architecture and nature.",
+        name: "Hồ Tịnh Tâm",
+        nameEn: "Tinh Tam Lake",
+        description: "Hồ Tịnh Tâm là một trong những hồ cảnh quan đẹp nhất trong Kinh thành Huế, nơi vua chúa thường đến thưởng ngoạn và ngắm hoa sen.",
+        descriptionEn: "Tinh Tam Lake is one of the most beautiful scenic lakes in Hue Citadel, where kings often came to enjoy the scenery and lotus flowers.",
         type: "historical_site",
-        latitude: "16.4736",
-        longitude: "107.2215",
-        imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Gia_Long_tomb.jpg/1280px-Gia_Long_tomb.jpg"
-      },
-      {
-        name: "Đàn Nam Giao",
-        nameEn: "Nam Giao Esplanade",
-        description: "Đàn Nam Giao là nơi các vua triều Nguyễn thực hiện tế lễ Trời Đất hàng năm. Công trình thể hiện quan niệm về vũ trụ của người phương Đông với 3 tầng hình vuông, tròn và bát giác.",
-        descriptionEn: "Nam Giao Esplanade was where Nguyen emperors performed annual ceremonies to Heaven and Earth. Its three-tiered structure represents the Eastern cosmology with square, circular, and octagonal platforms.",
-        type: "historical_site",
-        latitude: "16.4454",
-        longitude: "107.5778",
-        imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Nam_Giao_Esplanade.jpg/1280px-Nam_Giao_Esplanade.jpg"
+        latitude: "16.4705",
+        longitude: "107.5768",
+        imageUrl: "https://i.imgur.com/TTL456.jpg"
       }
     ];
 
-    // Add some initial categories
     const defaultCategories: InsertCategory[] = [
       {
         name: "Di tích lịch sử",
@@ -122,70 +131,40 @@ export class MemStorage implements IStorage {
       }
     ];
 
-    // Add rich media resources
     const defaultResources: InsertResource[] = [
       {
         title: "Nhã nhạc cung đình Huế - Di sản văn hóa thế giới",
         titleEn: "Hue Royal Court Music - World Cultural Heritage",
-        description: "Bản ghi âm các tác phẩm nhã nhạc tiêu biểu được trình diễn tại Huế",
-        descriptionEn: "Recording of representative royal court music performed in Hue",
+        description: "Bản ghi âm các tác phẩm nhã nhạc tiêu biểu được trình diễn tại Huế năm 2023, bao gồm các tác phẩm nổi tiếng như Đăng Đàn Cung và Mừng Xuân.",
+        descriptionEn: "Recording of representative royal court music performed in Hue 2023, including famous pieces like Dang Dan Cung and Mung Xuan.",
         type: "audio",
         category: "music",
-        contentUrl: "https://example.com/audio/royal-court-music.mp3",
-        thumbnailUrl: "https://example.com/images/royal-music-thumb.jpg",
+        contentUrl: "https://cdn.huedigital.vn/audio/nha-nhac-2023.mp3",
+        thumbnailUrl: "https://i.imgur.com/NNM123.jpg",
         metadata: {
           format: "mp3",
           duration: "45:30",
           tracks: 12,
-          year: 2023
+          year: 2023,
+          quality: "320kbps",
+          size: "104MB"
         }
       },
       {
-        title: "Kiến trúc Hoàng thành Huế qua các triều đại",
-        titleEn: "Hue Imperial City Architecture Through Dynasties",
-        description: "Phim tài liệu về lịch sử phát triển và đặc điểm kiến trúc của Hoàng thành Huế",
-        descriptionEn: "Documentary about the historical development and architectural features of Hue Imperial City",
+        title: "Kiến trúc Hoàng cung Huế qua các triều đại",
+        titleEn: "Hue Imperial Palace Architecture Through Dynasties",
+        description: "Phim tài liệu HD về lịch sử phát triển và đặc điểm kiến trúc của Hoàng thành Huế, với những góc quay độc đáo từ flycam.",
+        descriptionEn: "HD Documentary about the historical development and architectural features of Hue Imperial City, with unique drone footage.",
         type: "video",
         category: "historical_site",
-        contentUrl: "https://example.com/videos/imperial-city-history.mp4",
-        thumbnailUrl: "https://example.com/images/imperial-city-thumb.jpg",
+        contentUrl: "https://cdn.huedigital.vn/videos/hoang-cung-hue-2024.mp4",
+        thumbnailUrl: "https://i.imgur.com/HCH456.jpg",
         metadata: {
           format: "mp4",
-          duration: "25:15",
-          resolution: "1920x1080",
-          language: "Vietnamese with English subtitles"
-        }
-      },
-      {
-        title: "Bộ ảnh lăng tẩm triều Nguyễn",
-        titleEn: "Nguyen Dynasty Royal Tombs Photo Collection",
-        description: "Bộ sưu tập hình ảnh chi tiết về kiến trúc và nghệ thuật của các lăng tẩm vua triều Nguyễn",
-        descriptionEn: "Detailed photo collection of architecture and art in Nguyen Dynasty royal tombs",
-        type: "image",
-        category: "royal_tomb",
-        contentUrl: "https://example.com/images/royal-tombs-collection.zip",
-        thumbnailUrl: "https://example.com/images/tombs-thumb.jpg",
-        metadata: {
-          format: "jpg",
-          count: 200,
-          resolution: "4K",
-          year: 2024
-        }
-      },
-      {
-        title: "Mô hình 3D Điện Thái Hòa",
-        titleEn: "Thai Hoa Palace 3D Model",
-        description: "Mô hình 3D chi tiết của Điện Thái Hòa, cho phép khám phá từng chi tiết kiến trúc",
-        descriptionEn: "Detailed 3D model of Thai Hoa Palace, allowing exploration of architectural details",
-        type: "3d_model",
-        category: "royal_architecture",
-        contentUrl: "https://example.com/3d/thai-hoa-palace.glb",
-        thumbnailUrl: "https://example.com/images/thai-hoa-3d-thumb.jpg",
-        metadata: {
-          format: "glb",
-          polygons: "2M",
-          textures: "4K",
-          size: "500MB"
+          duration: "35:20",
+          resolution: "3840x2160",
+          language: "Vietnamese with English subtitles",
+          size: "2.1GB"
         }
       }
     ];
