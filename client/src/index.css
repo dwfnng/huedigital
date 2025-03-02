@@ -4,7 +4,8 @@
 
 @layer base {
   :root {
-    --background-pattern: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23f0f0f0' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    --background-pattern-overlay: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23a78bfa' fill-opacity='0.05'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z'%3E%3C/path%3E%3C/g%3E%3C/svg%3E");
+    --background-pattern-texture: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23a78bfa' fill-opacity='0.03'%3E%3Cpath d='M50 50c0-5.523 4.477-10 10-10s10 4.477 10 10-4.477 10-10 10c0 5.523-4.477 10-10 10s-10-4.477-10-10 4.477-10 10-10zM10 10c0-5.523 4.477-10 10-10s10 4.477 10 10-4.477 10-10 10c0 5.523-4.477 10-10 10S0 25.523 0 20s4.477-10 10-10zm10 8c4.418 0 8-3.582 8-8s-3.582-8-8-8-8 3.582-8 8 3.582 8 8 8zm40 40c4.418 0 8-3.582 8-8s-3.582-8-8-8-8 3.582-8 8 3.582 8 8 8z' /%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
   }
 
   * {
@@ -14,56 +15,98 @@
   body {
     @apply font-sans antialiased text-foreground;
     background-color: hsl(var(--background));
-    background-image: var(--background-pattern);
+    background-image: var(--background-pattern-overlay), var(--background-pattern-texture);
     background-position: center;
     background-repeat: repeat;
+    background-attachment: fixed;
+    background-blend-mode: overlay;
+  }
+
+  .gradient-overlay {
+    @apply absolute inset-0 pointer-events-none;
+    background: radial-gradient(
+      circle at center,
+      rgba(var(--primary-rgb), 0.08) 0%,
+      rgba(var(--primary-rgb), 0.04) 50%,
+      rgba(var(--primary-rgb), 0.02) 100%
+    );
   }
 }
 
-/* Section-specific backgrounds */
+/* Section-specific backgrounds with enhanced gradients */
 .heritage-section {
-  @apply bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-950 dark:to-orange-950;
+  @apply relative bg-gradient-to-br from-red-50/95 to-orange-50/95 dark:from-red-950/95 dark:to-orange-950/95;
+  background-image: radial-gradient(circle at center, rgba(var(--primary-rgb), 0.05) 0%, transparent 70%),
+                    var(--background-pattern-texture);
 }
 
 .culture-section {
-  @apply bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-950 dark:to-teal-950;
+  @apply relative bg-gradient-to-br from-emerald-50/95 to-teal-50/95 dark:from-emerald-950/95 dark:to-teal-950/95;
+  background-image: radial-gradient(circle at center, rgba(var(--primary-rgb), 0.05) 0%, transparent 70%),
+                    var(--background-pattern-texture);
 }
 
 .art-section {
-  @apply bg-gradient-to-br from-purple-50 to-indigo-50 dark:from-purple-950 dark:to-indigo-950;
+  @apply relative bg-gradient-to-br from-purple-50/95 to-indigo-50/95 dark:from-purple-950/95 dark:to-indigo-950/95;
+  background-image: radial-gradient(circle at center, rgba(var(--primary-rgb), 0.05) 0%, transparent 70%),
+                    var(--background-pattern-texture);
 }
 
-@layer utilities {
-  /* Transitions */
-  .transition-smooth {
+.chat-section {
+  @apply relative bg-gradient-to-br from-blue-50/95 to-violet-50/95 dark:from-blue-950/95 dark:to-violet-950/95;
+  background-image: radial-gradient(circle at center, rgba(var(--primary-rgb), 0.05) 0%, transparent 70%),
+                    var(--background-pattern-texture);
+}
+
+.ticket-section {
+  @apply relative bg-gradient-to-br from-amber-50/95 to-yellow-50/95 dark:from-amber-950/95 dark:to-yellow-950/95;
+  background-image: radial-gradient(circle at center, rgba(var(--primary-rgb), 0.05) 0%, transparent 70%),
+                    var(--background-pattern-texture);
+}
+
+.forum-section {
+  @apply relative bg-gradient-to-br from-cyan-50/95 to-sky-50/95 dark:from-cyan-950/95 dark:to-sky-950/95;
+  background-image: radial-gradient(circle at center, rgba(var(--primary-rgb), 0.05) 0%, transparent 70%),
+                    var(--background-pattern-texture);
+}
+
+.contribution-section {
+  @apply relative bg-gradient-to-br from-lime-50/95 to-green-50/95 dark:from-lime-950/95 dark:to-green-950/95;
+  background-image: radial-gradient(circle at center, rgba(var(--primary-rgb), 0.05) 0%, transparent 70%),
+                    var(--background-pattern-texture);
+}
+
+.transition-smooth {
     @apply transition-all duration-300 ease-in-out;
   }
 
-  .hover-lift {
+.hover-lift {
     @apply hover:-translate-y-1 transition-transform duration-200;
   }
 
-  .hover-glow {
+.hover-glow {
     @apply hover:shadow-lg hover:shadow-primary/10 transition-shadow duration-200;
   }
 
-  .hover-scale {
+.hover-scale {
     @apply hover:scale-105 transition-transform duration-200;
   }
 
-  /* Animations */
-  .fade-in {
+.fade-in {
     @apply opacity-0 animate-[fadeIn_0.5s_ease-in-out_forwards];
   }
 
-  .slide-in {
+.slide-in {
     @apply translate-y-4 opacity-0 animate-[slideIn_0.5s_ease-out_forwards];
   }
 
-  .pop-in {
+.pop-in {
     @apply scale-95 opacity-0 animate-[popIn_0.3s_ease-out_forwards];
   }
-}
+
+.floating {
+    animation: floating 3s ease-in-out infinite;
+  }
 
 /* Animation Keyframes */
 @keyframes fadeIn {
@@ -99,12 +142,31 @@
   }
 }
 
+@keyframes floating {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
 /* Card hover effects */
 .card-hover {
   @apply transition-all duration-300 ease-in-out;
   @apply hover:shadow-lg hover:shadow-primary/10;
   @apply hover:-translate-y-1;
   @apply active:translate-y-0 active:shadow-md;
+}
+
+/* Glass effect */
+.glass {
+  @apply bg-background/80 backdrop-blur-sm;
+  @apply border border-white/20;
+  @apply shadow-xl shadow-black/5;
 }
 
 /* Smooth scroll behavior */
@@ -127,4 +189,23 @@ html {
   @apply transition-colors duration-200;
   @apply hover:bg-primary/10 active:bg-primary/20;
   @apply focus:outline-none focus:ring-2 focus:ring-primary/20;
+}
+
+/* Custom scrollbar */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--primary)) transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: hsl(var(--primary)/0.3);
+  border-radius: 20px;
 }
