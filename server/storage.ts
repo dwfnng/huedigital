@@ -205,6 +205,33 @@ export class MemStorage implements IStorage {
         imageUrl: "/attached_assets/pexels-uyen-bui-205258074-11937353.jpg",
         category: "art",
         stock: "20"
+      },
+      {
+        id: this.getNextId(),
+        name: "Áo dài truyền thống",
+        description: "Áo dài may thủ công với chất liệu lụa Huế",
+        price: "850000",
+        imageUrl: "/attached_assets/pexels-th-vinh-flute-822138648-21011475.jpg",
+        category: "clothing",
+        stock: "15"
+      },
+      {
+        id: this.getNextId(),
+        name: "Tượng rồng đá Huế",
+        description: "Tượng rồng đá điêu khắc thủ công",
+        price: "450000",
+        imageUrl: "/attached_assets/pexels-vinhb-29790971.jpg",
+        category: "sculpture",
+        stock: "10"
+      },
+      {
+        id: this.getNextId(),
+        name: "Trầm hương Huế",
+        description: "Trầm hương nguyên chất từ Huế",
+        price: "180000",
+        imageUrl: "/attached_assets/pexels-vietnam-photographer-27418892.jpg",
+        category: "traditional",
+        stock: "30"
       }
     ];
 
