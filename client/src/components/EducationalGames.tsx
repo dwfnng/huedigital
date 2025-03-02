@@ -1,15 +1,15 @@
-
-import { useState, useEffect } from "react";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
+import { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Progress } from "@/components/ui/progress";
-import { Brain, Medal, Timer, ClipboardList } from "lucide-react";
+import { Brain, Timer, ClipboardList, Camera } from "lucide-react";
+import QuizGame from "./games/QuizGame";
+import TimelineGame from "./games/TimelineGame";
+import WordPuzzleGame from "./games/WordPuzzleGame";
+import RolePlayGame from "./games/RolePlayGame"; // Added import
+import BuildingGame from "./games/BuildingGame"; // Added import
+import ARGame from "./games/ARGame"; // Added import
 
-// Historical Timeline Game
+// Historical Timeline Game (from original code)
 function TimelineGame() {
   const [events, setEvents] = useState<{year: number, event: string, isCorrect?: boolean}[]>([
     { year: 1802, event: "Vua Gia Long lên ngôi, thành lập triều Nguyễn" },
@@ -34,18 +34,18 @@ function TimelineGame() {
     const updatedEvents = [...shuffledEvents];
     const currentEvent = updatedEvents[currentStep];
     const isCorrect = currentEvent.year === selectedYear;
-    
+
     updatedEvents[currentStep] = {
       ...currentEvent,
       isCorrect
     };
-    
+
     setShuffledEvents(updatedEvents);
-    
+
     if (isCorrect) {
       setScore(score + 1);
     }
-    
+
     if (currentStep < events.length - 1) {
       setCurrentStep(currentStep + 1);
     } else {
@@ -80,14 +80,14 @@ function TimelineGame() {
               <div className="p-4 bg-secondary/20 rounded-lg mb-4">
                 <p className="text-center font-medium">{shuffledEvents[currentStep]?.event}</p>
               </div>
-              
+
               <div className="mt-4">
                 <h4 className="text-sm font-medium mb-2">Chọn năm diễn ra sự kiện:</h4>
                 <div className="grid grid-cols-3 gap-2">
                   {availableYears.map((year) => (
-                    <Button 
-                      key={year} 
-                      variant="outline" 
+                    <Button
+                      key={year}
+                      variant="outline"
                       onClick={() => handleDragEvents(year)}
                     >
                       {year}
@@ -113,7 +113,8 @@ function TimelineGame() {
   );
 }
 
-// Historical Quiz Game
+
+// Historical Quiz Game (from original code)
 function QuizGame() {
   const allQuestions = [
     {
@@ -142,7 +143,7 @@ function QuizGame() {
       answer: 1
     }
   ];
-  
+
   const [questions, setQuestions] = useState<typeof allQuestions>([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [score, setScore] = useState(0);
@@ -159,7 +160,7 @@ function QuizGame() {
 
   useEffect(() => {
     let timer: number;
-    
+
     if (isTimerActive && timeLeft > 0 && !quizComplete) {
       timer = window.setTimeout(() => {
         setTimeLeft(timeLeft - 1);
@@ -167,7 +168,7 @@ function QuizGame() {
     } else if (timeLeft === 0 && !quizComplete) {
       handleNext();
     }
-    
+
     return () => {
       if (timer) clearTimeout(timer);
     };
@@ -176,7 +177,7 @@ function QuizGame() {
   const handleOptionSelect = (index: number) => {
     setSelectedOption(index);
     setIsTimerActive(false);
-    
+
     if (index === questions[currentQuestion]?.answer) {
       setScore(score + 1);
     }
@@ -226,18 +227,18 @@ function QuizGame() {
                 {timeLeft}s
               </span>
             </div>
-            
+
             <div className="mb-6">
               <h3 className="font-medium mb-4">{questions[currentQuestion]?.question}</h3>
-              
+
               <RadioGroup value={selectedOption?.toString()} className="space-y-3">
                 {questions[currentQuestion]?.options.map((option, index) => (
-                  <div 
-                    key={index} 
+                  <div
+                    key={index}
                     className={`flex items-center space-x-2 rounded-lg border p-3 cursor-pointer ${
-                      selectedOption !== null ? 
-                        index === questions[currentQuestion]?.answer 
-                          ? 'border-green-500 bg-green-50' 
+                      selectedOption !== null ?
+                        index === questions[currentQuestion]?.answer
+                          ? 'border-green-500 bg-green-50'
                           : selectedOption === index
                             ? 'border-red-500 bg-red-50'
                             : ''
@@ -257,15 +258,15 @@ function QuizGame() {
                 ))}
               </RadioGroup>
             </div>
-            
-            <Button 
-              className="w-full" 
+
+            <Button
+              className="w-full"
               onClick={handleNext}
               disabled={selectedOption === null && isTimerActive}
             >
               {currentQuestion === questions.length - 1 ? 'Kết thúc' : 'Câu tiếp theo'}
             </Button>
-            
+
             <Progress value={(currentQuestion / questions.length) * 100} className="h-2 mt-4" />
           </>
         ) : (
@@ -283,7 +284,9 @@ function QuizGame() {
   );
 }
 
-// Word Puzzle Game
+
+
+// Word Puzzle Game (from original code)
 function WordPuzzleGame() {
   const allWords = [
     { word: "HOANGTHANHHUẾ", clue: "Di sản văn hóa thế giới tại trung tâm thành phố Huế" },
@@ -294,7 +297,7 @@ function WordPuzzleGame() {
     { word: "CỬUVỊTHẦNCÔNG", clue: "Chín khẩu đại bác được xem là vật trấn quốc thời Nguyễn" },
     { word: "THƯƠNGLÀNG", clue: "Con thuyền dùng để đi nghe ca Huế trên sông Hương" }
   ];
-  
+
   const [puzzleWords, setPuzzleWords] = useState<typeof allWords>([]);
   const [currentWord, setCurrentWord] = useState(0);
   const [userGuess, setUserGuess] = useState("");
@@ -312,22 +315,22 @@ function WordPuzzleGame() {
 
   const handleGuess = () => {
     if (!userGuess) return;
-    
+
     const letter = userGuess.toUpperCase();
-    
+
     if (!guessedLetters.includes(letter)) {
       const newGuessedLetters = [...guessedLetters, letter];
       setGuessedLetters(newGuessedLetters);
-      
+
       if (!puzzleWords[currentWord]?.word.includes(letter)) {
         setAttempts(attempts + 1);
       }
-      
+
       // Check if word is complete
       const isWordComplete = puzzleWords[currentWord]?.word.split('').every(
         char => newGuessedLetters.includes(char)
       );
-      
+
       if (isWordComplete) {
         if (currentWord < puzzleWords.length - 1) {
           setCurrentWord(currentWord + 1);
@@ -339,7 +342,7 @@ function WordPuzzleGame() {
           setGameComplete(true);
         }
       }
-      
+
       // Check if game over
       if (attempts + 1 >= maxAttempts) {
         if (currentWord < puzzleWords.length - 1) {
@@ -351,7 +354,7 @@ function WordPuzzleGame() {
         }
       }
     }
-    
+
     setUserGuess("");
   };
 
@@ -367,7 +370,7 @@ function WordPuzzleGame() {
 
   const renderWord = () => {
     if (!puzzleWords[currentWord]) return null;
-    
+
     return puzzleWords[currentWord].word.split('').map((letter, index) => (
       <div key={index} className="w-8 h-10 border-b-2 border-primary flex items-center justify-center mx-1">
         <span className="text-xl font-bold">
@@ -398,15 +401,15 @@ function WordPuzzleGame() {
                 <span className="text-sm font-medium">Từ {currentWord + 1}/{puzzleWords.length}</span>
                 <span className="text-sm">Còn lại: {maxAttempts - attempts} lượt</span>
               </div>
-              
+
               <div className="p-3 bg-secondary/20 rounded-lg mb-4">
                 <p className="text-center">{puzzleWords[currentWord]?.clue}</p>
               </div>
-              
+
               <div className="flex flex-wrap justify-center my-6">
                 {renderWord()}
               </div>
-              
+
               <div className="mb-4">
                 <p className="text-sm mb-2">Đã đoán ({guessedLetters.length}):</p>
                 <div className="flex flex-wrap gap-1">
@@ -417,9 +420,9 @@ function WordPuzzleGame() {
                   ))}
                 </div>
               </div>
-              
+
               <div className="flex space-x-2">
-                <Input 
+                <Input
                   value={userGuess}
                   onChange={(e) => setUserGuess(e.target.value)}
                   maxLength={1}
@@ -433,7 +436,7 @@ function WordPuzzleGame() {
                 <Button onClick={handleGuess}>Đoán</Button>
               </div>
             </div>
-            
+
             <Progress value={((maxAttempts - attempts) / maxAttempts) * 100} className="h-2 mt-4" />
           </>
         ) : (
@@ -453,27 +456,60 @@ function WordPuzzleGame() {
 
 export default function EducationalGames() {
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-2">Game giáo dục</h1>
-      <p className="text-muted-foreground mb-6">
+    <div className="container mx-auto p-2 md:p-4">
+      <h1 className="text-2xl md:text-3xl font-bold mb-2 slide-in">Game giáo dục</h1>
+      <p className="text-sm md:text-base text-muted-foreground mb-6 slide-in" style={{ animationDelay: '0.1s' }}>
         Tìm hiểu về lịch sử và văn hóa Huế qua các trò chơi tương tác
       </p>
-      
+
       <Tabs defaultValue="quiz" className="w-full">
-        <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="quiz">Câu đố lịch sử</TabsTrigger>
-          <TabsTrigger value="timeline">Dòng thời gian</TabsTrigger>
-          <TabsTrigger value="word">Điền từ bí ẩn</TabsTrigger>
+        <TabsList className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2">
+          <TabsTrigger value="quiz" className="text-sm">
+            <Brain className="w-4 h-4 mr-2" />
+            <span className="hidden md:inline">Câu đố</span>
+          </TabsTrigger>
+          <TabsTrigger value="timeline" className="text-sm">
+            <Timer className="w-4 h-4 mr-2" />
+            <span className="hidden md:inline">Dòng thời gian</span>
+          </TabsTrigger>
+          <TabsTrigger value="word" className="text-sm">
+            <ClipboardList className="w-4 h-4 mr-2" />
+            <span className="hidden md:inline">Điền từ</span>
+          </TabsTrigger>
+          <TabsTrigger value="roleplay" className="text-sm">
+            <Crown className="w-4 h-4 mr-2" /> {/* Crown icon needs to be imported */}
+            <span className="hidden md:inline">Nhập vai</span>
+          </TabsTrigger>
+          <TabsTrigger value="building" className="text-sm">
+            <Building2 className="w-4 h-4 mr-2" /> {/* Building2 icon needs to be imported */}
+            <span className="hidden md:inline">Xây dựng</span>
+          </TabsTrigger>
+          <TabsTrigger value="ar" className="text-sm">
+            <Camera className="w-4 h-4 mr-2" />
+            <span className="hidden md:inline">AR</span>
+          </TabsTrigger>
         </TabsList>
-        <TabsContent value="quiz" className="mt-4">
-          <QuizGame />
-        </TabsContent>
-        <TabsContent value="timeline" className="mt-4">
-          <TimelineGame />
-        </TabsContent>
-        <TabsContent value="word" className="mt-4">
-          <WordPuzzleGame />
-        </TabsContent>
+
+        <div className="mt-4 md:mt-6">
+          <TabsContent value="quiz">
+            <QuizGame />
+          </TabsContent>
+          <TabsContent value="timeline">
+            <TimelineGame />
+          </TabsContent>
+          <TabsContent value="word">
+            <WordPuzzleGame />
+          </TabsContent>
+          <TabsContent value="roleplay">
+            <RolePlayGame />
+          </TabsContent>
+          <TabsContent value="building">
+            <BuildingGame />
+          </TabsContent>
+          <TabsContent value="ar">
+            <ARGame />
+          </TabsContent>
+        </div>
       </Tabs>
     </div>
   );
