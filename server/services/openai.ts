@@ -5,7 +5,7 @@ import { storage } from "../storage";
 
 // Thiết lập OpenAI với API key
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY || "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",
+  apiKey: process.env.OPENAI_API_KEY,
 });
 
 // Các câu trả lời mẫu khi không thể sử dụng API
