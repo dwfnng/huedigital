@@ -1,0 +1,22 @@
+<svg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="600" fill="#f8fafc"/>
+  
+  <!-- River -->
+  <path d="M0 300 Q 400 250, 800 300" stroke="#93c5fd" stroke-width="40" fill="none"/>
+  
+  <!-- City blocks -->
+  <rect x="300" y="200" width="200" height="200" fill="#e2e8f0" stroke="#cbd5e1"/>
+  
+  <!-- Citadel outline -->
+  <rect x="350" y="250" width="100" height="100" fill="none" stroke="#64748b" stroke-width="2"/>
+  
+  <!-- Roads -->
+  <line x1="0" y1="300" x2="800" y2="300" stroke="#94a3b8" stroke-width="2"/>
+  <line x1="400" y1="0" x2="400" y2="600" stroke="#94a3b8" stroke-width="2"/>
+  
+  <!-- Text -->
+  <text x="400" y="580" text-anchor="middle" font-family="Arial" font-size="12" fill="#475569">
+    Bản đồ khu vực Cố đô Huế
+  </text>
+</svg>
