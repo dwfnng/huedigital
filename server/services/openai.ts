@@ -58,7 +58,7 @@ Trả lời bằng tiếng Việt, trừ khi người dùng hỏi bằng tiếng
             { role: "system", content: systemPrompt },
             ...messages
           ],
-          model: "gpt-4",
+          model: "gpt-3.5-turbo",
           temperature: 0.7,
           max_tokens: 800,
           presence_penalty: 0.6,
