@@ -10,6 +10,14 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Download, ExternalLink, Info } from "lucide-react";
 import type { Resource } from "@shared/schema";
 
+interface ResourceMetadata {
+  format?: string;
+  resolution?: string;
+  duration?: string;
+  size?: string;
+  [key: string]: unknown;
+}
+
 interface ResourceDetailsProps {
   resource: Resource | null;
   onClose: () => void;
@@ -21,7 +29,7 @@ export default function ResourceDetails({
 }: ResourceDetailsProps) {
   if (!resource) return null;
 
-  const formatMetadata = (metadata: Record<string, unknown> | null) => {
+  const formatMetadata = (metadata: ResourceMetadata | null) => {
     if (!metadata) return null;
     const entries = Object.entries(metadata);
     return (
@@ -42,49 +50,49 @@ export default function ResourceDetails({
     switch (resource.type) {
       case "image":
         return (
-          <div className="relative">
+          <div className="relative aspect-video">
             <img
               src={resource.contentUrl}
               alt={resource.title}
-              className="w-full rounded-lg"
+              className="w-full h-full object-contain rounded-lg"
               loading="lazy"
               onError={(e) => {
-                e.currentTarget.onerror = null;
-                e.currentTarget.src = '/placeholder-image.png';
+                const imgEl = e.currentTarget;
+                imgEl.onerror = null;
+                imgEl.src = 'https://placehold.co/600x400?text=Hình+ảnh+không+khả+dụng';
               }}
             />
-            {resource.metadata?.resolution && (
+            {(resource.metadata as ResourceMetadata)?.resolution && (
               <div className="absolute bottom-2 right-2 bg-black/50 text-white px-2 py-1 rounded text-xs">
-                {resource.metadata.resolution}
+                {(resource.metadata as ResourceMetadata).resolution}
               </div>
             )}
           </div>
         );
       case "video":
         return (
-          <div className="relative">
+          <div className="relative aspect-video">
             <video
               src={resource.contentUrl}
-              poster={resource.thumbnailUrl || '/video-placeholder.png'}
+              poster={resource.thumbnailUrl || 'https://placehold.co/600x400?text=Video+không+khả+dụng'}
               controls
-              className="w-full rounded-lg"
+              className="w-full h-full object-contain rounded-lg"
               preload="metadata"
               onError={(e) => {
                 const videoEl = e.currentTarget;
                 videoEl.onerror = null;
-                // Display error message if video fails to load
                 const parent = videoEl.parentElement;
                 if (parent) {
                   const errorDiv = document.createElement('div');
-                  errorDiv.className = 'p-4 bg-red-50 text-red-500 rounded-lg mt-2 text-center';
-                  errorDiv.innerText = 'Không thể tải video. Vui lòng thử lại sau.';
+                  errorDiv.className = 'absolute inset-0 flex items-center justify-center bg-muted rounded-lg';
+                  errorDiv.innerHTML = '<p class="text-sm text-muted-foreground">Video không khả dụng</p>';
                   parent.appendChild(errorDiv);
                 }
               }}
             />
-            {resource.metadata?.resolution && (
+            {(resource.metadata as ResourceMetadata)?.resolution && (
               <div className="absolute top-2 right-2 bg-black/50 text-white px-2 py-1 rounded text-xs">
-                {resource.metadata.resolution}
+                {(resource.metadata as ResourceMetadata).resolution}
               </div>
             )}
           </div>
@@ -98,8 +106,9 @@ export default function ResourceDetails({
                 alt={resource.title}
                 className="w-full h-48 object-cover rounded-lg"
                 onError={(e) => {
-                  e.currentTarget.onerror = null;
-                  e.currentTarget.src = '/audio-placeholder.png';
+                  const imgEl = e.currentTarget;
+                  imgEl.onerror = null;
+                  imgEl.src = 'https://placehold.co/600x400?text=Hình+ảnh+không+khả+dụng';
                 }}
               />
             )}
@@ -108,6 +117,17 @@ export default function ResourceDetails({
               controls
               className="w-full"
               preload="metadata"
+              onError={(e) => {
+                const audioEl = e.currentTarget;
+                audioEl.onerror = null;
+                const parent = audioEl.parentElement;
+                if (parent) {
+                  const errorDiv = document.createElement('div');
+                  errorDiv.className = 'p-4 bg-muted rounded-lg text-center';
+                  errorDiv.innerHTML = '<p class="text-sm text-muted-foreground">Âm thanh không khả dụng</p>';
+                  parent.appendChild(errorDiv);
+                }
+              }}
             />
           </div>
         );
@@ -117,6 +137,11 @@ export default function ResourceDetails({
             src={resource.thumbnailUrl}
             alt={resource.title}
             className="w-full h-48 object-cover rounded-lg"
+            onError={(e) => {
+              const imgEl = e.currentTarget;
+              imgEl.onerror = null;
+              imgEl.src = 'https://placehold.co/600x400?text=Hình+ảnh+không+khả+dụng';
+            }}
           />
         ) : null;
     }
@@ -151,7 +176,7 @@ export default function ResourceDetails({
                   <Info className="h-4 w-4 text-muted-foreground" />
                   <h4 className="font-medium">Thông tin chi tiết</h4>
                 </div>
-                {formatMetadata(resource.metadata as Record<string, unknown>)}
+                {formatMetadata(resource.metadata as ResourceMetadata)}
               </div>
             )}
 
@@ -166,7 +191,12 @@ export default function ResourceDetails({
               <Button
                 variant="outline"
                 className="flex-1"
-                onClick={() => window.open(resource.contentUrl, '_blank')}
+                onClick={() => {
+                  const link = document.createElement('a');
+                  link.href = resource.contentUrl;
+                  link.download = resource.title;
+                  link.click();
+                }}
               >
                 <Download className="mr-2 h-4 w-4" />
                 Tải xuống
