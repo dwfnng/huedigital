@@ -62,22 +62,24 @@ export default function ResourceDetails({
       case "image":
         return (
           <motion.div 
-            className="relative aspect-video bg-black/5 rounded-lg overflow-hidden"
+            className="relative bg-black/5 rounded-lg overflow-hidden"
             initial="hidden"
             animate="visible"
             variants={fadeIn}
           >
-            <img
-              src={resource.contentUrl}
-              alt={resource.title}
-              className="w-full h-full object-contain transition-transform hover:scale-105"
-              loading="lazy"
-              onError={(e) => {
-                const imgEl = e.currentTarget;
-                imgEl.onerror = null;
-                imgEl.src = 'https://placehold.co/600x400?text=Hình+ảnh+không+khả+dụng';
-              }}
-            />
+            <div className="relative pt-[56.25%]">
+              <img
+                src={resource.contentUrl}
+                alt={resource.title}
+                className="absolute inset-0 w-full h-full object-contain transition-transform hover:scale-105"
+                loading="lazy"
+                onError={(e) => {
+                  const imgEl = e.currentTarget;
+                  imgEl.onerror = null;
+                  imgEl.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24"%3E%3Cpath fill="%23999" d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/%3E%3C/svg%3E';
+                }}
+              />
+            </div>
             {(resource.metadata as ResourceMetadata)?.resolution && (
               <div className="absolute bottom-2 right-2 bg-black/50 backdrop-blur-sm text-white px-3 py-1.5 rounded-full text-xs">
                 {(resource.metadata as ResourceMetadata).resolution}
@@ -88,29 +90,32 @@ export default function ResourceDetails({
       case "video":
         return (
           <motion.div 
-            className="relative aspect-video bg-black/5 rounded-lg overflow-hidden"
+            className="relative bg-black/5 rounded-lg overflow-hidden"
             initial="hidden"
             animate="visible"
             variants={fadeIn}
           >
-            <video
-              src={resource.contentUrl}
-              poster={resource.thumbnailUrl || 'https://placehold.co/600x400?text=Video+không+khả+dụng'}
-              controls
-              className="w-full h-full object-contain"
-              preload="metadata"
-              onError={(e) => {
-                const videoEl = e.currentTarget;
-                videoEl.onerror = null;
-                const parent = videoEl.parentElement;
-                if (parent) {
-                  const errorDiv = document.createElement('div');
-                  errorDiv.className = 'absolute inset-0 flex items-center justify-center bg-muted/90 backdrop-blur-sm rounded-lg';
-                  errorDiv.innerHTML = '<p class="text-sm text-muted-foreground">Video không khả dụng</p>';
-                  parent.appendChild(errorDiv);
-                }
-              }}
-            />
+            <div className="relative pt-[56.25%]">
+              <video
+                src={resource.contentUrl}
+                poster={resource.thumbnailUrl || 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24"%3E%3Cpath fill="%23999" d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/%3E%3C/svg%3E'}
+                controls
+                preload="metadata"
+                className="absolute inset-0 w-full h-full object-contain bg-black"
+                controlsList="nodownload"
+                onError={(e) => {
+                  const videoEl = e.currentTarget;
+                  videoEl.onerror = null;
+                  const parent = videoEl.parentElement;
+                  if (parent) {
+                    const errorDiv = document.createElement('div');
+                    errorDiv.className = 'absolute inset-0 flex items-center justify-center bg-muted/90 backdrop-blur-sm rounded-lg';
+                    errorDiv.innerHTML = '<p class="text-sm text-muted-foreground">Video không khả dụng</p>';
+                    parent.appendChild(errorDiv);
+                  }
+                }}
+              />
+            </div>
             {(resource.metadata as ResourceMetadata)?.resolution && (
               <div className="absolute top-2 right-2 bg-black/50 backdrop-blur-sm text-white px-3 py-1.5 rounded-full text-xs">
                 {(resource.metadata as ResourceMetadata).resolution}
@@ -128,16 +133,18 @@ export default function ResourceDetails({
           >
             {resource.thumbnailUrl && (
               <div className="relative overflow-hidden rounded-lg">
-                <img
-                  src={resource.thumbnailUrl}
-                  alt={resource.title}
-                  className="w-full h-48 object-cover transition-transform hover:scale-105"
-                  onError={(e) => {
-                    const imgEl = e.currentTarget;
-                    imgEl.onerror = null;
-                    imgEl.src = 'https://placehold.co/600x400?text=Hình+ảnh+không+khả+dụng';
-                  }}
-                />
+                <div className="relative pt-[56.25%]">
+                  <img
+                    src={resource.thumbnailUrl}
+                    alt={resource.title}
+                    className="absolute inset-0 w-full h-full object-cover transition-transform hover:scale-105"
+                    onError={(e) => {
+                      const imgEl = e.currentTarget;
+                      imgEl.onerror = null;
+                      imgEl.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24"%3E%3Cpath fill="%23999" d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/%3E%3C/svg%3E';
+                    }}
+                  />
+                </div>
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
               </div>
             )}
@@ -147,6 +154,7 @@ export default function ResourceDetails({
                 controls
                 className="w-full"
                 preload="metadata"
+                controlsList="nodownload"
                 onError={(e) => {
                   const audioEl = e.currentTarget;
                   audioEl.onerror = null;
@@ -170,16 +178,18 @@ export default function ResourceDetails({
             animate="visible"
             variants={fadeIn}
           >
-            <img
-              src={resource.thumbnailUrl}
-              alt={resource.title}
-              className="w-full h-48 object-cover transition-transform hover:scale-105"
-              onError={(e) => {
-                const imgEl = e.currentTarget;
-                imgEl.onerror = null;
-                imgEl.src = 'https://placehold.co/600x400?text=Hình+ảnh+không+khả+dụng';
-              }}
-            />
+            <div className="relative pt-[56.25%]">
+              <img
+                src={resource.thumbnailUrl}
+                alt={resource.title}
+                className="absolute inset-0 w-full h-full object-cover transition-transform hover:scale-105"
+                onError={(e) => {
+                  const imgEl = e.currentTarget;
+                  imgEl.onerror = null;
+                  imgEl.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24"%3E%3Cpath fill="%23999" d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/%3E%3C/svg%3E';
+                }}
+              />
+            </div>
             <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
           </motion.div>
         ) : null;
