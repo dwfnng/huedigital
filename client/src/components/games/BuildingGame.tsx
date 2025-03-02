@@ -245,12 +245,12 @@ export default function BuildingGame() {
             }}
           >
             <Tabs defaultValue="foundation" className="space-y-6">
-              <TabsList className="w-full grid grid-cols-3">
-                <TabsTrigger value="foundation">Nền móng</TabsTrigger>
-                <TabsTrigger value="columns">Cột trụ</TabsTrigger>
-                <TabsTrigger value="decoration">Trang trí</TabsTrigger>
-                <TabsTrigger value="landscaping">Cảnh quan</TabsTrigger>
-                <TabsTrigger value="colors">Màu sắc</TabsTrigger>
+              <TabsList className="w-full grid grid-cols-5 gap-2">
+                <TabsTrigger value="foundation" className="text-sm">Nền móng</TabsTrigger>
+                <TabsTrigger value="columns" className="text-sm">Cột trụ</TabsTrigger>
+                <TabsTrigger value="decoration" className="text-sm">Trang trí</TabsTrigger>
+                <TabsTrigger value="landscaping" className="text-sm">Cảnh quan</TabsTrigger>
+                <TabsTrigger value="colors" className="text-sm">Màu sắc</TabsTrigger>
               </TabsList>
 
               <ScrollArea className="h-[400px] rounded-md border p-4">

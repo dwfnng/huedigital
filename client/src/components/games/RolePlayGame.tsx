@@ -28,7 +28,7 @@ const gameSteps: GameStep[] = [
     id: "location",
     title: "Chọn vị trí xây dựng kinh đô",
     description: "Thưa bệ hạ, nơi đâu sẽ là vị trí lý tưởng để xây dựng kinh đô mới của triều Nguyễn?",
-    backgroundImage: "/attached_assets/hue-landscape.jpg",
+    backgroundImage: "/images/hue-landscape.jpg",
     choices: [
       {
         id: "hue",
@@ -36,7 +36,7 @@ const gameSteps: GameStep[] = [
         result: "Một lựa chọn sáng suốt! Vùng đất Phú Xuân nằm ở vị trí trung tâm đất nước, có núi sông bao bọc, địa thế hiểm yếu, thuận lợi cho việc phòng thủ và phát triển.",
         score: 10,
         icon: <MapPin className="h-6 w-6" />,
-        imageUrl: "/attached_assets/phu-xuan.jpg",
+        imageUrl: "/images/phu-xuan.jpg",
         historicalInfo: "Phú Xuân từng là kinh đô của chúa Nguyễn từ thế kỷ 17, với vị trí địa lý đắc địa nằm giữa hai miền Nam - Bắc. Địa thế này giúp kiểm soát toàn bộ lãnh thổ và phát triển thương mại thuận lợi."
       },
       {
@@ -45,7 +45,7 @@ const gameSteps: GameStep[] = [
         result: "Thăng Long tuy là kinh đô cũ nhưng nằm quá xa phương Nam, khó kiểm soát toàn bộ lãnh thổ. Các di tích của nhà Lê cũng có thể gây ảnh hưởng tới sự chính thống của triều Nguyễn.",
         score: 5,
         icon: <Building2 className="h-6 w-6" />,
-        imageUrl: "/attached_assets/thang-long.jpg",
+        imageUrl: "/images/thang-long.jpg",
         historicalInfo: "Thăng Long là kinh đô của các triều đại phong kiến từ thời Lý, với hệ thống thành quách và cung điện đồ sộ. Tuy nhiên, vị trí này không phù hợp với chiến lược cai trị của triều Nguyễn."
       },
       {
@@ -54,7 +54,7 @@ const gameSteps: GameStep[] = [
         result: "Gia Định tuy là căn cứ địa cũ nhưng nằm quá xa phương Bắc, không thuận lợi cho việc cai quản toàn quốc. Khí hậu nhiệt đới và địa hình đồng bằng cũng không lý tưởng cho việc xây dựng cung điện.",
         score: 5,
         icon: <Building2 className="h-6 w-6" />,
-        imageUrl: "/attached_assets/gia-dinh.jpg",
+        imageUrl: "/images/gia-dinh.jpg",
         historicalInfo: "Gia Định là vùng đất trù phú, từng là căn cứ địa của chúa Nguyễn trong thời kỳ Nam-Bắc phân tranh. Tuy nhiên, vị trí này quá xa trung tâm đất nước và thiếu yếu tố phong thủy cần thiết cho một kinh đô."
       }
     ]
@@ -63,7 +63,7 @@ const gameSteps: GameStep[] = [
     id: "geomancy",
     title: "Chọn phương án phong thủy",
     description: "Các nhà phong thủy đã khảo sát địa thế, bệ hạ chọn phương án nào để xây dựng kinh thành?",
-    backgroundImage: "/attached_assets/hue-aerial.jpg",
+    backgroundImage: "/images/hue-aerial.jpg",
     choices: [
       {
         id: "mountain_river",
@@ -71,7 +71,7 @@ const gameSteps: GameStep[] = [
         result: "Xuất sắc! Núi Ngự Bình như án ngự phía Nam, sông Hương uốn quanh như rồng chầu, tạo nên thế đất 'tọa sơn hướng thủy' hoàn hảo theo phong thủy.",
         score: 10,
         icon: <Wind className="h-6 w-6" />,
-        imageUrl: "/attached_assets/ngu-binh.jpg",
+        imageUrl: "/images/ngu-binh.jpg",
         historicalInfo: "Núi Ngự Bình và sông Hương tạo nên địa thế 'tọa sơn hướng thủy' lý tưởng. Theo quan niệm phong thủy, đây là cách bố trí mang lại sự thịnh vượng và bền vững cho triều đại."
       },
       {
@@ -80,7 +80,7 @@ const gameSteps: GameStep[] = [
         result: "Đất bằng phẳng tuy dễ xây dựng nhưng thiếu các yếu tố phong thủy quan trọng, không tạo được thế đất vững mạnh cho kinh đô.",
         score: 5,
         icon: <Wind className="h-6 w-6" />,
-        imageUrl: "/attached_assets/flat-land.jpg",
+        imageUrl: "/images/flat-land.jpg",
         historicalInfo: "Theo nguyên lý phong thủy cổ đại, địa thế bằng phẳng thiếu sự che chắn tự nhiên và không có điểm nhấn địa lý để tạo nên khí thế cho một kinh đô."
       },
       {
@@ -89,7 +89,7 @@ const gameSteps: GameStep[] = [
         result: "Vị trí quá gần biển không tốt cho phong thủy, dễ bị ảnh hưởng bởi bão tố và thủy triều, không phù hợp làm kinh đô.",
         score: 5,
         icon: <Wind className="h-6 w-6" />,
-        imageUrl: "/attached_assets/coastal-area.jpg",
+        imageUrl: "/images/coastal-area.jpg",
         historicalInfo: "Mặc dù thuận lợi cho giao thương, nhưng vị trí ven biển thường chịu ảnh hưởng của thiên tai và không phù hợp với quan niệm 'an cư' của một kinh đô."
       }
     ]
@@ -158,6 +158,10 @@ export default function RolePlayGame() {
     setSelectedChoice(null);
   };
 
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    e.currentTarget.src = '/images/placeholder.jpg';
+  };
+
   return (
     <Card className="w-full max-w-4xl mx-auto">
       <CardContent className="p-6">
@@ -219,10 +223,11 @@ export default function RolePlayGame() {
                           <div className="flex-1">
                             <p className="font-medium">{choice.text}</p>
                             {choice.imageUrl && (
-                              <div className="mt-3 aspect-video rounded-lg overflow-hidden">
+                              <div className="mt-3 aspect-video rounded-lg overflow-hidden bg-muted">
                                 <img
                                   src={choice.imageUrl}
                                   alt={choice.text}
+                                  onError={handleImageError}
                                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                                 />
                               </div>
