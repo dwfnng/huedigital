@@ -25,13 +25,7 @@ export function log(message: string, source = "express") {
 export async function setupVite(app: Express, server: Server) {
   const serverOptions = {
     middlewareMode: true,
-    hmr: { 
-      server,
-      clientPort: 5000,
-      path: '/hmr',
-      timeout: 60000
-    },
-    cors: true,
+    hmr: { server },
     allowedHosts: true,
   };
 
@@ -53,11 +47,6 @@ export async function setupVite(app: Express, server: Server) {
   app.use("*", async (req, res, next) => {
     const url = req.originalUrl;
 
-    // Skip API and static asset routes
-    if (url.startsWith("/api") || url.startsWith("/assets")) {
-      return next();
-    }
-
     try {
       const clientTemplate = path.resolve(
         __dirname,
@@ -73,10 +62,7 @@ export async function setupVite(app: Express, server: Server) {
         `src="/src/main.tsx?v=${nanoid()}"`,
       );
       const page = await vite.transformIndexHtml(url, template);
-      res.status(200).set({ 
-        "Content-Type": "text/html",
-        "Cache-Control": "no-cache, no-store, must-revalidate"
-      }).end(page);
+      res.status(200).set({ "Content-Type": "text/html" }).end(page);
     } catch (e) {
       vite.ssrFixStacktrace(e as Error);
       next(e);
