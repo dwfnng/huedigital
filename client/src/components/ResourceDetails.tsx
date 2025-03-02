@@ -63,20 +63,36 @@ export default function ResourceDetails({
       case "video":
         return (
           <div className="relative">
-            <video
-              src={resource.contentUrl}
-              poster={resource.thumbnailUrl || "/fallback-video-poster.png"}
-              controls
-              className="w-full rounded-lg"
-              preload="metadata"
-              onError={(e) => {
-                const videoEl = e.currentTarget;
-                videoEl.poster = "/fallback-video-poster.png";
-                const errorMsg = document.createElement("div");
-                errorMsg.textContent = "Video không khả dụng";
-                errorMsg.className = "p-4 bg-gray-100 text-gray-700 rounded-lg text-center";
-                videoEl.parentNode?.insertBefore(errorMsg, videoEl.nextSibling);
-              }}
+            <div className="video-container">
+              <video
+                key={resource.contentUrl}
+                src={resource.contentUrl}
+                poster={resource.thumbnailUrl || "/fallback-video-poster.png"}
+                controls
+                className="w-full rounded-lg"
+                preload="metadata"
+                onError={(e) => {
+                  const videoEl = e.currentTarget;
+                  videoEl.style.display = "none";
+                  
+                  // If content URL fails, try to use a working sample video
+                  const fallbackVideo = document.createElement("video");
+                  fallbackVideo.src = "https://filesamples.com/samples/video/mp4/sample_640x360.mp4";
+                  fallbackVideo.controls = true;
+                  fallbackVideo.className = "w-full rounded-lg";
+                  fallbackVideo.poster = "/fallback-video-poster.png";
+                  
+                  // Display message
+                  const errorMsg = document.createElement("div");
+                  errorMsg.textContent = "Video chính không khả dụng - Đang hiển thị video thay thế";
+                  errorMsg.className = "p-4 bg-gray-100 text-gray-700 rounded-lg text-center mb-3";
+                  
+                  const container = videoEl.parentNode;
+                  if (container) {
+                    container.appendChild(errorMsg);
+                    container.appendChild(fallbackVideo);
+                  }
+                }}
             />
             {resource.metadata?.resolution && (
               <div className="absolute top-2 right-2 bg-black/50 text-white px-2 py-1 rounded text-xs">
@@ -99,19 +115,36 @@ export default function ResourceDetails({
                 }}
               />
             )}
-            <audio
-              src={resource.contentUrl}
-              controls
-              className="w-full"
-              preload="metadata"
-              onError={(e) => {
-                const audioEl = e.currentTarget;
-                const errorMsg = document.createElement("div");
-                errorMsg.textContent = "Âm thanh không khả dụng";
-                errorMsg.className = "p-4 bg-gray-100 text-gray-700 rounded-lg text-center";
-                audioEl.parentNode?.insertBefore(errorMsg, audioEl.nextSibling);
-              }}
-            />
+            <div className="audio-container">
+              <audio
+                key={resource.contentUrl}
+                src={resource.contentUrl}
+                controls
+                className="w-full"
+                preload="metadata"
+                onError={(e) => {
+                  const audioEl = e.currentTarget;
+                  audioEl.style.display = "none";
+                  
+                  // If content URL fails, try to use a working sample audio
+                  const fallbackAudio = document.createElement("audio");
+                  fallbackAudio.src = "https://filesamples.com/samples/audio/mp3/sample1.mp3";
+                  fallbackAudio.controls = true;
+                  fallbackAudio.className = "w-full";
+                  
+                  // Display message
+                  const errorMsg = document.createElement("div");
+                  errorMsg.textContent = "Âm thanh chính không khả dụng - Đang hiển thị âm thanh thay thế";
+                  errorMsg.className = "p-4 bg-gray-100 text-gray-700 rounded-lg text-center mb-3";
+                  
+                  const container = audioEl.parentNode;
+                  if (container) {
+                    container.appendChild(errorMsg);
+                    container.appendChild(fallbackAudio);
+                  }
+                }}
+              />
+            </div>
           </div>
         );
       case "3d_model":

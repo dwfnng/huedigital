@@ -9,9 +9,10 @@ import GamePage from "@/pages/game";
 import LiveDataPage from "@/pages/live-data";
 import TicketPage from "@/pages/ticket";
 import NotFound from "@/pages/not-found";
-import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList } from "@/components/ui/navigation-menu";
+import { NavigationMenu, NavigationMenuItem, NavigationMenuList } from "@/components/ui/navigation-menu";
 import { Link } from "wouter";
 import { Library, MapPin, MessageSquare, Gamepad2, Activity, Ticket } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 function MainNav() {
   return (
