@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { motion } from "framer-motion";
 import { Building2, Columns, PaintBucket, Ruler, Award, Info, Palette, TreePine } from "lucide-react";
 
@@ -134,7 +134,7 @@ const architecturalElements = {
 
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
+  visible: { opacity: 1, y: 0, transition: { duration: 0.3 } }
 };
 
 export default function BuildingGame() {
@@ -186,24 +186,24 @@ export default function BuildingGame() {
           <div className="relative">
             <Button
               variant={selectedElements[category] === element.id ? "default" : "outline"}
-              className="w-full justify-start gap-3 h-auto p-3 text-left"
+              className="w-full justify-start gap-2 h-auto p-2 text-left text-sm"
               onClick={() => handleElementSelect(category, element.id)}
             >
-              <div className="p-1.5 bg-primary/10 rounded-lg shrink-0">
+              <div className="p-1 bg-primary/10 rounded-lg shrink-0">
                 {element.icon}
               </div>
               <div>
-                <p className="text-sm font-medium">{element.name}</p>
+                <p className="text-xs font-medium">{element.name}</p>
                 <p className="text-xs text-muted-foreground">{element.description}</p>
               </div>
             </Button>
             <Button
               variant="ghost"
               size="icon"
-              className="absolute right-2 top-2"
+              className="absolute right-1 top-1 h-6 w-6"
               onClick={() => setShowInfo(showInfo === element.id ? null : element.id)}
             >
-              <Info className="h-4 w-4" />
+              <Info className="h-3 w-3" />
             </Button>
           </div>
           {showInfo === element.id && (
@@ -211,7 +211,7 @@ export default function BuildingGame() {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
-              className="mt-2 p-3 bg-muted/50 rounded-lg"
+              className="mt-1 p-2 bg-muted/50 rounded-lg"
             >
               <p className="text-xs">{element.historicalInfo}</p>
             </motion.div>
@@ -222,14 +222,14 @@ export default function BuildingGame() {
   );
 
   return (
-    <Card className="w-full max-w-2xl mx-auto">
-      <CardContent className="p-4">
-        <div className="text-center mb-4">
-          <div className="inline-block p-2 bg-primary/10 rounded-full mb-2">
-            <Building2 className="h-6 w-6 text-primary" />
+    <Card className="w-full max-w-xl mx-auto">
+      <CardContent className="p-3">
+        <div className="text-center mb-3">
+          <div className="inline-block p-1.5 bg-primary/10 rounded-full mb-2">
+            <Building2 className="h-4 w-4 text-primary" />
           </div>
-          <h2 className="text-xl font-bold">Xây dựng Điện Cần Chánh</h2>
-          <p className="text-sm text-muted-foreground">
+          <h2 className="text-base font-semibold">Xây dựng Điện Cần Chánh</h2>
+          <p className="text-xs text-muted-foreground">
             Chọn các yếu tố kiến trúc để xây dựng lại Điện Cần Chánh theo phong cách cung đình Huế
           </p>
         </div>
@@ -248,26 +248,26 @@ export default function BuildingGame() {
           >
             <Tabs defaultValue="foundation" className="space-y-4" onChange={setCurrentCategory}>
               <TabsList className="w-full grid grid-cols-5 gap-1">
-                <TabsTrigger value="foundation" className="text-xs py-1.5">Nền móng</TabsTrigger>
-                <TabsTrigger value="columns" className="text-xs py-1.5">Cột trụ</TabsTrigger>
-                <TabsTrigger value="decoration" className="text-xs py-1.5">Trang trí</TabsTrigger>
-                <TabsTrigger value="landscaping" className="text-xs py-1.5">Cảnh quan</TabsTrigger>
-                <TabsTrigger value="colors" className="text-xs py-1.5">Màu sắc</TabsTrigger>
+                <TabsTrigger value="foundation" className="text-xs py-1">Nền móng</TabsTrigger>
+                <TabsTrigger value="columns" className="text-xs py-1">Cột trụ</TabsTrigger>
+                <TabsTrigger value="decoration" className="text-xs py-1">Trang trí</TabsTrigger>
+                <TabsTrigger value="landscaping" className="text-xs py-1">Cảnh quan</TabsTrigger>
+                <TabsTrigger value="colors" className="text-xs py-1">Màu sắc</TabsTrigger>
               </TabsList>
 
-              <ScrollArea className="h-[360px] rounded-md border p-3">
+              <ScrollArea className="h-[300px] rounded-md border p-2">
                 {renderCategorySection(currentCategory, architecturalElements[currentCategory as keyof typeof architecturalElements])}
               </ScrollArea>
 
-              <div className="flex justify-center mt-4">
+              <div className="flex justify-center">
                 <Button
                   size="sm"
                   onClick={() => setShowResult(true)}
                   disabled={Object.keys(selectedElements).length < 5}
-                  className="gap-2"
+                  className="gap-1"
                 >
-                  <Ruler className="h-4 w-4" />
-                  Hoàn thành công trình
+                  <Ruler className="h-3 w-3" />
+                  <span className="text-xs">Hoàn thành công trình</span>
                 </Button>
               </div>
             </Tabs>
@@ -277,23 +277,20 @@ export default function BuildingGame() {
             initial="hidden"
             animate="visible"
             variants={fadeIn}
-            className="text-center py-4"
+            className="text-center py-3"
           >
-            <div className="mb-4">
-              <div className="inline-block p-3 bg-primary/10 rounded-full mb-2">
-                <Award className="h-6 w-6 text-primary" />
+            <div className="mb-3">
+              <div className="inline-block p-2 bg-primary/10 rounded-full mb-2">
+                <Award className="h-4 w-4 text-primary" />
               </div>
-              <h3 className="text-lg font-bold mb-2">
+              <h3 className="text-sm font-semibold mb-1">
                 {getEvaluation(calculateScore()).title}
               </h3>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-xs text-muted-foreground">
                 {getEvaluation(calculateScore()).description}
               </p>
-              <div className="mt-3 p-3 bg-muted/30 rounded-lg">
-                <p className="text-sm font-medium">Điểm số của bạn: {calculateScore()}/50</p>
-                <p className="text-xs text-muted-foreground mt-1">
-                  Dựa trên sự phù hợp với kiến trúc cung đình thời Nguyễn
-                </p>
+              <div className="mt-2 p-2 bg-muted/30 rounded-lg">
+                <p className="text-xs">Điểm số của bạn: {calculateScore()}/50</p>
               </div>
             </div>
 
@@ -303,7 +300,7 @@ export default function BuildingGame() {
                 setSelectedElements({});
                 setShowResult(false);
               }}
-              className="hover-lift"
+              className="text-xs"
             >
               Thử lại
             </Button>

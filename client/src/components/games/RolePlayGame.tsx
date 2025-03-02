@@ -11,15 +11,12 @@ interface Choice {
   result: string;
   score: number;
   icon: JSX.Element;
-  imageUrl?: string;
-  historicalInfo?: string;
 }
 
 interface GameStep {
   id: string;
   title: string;
   description: string;
-  backgroundImage?: string;
   choices: Choice[];
 }
 
@@ -28,34 +25,27 @@ const gameSteps: GameStep[] = [
     id: "location",
     title: "Chọn vị trí xây dựng kinh đô",
     description: "Thưa bệ hạ, nơi đâu sẽ là vị trí lý tưởng để xây dựng kinh đô mới của triều Nguyễn?",
-    backgroundImage: "/images/hue-landscape.jpg",
     choices: [
       {
         id: "hue",
         text: "Vùng đất Phú Xuân (Huế)",
         result: "Một lựa chọn sáng suốt! Vùng đất Phú Xuân nằm ở vị trí trung tâm đất nước, có núi sông bao bọc, địa thế hiểm yếu, thuận lợi cho việc phòng thủ và phát triển.",
         score: 10,
-        icon: <MapPin className="h-6 w-6" />,
-        imageUrl: "/images/phu-xuan.jpg",
-        historicalInfo: "Phú Xuân từng là kinh đô của chúa Nguyễn từ thế kỷ 17, với vị trí địa lý đắc địa nằm giữa hai miền Nam - Bắc. Địa thế này giúp kiểm soát toàn bộ lãnh thổ và phát triển thương mại thuận lợi."
+        icon: <MapPin className="h-4 w-4" />
       },
       {
         id: "hanoi",
         text: "Giữ nguyên Thăng Long (Hà Nội)",
-        result: "Thăng Long tuy là kinh đô cũ nhưng nằm quá xa phương Nam, khó kiểm soát toàn bộ lãnh thổ. Các di tích của nhà Lê cũng có thể gây ảnh hưởng tới sự chính thống của triều Nguyễn.",
+        result: "Thăng Long tuy là kinh đô cũ nhưng nằm quá xa phương Nam, khó kiểm soát toàn bộ lãnh thổ.",
         score: 5,
-        icon: <Building2 className="h-6 w-6" />,
-        imageUrl: "/images/thang-long.jpg",
-        historicalInfo: "Thăng Long là kinh đô của các triều đại phong kiến từ thời Lý, với hệ thống thành quách và cung điện đồ sộ. Tuy nhiên, vị trí này không phù hợp với chiến lược cai trị của triều Nguyễn."
+        icon: <Building2 className="h-4 w-4" />
       },
       {
         id: "saigon",
         text: "Vùng đất Gia Định (Sài Gòn)",
-        result: "Gia Định tuy là căn cứ địa cũ nhưng nằm quá xa phương Bắc, không thuận lợi cho việc cai quản toàn quốc. Khí hậu nhiệt đới và địa hình đồng bằng cũng không lý tưởng cho việc xây dựng cung điện.",
+        result: "Gia Định tuy là căn cứ địa cũ nhưng nằm quá xa phương Bắc, không thuận lợi cho việc cai quản toàn quốc.",
         score: 5,
-        icon: <Building2 className="h-6 w-6" />,
-        imageUrl: "/images/gia-dinh.jpg",
-        historicalInfo: "Gia Định là vùng đất trù phú, từng là căn cứ địa của chúa Nguyễn trong thời kỳ Nam-Bắc phân tranh. Tuy nhiên, vị trí này quá xa trung tâm đất nước và thiếu yếu tố phong thủy cần thiết cho một kinh đô."
+        icon: <Building2 className="h-4 w-4" />
       }
     ]
   },
@@ -63,34 +53,27 @@ const gameSteps: GameStep[] = [
     id: "geomancy",
     title: "Chọn phương án phong thủy",
     description: "Các nhà phong thủy đã khảo sát địa thế, bệ hạ chọn phương án nào để xây dựng kinh thành?",
-    backgroundImage: "/images/hue-aerial.jpg",
     choices: [
       {
         id: "mountain_river",
         text: "Dựa vào núi Ngự Bình, sông Hương",
-        result: "Xuất sắc! Núi Ngự Bình như án ngự phía Nam, sông Hương uốn quanh như rồng chầu, tạo nên thế đất 'tọa sơn hướng thủy' hoàn hảo theo phong thủy.",
+        result: "Xuất sắc! Núi Ngự Bình như án ngự phía Nam, sông Hương uốn quanh như rồng chầu, tạo nên thế đất 'tọa sơn hướng thủy' hoàn hảo.",
         score: 10,
-        icon: <Wind className="h-6 w-6" />,
-        imageUrl: "/images/ngu-binh.jpg",
-        historicalInfo: "Núi Ngự Bình và sông Hương tạo nên địa thế 'tọa sơn hướng thủy' lý tưởng. Theo quan niệm phong thủy, đây là cách bố trí mang lại sự thịnh vượng và bền vững cho triều đại."
+        icon: <Wind className="h-4 w-4" />
       },
       {
         id: "flat_land",
         text: "Chọn vùng đất bằng phẳng",
-        result: "Đất bằng phẳng tuy dễ xây dựng nhưng thiếu các yếu tố phong thủy quan trọng, không tạo được thế đất vững mạnh cho kinh đô.",
+        result: "Đất bằng phẳng tuy dễ xây dựng nhưng thiếu các yếu tố phong thủy quan trọng.",
         score: 5,
-        icon: <Wind className="h-6 w-6" />,
-        imageUrl: "/images/flat-land.jpg",
-        historicalInfo: "Theo nguyên lý phong thủy cổ đại, địa thế bằng phẳng thiếu sự che chắn tự nhiên và không có điểm nhấn địa lý để tạo nên khí thế cho một kinh đô."
+        icon: <Wind className="h-4 w-4" />
       },
       {
         id: "coast",
         text: "Gần biển để thuận tiện giao thương",
-        result: "Vị trí quá gần biển không tốt cho phong thủy, dễ bị ảnh hưởng bởi bão tố và thủy triều, không phù hợp làm kinh đô.",
+        result: "Vị trí quá gần biển không tốt cho phong thủy, dễ bị ảnh hưởng bởi bão tố.",
         score: 5,
-        icon: <Wind className="h-6 w-6" />,
-        imageUrl: "/images/coastal-area.jpg",
-        historicalInfo: "Mặc dù thuận lợi cho giao thương, nhưng vị trí ven biển thường chịu ảnh hưởng của thiên tai và không phù hợp với quan niệm 'an cư' của một kinh đô."
+        icon: <Wind className="h-4 w-4" />
       }
     ]
   }
@@ -98,12 +81,7 @@ const gameSteps: GameStep[] = [
 
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
-};
-
-const slideIn = {
-  hidden: { opacity: 0, x: -20 },
-  visible: { opacity: 1, x: 0, transition: { duration: 0.5 } }
+  visible: { opacity: 1, y: 0, transition: { duration: 0.3 } }
 };
 
 export default function RolePlayGame() {
@@ -125,27 +103,27 @@ export default function RolePlayGame() {
       } else {
         setShowResult(true);
       }
-    }, 2000);
+    }, 1500);
   };
 
   const getGameResult = () => {
     if (score >= 18) {
       return {
         title: "Minh quân anh minh!",
-        description: "Bệ hạ đã có những quyết định sáng suốt trong việc chọn vị trí và quy hoạch kinh đô. Huế sẽ trở thành một kinh đô hùng vĩ, xứng đáng là trung tâm của đất nước!",
-        icon: <Star className="h-8 w-8 text-yellow-500" />
+        description: "Bệ hạ đã có những quyết định sáng suốt trong việc chọn vị trí và quy hoạch kinh đô.",
+        icon: <Star className="h-4 w-4 text-yellow-500" />
       };
     } else if (score >= 12) {
       return {
         title: "Quyết định tạm được",
-        description: "Các quyết định của bệ hạ có những điểm hợp lý, nhưng vẫn còn một số lựa chọn có thể tốt hơn để xây dựng một kinh đô vững mạnh.",
-        icon: <Scroll className="h-8 w-8 text-blue-500" />
+        description: "Các quyết định của bệ hạ có những điểm hợp lý, nhưng vẫn còn điểm cần cải thiện.",
+        icon: <Scroll className="h-4 w-4 text-blue-500" />
       };
     } else {
       return {
         title: "Cần cân nhắc kỹ hơn",
-        description: "Những quyết định này có thể gây khó khăn cho việc xây dựng và phát triển kinh đô trong tương lai. Có lẽ bệ hạ nên tham khảo ý kiến của các quan văn võ thêm.",
-        icon: <Crown className="h-8 w-8 text-red-500" />
+        description: "Những quyết định này có thể gây khó khăn cho việc phát triển kinh đô.",
+        icon: <Crown className="h-4 w-4 text-red-500" />
       };
     }
   };
@@ -158,19 +136,15 @@ export default function RolePlayGame() {
     setSelectedChoice(null);
   };
 
-  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    e.currentTarget.src = '/images/placeholder.jpg';
-  };
-
   return (
-    <Card className="w-full max-w-3xl mx-auto">
-      <CardContent className="p-4">
-        <div className="text-center mb-4">
-          <div className="inline-block p-2 bg-primary/10 rounded-full mb-2">
-            <Crown className="h-6 w-6 text-primary" />
+    <Card className="w-full max-w-xl mx-auto">
+      <CardContent className="p-3">
+        <div className="text-center mb-3">
+          <div className="inline-block p-1.5 bg-primary/10 rounded-full mb-2">
+            <Crown className="h-4 w-4 text-primary" />
           </div>
-          <h2 className="text-xl font-bold">Nhập vai vua Gia Long</h2>
-          <p className="text-sm text-muted-foreground">
+          <h2 className="text-base font-semibold">Nhập vai vua Gia Long</h2>
+          <p className="text-xs text-muted-foreground">
             Quyết định lịch sử: Chọn vị trí xây dựng kinh đô mới
           </p>
         </div>
@@ -183,72 +157,38 @@ export default function RolePlayGame() {
               animate="visible"
               exit="hidden"
               variants={fadeIn}
-              className="relative"
             >
-              {gameSteps[currentStep].backgroundImage && (
-                <div className="absolute inset-0 rounded-lg overflow-hidden -z-10 opacity-10">
-                  <img
-                    src={gameSteps[currentStep].backgroundImage}
-                    alt="background"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              )}
-
-              <div className="mb-4">
-                <h3 className="text-lg font-semibold mb-1">{gameSteps[currentStep].title}</h3>
-                <p className="text-sm text-muted-foreground">{gameSteps[currentStep].description}</p>
+              <div className="mb-3">
+                <h3 className="text-sm font-medium mb-1">{gameSteps[currentStep].title}</h3>
+                <p className="text-xs text-muted-foreground">{gameSteps[currentStep].description}</p>
               </div>
 
-              <ScrollArea className="h-[400px] rounded-md border p-3">
-                <div className="space-y-3">
+              <ScrollArea className="h-[300px] rounded-md border p-2">
+                <div className="space-y-2">
                   {gameSteps[currentStep].choices.map((choice) => (
-                    <motion.div
-                      key={choice.id}
-                      variants={slideIn}
-                      className="relative"
-                    >
+                    <motion.div key={choice.id} variants={fadeIn}>
                       <Button
                         variant="outline"
-                        className={`w-full justify-start gap-3 h-auto p-3 text-left transition-all ${
+                        className={`w-full justify-start gap-2 h-auto p-2 text-left text-sm ${
                           selectedChoice?.id === choice.id ? 'border-primary' : ''
                         }`}
                         onClick={() => handleChoice(choice)}
                         disabled={selectedChoice !== null}
                       >
-                        <div className="flex items-start gap-3 w-full">
-                          <div className="p-1.5 bg-primary/10 rounded-lg shrink-0">
-                            {choice.icon}
-                          </div>
-                          <div className="flex-1">
-                            <p className="text-sm font-medium">{choice.text}</p>
-                            {choice.imageUrl && (
-                              <div className="mt-2 aspect-video rounded-lg overflow-hidden bg-muted">
-                                <img
-                                  src={choice.imageUrl}
-                                  alt={choice.text}
-                                  onError={handleImageError}
-                                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                                />
-                              </div>
-                            )}
-                            {selectedChoice?.id === choice.id && (
-                              <motion.div
-                                initial={{ opacity: 0, height: 0 }}
-                                animate={{ opacity: 1, height: "auto" }}
-                                className="mt-3 space-y-2"
-                              >
-                                <div className="p-2 bg-green-50 dark:bg-green-900/20 rounded-lg">
-                                  <p className="text-xs">{choice.result}</p>
-                                </div>
-                                {choice.historicalInfo && (
-                                  <div className="p-2 bg-muted/30 rounded-lg">
-                                    <p className="text-xs text-muted-foreground">{choice.historicalInfo}</p>
-                                  </div>
-                                )}
-                              </motion.div>
-                            )}
-                          </div>
+                        <div className="p-1 bg-primary/10 rounded-lg shrink-0">
+                          {choice.icon}
+                        </div>
+                        <div className="flex-1">
+                          <p className="text-xs font-medium">{choice.text}</p>
+                          {selectedChoice?.id === choice.id && (
+                            <motion.p
+                              initial={{ opacity: 0, height: 0 }}
+                              animate={{ opacity: 1, height: "auto" }}
+                              className="text-xs text-muted-foreground mt-1"
+                            >
+                              {choice.result}
+                            </motion.p>
+                          )}
                         </div>
                       </Button>
                     </motion.div>
@@ -261,20 +201,20 @@ export default function RolePlayGame() {
               initial="hidden"
               animate="visible"
               variants={fadeIn}
-              className="text-center py-4"
+              className="text-center py-3"
             >
-              <div className="mb-4">
-                <div className="inline-block p-3 bg-primary/10 rounded-full mb-2">
+              <div className="mb-3">
+                <div className="inline-block p-2 bg-primary/10 rounded-full mb-2">
                   {getGameResult().icon}
                 </div>
-                <h3 className="text-lg font-bold mb-1">{getGameResult().title}</h3>
-                <p className="text-sm text-muted-foreground">{getGameResult().description}</p>
-                <div className="mt-3 p-3 bg-muted/30 rounded-lg">
-                  <p className="text-sm font-medium">Điểm số của bệ hạ: {score}/{gameSteps.length * 10}</p>
+                <h3 className="text-sm font-semibold mb-1">{getGameResult().title}</h3>
+                <p className="text-xs text-muted-foreground">{getGameResult().description}</p>
+                <div className="mt-2 p-2 bg-muted/30 rounded-lg">
+                  <p className="text-xs">Điểm số của bệ hạ: {score}/{gameSteps.length * 10}</p>
                 </div>
               </div>
 
-              <Button onClick={resetGame} size="sm" className="hover-lift">
+              <Button size="sm" onClick={resetGame} className="text-xs">
                 Chơi lại
               </Button>
             </motion.div>

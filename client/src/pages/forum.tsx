@@ -155,6 +155,22 @@ export default function ForumPage() {
     });
   };
 
+  const getAvatarUrl = (author: string) => {
+    try {
+      return `https://avatar.vercel.sh/${encodeURIComponent(author || 'anonymous')}`;
+    } catch (error) {
+      return 'https://avatar.vercel.sh/anonymous';
+    }
+  };
+
+  const getAvatarFallback = (author: string) => {
+    try {
+      return (author?.[0] || 'A').toUpperCase();
+    } catch (error) {
+      return 'A';
+    }
+  };
+
   return (
     <div className="container mx-auto p-4 min-h-screen bg-background">
       <div className="max-w-7xl mx-auto">
@@ -242,8 +258,8 @@ export default function ForumPage() {
                           <CardContent className="p-4">
                             <div className="flex items-start gap-4">
                               <Avatar>
-                                <AvatarImage src={`https://avatar.vercel.sh/${discussion.author}`} />
-                                <AvatarFallback>{discussion.author[0]}</AvatarFallback>
+                                <AvatarImage src={getAvatarUrl(discussion.author)} />
+                                <AvatarFallback>{getAvatarFallback(discussion.author)}</AvatarFallback>
                               </Avatar>
                               <div className="flex-1">
                                 <h3 className="font-semibold text-lg mb-1">{discussion.title}</h3>
@@ -283,8 +299,8 @@ export default function ForumPage() {
                     {comments.map(comment => (
                       <div key={comment.id} className="flex gap-3 p-3 rounded-lg hover:bg-muted/50">
                         <Avatar>
-                          <AvatarImage src={`https://avatar.vercel.sh/${comment.author}`} />
-                          <AvatarFallback>{comment.author[0]}</AvatarFallback>
+                          <AvatarImage src={getAvatarUrl(comment.author)} />
+                          <AvatarFallback>{getAvatarFallback(comment.author)}</AvatarFallback>
                         </Avatar>
                         <div>
                           <div className="flex items-center gap-2">
