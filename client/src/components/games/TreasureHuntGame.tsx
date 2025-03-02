@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { motion } from "framer-motion";
-import { Map, Scroll, Search, Book, Compass, Star, Camera, Navigation } from "lucide-react";
+import { Map, Scroll, Search, Book, Compass, Star, Navigation } from "lucide-react";
 
 interface Clue {
   id: string;
@@ -13,10 +13,11 @@ interface Clue {
   hint: string;
   answer: string;
   historicalInfo: string;
-  imageUrl?: string;
   location?: {
     lat: number;
     lng: number;
+    name: string;
+    address: string;
   };
   unlocked: boolean;
 }
@@ -26,13 +27,14 @@ const initialClues: Clue[] = [
     id: "1",
     title: "Mật thư của vua Tự Đức",
     description: "Giải mã câu đố sau để tìm vị trí tiếp theo:\n'Ta là nơi cất giữ tri thức\nNơi các học sĩ trau dồi văn chương\nTàng thư quý giá triều đường\nTìm ta ở chốn văn đường phía đông'",
-    hint: "Đây là nơi lưu trữ sách vở và tài liệu quan trọng của triều đình",
+    hint: "Đây là nơi lưu trữ sách vở và tài liệu quan trọng của triều đình, nằm ở phía Đông của Hoàng thành",
     answer: "tang thu lau",
-    historicalInfo: "Tàng Thư Lâu là thư viện của triều Nguyễn, nơi lưu trữ các sách vở, tài liệu quan trọng của triều đình. Công trình này được xây dựng vào năm 1825 dưới thời vua Minh Mạng.",
-    imageUrl: "/attached_assets/tang-thu-lau.jpg",
+    historicalInfo: "Tàng Thư Lâu là thư viện của triều Nguyễn, nơi lưu trữ các sách vở, tài liệu quan trọng của triều đình. Công trình này được xây dựng vào năm 1825 dưới thời vua Minh Mạng, thể hiện tầm quan trọng của việc giáo dục và lưu trữ văn hóa trong triều đình nhà Nguyễn.",
     location: {
-      lat: 16.4691,
-      lng: 107.5788
+      lat: 16.470773,
+      lng: 107.578405,
+      name: "Tàng Thư Lâu",
+      address: "Khu di tích Hoàng thành Huế, phường Phú Hậu, thành phố Huế"
     },
     unlocked: true
   },
@@ -40,13 +42,14 @@ const initialClues: Clue[] = [
     id: "2",
     title: "Bí mật của Tàng Thư Lâu",
     description: "Phía sau giá sách cổ, bạn tìm thấy một mảnh giấy với nội dung:\n'Nơi vua ngự triều đường\nMỗi sáng nghe tấu chương\nCửu trùng cao vời vợi\nNgai vàng điểm kim cương'",
-    hint: "Đây là nơi vua làm việc chính thức với các quan lại",
+    hint: "Đây là nơi vua làm việc chính thức với các quan lại, nằm ở trung tâm Hoàng thành",
     answer: "can chanh dien",
-    historicalInfo: "Điện Cần Chánh là nơi vua làm việc hằng ngày, tiếp kiến các quan và ban hành các chỉ dụ quan trọng. Điện được xây dựng theo kiến trúc truyền thống với nhiều chi tiết nghệ thuật độc đáo.",
-    imageUrl: "/attached_assets/can-chanh-dien.jpg",
+    historicalInfo: "Điện Cần Chánh là nơi vua làm việc hằng ngày, tiếp kiến các quan và ban hành các chỉ dụ quan trọng. Điện được xây dựng theo kiến trúc truyền thống với nhiều chi tiết nghệ thuật độc đáo, thể hiện quyền uy tối cao của hoàng đế.",
     location: {
-      lat: 16.4697,
-      lng: 107.5779
+      lat: 16.469783,
+      lng: 107.577912,
+      name: "Điện Cần Chánh",
+      address: "Khu di tích Hoàng thành Huế, phường Phú Hậu, thành phố Huế"
     },
     unlocked: false
   },
@@ -54,13 +57,14 @@ const initialClues: Clue[] = [
     id: "3",
     title: "Lời nhắn từ quá khứ",
     description: "Trên bức tường điện Cần Chánh, một dòng chữ cổ hiện ra:\n'Bắc có rồng bay phượng múa\nNam có núi ngự sông quanh\nTìm nơi thiêng đất trời\nNơi vua dâng lễ vật'",
-    hint: "Đây là nơi tổ chức các nghi lễ tế trời đất quan trọng của triều đình",
+    hint: "Đây là nơi tổ chức các nghi lễ tế trời đất quan trọng của triều đình, nằm ở phía Nam kinh thành",
     answer: "dan nam giao",
-    historicalInfo: "Đàn Nam Giao là công trình kiến trúc tôn giáo quan trọng, nơi vua chủ trì tế lễ Giao - một nghi lễ quan trọng nhất của triều đình nhà Nguyễn, thể hiện quan niệm 'phụng thiên thừa vận' của các triều đại phong kiến.",
-    imageUrl: "/attached_assets/dan-nam-giao.jpg",
+    historicalInfo: "Đàn Nam Giao là công trình kiến trúc tôn giáo quan trọng, nơi vua chủ trì tế lễ Giao - một nghi lễ quan trọng nhất của triều đình nhà Nguyễn. Đây là biểu tượng của quan niệm 'phụng thiên thừa vận' và mối liên hệ giữa nhà vua với trời đất.",
     location: {
-      lat: 16.4509,
-      lng: 107.5715
+      lat: 16.450912,
+      lng: 107.571521,
+      name: "Đàn Nam Giao",
+      address: "Đường Nam Giao, phường Trường An, thành phố Huế"
     },
     unlocked: false
   },
@@ -70,11 +74,12 @@ const initialClues: Clue[] = [
     description: "Tại Đàn Nam Giao, một bức phù điêu cổ mang thông điệp:\n'Nơi đây cung nữ ca vang\nTiếng đàn véo von vọng sang điện rồng\nTìm nơi âm nhạc mênh mông\nCung đình di sản một vòng time gian'",
     hint: "Đây là nơi biểu diễn nhã nhạc cung đình Huế, di sản văn hóa phi vật thể được UNESCO công nhận",
     answer: "duyet thi duong",
-    historicalInfo: "Duyệt Thị Đường là nơi vua và hoàng gia thưởng thức các buổi biểu diễn nghệ thuật, đặc biệt là nhã nhạc cung đình Huế - được UNESCO công nhận là di sản văn hóa phi vật thể vào năm 2003.",
-    imageUrl: "/attached_assets/duyet-thi-duong.jpg",
+    historicalInfo: "Duyệt Thị Đường là nơi vua và hoàng gia thưởng thức các buổi biểu diễn nghệ thuật, đặc biệt là nhã nhạc cung đình Huế - được UNESCO công nhận là di sản văn hóa phi vật thể vào năm 2003. Nơi đây không chỉ là không gian giải trí mà còn là nơi bảo tồn và phát triển nghệ thuật truyền thống.",
     location: {
-      lat: 16.4701,
-      lng: 107.5776
+      lat: 16.470123,
+      lng: 107.577614,
+      name: "Duyệt Thị Đường",
+      address: "Khu di tích Hoàng thành Huế, phường Phú Hậu, thành phố Huế"
     },
     unlocked: false
   }
@@ -128,8 +133,9 @@ export default function TreasureHuntGame() {
 
   const handleShowLocation = (clue: Clue) => {
     if (clue.location) {
+      const query = encodeURIComponent(`${clue.location.name}, ${clue.location.address}`);
       window.open(
-        `https://www.google.com/maps?q=${clue.location.lat},${clue.location.lng}`,
+        `https://www.google.com/maps/search/?api=1&query=${query}`,
         '_blank'
       );
     }
@@ -175,15 +181,6 @@ export default function TreasureHuntGame() {
                         <h3 className="font-medium">{clue.title}</h3>
                         {clue.unlocked && (
                           <>
-                            {clue.imageUrl && (
-                              <div className="mt-3 aspect-video rounded-lg overflow-hidden bg-muted">
-                                <img
-                                  src={clue.imageUrl}
-                                  alt={clue.title}
-                                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                                />
-                              </div>
-                            )}
                             <p className="text-sm whitespace-pre-line mt-2">
                               {clue.description}
                             </p>
