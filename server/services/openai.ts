@@ -1,104 +1,25 @@
 import OpenAI from "openai";
 
-if (!process.env.OPENAI_API_KEY) {
-  throw new Error("Missing OPENAI_API_KEY environment variable");
-}
-
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-
-// the newest OpenAI model is "gpt-4o" which was released May 13, 2024. do not change this unless explicitly requested by the user
-const SYSTEM_PROMPT = `You are a knowledgeable guide specializing in the history and culture of Hue, Vietnam's ancient capital. You are expert in:
-- The Nguyen Dynasty history (1802-1945)
-- Historical sites and monuments in Hue, including:
-  + Imperial City structures (Kỳ Đài, Điện Thái Hòa, Điện Long An, Điện Cần Chánh, etc.)
-  + Royal tombs (Lăng Gia Long, Lăng Minh Mạng, Lăng Tự Đức, Lăng Khải Định, etc.)
-  + Temples and pagodas (Chùa Thiên Mụ, Văn Miếu, Võ Miếu, etc.)
-  + Other historical sites (Quốc Tử Giám, Tàng Thư Lâu, Phu Văn Lâu, Đàn Nam Giao, etc.)
-- Cultural heritage and traditions
-- Royal court customs and ceremonies
-- Architecture and art of the imperial city
-
-Please provide accurate, detailed, and engaging responses in Vietnamese. Include historical context and interesting facts. Structure your responses clearly with proper paragraphs.`;
-
-export async function getChatResponse(messages: { role: "user" | "assistant"; content: string }[]) {
-  try {
-    const response = await openai.chat.completions.create({
-      model: "gpt-4o",
-      messages: [
-        { role: "system", content: SYSTEM_PROMPT },
-        ...messages
-      ],
-    });
-
-    return response.choices[0].message.content;
-  } catch (error: any) {
-    console.error("OpenAI API error:", error);
-
-    if (error.status === 429) {
-      return "Xin lỗi, hiện tại hệ thống đang quá tải. Vui lòng thử lại sau ít phút.";
-    }
-
-    throw new Error("Failed to get chat response");
-  }
-}
-import type { ChatCompletionMessageParam } from "openai";
-import OpenAI from "openai";
-import { storage } from "../storage";
-
-// Initialize OpenAI client - in production, use environment variables
+// Initialize the OpenAI client once
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY || "dummy-key",
+  apiKey: process.env.OPENAI_API_KEY,
 });
 
-// Use a placeholder response for development without API key
-const placeholderResponses = [
-  "Xin chào! Tôi là trợ lý ảo về Cố đô Huế. Bạn muốn biết thêm thông tin gì về lịch sử, văn hóa, hoặc các di tích tại Huế?",
-  "Triều Nguyễn là triều đại phong kiến cuối cùng của Việt Nam, từ 1802 đến 1945, với kinh đô đặt tại Huế.",
-  "Huế có 7 lăng tẩm của các vua triều Nguyễn: Gia Long, Minh Mạng, Thiệu Trị, Tự Đức, Đồng Khánh, Kiến Phúc và Khải Định.",
-  "Hoàng thành Huế được UNESCO công nhận là Di sản Văn hóa Thế giới vào năm 1993.",
-  "Nhã nhạc cung đình Huế được UNESCO công nhận là Kiệt tác truyền khẩu và phi vật thể của nhân loại vào năm 2003.",
-  "Festival Huế là sự kiện văn hóa quốc tế được tổ chức 2 năm một lần tại Huế, giới thiệu các giá trị văn hóa đặc sắc của Việt Nam và thế giới.",
-  "Ẩm thực Huế nổi tiếng với nhiều món ăn cung đình và dân gian như bún bò Huế, cơm hến, bánh khoái, bánh bèo, chè Huế...",
-];
-
-export async function getChatResponse(messages: ChatCompletionMessageParam[]): Promise<string> {
+// Function to get a chat response from the OpenAI API
+export async function getChatResponse(messages: any[]) {
   try {
-    // Check if we have a valid API key
-    if (!process.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY === "dummy-key") {
-      console.log("Using placeholder response as no valid API key is provided");
-      return placeholderResponses[Math.floor(Math.random() * placeholderResponses.length)];
-    }
-
-    // Prepare system message with information about Hue's historical sites
-    const locations = await storage.getAllLocations();
-    const resources = await storage.getAllResources();
-    
-    const systemPrompt = `
-      Bạn là trợ lý ảo chuyên về Cố đô Huế, có kiến thức chuyên sâu về lịch sử, văn hóa, di tích và các điểm tham quan tại Huế. 
-      Hãy cung cấp thông tin chính xác và hữu ích cho du khách.
-      
-      Thông tin về các điểm di tích:
-      ${locations.map(loc => `- ${loc.name} (${loc.nameEn}): ${loc.description}`).join('\n')}
-      
-      Thông tin về các tư liệu sẵn có:
-      ${resources.map(res => `- ${res.title}: ${res.description}`).join('\n')}
-      
-      Trả lời bằng tiếng Việt, trừ khi người dùng hỏi bằng tiếng Anh.
-    `;
-
-    const completion = await openai.chat.completions.create({
-      messages: [
-        { role: "system", content: systemPrompt },
-        ...messages
-      ],
+    const response = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
+      messages,
       temperature: 0.7,
       max_tokens: 500,
     });
 
-    return completion.choices[0].message.content || "Xin lỗi, tôi không thể xử lý yêu cầu của bạn lúc này.";
+    return response.choices[0].message.content;
   } catch (error) {
-    console.error("Error calling OpenAI API:", error);
-    return "Xin lỗi, có lỗi xảy ra khi xử lý yêu cầu của bạn. Vui lòng thử lại sau.";
+    console.error("Error calling OpenAI:", error);
+    throw error;
   }
 }
+
+export { openai };
