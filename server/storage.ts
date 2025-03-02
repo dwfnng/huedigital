@@ -228,18 +228,137 @@ export class MemStorage implements IStorage {
       },
       {
         id: this.getNextId(),
-        title: "Kiến trúc Hoàng thành",
-        titleEn: "Imperial City Architecture",
-        description: "Video giới thiệu kiến trúc Hoàng thành Huế",
-        descriptionEn: "Video about Hue Imperial City architecture",
-        type: "video",
+        title: "Kiến trúc Kỳ Đài",
+        titleEn: "Ky Dai Architecture",
+        description: "Hình ảnh và thông tin về Kỳ Đài Huế",
+        descriptionEn: "Images and information about Ky Dai Flag Tower",
+        type: "image",
         category: "architecture",
-        contentUrl: "/videos/kien-truc-hoang-thanh.mp4",
-        thumbnailUrl: "/images/resources/kien-truc.jpg",
+        contentUrl: "/images/resources/ky-dai-detail.jpg",
+        thumbnailUrl: "/images/resources/ky-dai-thumb.jpg",
+        metadata: {
+          format: "jpg",
+          resolution: "4K",
+          year: "2024"
+        },
+        createdAt: new Date()
+      },
+      {
+        id: this.getNextId(),
+        title: "Trường Quốc Tử Giám qua các thời kỳ",
+        titleEn: "Quoc Tu Giam School Through History",
+        description: "Tư liệu về trường học hoàng gia xưa",
+        descriptionEn: "Documents about the historic royal school",
+        type: "document",
+        category: "education",
+        contentUrl: "/documents/truong-quoc-tu-giam.pdf",
+        thumbnailUrl: "/images/resources/quoc-tu-giam.jpg",
+        metadata: {
+          format: "pdf",
+          pages: 30,
+          language: "vi"
+        },
+        createdAt: new Date()
+      },
+      {
+        id: this.getNextId(),
+        title: "Điện Long An - Bảo tàng Mỹ thuật",
+        titleEn: "Long An Palace - Fine Arts Museum",
+        description: "Video giới thiệu về Bảo tàng Mỹ thuật Cung đình Huế",
+        descriptionEn: "Video introduction to Hue Royal Fine Arts Museum",
+        type: "video",
+        category: "art",
+        contentUrl: "/videos/dien-long-an.mp4",
+        thumbnailUrl: "/images/resources/dien-long-an-thumb.jpg",
         metadata: {
           format: "mp4",
-          duration: "15:00",
-          resolution: "1080p"
+          duration: "20:00",
+          resolution: "4K"
+        },
+        createdAt: new Date()
+      },
+      {
+        id: this.getNextId(),
+        title: "Điện Thái Hòa và nghi lễ triều đình",
+        titleEn: "Thai Hoa Palace and Court Ceremonies",
+        description: "Tư liệu về nghi lễ triều đình tại Điện Thái Hòa",
+        descriptionEn: "Documents about court ceremonies at Thai Hoa Palace",
+        type: "document",
+        category: "culture",
+        contentUrl: "/documents/dien-thai-hoa.pdf",
+        thumbnailUrl: "/images/resources/thai-hoa.jpg",
+        metadata: {
+          format: "pdf",
+          pages: 40,
+          language: "vi"
+        },
+        createdAt: new Date()
+      },
+      {
+        id: this.getNextId(),
+        title: "Hồ Tịnh Tâm và vườn ngự uyển",
+        titleEn: "Tinh Tam Lake and Royal Gardens",
+        description: "Hình ảnh về Hồ Tịnh Tâm và khu vườn hoàng gia",
+        descriptionEn: "Images of Tinh Tam Lake and royal gardens",
+        type: "image",
+        category: "landscape",
+        contentUrl: "/images/resources/ho-tinh-tam-full.jpg",
+        thumbnailUrl: "/images/resources/ho-tinh-tam-thumb.jpg",
+        metadata: {
+          format: "jpg",
+          resolution: "4K",
+          year: "2024"
+        },
+        createdAt: new Date()
+      },
+      {
+        id: this.getNextId(),
+        title: "Lăng tẩm triều Nguyễn",
+        titleEn: "Nguyen Dynasty Royal Tombs",
+        description: "Phim tài liệu về các lăng tẩm vua chúa triều Nguyễn",
+        descriptionEn: "Documentary about Nguyen Dynasty royal tombs",
+        type: "video",
+        category: "heritage",
+        contentUrl: "/videos/lang-tam.mp4",
+        thumbnailUrl: "/images/resources/lang-tam-thumb.jpg",
+        metadata: {
+          format: "mp4",
+          duration: "45:00",
+          resolution: "4K"
+        },
+        createdAt: new Date()
+      },
+      {
+        id: this.getNextId(),
+        title: "Âm nhạc tại Điện Hòn Chén",
+        titleEn: "Music at Hon Chen Temple",
+        description: "Bản thu âm nhạc lễ hội tại Điện Hòn Chén",
+        descriptionEn: "Music recordings from Hon Chen Temple festivals",
+        type: "audio",
+        category: "music",
+        contentUrl: "/audio/dien-hon-chen.mp3",
+        thumbnailUrl: "/images/resources/hon-chen.jpg",
+        metadata: {
+          format: "mp3",
+          duration: "30:00",
+          quality: "320kbps"
+        },
+        createdAt: new Date()
+      },
+      {
+        id: this.getNextId(),
+        title: "Chùa Thiên Mụ qua các thời kỳ",
+        titleEn: "Thien Mu Pagoda Through Ages",
+        description: "Tư liệu lịch sử về chùa Thiên Mụ",
+        descriptionEn: "Historical documents about Thien Mu Pagoda",
+        type: "document",
+        category: "religion",
+        contentUrl: "/documents/chua-thien-mu.pdf",
+        thumbnailUrl: "/images/resources/thien-mu.jpg",
+        metadata: {
+          format: "pdf",
+          pages: 35,
+          language: "vi"
         },
         createdAt: new Date()
       }
