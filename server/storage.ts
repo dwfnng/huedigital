@@ -82,7 +82,7 @@ export class MemStorage implements IStorage {
   }
 
   private initializeData() {
-    // Initialize locations (Digital Map)
+    // Initialize locations with proper structure
     this.locations = [
       {
         id: this.getNextId(),
@@ -90,7 +90,7 @@ export class MemStorage implements IStorage {
         nameEn: "Hue Imperial City",
         description: "Quần thể di tích cung đình triều Nguyễn",
         descriptionEn: "Imperial palace complex of the Nguyen Dynasty",
-        type: "heritage",
+        type: "heritage_site",
         latitude: "16.4698",
         longitude: "107.5796",
         imageUrl: "https://cdn.pixabay.com/photo/2020/03/02/16/12/hue-4896834_1280.jpg",
@@ -102,7 +102,7 @@ export class MemStorage implements IStorage {
         nameEn: "Ky Dai Flag Tower",
         description: "Tháp cờ lịch sử của Huế, xây dựng năm 1807",
         descriptionEn: "Historic flag tower of Hue, built in 1807",
-        type: "heritage",
+        type: "monument",
         latitude: "16.4716",
         longitude: "107.5827",
         imageUrl: "https://cdn.pixabay.com/photo/2020/02/24/14/34/hue-4876229_1280.jpg",
@@ -114,7 +114,7 @@ export class MemStorage implements IStorage {
         nameEn: "Thien Mu Pagoda",
         description: "Ngôi chùa cổ kính nhất tại Huế",
         descriptionEn: "The oldest pagoda in Hue",
-        type: "religious",
+        type: "temple",
         latitude: "16.4539",
         longitude: "107.5537",
         imageUrl: "https://cdn.pixabay.com/photo/2016/07/13/11/42/vietnam-1514386_1280.jpg",
@@ -126,7 +126,7 @@ export class MemStorage implements IStorage {
         nameEn: "Tu Duc Tomb",
         description: "Lăng mộ của vua Tự Đức triều Nguyễn",
         descriptionEn: "Tomb of Emperor Tu Duc",
-        type: "heritage",
+        type: "tomb",
         latitude: "16.4577",
         longitude: "107.5514",
         imageUrl: "https://cdn.pixabay.com/photo/2020/03/02/16/11/hue-4896832_1280.jpg",
@@ -134,7 +134,7 @@ export class MemStorage implements IStorage {
       }
     ];
 
-    // Initialize resources (Digital Library)
+    // Initialize resources with proper content types and URLs
     this.resources = [
       {
         id: this.getNextId(),
@@ -142,14 +142,14 @@ export class MemStorage implements IStorage {
         titleEn: "Nguyen Dynasty History",
         description: "Tài liệu về lịch sử triều đại nhà Nguyễn",
         descriptionEn: "Documents about Nguyen Dynasty history",
-        type: "document",
+        type: "image",
         category: "history",
         contentUrl: "https://cdn.pixabay.com/photo/2020/03/02/16/12/hue-4896834_1280.jpg",
         thumbnailUrl: "https://cdn.pixabay.com/photo/2020/03/02/16/12/hue-4896834_1280.jpg",
         metadata: {
           format: "jpg",
-          pages: 50,
-          language: "vi"
+          resolution: "4K",
+          year: "2024"
         }
       },
       {
@@ -186,7 +186,7 @@ export class MemStorage implements IStorage {
       }
     ];
 
-    // Initialize products (Souvenirs)
+    // Initialize products with proper image URLs
     this.products = [
       {
         id: this.getNextId(),
@@ -208,7 +208,7 @@ export class MemStorage implements IStorage {
       }
     ];
 
-    // Initialize discussions (Forum)
+    // Initialize discussions
     this.discussions = [
       {
         id: this.getNextId(),
