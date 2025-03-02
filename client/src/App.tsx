@@ -2,7 +2,7 @@ import { Switch, Route } from "wouter";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./lib/queryClient";
 import { Toaster } from "@/components/ui/toaster";
-import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList } from "@/components/ui/navigation-menu";
+import { NavigationMenu, NavigationMenuItem, NavigationMenuList } from "@/components/ui/navigation-menu";
 import { Link } from "wouter";
 import { Library, MapPin, MessageSquare, Gamepad2, Activity, Ticket } from "lucide-react";
 import Home from "@/pages/home";
@@ -19,58 +19,50 @@ function MainNav() {
       <div className="container mx-auto flex h-16 items-center px-4">
         <NavigationMenuList className="gap-4">
           <NavigationMenuItem>
-            <Link href="/">
-              <NavigationMenuLink className="text-lg font-bold">
-                Hue Digital
-              </NavigationMenuLink>
+            <Link href="/" className="text-lg font-bold">
+              Hue Digital
             </Link>
           </NavigationMenuItem>
+
           <NavigationMenuItem>
-            <Link href="/map">
-              <NavigationMenuLink className="flex items-center gap-2 transition-colors hover:text-primary">
-                <MapPin className="h-4 w-4" />
-                Bản đồ số
-              </NavigationMenuLink>
+            <Link href="/map" className="flex items-center gap-2 transition-colors hover:text-primary">
+              <MapPin className="h-4 w-4" />
+              Bản đồ số
             </Link>
           </NavigationMenuItem>
+
           <NavigationMenuItem>
-            <Link href="/">
-              <NavigationMenuLink className="flex items-center gap-2 transition-colors hover:text-primary">
-                <Library className="h-4 w-4" />
-                Kho học liệu số
-              </NavigationMenuLink>
+            <Link href="/" className="flex items-center gap-2 transition-colors hover:text-primary">
+              <Library className="h-4 w-4" />
+              Kho học liệu số
             </Link>
           </NavigationMenuItem>
+
           <NavigationMenuItem>
-            <Link href="/chat">
-              <NavigationMenuLink className="flex items-center gap-2 transition-colors hover:text-primary">
-                <MessageSquare className="h-4 w-4" />
-                Trò chuyện AI
-              </NavigationMenuLink>
+            <Link href="/chat" className="flex items-center gap-2 transition-colors hover:text-primary">
+              <MessageSquare className="h-4 w-4" />
+              Trò chuyện AI
             </Link>
           </NavigationMenuItem>
+
           <NavigationMenuItem>
-            <Link href="/game">
-              <NavigationMenuLink className="flex items-center gap-2 transition-colors hover:text-primary">
-                <Gamepad2 className="h-4 w-4" />
-                Game giáo dục
-              </NavigationMenuLink>
+            <Link href="/game" className="flex items-center gap-2 transition-colors hover:text-primary">
+              <Gamepad2 className="h-4 w-4" />
+              Game giáo dục
             </Link>
           </NavigationMenuItem>
+
           <NavigationMenuItem>
-            <Link href="/live-data">
-              <NavigationMenuLink className="flex items-center gap-2 transition-colors hover:text-primary">
-                <Activity className="h-4 w-4" />
-                Dữ liệu thực
-              </NavigationMenuLink>
+            <Link href="/live-data" className="flex items-center gap-2 transition-colors hover:text-primary">
+              <Activity className="h-4 w-4" />
+              Dữ liệu thực
             </Link>
           </NavigationMenuItem>
+
           <NavigationMenuItem>
-            <Link href="/ticket">
-              <NavigationMenuLink className="flex items-center gap-2 transition-colors hover:text-primary">
-                <Ticket className="h-4 w-4" />
-                Đặt vé
-              </NavigationMenuLink>
+            <Link href="/ticket" className="flex items-center gap-2 transition-colors hover:text-primary">
+              <Ticket className="h-4 w-4" />
+              Đặt vé
             </Link>
           </NavigationMenuItem>
         </NavigationMenuList>
