@@ -1,14 +1,17 @@
+import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Crown, Building2, Map } from "lucide-react";
+import RolePlayGame from "@/components/games/RolePlayGame";
 
-function GameCard({ icon: Icon, title, description }: { 
+function GameCard({ icon: Icon, title, description, onClick }: { 
   icon: any; 
   title: string;
   description: string;
+  onClick: () => void;
 }) {
   return (
-    <Card className="cursor-pointer hover:bg-accent transition-colors">
+    <Card className="cursor-pointer hover:bg-accent transition-colors" onClick={onClick}>
       <CardContent className="p-6">
         <div className="flex items-start gap-4">
           <div className="p-2 bg-primary/10 rounded-lg">
@@ -25,6 +28,35 @@ function GameCard({ icon: Icon, title, description }: {
 }
 
 export default function GamePage() {
+  const [selectedGame, setSelectedGame] = useState<string | null>(null);
+
+  const games = {
+    role_play: {
+      title: "Nhập vai vua Gia Long",
+      description: "Đưa ra quyết định xây dựng kinh đô Huế với các lựa chọn về vị trí, phong thủy, kiến trúc.",
+      component: <RolePlayGame />
+    },
+    minister: {
+      title: "Quan thần thời Minh Mạng",
+      description: "Giúp nhà vua xử lý một vụ án trong triều đình, áp dụng luật pháp thời Nguyễn.",
+      component: <div className="text-center p-8 text-muted-foreground">Trò chơi đang được phát triển...</div>
+    }
+  };
+
+  if (selectedGame && games[selectedGame as keyof typeof games]) {
+    return (
+      <div className="container mx-auto p-4">
+        <button 
+          onClick={() => setSelectedGame(null)}
+          className="mb-6 text-primary hover:underline flex items-center gap-2"
+        >
+          ← Quay lại danh sách
+        </button>
+        {games[selectedGame as keyof typeof games].component}
+      </div>
+    );
+  }
+
   return (
     <div className="container mx-auto p-4">
       <div className="max-w-4xl mx-auto">
@@ -45,11 +77,13 @@ export default function GamePage() {
               icon={Crown}
               title="Nhập vai vua Gia Long"
               description="Đưa ra quyết định xây dựng kinh đô Huế với các lựa chọn về vị trí, phong thủy, kiến trúc."
+              onClick={() => setSelectedGame('role_play')}
             />
             <GameCard
               icon={Crown}
               title="Quan thần thời Minh Mạng"
               description="Giúp nhà vua xử lý một vụ án trong triều đình, áp dụng luật pháp thời Nguyễn."
+              onClick={() => setSelectedGame('minister')}
             />
           </TabsContent>
 
@@ -58,11 +92,13 @@ export default function GamePage() {
               icon={Building2}
               title="Điện Cần Chánh"
               description="Dựng lại Điện Cần Chánh bằng mô hình 3D và so sánh với kiến trúc gốc."
+              onClick={() => {}}
             />
             <GameCard
               icon={Building2}
               title="Hệ thống lăng tẩm"
               description="Thiết kế lại hệ thống lăng tẩm hoàng gia theo phong thủy chuẩn thời Nguyễn."
+              onClick={() => {}}
             />
           </TabsContent>
 
@@ -71,18 +107,20 @@ export default function GamePage() {
               icon={Map}
               title="Mật thư của vua Tự Đức"
               description="Giải mã mật thư để tìm kiếm một bức sắc phong bị thất lạc."
+              onClick={() => {}}
             />
             <GameCard
               icon={Map}
               title="Kho báu Đại Nội"
               description="Lần theo dấu vết của một kho báu trong Đại Nội bằng cách giải các câu đố lịch sử."
+              onClick={() => {}}
             />
           </TabsContent>
         </Tabs>
 
         <div className="mt-8 text-center text-sm text-muted-foreground">
-          <p>🚧 Các trò chơi đang được phát triển và sẽ sớm ra mắt.</p>
-          <p>Hãy quay lại sau để trải nghiệm!</p>
+          <p>🚧 Các trò chơi khác đang được phát triển và sẽ sớm ra mắt.</p>
+          <p>Hãy quay lại sau để trải nghiệm thêm nhiều trò chơi mới!</p>
         </div>
       </div>
     </div>
