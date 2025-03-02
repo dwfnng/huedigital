@@ -1,31 +1,54 @@
-import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useState, useEffect } from "react";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Brain, Timer, ClipboardList, Camera } from "lucide-react";
-import QuizGame from "./games/QuizGame";
-import TimelineGame from "./games/TimelineGame";
-import WordPuzzleGame from "./games/WordPuzzleGame";
-import RolePlayGame from "./games/RolePlayGame"; // Added import
-import BuildingGame from "./games/BuildingGame"; // Added import
-import ARGame from "./games/ARGame"; // Added import
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
+import { Progress } from "@/components/ui/progress";
+import { Brain, Timer, ClipboardList, Crown, Building2, Camera, Medal } from "lucide-react";
 
-// Historical Timeline Game (from original code)
+// Timeline Game Component
 function TimelineGame() {
-  const [events, setEvents] = useState<{year: number, event: string, isCorrect?: boolean}[]>([
-    { year: 1802, event: "Vua Gia Long lên ngôi, thành lập triều Nguyễn" },
-    { year: 1805, event: "Khởi công xây dựng Kinh thành Huế" },
-    { year: 1821, event: "Vua Minh Mạng lên ngôi" },
-    { year: 1847, event: "Vua Thiệu Trị băng hà, vua Tự Đức lên ngôi" },
-    { year: 1883, event: "Kinh thành Huế thất thủ trước quân Pháp" },
-    { year: 1945, event: "Vua Bảo Đại thoái vị, kết thúc triều Nguyễn" },
+  const [events, setEvents] = useState<{year: number, event: string, description: string, isCorrect?: boolean}[]>([
+    { 
+      year: 1802, 
+      event: "Vua Gia Long lên ngôi, thành lập triều Nguyễn",
+      description: "Đánh dấu sự thống nhất đất nước và mở đầu cho triều đại phong kiến cuối cùng của Việt Nam"
+    },
+    { 
+      year: 1805, 
+      event: "Khởi công xây dựng Kinh thành Huế",
+      description: "Công trình kiến trúc vĩ đại được xây dựng theo nguyên tắc phong thủy và nghệ thuật cổ"
+    },
+    { 
+      year: 1821, 
+      event: "Vua Minh Mạng lên ngôi",
+      description: "Thời kỳ phát triển thịnh vượng của triều Nguyễn với nhiều cải cách quan trọng"
+    },
+    { 
+      year: 1847, 
+      event: "Vua Thiệu Trị băng hà, vua Tự Đức lên ngôi",
+      description: "Giai đoạn đối mặt với nhiều thách thức từ phương Tây"
+    },
+    { 
+      year: 1883, 
+      event: "Kinh thành Huế thất thủ trước quân Pháp",
+      description: "Sự kiện đánh dấu sự suy yếu của triều Nguyễn trước sức mạnh phương Tây"
+    },
+    { 
+      year: 1945, 
+      event: "Vua Bảo Đại thoái vị, kết thúc triều Nguyễn",
+      description: "Chấm dứt chế độ quân chủ tại Việt Nam sau hơn 140 năm tồn tại"
+    },
   ]);
+
   const [shuffledEvents, setShuffledEvents] = useState<typeof events>([]);
   const [currentStep, setCurrentStep] = useState(0);
   const [score, setScore] = useState(0);
   const [gameComplete, setGameComplete] = useState(false);
 
   useEffect(() => {
-    // Shuffle events
     const shuffled = [...events].sort(() => Math.random() - 0.5);
     setShuffledEvents(shuffled);
   }, []);
@@ -70,7 +93,10 @@ function TimelineGame() {
           <Timer className="h-5 w-5" />
           <span>Dòng thời gian lịch sử</span>
         </CardTitle>
-        <CardDescription>Sắp xếp các sự kiện lịch sử theo thứ tự thời gian chính xác</CardDescription>
+        <CardDescription>
+          Sắp xếp các sự kiện lịch sử quan trọng của triều Nguyễn theo đúng trình tự thời gian. 
+          Mỗi sự kiện đều mang ý nghĩa đặc biệt trong lịch sử Cố đô Huế.
+        </CardDescription>
       </CardHeader>
       <CardContent>
         {!gameComplete ? (
@@ -79,6 +105,7 @@ function TimelineGame() {
               <h3 className="font-medium mb-2">Sự kiện {currentStep + 1}/{events.length}</h3>
               <div className="p-4 bg-secondary/20 rounded-lg mb-4">
                 <p className="text-center font-medium">{shuffledEvents[currentStep]?.event}</p>
+                <p className="text-center text-sm">{shuffledEvents[currentStep]?.description}</p>
               </div>
 
               <div className="mt-4">
@@ -113,34 +140,32 @@ function TimelineGame() {
   );
 }
 
-
-// Historical Quiz Game (from original code)
+// Quiz Game Component
 function QuizGame() {
   const allQuestions = [
     {
       question: "Ai là vị vua đầu tiên của triều Nguyễn?",
       options: ["Gia Long", "Minh Mạng", "Tự Đức", "Khải Định"],
-      answer: 0
+      answer: 0,
+      explanation: "Vua Gia Long (1762-1820) tên thật là Nguyễn Phúc Ánh, là người thống nhất đất nước và sáng lập triều Nguyễn vào năm 1802."
     },
     {
       question: "Kinh thành Huế được xây dựng vào năm nào?",
       options: ["1802", "1805", "1820", "1833"],
-      answer: 1
+      answer: 1,
+      explanation: "Kinh thành Huế được khởi công xây dựng vào năm 1805 và hoàn thành cơ bản vào năm 1832, là công trình kiến trúc đồ sộ nhất triều Nguyễn."
     },
     {
       question: "Điện nào là nơi vua triều Nguyễn thiết triều?",
       options: ["Điện Thái Hòa", "Điện Cần Chánh", "Điện Long An", "Điện Phụng Tiên"],
-      answer: 0
-    },
-    {
-      question: "Bao nhiêu vị vua đã trị vì trong triều Nguyễn?",
-      options: ["10", "13", "9", "7"],
-      answer: 1
+      answer: 0,
+      explanation: "Điện Thái Hòa là nơi vua triều Nguyễn thiết triều và tiếp kiến sứ thần. Điện được xây dựng theo phong cách cung đình độc đáo."
     },
     {
       question: "Nhã nhạc cung đình Huế được UNESCO công nhận là di sản văn hóa phi vật thể vào năm nào?",
       options: ["2000", "2003", "2005", "2010"],
-      answer: 1
+      answer: 1,
+      explanation: "Nhã nhạc cung đình Huế được UNESCO công nhận là Kiệt tác truyền khẩu và phi vật thể của nhân loại vào năm 2003."
     }
   ];
 
@@ -153,7 +178,6 @@ function QuizGame() {
   const [isTimerActive, setIsTimerActive] = useState(true);
 
   useEffect(() => {
-    // Shuffle and select 5 questions
     const shuffled = [...allQuestions].sort(() => Math.random() - 0.5);
     setQuestions(shuffled.slice(0, 5));
   }, []);
@@ -216,7 +240,11 @@ function QuizGame() {
           <Brain className="h-5 w-5" />
           <span>Câu đố lịch sử</span>
         </CardTitle>
-        <CardDescription>Kiểm tra kiến thức của bạn về lịch sử cố đô Huế</CardDescription>
+        <CardDescription>
+          Thử thách kiến thức của bạn về lịch sử, văn hóa và kiến trúc của Cố đô Huế 
+          qua những câu hỏi thú vị. Mỗi câu trả lời đều có giải thích chi tiết để 
+          giúp bạn hiểu sâu hơn về di sản văn hóa độc đáo này.
+        </CardDescription>
       </CardHeader>
       <CardContent>
         {!quizComplete ? (
@@ -284,18 +312,29 @@ function QuizGame() {
   );
 }
 
-
-
-// Word Puzzle Game (from original code)
+// Word Puzzle Game Component
 function WordPuzzleGame() {
   const allWords = [
-    { word: "HOANGTHANHHUẾ", clue: "Di sản văn hóa thế giới tại trung tâm thành phố Huế" },
-    { word: "NGUYỄN", clue: "Triều đại phong kiến cuối cùng của Việt Nam" },
-    { word: "MINHMẠNG", clue: "Vị vua thứ hai của triều Nguyễn" },
-    { word: "SÔNGHƯƠNG", clue: "Dòng sông chảy qua thành phố Huế" },
-    { word: "NHÃNHẠC", clue: "Loại hình âm nhạc cung đình Huế được UNESCO công nhận" },
-    { word: "CỬUVỊTHẦNCÔNG", clue: "Chín khẩu đại bác được xem là vật trấn quốc thời Nguyễn" },
-    { word: "THƯƠNGLÀNG", clue: "Con thuyền dùng để đi nghe ca Huế trên sông Hương" }
+    { 
+      word: "HOANGTHANHHUẾ", 
+      clue: "Di sản văn hóa thế giới tại trung tâm thành phố Huế",
+      info: "Hoàng thành Huế là quần thể di tích rộng lớn, được UNESCO công nhận là Di sản Văn hóa Thế giới năm 1993."
+    },
+    { 
+      word: "NGUYỄN", 
+      clue: "Triều đại phong kiến cuối cùng của Việt Nam",
+      info: "Triều Nguyễn tồn tại từ 1802 đến 1945, là triều đại phong kiến cuối cùng trong lịch sử Việt Nam."
+    },
+    { 
+      word: "SÔNGHƯƠNG", 
+      clue: "Dòng sông chảy qua thành phố Huế",
+      info: "Sông Hương là niềm tự hào của người dân Huế, gắn liền với lịch sử và văn hóa của vùng đất Cố đô."
+    },
+    { 
+      word: "NHÃNHẠC", 
+      clue: "Loại hình âm nhạc cung đình Huế được UNESCO công nhận",
+      info: "Nhã nhạc cung đình Huế là loại hình âm nhạc độc đáo, thể hiện sự tinh tế trong văn hóa cung đình triều Nguyễn."
+    }
   ];
 
   const [puzzleWords, setPuzzleWords] = useState<typeof allWords>([]);
@@ -308,7 +347,6 @@ function WordPuzzleGame() {
   const maxAttempts = 6;
 
   useEffect(() => {
-    // Shuffle and select words
     const shuffled = [...allWords].sort(() => Math.random() - 0.5);
     setPuzzleWords(shuffled.slice(0, 3));
   }, []);
@@ -326,7 +364,6 @@ function WordPuzzleGame() {
         setAttempts(attempts + 1);
       }
 
-      // Check if word is complete
       const isWordComplete = puzzleWords[currentWord]?.word.split('').every(
         char => newGuessedLetters.includes(char)
       );
@@ -343,7 +380,6 @@ function WordPuzzleGame() {
         }
       }
 
-      // Check if game over
       if (attempts + 1 >= maxAttempts) {
         if (currentWord < puzzleWords.length - 1) {
           setCurrentWord(currentWord + 1);
@@ -391,7 +427,10 @@ function WordPuzzleGame() {
           <ClipboardList className="h-5 w-5" />
           <span>Điền từ bí ẩn</span>
         </CardTitle>
-        <CardDescription>Đoán từ liên quan đến di tích ở Huế</CardDescription>
+        <CardDescription>
+          Khám phá kho tàng từ vựng độc đáo về di sản Huế. Mỗi từ đều ẩn chứa 
+          một câu chuyện thú vị về lịch sử, văn hóa và kiến trúc của Cố đô.
+        </CardDescription>
       </CardHeader>
       <CardContent>
         {!gameComplete ? (
@@ -404,6 +443,7 @@ function WordPuzzleGame() {
 
               <div className="p-3 bg-secondary/20 rounded-lg mb-4">
                 <p className="text-center">{puzzleWords[currentWord]?.clue}</p>
+                <p className="text-center text-sm">{puzzleWords[currentWord]?.info}</p>
               </div>
 
               <div className="flex flex-wrap justify-center my-6">
@@ -457,9 +497,9 @@ function WordPuzzleGame() {
 export default function EducationalGames() {
   return (
     <div className="container mx-auto p-2 md:p-4">
-      <h1 className="text-2xl md:text-3xl font-bold mb-2 slide-in">Game giáo dục</h1>
+      <h1 className="text-2xl md:text-3xl font-bold mb-2 slide-in">Trò chơi giáo dục</h1>
       <p className="text-sm md:text-base text-muted-foreground mb-6 slide-in" style={{ animationDelay: '0.1s' }}>
-        Tìm hiểu về lịch sử và văn hóa Huế qua các trò chơi tương tác
+        Khám phá và học hỏi về lịch sử, văn hóa Huế qua các trò chơi tương tác thú vị
       </p>
 
       <Tabs defaultValue="quiz" className="w-full">
@@ -476,18 +516,6 @@ export default function EducationalGames() {
             <ClipboardList className="w-4 h-4 mr-2" />
             <span className="hidden md:inline">Điền từ</span>
           </TabsTrigger>
-          <TabsTrigger value="roleplay" className="text-sm">
-            <Crown className="w-4 h-4 mr-2" /> {/* Crown icon needs to be imported */}
-            <span className="hidden md:inline">Nhập vai</span>
-          </TabsTrigger>
-          <TabsTrigger value="building" className="text-sm">
-            <Building2 className="w-4 h-4 mr-2" /> {/* Building2 icon needs to be imported */}
-            <span className="hidden md:inline">Xây dựng</span>
-          </TabsTrigger>
-          <TabsTrigger value="ar" className="text-sm">
-            <Camera className="w-4 h-4 mr-2" />
-            <span className="hidden md:inline">AR</span>
-          </TabsTrigger>
         </TabsList>
 
         <div className="mt-4 md:mt-6">
@@ -499,15 +527,6 @@ export default function EducationalGames() {
           </TabsContent>
           <TabsContent value="word">
             <WordPuzzleGame />
-          </TabsContent>
-          <TabsContent value="roleplay">
-            <RolePlayGame />
-          </TabsContent>
-          <TabsContent value="building">
-            <BuildingGame />
-          </TabsContent>
-          <TabsContent value="ar">
-            <ARGame />
           </TabsContent>
         </div>
       </Tabs>
