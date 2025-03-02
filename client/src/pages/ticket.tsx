@@ -94,19 +94,19 @@ export default function TicketPage() {
               title="Vé tham quan Đại Nội"
               price="200.000đ"
               description="Thăm quan Hoàng thành Huế và các công trình trong Đại Nội"
-              url="https://huetourism.gov.vn/vi/dat-ve"
+              url="https://visithue.vn/products/ve-tham-quan-dai-noi"
             />
             <TicketCard
               title="Vé tham quan Lăng Tự Đức"
               price="150.000đ"
               description="Khám phá kiến trúc độc đáo của lăng Tự Đức"
-              url="https://huetourism.gov.vn/vi/dat-ve"
+              url="https://visithue.vn/products/ve-tham-quan-lang-tu-duc"
             />
             <TicketCard
               title="Combo 3 điểm tham quan"
               price="400.000đ"
               description="Đại Nội + Lăng Tự Đức + Lăng Minh Mạng"
-              url="https://huetourism.gov.vn/vi/dat-ve"
+              url="https://visithue.vn/collections/combo-tham-quan"
             />
           </TabsContent>
 
@@ -115,25 +115,25 @@ export default function TicketPage() {
               name="Nón lá Huế thêu hoa"
               price="120.000đ"
               image="/attached_assets/pexels-karen-w-lim-415441-1089318.jpg"
-              url="https://ochucdotcom.myharavan.com/collections/non-la"
+              url="https://luutruhuongsac.vn/non-la-hue"
             />
             <SouvenirCard
               name="Tranh thủy mặc Huế"
               price="250.000đ"
               image="/attached_assets/pexels-uyen-bui-205258074-11937353.jpg"
-              url="https://huecraft.com.vn/collections/tranh-thuy-mac"
+              url="https://artbyhue.vn/collections/tranh-thuy-mac"
             />
             <SouvenirCard
               name="Áo dài truyền thống"
               price="850.000đ"
               image="/attached_assets/pexels-th-vinh-flute-822138648-21011475.jpg"
-              url="https://huefashion.vn/ao-dai-truyen-thong"
+              url="https://huefestival.com/ao-dai-truyen-thong"
             />
             <SouvenirCard
               name="Trầm hương Huế"
               price="180.000đ"
               image="/attached_assets/pexels-vietnam-photographer-27418892.jpg"
-              url="https://tramhuonghue.com.vn"
+              url="https://huongxua.com.vn/tram-huong-hue"
             />
           </TabsContent>
         </Tabs>
