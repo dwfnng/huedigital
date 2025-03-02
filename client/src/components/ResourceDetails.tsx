@@ -48,6 +48,10 @@ export default function ResourceDetails({
               alt={resource.title}
               className="w-full rounded-lg"
               loading="lazy"
+              onError={(e) => {
+                e.currentTarget.src = "/fallback-image.png";
+                e.currentTarget.onerror = null;
+              }}
             />
             {resource.metadata?.resolution && (
               <div className="absolute bottom-2 right-2 bg-black/50 text-white px-2 py-1 rounded text-xs">
@@ -61,10 +65,18 @@ export default function ResourceDetails({
           <div className="relative">
             <video
               src={resource.contentUrl}
-              poster={resource.thumbnailUrl}
+              poster={resource.thumbnailUrl || "/fallback-video-poster.png"}
               controls
               className="w-full rounded-lg"
-              preload="none"
+              preload="metadata"
+              onError={(e) => {
+                const videoEl = e.currentTarget;
+                videoEl.poster = "/fallback-video-poster.png";
+                const errorMsg = document.createElement("div");
+                errorMsg.textContent = "Video không khả dụng";
+                errorMsg.className = "p-4 bg-gray-100 text-gray-700 rounded-lg text-center";
+                videoEl.parentNode?.insertBefore(errorMsg, videoEl.nextSibling);
+              }}
             />
             {resource.metadata?.resolution && (
               <div className="absolute top-2 right-2 bg-black/50 text-white px-2 py-1 rounded text-xs">
@@ -81,6 +93,10 @@ export default function ResourceDetails({
                 src={resource.thumbnailUrl}
                 alt={resource.title}
                 className="w-full h-48 object-cover rounded-lg"
+                onError={(e) => {
+                  e.currentTarget.src = "/fallback-audio-image.png";
+                  e.currentTarget.onerror = null;
+                }}
               />
             )}
             <audio
@@ -88,7 +104,44 @@ export default function ResourceDetails({
               controls
               className="w-full"
               preload="metadata"
+              onError={(e) => {
+                const audioEl = e.currentTarget;
+                const errorMsg = document.createElement("div");
+                errorMsg.textContent = "Âm thanh không khả dụng";
+                errorMsg.className = "p-4 bg-gray-100 text-gray-700 rounded-lg text-center";
+                audioEl.parentNode?.insertBefore(errorMsg, audioEl.nextSibling);
+              }}
             />
+          </div>
+        );
+      case "3d_model":
+        return (
+          <div className="space-y-4">
+            {resource.thumbnailUrl ? (
+              <img
+                src={resource.thumbnailUrl}
+                alt={resource.title}
+                className="w-full h-48 object-cover rounded-lg"
+                onError={(e) => {
+                  e.currentTarget.src = "/fallback-3d-image.png";
+                  e.currentTarget.onerror = null;
+                }}
+              />
+            ) : (
+              <div className="w-full h-48 bg-gray-200 rounded-lg flex items-center justify-center">
+                <Box className="h-16 w-16 text-gray-500" />
+              </div>
+            )}
+            <div className="p-4 bg-gray-100 rounded-lg">
+              <a 
+                href={resource.contentUrl} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="block w-full py-2 px-4 bg-blue-600 text-white text-center rounded-md hover:bg-blue-700 transition-colors"
+              >
+                Xem mô hình 3D
+              </a>
+            </div>
           </div>
         );
       default:
@@ -97,8 +150,16 @@ export default function ResourceDetails({
             src={resource.thumbnailUrl}
             alt={resource.title}
             className="w-full h-48 object-cover rounded-lg"
+            onError={(e) => {
+              e.currentTarget.src = "/fallback-document.png";
+              e.currentTarget.onerror = null;
+            }}
           />
-        ) : null;
+        ) : (
+          <div className="w-full h-48 bg-gray-200 rounded-lg flex items-center justify-center">
+            <FileText className="h-16 w-16 text-gray-500" />
+          </div>
+        );
     }
   };
 

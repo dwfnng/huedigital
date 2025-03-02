@@ -88,3 +88,123 @@ export default function ChatInterface() {
     </div>
   );
 }
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { Send } from "lucide-react";
+import { cn } from "@/lib/utils";
+
+interface Message {
+  role: "user" | "assistant";
+  content: string;
+}
+
+export function ChatInterface() {
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [input, setInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  async function handleSend() {
+    if (!input.trim()) return;
+    
+    const userMessage: Message = { role: "user", content: input };
+    setMessages(prev => [...prev, userMessage]);
+    setInput("");
+    setIsLoading(true);
+    setError(null);
+    
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: input }),
+      });
+      
+      if (!response.ok) {
+        throw new Error(`Server responded with ${response.status}`);
+      }
+      
+      const data = await response.json();
+      
+      if (data.response) {
+        const assistantMessage: Message = { role: "assistant", content: data.response };
+        setMessages(prev => [...prev, assistantMessage]);
+      } else {
+        throw new Error("Empty response from server");
+      }
+    } catch (err) {
+      console.error("Failed to get response:", err);
+      setError("Xin lỗi, có lỗi xảy ra. Vui lòng thử lại sau.");
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  return (
+    <div className="flex flex-col h-full">
+      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+        {messages.length === 0 ? (
+          <div className="flex items-center justify-center h-full text-center text-gray-500">
+            <div>
+              <p className="mb-2">Chào mừng đến với trợ lý ảo!</p>
+              <p>Hãy đặt câu hỏi hoặc tìm hiểu về các địa điểm, tài liệu lịch sử.</p>
+            </div>
+          </div>
+        ) : (
+          messages.map((message, index) => (
+            <div
+              key={index}
+              className={cn(
+                "p-3 rounded-lg max-w-[80%]",
+                message.role === "user"
+                  ? "bg-primary text-primary-foreground ml-auto"
+                  : "bg-muted mr-auto"
+              )}
+            >
+              {message.content}
+            </div>
+          ))
+        )}
+        {isLoading && (
+          <div className="bg-muted p-3 rounded-lg max-w-[80%] mr-auto">
+            <div className="flex space-x-2 items-center">
+              <div className="w-2 h-2 rounded-full bg-gray-400 animate-pulse"></div>
+              <div className="w-2 h-2 rounded-full bg-gray-400 animate-pulse delay-100"></div>
+              <div className="w-2 h-2 rounded-full bg-gray-400 animate-pulse delay-200"></div>
+            </div>
+          </div>
+        )}
+        {error && (
+          <div className="bg-red-100 text-red-700 p-3 rounded-lg max-w-[80%] mx-auto text-center">
+            {error}
+          </div>
+        )}
+      </div>
+      <div className="border-t p-4">
+        <div className="flex space-x-2">
+          <Textarea
+            placeholder="Nhập tin nhắn của bạn..."
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                handleSend();
+              }
+            }}
+            disabled={isLoading}
+            className="min-h-[60px] resize-none"
+          />
+          <Button 
+            onClick={handleSend} 
+            disabled={isLoading || !input.trim()} 
+            size="icon"
+          >
+            <Send className="h-4 w-4" />
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+}

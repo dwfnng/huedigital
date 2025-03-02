@@ -6,7 +6,8 @@ import {
   Video, 
   Music, 
   GraduationCap, 
-  Box 
+  Box, 
+  Cube 
 } from "lucide-react";
 import type { ResourceType } from "@shared/schema";
 
