@@ -6,9 +6,10 @@ import * as schema from "@shared/schema";
 neonConfig.webSocketConstructor = ws;
 
 if (!process.env.DATABASE_URL) {
-  throw new Error(
-    "DATABASE_URL must be set. Did you forget to provision a database?",
-  );
+  console.error("DATABASE_URL environment variable is not set.");
+  console.error("Please create a PostgreSQL database using Replit's Database tool.");
+  console.error("Once created, the DATABASE_URL will be automatically added to your environment variables.");
+  process.exit(1);
 }
 
 // Add error handling and connection pooling
