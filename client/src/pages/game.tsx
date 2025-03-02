@@ -3,6 +3,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Crown, Building2, Map } from "lucide-react";
 import RolePlayGame from "@/components/games/RolePlayGame";
+import BuildingGame from "@/components/games/BuildingGame";
+import TreasureHuntGame from "@/components/games/TreasureHuntGame";
 
 function GameCard({ icon: Icon, title, description, onClick }: { 
   icon: any; 
@@ -40,6 +42,16 @@ export default function GamePage() {
       title: "Quan thần thời Minh Mạng",
       description: "Giúp nhà vua xử lý một vụ án trong triều đình, áp dụng luật pháp thời Nguyễn.",
       component: <div className="text-center p-8 text-muted-foreground">Trò chơi đang được phát triển...</div>
+    },
+    building: {
+      title: "Điện Cần Chánh",
+      description: "Dựng lại Điện Cần Chánh bằng mô hình 3D và so sánh với kiến trúc gốc. Tìm hiểu về nghệ thuật kiến trúc cung đình Huế.",
+      component: <BuildingGame />
+    },
+    treasure: {
+      title: "Mật thư của vua Tự Đức",
+      description: "Giải mã các câu đố lịch sử để tìm kiếm bảo vật hoàng cung. Khám phá những bí mật thú vị về Cố đô Huế.",
+      component: <TreasureHuntGame />
     }
   };
 
@@ -91,14 +103,8 @@ export default function GamePage() {
             <GameCard
               icon={Building2}
               title="Điện Cần Chánh"
-              description="Dựng lại Điện Cần Chánh bằng mô hình 3D và so sánh với kiến trúc gốc."
-              onClick={() => {}}
-            />
-            <GameCard
-              icon={Building2}
-              title="Hệ thống lăng tẩm"
-              description="Thiết kế lại hệ thống lăng tẩm hoàng gia theo phong thủy chuẩn thời Nguyễn."
-              onClick={() => {}}
+              description="Dựng lại Điện Cần Chánh bằng mô hình 3D và so sánh với kiến trúc gốc. Tìm hiểu về nghệ thuật kiến trúc cung đình Huế."
+              onClick={() => setSelectedGame('building')}
             />
           </TabsContent>
 
@@ -106,14 +112,8 @@ export default function GamePage() {
             <GameCard
               icon={Map}
               title="Mật thư của vua Tự Đức"
-              description="Giải mã mật thư để tìm kiếm một bức sắc phong bị thất lạc."
-              onClick={() => {}}
-            />
-            <GameCard
-              icon={Map}
-              title="Kho báu Đại Nội"
-              description="Lần theo dấu vết của một kho báu trong Đại Nội bằng cách giải các câu đố lịch sử."
-              onClick={() => {}}
+              description="Giải mã các câu đố lịch sử để tìm kiếm bảo vật hoàng cung. Khám phá những bí mật thú vị về Cố đô Huế."
+              onClick={() => setSelectedGame('treasure')}
             />
           </TabsContent>
         </Tabs>
