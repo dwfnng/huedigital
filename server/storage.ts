@@ -70,6 +70,115 @@ export class MemStorage implements IStorage {
   private categories: Category[] = [];
   private nextId = 1;
 
+  constructor() {
+    this.initializeData();
+  }
+
+  private initializeData() {
+    // Initialize locations (Digital Map)
+    this.locations = [
+      {
+        id: this.getNextId(),
+        name: "Đại Nội Huế",
+        description: "Quần thể di tích cung đình triều Nguyễn",
+        latitude: 16.4698,
+        longitude: 107.5796,
+        imageUrl: "/images/locations/dai-noi-hue.jpg",
+        category: "heritage",
+        createdAt: new Date()
+      },
+      {
+        id: this.getNextId(),
+        name: "Chùa Thiên Mụ",
+        description: "Ngôi chùa cổ nhất Huế",
+        latitude: 16.4539,
+        longitude: 107.5537,
+        imageUrl: "/images/locations/chua-thien-mu.jpg",
+        category: "religious",
+        createdAt: new Date()
+      }
+    ];
+
+    // Initialize resources (Digital Library)
+    this.resources = [
+      {
+        id: this.getNextId(),
+        title: "Lịch sử Triều Nguyễn",
+        description: "Tài liệu về lịch sử triều đại nhà Nguyễn",
+        type: "document",
+        category: "history",
+        url: "/documents/trieu-nguyen-history.pdf",
+        imageUrl: "/images/resources/trieu-nguyen.jpg",
+        createdAt: new Date()
+      },
+      {
+        id: this.getNextId(),
+        title: "Nghệ thuật cung đình Huế",
+        description: "Giới thiệu về nghệ thuật cung đình thời Nguyễn",
+        type: "video",
+        category: "art",
+        url: "/videos/nghe-thuat-cung-dinh.mp4",
+        imageUrl: "/images/resources/nghe-thuat.jpg",
+        createdAt: new Date()
+      }
+    ];
+
+    // Initialize discussions (Forum)
+    this.discussions = [
+      {
+        id: this.getNextId(),
+        title: "Ẩm thực cung đình Huế",
+        content: "Thảo luận về văn hóa ẩm thực cung đình Huế",
+        category: "culture",
+        userId: 1,
+        views: 0,
+        imageUrl: "/images/discussions/am-thuc.jpg",
+        createdAt: new Date()
+      },
+      {
+        id: this.getNextId(),
+        title: "Di sản Huế trong đời sống hiện đại",
+        content: "Bảo tồn và phát huy giá trị di sản Huế",
+        category: "heritage",
+        userId: 1,
+        views: 0,
+        imageUrl: "/images/discussions/di-san.jpg",
+        createdAt: new Date()
+      }
+    ];
+
+    // Initialize categories
+    this.categories = [
+      {
+        id: this.getNextId(),
+        name: "Di sản",
+        description: "Các di sản văn hóa Huế",
+        type: "location",
+        createdAt: new Date()
+      },
+      {
+        id: this.getNextId(),
+        name: "Văn hóa",
+        description: "Văn hóa và phong tục Huế",
+        type: "discussion",
+        createdAt: new Date()
+      }
+    ];
+
+    // Add a default user for testing
+    this.users = [
+      {
+        id: 1,
+        username: "admin",
+        password: "admin123",
+        email: "admin@example.com",
+        role: "admin",
+        points: "0",
+        createdAt: new Date()
+      }
+    ];
+  }
+
   private getNextId(): number {
     return this.nextId++;
   }
@@ -206,7 +315,7 @@ export class MemStorage implements IStorage {
 
   async searchLocations(query: string): Promise<Location[]> {
     const lowerQuery = query.toLowerCase();
-    return this.locations.filter(l => 
+    return this.locations.filter(l =>
       l.name.toLowerCase().includes(lowerQuery)
     );
   }
