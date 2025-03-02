@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { motion } from "framer-motion";
 import { 
   FileText, 
   Image, 
@@ -24,30 +25,53 @@ const resourceTypes: { type: ResourceType; icon: React.ReactNode; label: string 
   { type: "3d_model", icon: <Box className="h-4 w-4" />, label: "Mô hình 3D" },
 ];
 
+const container = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.05
+    }
+  }
+};
+
+const item = {
+  hidden: { opacity: 0, scale: 0.95 },
+  show: { opacity: 1, scale: 1 }
+};
+
 export default function ResourceTypeFilter({ selectedType, onSelectType }: ResourceTypeFilterProps) {
   return (
-    <ScrollArea className="w-full whitespace-nowrap">
-      <div className="flex space-x-2 p-1">
-        <Button
-          variant={selectedType === null ? "default" : "outline"}
-          onClick={() => onSelectType(null)}
-          className="shrink-0"
-        >
-          Tất cả
-        </Button>
-        {resourceTypes.map(({ type, icon, label }) => (
+    <ScrollArea className="w-full whitespace-nowrap rounded-lg border bg-card p-1">
+      <motion.div 
+        className="flex space-x-2"
+        variants={container}
+        initial="hidden"
+        animate="show"
+      >
+        <motion.div variants={item}>
           <Button
-            key={type}
-            variant={selectedType === type ? "default" : "outline"}
-            onClick={() => onSelectType(type)}
+            variant={selectedType === null ? "default" : "outline"}
+            onClick={() => onSelectType(null)}
             className="shrink-0"
           >
-            {icon}
-            <span className="ml-2">{label}</span>
+            Tất cả
           </Button>
+        </motion.div>
+        {resourceTypes.map(({ type, icon, label }) => (
+          <motion.div key={type} variants={item}>
+            <Button
+              variant={selectedType === type ? "default" : "outline"}
+              onClick={() => onSelectType(type)}
+              className="shrink-0 transition-all hover:bg-primary/90"
+            >
+              {icon}
+              <span className="ml-2">{label}</span>
+            </Button>
+          </motion.div>
         ))}
-      </div>
-      <ScrollBar orientation="horizontal" />
+      </motion.div>
+      <ScrollBar orientation="horizontal" className="invisible" />
     </ScrollArea>
   );
 }

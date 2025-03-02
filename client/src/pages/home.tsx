@@ -1,13 +1,33 @@
 import { useState, useCallback } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import SearchBar from "@/components/SearchBar";
 import ResourceList from "@/components/ResourceList";
 import ResourceDetails from "@/components/ResourceDetails";
 import CategoryList from "@/components/CategoryList";
 import ResourceTypeFilter from "@/components/ResourceTypeFilter";
+import { motion } from "framer-motion";
+import { Library } from "lucide-react";
 import type { Resource, ResourceType, Category } from "@shared/schema";
 import { apiRequest } from "@/lib/queryClient";
+
+const container = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.2
+    }
+  }
+};
+
+const item = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0 }
+};
 
 export default function Home() {
   const [selectedResource, setSelectedResource] = useState<Resource | null>(null);
@@ -45,50 +65,84 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="container mx-auto p-4">
+    <motion.div
+      className="container mx-auto p-4"
+      variants={container}
+      initial="hidden"
+      animate="show"
+    >
       <div className="max-w-3xl mx-auto">
-        <h1 className="text-2xl font-bold mb-2">Kho học liệu số</h1>
-        <p className="text-muted-foreground mb-6">
-          Khám phá bộ sưu tập tài liệu số hóa, hình ảnh, video và âm thanh về di sản văn hóa Huế
-        </p>
+        <motion.div variants={item} className="flex items-center gap-3 mb-6">
+          <div className="p-3 rounded-full bg-primary/10">
+            <Library className="h-6 w-6 text-primary" />
+          </div>
+          <div>
+            <h1 className="text-3xl font-bold">Kho học liệu số</h1>
+            <p className="text-muted-foreground mt-1">
+              Khám phá bộ sưu tập tài liệu số hóa, hình ảnh, video và âm thanh về di sản văn hóa Huế
+            </p>
+          </div>
+        </motion.div>
 
-        <Tabs defaultValue="browse" className="space-y-4">
-          <TabsList>
-            <TabsTrigger value="browse">Duyệt tài liệu</TabsTrigger>
-            <TabsTrigger value="categories">Danh mục</TabsTrigger>
-          </TabsList>
+        <Card className="overflow-hidden">
+          <CardContent className="p-0">
+            <Tabs defaultValue="browse" className="w-full">
+              <motion.div variants={item} className="px-4 pt-4">
+                <TabsList className="w-full grid grid-cols-2">
+                  <TabsTrigger value="browse" className="text-base">
+                    Duyệt tài liệu
+                  </TabsTrigger>
+                  <TabsTrigger value="categories" className="text-base">
+                    Danh mục
+                  </TabsTrigger>
+                </TabsList>
+              </motion.div>
 
-          <TabsContent value="browse" className="space-y-4">
-            <SearchBar 
-              onSearch={handleSearch}
-              placeholder="Tìm kiếm tài liệu..."
-            />
+              <TabsContent value="browse" className="m-0">
+                <div className="space-y-4 p-4">
+                  <motion.div variants={item}>
+                    <SearchBar 
+                      onSearch={handleSearch}
+                      placeholder="Tìm kiếm tài liệu..."
+                    />
+                  </motion.div>
 
-            <ResourceTypeFilter
-              selectedType={selectedType}
-              onSelectType={setSelectedType}
-            />
+                  <motion.div variants={item}>
+                    <ResourceTypeFilter
+                      selectedType={selectedType}
+                      onSelectType={setSelectedType}
+                    />
+                  </motion.div>
 
-            <ResourceList
-              resources={filteredResources}
-              onResourceSelect={setSelectedResource}
-            />
-          </TabsContent>
+                  <motion.div variants={item}>
+                    <ResourceList
+                      resources={filteredResources}
+                      onResourceSelect={setSelectedResource}
+                    />
+                  </motion.div>
+                </div>
+              </TabsContent>
 
-          <TabsContent value="categories">
-            <CategoryList
-              categories={categories}
-              selectedCategory={selectedCategory}
-              onSelectCategory={setSelectedCategory}
-            />
-          </TabsContent>
-        </Tabs>
+              <TabsContent value="categories" className="m-0">
+                <div className="p-4">
+                  <motion.div variants={item}>
+                    <CategoryList
+                      categories={categories}
+                      selectedCategory={selectedCategory}
+                      onSelectCategory={setSelectedCategory}
+                    />
+                  </motion.div>
+                </div>
+              </TabsContent>
+            </Tabs>
+          </CardContent>
+        </Card>
 
         <ResourceDetails
           resource={selectedResource}
           onClose={() => setSelectedResource(null)}
         />
       </div>
-    </div>
+    </motion.div>
   );
 }
