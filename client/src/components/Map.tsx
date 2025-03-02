@@ -4,10 +4,11 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Search, Navigation, Layers, MapPin, Info, Camera } from "lucide-react";
+import { Search, Navigation, Layers, MapPin } from "lucide-react";
+import { toast } from "@/hooks/use-toast";
 import type { Location } from "@shared/schema";
 import { Loader } from "@googlemaps/js-api-loader";
-import { DEFAULT_CENTER, DEFAULT_ZOOM, getMarkerIcon } from "@/lib/mapUtils";
+import { DEFAULT_CENTER, DEFAULT_ZOOM, MAP_STYLES, getMarkerIcon } from "@/lib/mapUtils";
 
 interface MapProps {
   onMarkerClick?: (location: Location) => void;
@@ -17,50 +18,62 @@ export default function Map({ onMarkerClick }: MapProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
   const [filteredLocations, setFilteredLocations] = useState<Location[]>([]);
+  const [mapError, setMapError] = useState<string | null>(null);
   const mapRef = useRef<HTMLDivElement>(null);
   const [map, setMap] = useState<google.maps.Map | null>(null);
   const [markers, setMarkers] = useState<google.maps.Marker[]>([]);
+  const [directionsRenderer, setDirectionsRenderer] = useState<google.maps.DirectionsRenderer | null>(null);
 
   const { data: locations = [] } = useQuery<Location[]>({
     queryKey: ["/api/locations"],
   });
 
-  // Initialize Google Maps
   useEffect(() => {
     const initMap = async () => {
-      const loader = new Loader({
-        apiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY || "",
-        version: "weekly",
-      });
-
       try {
+        const loader = new Loader({
+          apiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
+          version: "weekly",
+          libraries: ["places"]
+        });
+
         const google = await loader.load();
-        if (mapRef.current) {
-          const map = new google.maps.Map(mapRef.current, {
-            center: DEFAULT_CENTER,
-            zoom: DEFAULT_ZOOM,
-            styles: [
-              {
-                featureType: "poi",
-                elementType: "labels",
-                stylers: [{ visibility: "off" }],
-              },
-            ],
-            mapTypeControl: false,
-            fullscreenControl: false,
-            streetViewControl: false,
-          });
-          setMap(map);
-        }
+
+        if (!mapRef.current) return;
+
+        const map = new google.maps.Map(mapRef.current, {
+          center: DEFAULT_CENTER,
+          zoom: DEFAULT_ZOOM,
+          styles: MAP_STYLES,
+          mapTypeControl: false,
+          fullscreenControl: false,
+          streetViewControl: false,
+          gestureHandling: "cooperative"
+        });
+
+        const directionsRenderer = new google.maps.DirectionsRenderer({
+          map,
+          suppressMarkers: true,
+          preserveViewport: true
+        });
+
+        setMap(map);
+        setDirectionsRenderer(directionsRenderer);
+        setMapError(null);
       } catch (error) {
         console.error("Error loading Google Maps:", error);
+        setMapError("Không thể tải bản đồ. Vui lòng thử lại sau.");
+        toast({
+          title: "Lỗi",
+          description: "Không thể tải bản đồ. Vui lòng thử lại sau.",
+          variant: "destructive"
+        });
       }
     };
 
     initMap();
   }, []);
 
-  // Update markers when locations change
   useEffect(() => {
     if (!map || !locations.length) return;
 
@@ -68,12 +81,19 @@ export default function Map({ onMarkerClick }: MapProps) {
     markers.forEach(marker => marker.setMap(null));
     const newMarkers: google.maps.Marker[] = [];
 
+    // Add markers for all locations
     locations.forEach(location => {
+      const position = {
+        lat: parseFloat(location.latitude),
+        lng: parseFloat(location.longitude)
+      };
+
       const marker = new google.maps.Marker({
-        position: { lat: parseFloat(location.latitude), lng: parseFloat(location.longitude) },
+        position,
         map,
         title: location.name,
-        animation: google.maps.Animation.DROP,
+        icon: getMarkerIcon(location.type),
+        animation: google.maps.Animation.DROP
       });
 
       marker.addListener("click", () => {
@@ -86,17 +106,16 @@ export default function Map({ onMarkerClick }: MapProps) {
     setMarkers(newMarkers);
   }, [map, locations]);
 
-  // Filter locations based on search
   useEffect(() => {
     if (searchQuery.trim() === "") {
       setFilteredLocations(locations);
     } else {
-      const lowercasedQuery = searchQuery.toLowerCase();
+      const query = searchQuery.toLowerCase();
       const filtered = locations.filter(location => 
-        location.name.toLowerCase().includes(lowercasedQuery) ||
-        location.nameEn.toLowerCase().includes(lowercasedQuery) ||
-        location.description.toLowerCase().includes(lowercasedQuery) ||
-        location.descriptionEn.toLowerCase().includes(lowercasedQuery)
+        location.name.toLowerCase().includes(query) ||
+        location.nameEn.toLowerCase().includes(query) ||
+        location.description.toLowerCase().includes(query) ||
+        location.descriptionEn.toLowerCase().includes(query)
       );
       setFilteredLocations(filtered);
     }
@@ -104,17 +123,23 @@ export default function Map({ onMarkerClick }: MapProps) {
 
   const handleLocationSelect = (location: Location) => {
     setSelectedLocation(location);
+    const position = {
+      lat: parseFloat(location.latitude),
+      lng: parseFloat(location.longitude)
+    };
+
     if (map) {
-      map.panTo({ lat: parseFloat(location.latitude), lng: parseFloat(location.longitude) });
+      map.panTo(position);
       map.setZoom(17);
     }
+
     if (onMarkerClick) {
       onMarkerClick(location);
     }
   };
 
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    e.currentTarget.src = '/attached_assets/placeholder-image.jpg';
+    e.currentTarget.src = '/images/placeholder-location.jpg';
   };
 
   return (
@@ -132,9 +157,6 @@ export default function Map({ onMarkerClick }: MapProps) {
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
               </div>
-              <Button variant="outline" size="icon" title="Lớp bản đồ">
-                <Layers className="h-4 w-4" />
-              </Button>
               <Button 
                 variant="outline" 
                 size="icon" 
@@ -152,8 +174,12 @@ export default function Map({ onMarkerClick }: MapProps) {
                           map.setZoom(15);
                         }
                       },
-                      (error) => {
-                        console.error("Error getting location:", error);
+                      () => {
+                        toast({
+                          title: "Lỗi",
+                          description: "Không thể xác định vị trí của bạn.",
+                          variant: "destructive"
+                        });
                       }
                     );
                   }
@@ -169,8 +195,8 @@ export default function Map({ onMarkerClick }: MapProps) {
               {filteredLocations.map((location, index) => (
                 <div 
                   key={location.id}
-                  className={`p-3 cursor-pointer transition-all duration-300 slide-in ${
-                    selectedLocation?.id === location.id ? 'bg-primary/10' : 'hover:bg-primary/5'
+                  className={`p-3 cursor-pointer transition-all hover:bg-primary/5 ${
+                    selectedLocation?.id === location.id ? 'bg-primary/10' : ''
                   }`}
                   style={{ animationDelay: `${index * 0.05}s` }}
                   onClick={() => handleLocationSelect(location)}
@@ -205,7 +231,23 @@ export default function Map({ onMarkerClick }: MapProps) {
 
       <Card className="md:col-span-2 h-full overflow-hidden glass">
         <CardContent className="p-0 h-full relative">
-          <div ref={mapRef} className="w-full h-full" />
+          {mapError ? (
+            <div className="absolute inset-0 flex items-center justify-center bg-background/80">
+              <div className="text-center p-4">
+                <MapPin className="h-8 w-8 mx-auto mb-2 text-muted-foreground" />
+                <p className="text-muted-foreground">{mapError}</p>
+                <Button
+                  variant="outline"
+                  className="mt-4"
+                  onClick={() => window.location.reload()}
+                >
+                  Tải lại trang
+                </Button>
+              </div>
+            </div>
+          ) : (
+            <div ref={mapRef} className="w-full h-full" />
+          )}
         </CardContent>
       </Card>
     </div>

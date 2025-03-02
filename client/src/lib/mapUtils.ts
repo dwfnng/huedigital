@@ -1,13 +1,22 @@
 import type { Location } from "@shared/schema";
 
+// Updated coordinates for Hue City center
 export const DEFAULT_CENTER = { lat: 16.4637, lng: 107.5909 };
-export const DEFAULT_ZOOM = 14;
+export const DEFAULT_ZOOM = 15;
 
 export const MAP_STYLES = [
   {
-    featureType: "poi",
-    elementType: "labels",
-    stylers: [{ visibility: "off" }],
+    featureType: "all",
+    elementType: "labels.text.fill",
+    stylers: [{ color: "#000000" }]
+  },
+  {
+    featureType: "water",
+    elementType: "geometry",
+    stylers: [
+      { color: "#b9d3c2" },
+      { lightness: 40 }
+    ]
   },
   {
     featureType: "landscape.natural",
@@ -18,39 +27,44 @@ export const MAP_STYLES = [
     ]
   },
   {
-    featureType: "water",
+    featureType: "poi.park",
     elementType: "geometry",
     stylers: [
-      { color: "#e9e9e9" },
-      { lightness: 17 }
+      { color: "#c5dac6" },
+      { lightness: 20 }
     ]
+  },
+  {
+    featureType: "poi.historic",
+    elementType: "labels",
+    stylers: [{ visibility: "on" }]
   }
 ];
 
-export const getMarkerIcon = (type: string): string => {
-  switch (type) {
+export const getMarkerIcon = (type: string): {
+  url: string;
+  scaledSize: { width: number; height: number };
+} => {
+  const baseSize = { width: 32, height: 32 };
+  const iconPath = (name: string) => `/icons/${name}.svg`;
+
+  switch (type.toLowerCase()) {
     case "heritage_site":
-      return "🏛️";
+      return { url: iconPath("heritage"), scaledSize: baseSize };
     case "temple":
-      return "⛩️";
+      return { url: iconPath("temple"), scaledSize: baseSize };
     case "palace":
-      return "🏰";
+      return { url: iconPath("palace"), scaledSize: baseSize };
     case "tomb":
-      return "🗿";
+      return { url: iconPath("tomb"), scaledSize: baseSize };
     case "monument":
-      return "🏛️";
+      return { url: iconPath("monument"), scaledSize: baseSize };
     case "museum":
-      return "🏛️";
-    case "communal_house":
-      return "🏤";
+      return { url: iconPath("museum"), scaledSize: baseSize };
     case "education":
-      return "🏫";
-    case "ritual":
-      return "⛩️";
-    case "government":
-      return "🏛️";
+      return { url: iconPath("education"), scaledSize: baseSize };
     default:
-      return "📍";
+      return { url: iconPath("default"), scaledSize: baseSize };
   }
 };
 
@@ -63,24 +77,28 @@ export interface LatLngLiteral {
   lng: number;
 }
 
-export const calculateRoute = (
+export const calculateRoute = async (
   origin: LatLngLiteral,
   destination: LatLngLiteral,
-  directionsService: google.maps.DirectionsService,
-  callback: (result: google.maps.DirectionsResult | null) => void
-): void => {
-  directionsService.route(
-    {
-      origin,
-      destination,
-      travelMode: google.maps.TravelMode.WALKING,
-    },
-    (result, status) => {
-      if (status === google.maps.DirectionsStatus.OK) {
-        callback(result);
-      } else {
-        callback(null);
+  directionsService: google.maps.DirectionsService
+): Promise<google.maps.DirectionsResult | null> => {
+  return new Promise((resolve) => {
+    directionsService.route(
+      {
+        origin,
+        destination,
+        travelMode: google.maps.TravelMode.WALKING,
+        optimizeWaypoints: true,
+        provideRouteAlternatives: true
+      },
+      (result, status) => {
+        if (status === google.maps.DirectionsStatus.OK) {
+          resolve(result);
+        } else {
+          console.error("Directions request failed:", status);
+          resolve(null);
+        }
       }
-    }
-  );
+    );
+  });
 };
