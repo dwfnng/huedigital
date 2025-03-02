@@ -59,21 +59,25 @@ app.use((req, res, next) => {
   // Try to serve on port 5000, fallback to another if busy
   let port = 5000;
   const startServer = () => {
-    server.listen({
-      port,
-      host: "0.0.0.0",
-      reusePort: true,
-    }, () => {
-      log(`serving on port ${port}`);
-    }).on('error', (err: any) => {
-      if (err.code === 'EADDRINUSE') {
-        port++;
-        log(`Port ${port-1} in use, trying port ${port}`);
-        startServer();
-      } else {
-        log(`Server error: ${err.message}`);
-      }
-    });
+    try {
+      server.listen({
+        port,
+        host: "0.0.0.0",
+      }, () => {
+        log(`Server running at http://0.0.0.0:${port}`);
+      }).on('error', (err: any) => {
+        if (err.code === 'EADDRINUSE') {
+          port++;
+          log(`Port ${port-1} in use, trying port ${port}`);
+          startServer();
+        } else {
+          log(`Server error: ${err.message}`);
+          console.error(err);
+        }
+      });
+    } catch (error) {
+      console.error("Failed to start server:", error);
+    }
   };
   
   startServer();
