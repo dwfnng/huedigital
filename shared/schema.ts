@@ -15,7 +15,7 @@ export const categories = pgTable("categories", {
 export const locations = pgTable("locations", {
   id: serial("id").primaryKey(),
   name: text("name").notNull(),
-  nameEn: text("name_en").notNull(),
+  nameEn: text("name_en").notNull(), 
   description: text("description").notNull(),
   descriptionEn: text("description_en").notNull(),
   type: text("type").notNull(),
@@ -28,7 +28,7 @@ export const locations = pgTable("locations", {
 export const users = pgTable("users", {
   id: serial("id").primaryKey(),
   username: text("username").notNull(),
-  email: text("email").notNull(),
+  email: text("email").notNull(), 
   password: text("password").notNull(),
   role: text("role").notNull(),
   points: numeric("points").default("0").notNull(),
@@ -152,6 +152,7 @@ export const insertMessageSchema = createInsertSchema(messages).omit({
   createdAt: true,
 });
 
+
 // Types
 export type Location = typeof locations.$inferSelect;
 export type InsertLocation = z.infer<typeof insertLocationSchema>;
@@ -214,13 +215,5 @@ export type ResourceType =
   | "audio"
   | "research"
   | "3d_model";
-
-export type CategoryType =
-  | "historical_site"
-  | "architecture"
-  | "royal_document"
-  | "artwork"
-  | "music"
-  | "academic";
 
 export type ChatRole = "user" | "assistant";
