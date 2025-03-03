@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { 
+import {
   Dialog,
   DialogContent,
   DialogDescription,
@@ -17,7 +17,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { MessageSquare, Award, Plus, Search, BookOpen, School, Heart, Shield } from 'lucide-react';
+import { MessageSquare, Award, Plus, Search, BookOpen, School, Heart, Shield, Trash2 } from 'lucide-react';
 
 interface Category {
   id: string;
@@ -44,6 +44,12 @@ interface Comment {
   author: string;
   discussionId: number;
   createdAt: string;
+}
+
+interface User {
+  id: number;
+  name: string;
+  isAdmin: boolean;
 }
 
 const categories: Category[] = [
@@ -82,6 +88,13 @@ export default function ForumPage() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
+  // Mock admin user for demo - replace with actual auth later
+  const currentUser: User = {
+    id: 1,
+    name: "Admin",
+    isAdmin: true
+  };
+
   const { data: discussions = [] } = useQuery<Discussion[]>({
     queryKey: ['/api/discussions', selectedCategory],
     enabled: true
@@ -112,6 +125,24 @@ export default function ForumPage() {
     }
   });
 
+  const deleteDiscussionMutation = useMutation({
+    mutationFn: async (discussionId: number) => {
+      const response = await fetch(`/api/discussions/${discussionId}`, {
+        method: 'DELETE'
+      });
+      if (!response.ok) throw new Error('Failed to delete discussion');
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/discussions'] });
+      toast({
+        title: "Thành công",
+        description: "Đã xóa bài viết.",
+      });
+      setSelectedDiscussion(null);
+    }
+  });
+
   const createCommentMutation = useMutation({
     mutationFn: async (comment: { content: string; discussionId: number }) => {
       const response = await fetch('/api/comments', {
@@ -128,6 +159,23 @@ export default function ForumPage() {
       toast({
         title: "Thành công",
         description: "Bình luận đã được thêm.",
+      });
+    }
+  });
+
+  const deleteCommentMutation = useMutation({
+    mutationFn: async (commentId: number) => {
+      const response = await fetch(`/api/comments/${commentId}`, {
+        method: 'DELETE'
+      });
+      if (!response.ok) throw new Error('Failed to delete comment');
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/comments'] });
+      toast({
+        title: "Thành công",
+        description: "Đã xóa bình luận.",
       });
     }
   });
@@ -168,6 +216,18 @@ export default function ForumPage() {
       return (author?.[0] || 'A').toUpperCase();
     } catch (error) {
       return 'A';
+    }
+  };
+
+  const handleDeleteDiscussion = async (discussionId: number) => {
+    if (window.confirm('Bạn có chắc chắn muốn xóa bài viết này không?')) {
+      deleteDiscussionMutation.mutate(discussionId);
+    }
+  };
+
+  const handleDeleteComment = async (commentId: number) => {
+    if (window.confirm('Bạn có chắc chắn muốn xóa bình luận này không?')) {
+      deleteCommentMutation.mutate(commentId);
     }
   };
 
@@ -248,37 +308,42 @@ export default function ForumPage() {
                   <ScrollArea className="h-[600px]">
                     <div className="space-y-4">
                       {filteredDiscussions.map(discussion => (
-                        <Card 
-                          key={discussion.id} 
+                        <Card
+                          key={discussion.id}
                           className={`cursor-pointer hover:shadow-md transition-shadow ${
                             selectedDiscussion?.id === discussion.id ? 'border-primary' : ''
                           }`}
                           onClick={() => setSelectedDiscussion(discussion)}
                         >
                           <CardContent className="p-4">
-                            <div className="flex items-start gap-4">
-                              <Avatar>
-                                <AvatarImage src={getAvatarUrl(discussion.author)} />
-                                <AvatarFallback>{getAvatarFallback(discussion.author)}</AvatarFallback>
-                              </Avatar>
-                              <div className="flex-1">
-                                <h3 className="font-semibold text-lg mb-1">{discussion.title}</h3>
-                                <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                                  <span>{discussion.author}</span>
-                                  <span>•</span>
-                                  <span>{new Date(discussion.createdAt).toLocaleDateString('vi-VN')}</span>
-                                </div>
-                                <div className="flex items-center gap-4 mt-2 text-sm">
-                                  <div className="flex items-center gap-1">
-                                    <MessageSquare className="h-4 w-4" />
-                                    {discussion.comments}
-                                  </div>
-                                  <div className="flex items-center gap-1">
-                                    <Award className="h-4 w-4" />
-                                    {discussion.points} điểm
+                            <div className="flex items-start justify-between">
+                              <div className="flex items-start gap-4">
+                                <Avatar>
+                                  <AvatarImage src={getAvatarUrl(discussion.author)} />
+                                  <AvatarFallback>{getAvatarFallback(discussion.author)}</AvatarFallback>
+                                </Avatar>
+                                <div className="flex-1">
+                                  <h3 className="font-semibold text-lg mb-1">{discussion.title}</h3>
+                                  <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                                    <span>{discussion.author}</span>
+                                    <span>•</span>
+                                    <span>{new Date(discussion.createdAt).toLocaleDateString('vi-VN')}</span>
                                   </div>
                                 </div>
                               </div>
+                              {currentUser.isAdmin && (
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  className="text-destructive hover:text-destructive/80"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleDeleteDiscussion(discussion.id);
+                                  }}
+                                >
+                                  <Trash2 className="h-4 w-4" />
+                                </Button>
+                              )}
                             </div>
                           </CardContent>
                         </Card>
@@ -297,20 +362,32 @@ export default function ForumPage() {
                 <CardContent>
                   <div className="space-y-4">
                     {comments.map(comment => (
-                      <div key={comment.id} className="flex gap-3 p-3 rounded-lg hover:bg-muted/50">
-                        <Avatar>
-                          <AvatarImage src={getAvatarUrl(comment.author)} />
-                          <AvatarFallback>{getAvatarFallback(comment.author)}</AvatarFallback>
-                        </Avatar>
-                        <div>
-                          <div className="flex items-center gap-2">
-                            <span className="font-medium">{comment.author}</span>
-                            <span className="text-sm text-muted-foreground">
-                              {new Date(comment.createdAt).toLocaleDateString('vi-VN')}
-                            </span>
+                      <div key={comment.id} className="flex justify-between items-start p-3 rounded-lg hover:bg-muted/50">
+                        <div className="flex gap-3">
+                          <Avatar>
+                            <AvatarImage src={getAvatarUrl(comment.author)} />
+                            <AvatarFallback>{getAvatarFallback(comment.author)}</AvatarFallback>
+                          </Avatar>
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <span className="font-medium">{comment.author}</span>
+                              <span className="text-sm text-muted-foreground">
+                                {new Date(comment.createdAt).toLocaleDateString('vi-VN')}
+                              </span>
+                            </div>
+                            <p className="mt-1">{comment.content}</p>
                           </div>
-                          <p className="mt-1">{comment.content}</p>
                         </div>
+                        {currentUser.isAdmin && (
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="text-destructive hover:text-destructive/80"
+                            onClick={() => handleDeleteComment(comment.id)}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        )}
                       </div>
                     ))}
                     <form onSubmit={handleCreateComment} className="mt-4">
