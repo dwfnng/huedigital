@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Send, Bot, User, RefreshCw } from "lucide-react";
+import { Send, Bot, User } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import type { Message } from "@shared/schema";
@@ -76,59 +76,67 @@ export default function ChatInterface() {
     });
   };
 
+  const shouldShowSuggestions = (index: number) => {
+    return messages[index].role === "assistant" && index === messages.length - 1;
+  };
+
   return (
-    <div className="flex flex-col h-[calc(100vh-12rem)] border rounded-lg overflow-hidden bg-background/80 backdrop-blur-sm transition-smooth">
+    <div className="flex flex-col h-[calc(100vh-12rem)] border rounded-lg overflow-hidden bg-background/80 backdrop-blur-sm shadow-lg">
       <ScrollArea className="flex-1 p-6">
         <div className="space-y-4">
-          {/* Câu hỏi mẫu */}
-          <div className="mb-8 pop-in">
-            <h3 className="text-sm font-medium mb-3">Các câu hỏi gợi ý:</h3>
-            <div className="flex flex-wrap gap-2">
-              {sampleQuestions.map((question, index) => (
-                <Badge
-                  key={index}
-                  variant="outline"
-                  className="cursor-pointer interactive-element"
-                  onClick={() => handleSampleQuestionClick(question.text)}
-                >
-                  {question.text}
-                </Badge>
-              ))}
-            </div>
-          </div>
-
           {messages.map((message, idx) => (
-            <div 
-              key={message.id}
-              className={`flex ${message.role === "assistant" ? "justify-start" : "justify-end"} slide-in`}
-              style={{ animationDelay: `${idx * 0.1}s` }}
-            >
+            <div key={message.id}>
               <div 
-                className={`flex items-start gap-3 max-w-[80%] p-3 rounded-lg transition-smooth
-                  ${message.role === "assistant" 
-                    ? "bg-muted hover:bg-muted/80" 
-                    : "bg-primary/10 hover:bg-primary/20"}`}
+                className={`flex ${message.role === "assistant" ? "justify-start" : "justify-end"} slide-in`}
+                style={{ animationDelay: `${idx * 0.1}s` }}
               >
-                {message.role === "assistant" ? (
-                  <Bot className="h-5 w-5 mt-1 text-primary" />
-                ) : (
-                  <User className="h-5 w-5 mt-1 text-primary" />
-                )}
-                <div>
-                  <div className="text-sm whitespace-pre-wrap">{message.content}</div>
-                  <div className="text-xs text-muted-foreground mt-1 text-right">
-                    {formatTime(message.createdAt)}
+                <div 
+                  className={`flex items-start gap-3 max-w-[80%] p-4 rounded-lg transition-all hover:shadow-md
+                    ${message.role === "assistant" 
+                      ? "bg-muted" 
+                      : "bg-primary/10"}`}
+                >
+                  {message.role === "assistant" ? (
+                    <Bot className="h-5 w-5 mt-1 text-primary" />
+                  ) : (
+                    <User className="h-5 w-5 mt-1 text-primary" />
+                  )}
+                  <div className="space-y-2">
+                    <div className="text-sm whitespace-pre-wrap">{message.content}</div>
+                    <div className="text-xs text-muted-foreground text-right">
+                      {formatTime(message.createdAt)}
+                    </div>
                   </div>
                 </div>
               </div>
+
+              {shouldShowSuggestions(idx) && (
+                <div className="mt-4 space-y-3 fade-in">
+                  <p className="text-sm text-muted-foreground">Các câu hỏi gợi ý:</p>
+                  <div className="flex flex-wrap gap-2">
+                    {sampleQuestions.map((question, qIdx) => (
+                      <Badge
+                        key={qIdx}
+                        variant="outline"
+                        className="cursor-pointer hover:bg-primary/10 transition-colors"
+                        onClick={() => handleSampleQuestionClick(question.text)}
+                      >
+                        {question.text}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           ))}
 
           {isLoading && (
             <div className="flex justify-start slide-in">
-              <div className="flex items-start gap-3 max-w-[80%] bg-muted p-3 rounded-lg">
-                <RefreshCw className="h-5 w-5 mt-1 text-primary animate-spin" />
-                <div className="text-sm">Đang suy nghĩ...</div>
+              <div className="flex items-start gap-3 max-w-[80%] bg-muted p-4 rounded-lg">
+                <div className="animate-pulse flex items-center gap-2">
+                  <Bot className="h-5 w-5 text-primary" />
+                  <span className="text-sm">Đang suy nghĩ...</span>
+                </div>
               </div>
             </div>
           )}
@@ -141,13 +149,13 @@ export default function ChatInterface() {
         </div>
       </ScrollArea>
 
-      <form onSubmit={handleSubmit} className="border-t p-4 bg-card/80 backdrop-blur-sm transition-smooth">
+      <form onSubmit={handleSubmit} className="border-t p-4 bg-card/80 backdrop-blur-sm">
         <div className="flex gap-2">
           <Textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Hỏi về lịch sử, văn hóa Cố đô Huế..."
-            className="flex-1 min-h-[60px] max-h-[120px] transition-smooth focus:border-primary"
+            className="flex-1 min-h-[60px] max-h-[120px] resize-none focus:ring-primary"
             onKeyDown={(e) => {
               if (e.key === "Enter" && !e.shiftKey) {
                 e.preventDefault();
@@ -159,7 +167,7 @@ export default function ChatInterface() {
             type="submit" 
             size="icon"
             disabled={isLoading || !input.trim()}
-            className="hover-lift hover-glow"
+            className="hover:shadow-md transition-all"
           >
             <Send className="h-4 w-4" />
           </Button>
