@@ -8,12 +8,12 @@ import {
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import { 
-  Download, 
-  ExternalLink, 
-  Info, 
-  Calendar, 
-  MapPin, 
+import {
+  Download,
+  ExternalLink,
+  Info,
+  Calendar,
+  MapPin,
   Clock,
   Bookmark,
   Users,
@@ -24,6 +24,7 @@ import {
 } from "lucide-react";
 import type { Resource } from "@shared/schema";
 import { motion } from "framer-motion";
+import ShareButton from "@/components/ShareButton";
 
 interface ResourceMetadata {
   format?: string;
@@ -465,6 +466,11 @@ export default function ResourceDetails({
                 <Download className="mr-2 h-4 w-4" />
                 Tải xuống
               </Button>
+              <ShareButton
+                title={resource.title}
+                description={resource.description}
+                url={resource.contentUrl}
+              />
             </motion.div>
           </div>
         </ScrollArea>
