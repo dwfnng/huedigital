@@ -21,7 +21,14 @@ export default function ShareButton({ title, description, url }: ShareButtonProp
   const { toast } = useToast();
   const [copied, setCopied] = useState(false);
 
-  const encodedUrl = encodeURIComponent(url);
+  // Ensure the URL is absolute
+  const getAbsoluteUrl = (relativeUrl: string) => {
+    const baseUrl = window.location.origin;
+    return relativeUrl.startsWith('http') ? relativeUrl : `${baseUrl}${relativeUrl}`;
+  };
+
+  const absoluteUrl = getAbsoluteUrl(url);
+  const encodedUrl = encodeURIComponent(absoluteUrl);
   const encodedTitle = encodeURIComponent(title);
   const encodedDescription = encodeURIComponent(description);
 
@@ -32,9 +39,14 @@ export default function ShareButton({ title, description, url }: ShareButtonProp
     email: `mailto:?subject=${encodedTitle}&body=${encodedDescription}%0A%0A${encodedUrl}`
   };
 
+  const handleShare = (platform: keyof typeof shareUrls) => {
+    const shareUrl = shareUrls[platform];
+    window.open(shareUrl, '_blank', 'width=600,height=600');
+  };
+
   const handleCopyLink = async () => {
     try {
-      await navigator.clipboard.writeText(url);
+      await navigator.clipboard.writeText(absoluteUrl);
       setCopied(true);
       toast({
         title: "Đã sao chép",
@@ -60,21 +72,21 @@ export default function ShareButton({ title, description, url }: ShareButtonProp
       <DropdownMenuContent align="end" className="w-48">
         <DropdownMenuItem
           className="cursor-pointer"
-          onClick={() => window.open(shareUrls.facebook, '_blank')}
+          onClick={() => handleShare('facebook')}
         >
           <SiFacebook className="h-4 w-4 mr-2 text-[#1877F2]" />
           Facebook
         </DropdownMenuItem>
         <DropdownMenuItem
           className="cursor-pointer"
-          onClick={() => window.open(shareUrls.twitter, '_blank')}
+          onClick={() => handleShare('twitter')}
         >
           <FaTwitter className="h-4 w-4 mr-2 text-[#1DA1F2]" />
           Twitter
         </DropdownMenuItem>
         <DropdownMenuItem
           className="cursor-pointer"
-          onClick={() => window.open(shareUrls.linkedin, '_blank')}
+          onClick={() => handleShare('linkedin')}
         >
           <SiLinkedin className="h-4 w-4 mr-2 text-[#0A66C2]" />
           LinkedIn

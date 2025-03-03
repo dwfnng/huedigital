@@ -7,7 +7,7 @@ import { Link } from "wouter";
 import { Library, MapPin, MessageSquare, Gamepad2, Activity, Ticket, Upload, BookText } from 'lucide-react';
 import Home from "@/pages/home";
 import Chat from "@/pages/chat";
-import MapPage from "@/pages/Map";
+import MapPage from "@/pages/map";
 import GamePage from "@/pages/game";
 import LiveDataPage from "@/pages/live-data";
 import TicketPage from "@/pages/ticket";
@@ -17,66 +17,97 @@ import NotFound from "@/pages/not-found";
 
 function MainNav() {
   return (
-    <NavigationMenu className="bg-card/90 backdrop-blur-sm border-b sticky top-0 z-50">
+    <NavigationMenu className="bg-gradient-to-r from-primary/5 via-background to-primary/5 backdrop-blur-sm border-b sticky top-0 z-50">
       <div className="container mx-auto flex h-16 items-center px-4">
-        <NavigationMenuList className="gap-4">
+        <NavigationMenuList className="gap-6">
           <NavigationMenuItem>
-            <Link href="/" className="text-lg font-bold hover:text-primary transition-smooth">
-              Hue Digital
+            <Link href="/" className="flex items-center gap-2">
+              <div className="bg-primary/10 p-2 rounded-full">
+                <Library className="h-5 w-5 text-primary" />
+              </div>
+              <span className="text-xl font-bold bg-gradient-to-r from-primary via-primary/80 to-primary bg-clip-text text-transparent">
+                Hue Digital
+              </span>
             </Link>
           </NavigationMenuItem>
 
+          <div className="h-6 w-px bg-border mx-2" /> {/* Divider */}
+
           <NavigationMenuItem>
-            <Link href="/map" className="flex items-center gap-2 hover:text-primary hover-lift">
+            <Link 
+              href="/map" 
+              className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-primary/10 transition-colors"
+            >
               <MapPin className="h-4 w-4" />
               Bản đồ số
             </Link>
           </NavigationMenuItem>
 
           <NavigationMenuItem>
-            <Link href="/forum" className="flex items-center gap-2 hover:text-primary hover-lift">
+            <Link 
+              href="/forum" 
+              className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-primary/10 transition-colors"
+            >
               <BookText className="h-4 w-4" />
               Diễn đàn
             </Link>
           </NavigationMenuItem>
 
           <NavigationMenuItem>
-            <Link href="/contributions" className="flex items-center gap-2 hover:text-primary hover-lift">
+            <Link 
+              href="/contributions" 
+              className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-primary/10 transition-colors"
+            >
               <Upload className="h-4 w-4" />
               Đóng góp tư liệu
             </Link>
           </NavigationMenuItem>
 
           <NavigationMenuItem>
-            <Link href="/" className="flex items-center gap-2 hover:text-primary hover-lift">
+            <Link 
+              href="/" 
+              className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-primary/10 transition-colors"
+            >
               <Library className="h-4 w-4" />
               Kho học liệu số
             </Link>
           </NavigationMenuItem>
 
           <NavigationMenuItem>
-            <Link href="/chat" className="flex items-center gap-2 hover:text-primary hover-lift">
+            <Link 
+              href="/chat" 
+              className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-primary/10 transition-colors"
+            >
               <MessageSquare className="h-4 w-4" />
               Trò chuyện AI
             </Link>
           </NavigationMenuItem>
 
           <NavigationMenuItem>
-            <Link href="/game" className="flex items-center gap-2 hover:text-primary hover-lift">
+            <Link 
+              href="/game" 
+              className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-primary/10 transition-colors"
+            >
               <Gamepad2 className="h-4 w-4" />
               Game giáo dục
             </Link>
           </NavigationMenuItem>
 
           <NavigationMenuItem>
-            <Link href="/live-data" className="flex items-center gap-2 hover:text-primary hover-lift">
+            <Link 
+              href="/live-data" 
+              className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-primary/10 transition-colors"
+            >
               <Activity className="h-4 w-4" />
               Dữ liệu thực
             </Link>
           </NavigationMenuItem>
 
           <NavigationMenuItem>
-            <Link href="/ticket" className="flex items-center gap-2 hover:text-primary hover-lift">
+            <Link 
+              href="/ticket" 
+              className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-primary/10 transition-colors"
+            >
               <Ticket className="h-4 w-4" />
               Đặt vé
             </Link>
