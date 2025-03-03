@@ -1,30 +1,14 @@
-import { useState, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Search, Navigation, Layers, MapPin } from "lucide-react";
+import { toast } from "@/hooks/use-toast";
 import type { Location } from "@shared/schema";
-import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
-import "leaflet/dist/leaflet.css";
-import L from "leaflet";
-import { toast } from "@/components/ui/use-toast";
-import { DEFAULT_CENTER } from "@/lib/mapUtils";
-
-// Fix Leaflet icon issue with webpack
-import icon from "leaflet/dist/images/marker-icon.png";
-import iconShadow from "leaflet/dist/images/marker-shadow.png";
-
-let DefaultIcon = L.icon({
-  iconUrl: icon,
-  shadowUrl: iconShadow,
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-});
-
-L.Marker.prototype.options.icon = DefaultIcon;
-
-const getMarkerIcon = (type: string) => {
-  // Có thể tùy chỉnh icon dựa trên loại địa điểm
-  return DefaultIcon;
-};
+import { Loader } from "@googlemaps/js-api-loader";
+import { DEFAULT_CENTER, DEFAULT_ZOOM, MAP_STYLES, getMarkerIcon } from "@/lib/mapUtils";
 
 interface MapProps {
   onMarkerClick?: (location: Location) => void;
@@ -35,114 +19,237 @@ export default function Map({ onMarkerClick }: MapProps) {
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
   const [filteredLocations, setFilteredLocations] = useState<Location[]>([]);
   const [mapError, setMapError] = useState<string | null>(null);
+  const mapRef = useRef<HTMLDivElement>(null);
+  const [map, setMap] = useState<google.maps.Map | null>(null);
+  const [markers, setMarkers] = useState<google.maps.Marker[]>([]);
+  const [directionsRenderer, setDirectionsRenderer] = useState<google.maps.DirectionsRenderer | null>(null);
 
   const { data: locations = [] } = useQuery<Location[]>({
     queryKey: ["/api/locations"],
   });
 
+  useEffect(() => {
+    const initMap = async () => {
+      try {
+        const loader = new Loader({
+          apiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
+          version: "weekly",
+          libraries: ["places"]
+        });
+
+        const google = await loader.load();
+
+        if (!mapRef.current) return;
+
+        const map = new google.maps.Map(mapRef.current, {
+          center: DEFAULT_CENTER,
+          zoom: DEFAULT_ZOOM,
+          styles: MAP_STYLES,
+          mapTypeControl: false,
+          fullscreenControl: false,
+          streetViewControl: false,
+          gestureHandling: "cooperative"
+        });
+
+        const directionsRenderer = new google.maps.DirectionsRenderer({
+          map,
+          suppressMarkers: true,
+          preserveViewport: true
+        });
+
+        setMap(map);
+        setDirectionsRenderer(directionsRenderer);
+        setMapError(null);
+      } catch (error) {
+        console.error("Error loading Google Maps:", error);
+        setMapError("Không thể tải bản đồ. Vui lòng thử lại sau.");
+        toast({
+          title: "Lỗi",
+          description: "Không thể tải bản đồ. Vui lòng thử lại sau.",
+          variant: "destructive"
+        });
+      }
+    };
+
+    initMap();
+  }, []);
+
+  useEffect(() => {
+    if (!map || !locations.length) return;
+
+    // Clear existing markers
+    markers.forEach(marker => marker.setMap(null));
+    const newMarkers: google.maps.Marker[] = [];
+
+    // Add markers for all locations
+    locations.forEach(location => {
+      const position = {
+        lat: parseFloat(location.latitude),
+        lng: parseFloat(location.longitude)
+      };
+
+      const marker = new google.maps.Marker({
+        position,
+        map,
+        title: location.name,
+        icon: getMarkerIcon(location.type),
+        animation: google.maps.Animation.DROP
+      });
+
+      marker.addListener("click", () => {
+        handleLocationSelect(location);
+      });
+
+      newMarkers.push(marker);
+    });
+
+    setMarkers(newMarkers);
+  }, [map, locations]);
+
+  useEffect(() => {
+    if (searchQuery.trim() === "") {
+      setFilteredLocations(locations);
+    } else {
+      const query = searchQuery.toLowerCase();
+      const filtered = locations.filter(location => 
+        location.name.toLowerCase().includes(query) ||
+        location.nameEn.toLowerCase().includes(query) ||
+        location.description.toLowerCase().includes(query) ||
+        location.descriptionEn.toLowerCase().includes(query)
+      );
+      setFilteredLocations(filtered);
+    }
+  }, [searchQuery, locations]);
+
   const handleLocationSelect = (location: Location) => {
     setSelectedLocation(location);
+    const position = {
+      lat: parseFloat(location.latitude),
+      lng: parseFloat(location.longitude)
+    };
+
+    if (map) {
+      map.panTo(position);
+      map.setZoom(17);
+    }
+
     if (onMarkerClick) {
       onMarkerClick(location);
     }
   };
 
-  useEffect(() => {
-    if (locations && searchQuery) {
-      const filtered = locations.filter(loc =>
-        loc.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        loc.description?.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-      setFilteredLocations(filtered);
-    } else {
-      setFilteredLocations([]);
-    }
-  }, [searchQuery, locations]);
-
-  if (mapError) {
-    return (
-      <div className="flex items-center justify-center h-full bg-muted/50 rounded-lg">
-        <div className="text-center p-4">
-          <p className="text-red-500 mb-2">{mapError}</p>
-          <button
-            className="px-4 py-2 bg-primary text-primary-foreground rounded-md"
-            onClick={() => window.location.reload()}
-          >
-            Thử lại
-          </button>
-        </div>
-      </div>
-    );
-  }
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    e.currentTarget.src = '/images/placeholder-location.jpg';
+  };
 
   return (
-    <div className="relative h-full w-full rounded-lg overflow-hidden">
-      <MapContainer
-        center={[DEFAULT_CENTER.lat, DEFAULT_CENTER.lng]}
-        zoom={15}
-        style={{ height: "100%", width: "100%" }}
-      >
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-
-        {locations.map((location) => (
-          <Marker
-            key={location.id}
-            position={[parseFloat(location.latitude), parseFloat(location.longitude)]}
-            eventHandlers={{
-              click: () => {
-                handleLocationSelect(location);
-              },
-            }}
-          >
-            <Popup>
-              <div>
-                <h3 className="font-medium">{location.name}</h3>
-                <p className="text-sm text-muted-foreground">{location.type}</p>
+    <div className="grid md:grid-cols-3 gap-4 h-full">
+      <Card className="md:col-span-1 h-full overflow-hidden glass">
+        <CardContent className="p-0 h-full">
+          <div className="p-4 border-b">
+            <div className="flex gap-2">
+              <div className="relative flex-1">
+                <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Input
+                  placeholder="Tìm kiếm địa điểm..."
+                  className="pl-8"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
               </div>
-            </Popup>
-          </Marker>
-        ))}
-      </MapContainer>
+              <Button 
+                variant="outline" 
+                size="icon" 
+                title="Vị trí của bạn"
+                onClick={() => {
+                  if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(
+                      (position) => {
+                        const pos = {
+                          lat: position.coords.latitude,
+                          lng: position.coords.longitude,
+                        };
+                        if (map) {
+                          map.panTo(pos);
+                          map.setZoom(15);
+                        }
+                      },
+                      () => {
+                        toast({
+                          title: "Lỗi",
+                          description: "Không thể xác định vị trí của bạn.",
+                          variant: "destructive"
+                        });
+                      }
+                    );
+                  }
+                }}
+              >
+                <Navigation className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
 
-      {/* Search box */}
-      <div className="absolute top-4 left-4 right-4 z-[1000] max-w-md mx-auto">
-        <div className="relative">
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Tìm kiếm địa điểm..."
-            className="w-full pl-10 pr-4 py-2 bg-white rounded-lg shadow-md text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-          />
-          <span className="absolute left-3 top-2.5">
-            <svg className="h-4 w-4 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-          </span>
-        </div>
+          <ScrollArea className="h-[calc(100%-5rem)] custom-scrollbar">
+            <div className="divide-y">
+              {filteredLocations.map((location, index) => (
+                <div 
+                  key={location.id}
+                  className={`p-3 cursor-pointer transition-all hover:bg-primary/5 ${
+                    selectedLocation?.id === location.id ? 'bg-primary/10' : ''
+                  }`}
+                  style={{ animationDelay: `${index * 0.05}s` }}
+                  onClick={() => handleLocationSelect(location)}
+                >
+                  <div className="flex items-start gap-3">
+                    <div className="w-16 h-16 rounded-lg overflow-hidden bg-muted">
+                      <img
+                        src={location.imageUrl}
+                        alt={location.name}
+                        onError={handleImageError}
+                        className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
+                      />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-medium truncate">{location.name}</h3>
+                      <p className="text-sm text-muted-foreground truncate">
+                        {location.nameEn}
+                      </p>
+                      <div className="flex items-center gap-2 mt-1">
+                        <span className="text-xs text-muted-foreground capitalize px-2 py-0.5 rounded-full bg-primary/5">
+                          {location.type.replace('_', ' ')}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </ScrollArea>
+        </CardContent>
+      </Card>
 
-        {filteredLocations.length > 0 && (
-          <Card className="mt-1 max-h-60 overflow-auto">
-            <CardContent className="p-1">
-              <ul>
-                {filteredLocations.map(location => (
-                  <li
-                    key={location.id}
-                    className="py-2 px-3 hover:bg-muted rounded-sm cursor-pointer"
-                    onClick={() => handleLocationSelect(location)}
-                  >
-                    <p className="font-medium">{location.name}</p>
-                    <p className="text-xs text-muted-foreground">{location.type}</p>
-                  </li>
-                ))}
-              </ul>
-            </CardContent>
-          </Card>
-        )}
-      </div>
+      <Card className="md:col-span-2 h-full overflow-hidden glass">
+        <CardContent className="p-0 h-full relative">
+          {mapError ? (
+            <div className="absolute inset-0 flex items-center justify-center bg-background/80">
+              <div className="text-center p-4">
+                <MapPin className="h-8 w-8 mx-auto mb-2 text-muted-foreground" />
+                <p className="text-muted-foreground">{mapError}</p>
+                <Button
+                  variant="outline"
+                  className="mt-4"
+                  onClick={() => window.location.reload()}
+                >
+                  Tải lại trang
+                </Button>
+              </div>
+            </div>
+          ) : (
+            <div ref={mapRef} className="w-full h-full" />
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 }
