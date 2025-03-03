@@ -1,6 +1,8 @@
 
+import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Cloud, Thermometer, Users, Car, Calendar, Bell } from "lucide-react";
+import { apiRequest } from "@/lib/queryClient";
 
 function WeatherInfo() {
   const currentDate = new Date();
