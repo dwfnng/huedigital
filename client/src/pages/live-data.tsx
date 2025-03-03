@@ -1,8 +1,17 @@
-
 import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Cloud, Thermometer, Users, Car, Calendar, Bell } from "lucide-react";
 import { apiRequest } from "@/lib/queryClient";
+import { useQuery } from "@tanstack/react-query";
+
+interface LiveData {
+  crowds: {
+    updatedAt: string;
+    imperialCity: string;
+    thienmMonastery: string;
+    perfumeRiver: string;
+  };
+}
 
 function WeatherInfo() {
   const currentDate = new Date();
@@ -51,7 +60,7 @@ function WeatherInfo() {
 
 function VisitorInfo() {
   const currentDate = new Date();
-  
+
   return (
     <Card>
       <CardContent className="p-6">
@@ -128,7 +137,7 @@ function EventInfo() {
 function TrafficInfo() {
   const currentDate = new Date();
   const minutes = Math.floor(Math.random() * 10) + 1;
-  
+
   return (
     <Card>
       <CardContent className="p-6">
@@ -191,6 +200,70 @@ function EmergencyNotices() {
   );
 }
 
+function CrowdInfo() {
+  const { data, isLoading, error } = useQuery<LiveData>({
+    queryKey: ["/api/live-data"],
+    refetchInterval: 60000, // Cập nhật mỗi phút
+  });
+
+  const formatTime = (dateString: string) => {
+    if (!dateString) return "N/A";
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffMinutes = Math.floor((now.getTime() - date.getTime()) / (1000 * 60));
+    return diffMinutes <= 60 ? `${diffMinutes} phút trước` : 
+           `${Math.floor(diffMinutes/60)} giờ ${diffMinutes % 60} phút trước`;
+  };
+
+  if (isLoading) return <div>Đang tải dữ liệu mật độ du khách...</div>;
+  if (error) return <div>Lỗi khi tải dữ liệu mật độ du khách</div>;
+
+  return (
+    <Card>
+      <CardContent className="p-6">
+        <div className="flex items-center gap-4 mb-4">
+          <div className="p-2 bg-primary/10 rounded-full">
+            <Users className="h-5 w-5 text-primary" />
+          </div>
+          <div>
+            <h3 className="font-medium">Mật độ du khách</h3>
+            <p className="text-sm text-muted-foreground">
+              {data?.crowds?.updatedAt ? `Cập nhật ${formatTime(data.crowds.updatedAt)}` : 'Chưa có dữ liệu'}
+            </p>
+          </div>
+        </div>
+        <div className="space-y-2">
+          <div className="flex justify-between items-center">
+            <span>Đại Nội Huế</span>
+            <span className={`text-${data?.crowds.imperialCity === "Đông" ? "orange" : 
+                                     data?.crowds.imperialCity === "Rất đông" ? "red" : 
+                                     data?.crowds.imperialCity === "Ít" ? "green" : "yellow"}-500`}>
+              {data?.crowds.imperialCity || "Không có dữ liệu"}
+            </span>
+          </div>
+          <div className="flex justify-between items-center">
+            <span>Chùa Thiên Mụ</span>
+            <span className={`text-${data?.crowds.thienmMonastery === "Đông" ? "orange" : 
+                                     data?.crowds.thienmMonastery === "Rất đông" ? "red" : 
+                                     data?.crowds.thienmMonastery === "Ít" ? "green" : "yellow"}-500`}>
+              {data?.crowds.thienmMonastery || "Không có dữ liệu"}
+            </span>
+          </div>
+          <div className="flex justify-between items-center">
+            <span>Sông Hương</span>
+            <span className={`text-${data?.crowds.perfumeRiver === "Đông" ? "orange" : 
+                                     data?.crowds.perfumeRiver === "Rất đông" ? "red" : 
+                                     data?.crowds.perfumeRiver === "Ít" ? "green" : "yellow"}-500`}>
+              {data?.crowds.perfumeRiver || "Không có dữ liệu"}
+            </span>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+
 export default function LiveDataPage() {
   return (
     <div className="container mx-auto p-4">
@@ -202,7 +275,7 @@ export default function LiveDataPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <WeatherInfo />
-          <VisitorInfo />
+          <CrowdInfo />
           <EventInfo />
           <TrafficInfo />
           <EmergencyNotices />
