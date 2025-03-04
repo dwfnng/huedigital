@@ -207,7 +207,7 @@ export default function RolePlayGame() {
 
   return (
     <Card className="w-full max-w-4xl mx-auto bg-background/95 backdrop-blur-md">
-      <CardContent className="p-4 md:p-6">
+      <CardContent className="p-2 md:p-6">
         <div className="text-center mb-4 md:mb-6">
           <div className="inline-block p-2 md:p-3 bg-primary/10 rounded-full mb-2 md:mb-3">
             <Crown className="h-5 w-5 md:h-6 md:w-6 text-primary" />
@@ -240,20 +240,20 @@ export default function RolePlayGame() {
                 </div>
 
                 {gameSteps[currentStep].historicalContext && (
-                  <div className="p-4 bg-primary/5 rounded-lg mb-4">
+                  <div className="p-3 md:p-4 bg-primary/5 rounded-lg mb-4">
                     <p className="text-sm italic">
                       {gameSteps[currentStep].historicalContext}
                     </p>
                   </div>
                 )}
 
-                <div className="p-4 bg-accent/20 rounded-lg mb-6">
+                <div className="p-3 md:p-4 bg-accent/20 rounded-lg mb-4 md:mb-6">
                   <p className="text-sm md:text-base">{gameSteps[currentStep].description}</p>
                 </div>
               </div>
 
-              <ScrollArea className="h-[450px] md:h-[500px] rounded-md border p-4">
-                <div className="space-y-3">
+              <ScrollArea className="h-[350px] md:h-[500px] rounded-md border p-2 md:p-4">
+                <div className="space-y-2 md:space-y-3">
                   {gameSteps[currentStep].choices.map((choice) => (
                     <motion.div
                       key={choice.id}
@@ -264,13 +264,13 @@ export default function RolePlayGame() {
                     >
                       <Button
                         variant={selectedChoice?.id === choice.id ? "secondary" : "outline"}
-                        className={`w-full justify-start gap-3 h-auto p-4 text-left ${
+                        className={`w-full justify-start gap-2 md:gap-3 h-auto p-3 md:p-4 text-left ${
                           confirmedChoice?.id === choice.id ? 'border-primary bg-primary/10' : ''
-                        }`}
+                        } touch-manipulation`}
                         onClick={() => !confirmedChoice && handleChoice(choice)}
                         disabled={confirmedChoice !== null && confirmedChoice.id !== choice.id}
                       >
-                        <div className="flex items-start gap-3 w-full">
+                        <div className="flex items-start gap-2 md:gap-3 w-full">
                           <div className="p-2 bg-primary/10 rounded-lg shrink-0">
                             {choice.icon}
                           </div>
@@ -280,28 +280,28 @@ export default function RolePlayGame() {
                               <motion.div
                                 initial={{ opacity: 0, height: 0 }}
                                 animate={{ opacity: 1, height: "auto" }}
-                                className="mt-3 space-y-2"
+                                className="mt-2 md:mt-3 space-y-2"
                               >
                                 {confirmedChoice?.id === choice.id && (
-                                  <div className="p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
+                                  <div className="p-2 md:p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
                                     <p className="text-sm md:text-base">{choice.result}</p>
                                   </div>
                                 )}
                                 {choice.historicalInfo && (
-                                  <div className="p-3 bg-muted/30 rounded-lg">
+                                  <div className="p-2 md:p-3 bg-muted/30 rounded-lg">
                                     <p className="text-xs md:text-sm text-muted-foreground">
                                       {choice.historicalInfo}
                                     </p>
                                   </div>
                                 )}
                                 {choice.consequence && confirmedChoice?.id === choice.id && (
-                                  <div className="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                                  <div className="p-2 md:p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
                                     <h4 className="text-sm font-medium mb-1">Hệ quả lịch sử:</h4>
                                     <p className="text-xs md:text-sm">{choice.consequence}</p>
                                   </div>
                                 )}
                                 {choice.learnMore && confirmedChoice?.id === choice.id && (
-                                  <div className="mt-4 p-4 bg-primary/5 rounded-lg">
+                                  <div className="mt-3 md:mt-4 p-3 md:p-4 bg-primary/5 rounded-lg">
                                     <h4 className="text-sm font-medium mb-2 flex items-center gap-2">
                                       <FileText className="h-4 w-4" />
                                       Tìm hiểu thêm: {choice.learnMore.title}
@@ -325,10 +325,17 @@ export default function RolePlayGame() {
                   animate={{ opacity: 1, y: 0 }}
                   className="mt-4 flex justify-end gap-2"
                 >
-                  <Button variant="outline" onClick={changeChoice}>
+                  <Button 
+                    variant="outline" 
+                    onClick={changeChoice}
+                    className="text-sm md:text-base py-2 md:py-3"
+                  >
                     Đổi lựa chọn
                   </Button>
-                  <Button onClick={confirmChoice}>
+                  <Button 
+                    onClick={confirmChoice}
+                    className="text-sm md:text-base py-2 md:py-3"
+                  >
                     Xác nhận lựa chọn
                   </Button>
                 </motion.div>
@@ -340,7 +347,11 @@ export default function RolePlayGame() {
                   animate={{ opacity: 1, y: 0 }}
                   className="mt-4 flex justify-end"
                 >
-                  <Button onClick={handleNext} className="gap-2" disabled={readyForNext}>
+                  <Button 
+                    onClick={handleNext} 
+                    className="gap-2 text-sm md:text-base py-2 md:py-3" 
+                    disabled={readyForNext}
+                  >
                     {currentStep === gameSteps.length - 1 ? 'Kết thúc' : 'Tiếp theo'}
                     <ChevronRight className="h-4 w-4" />
                   </Button>
@@ -357,9 +368,9 @@ export default function RolePlayGame() {
                 hidden: { opacity: 0, y: 20 },
                 visible: { opacity: 1, y: 0, transition: { duration: 0.3 } }
               }}
-              className="text-center py-6"
+              className="text-center py-4 md:py-6"
             >
-              <div className="mb-6">
+              <div className="mb-4 md:mb-6">
                 <div className="inline-block p-3 bg-primary/10 rounded-full mb-3">
                   {getGameResult().icon}
                 </div>
@@ -374,7 +385,11 @@ export default function RolePlayGame() {
                 </div>
               </div>
 
-              <Button onClick={resetGame} size="lg" className="text-sm md:text-base">
+              <Button 
+                onClick={resetGame} 
+                size="lg" 
+                className="text-sm md:text-base py-2 md:py-3"
+              >
                 Chơi lại
               </Button>
             </motion.div>
