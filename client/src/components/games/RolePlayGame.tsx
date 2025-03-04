@@ -2,8 +2,9 @@ import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { motion, AnimatePresence } from "framer-motion";
-import { Crown, MapPin, Building2, Wind, Scroll, Star, ChevronRight } from "lucide-react";
+import { Crown, MapPin, Building2, Wind, Scroll, Star, ChevronRight, Book, Swords, FileText } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 
 interface Choice {
@@ -13,6 +14,12 @@ interface Choice {
   score: number;
   icon: JSX.Element;
   historicalInfo?: string;
+  consequence?: string;
+  learnMore?: {
+    title: string;
+    content: string;
+    image?: string;
+  };
 }
 
 interface GameStep {
@@ -20,6 +27,8 @@ interface GameStep {
   title: string;
   description: string;
   choices: Choice[];
+  background?: string;
+  historicalContext?: string;
 }
 
 const gameSteps: GameStep[] = [
@@ -27,6 +36,7 @@ const gameSteps: GameStep[] = [
     id: "location",
     title: "Chọn vị trí xây dựng kinh đô",
     description: "Thưa bệ hạ, nơi đâu sẽ là vị trí lý tưởng để xây dựng kinh đô mới của triều Nguyễn? Mỗi lựa chọn sẽ ảnh hưởng đến tương lai phát triển của vương triều.",
+    historicalContext: "Sau khi thống nhất đất nước năm 1802, vua Gia Long cần chọn một vị trí chiến lược để xây dựng kinh đô mới, đánh dấu sự khởi đầu của triều Nguyễn.",
     choices: [
       {
         id: "hue",
@@ -34,7 +44,13 @@ const gameSteps: GameStep[] = [
         result: "Một lựa chọn sáng suốt! Vùng đất Phú Xuân nằm ở vị trí trung tâm đất nước, có núi sông bao bọc, địa thế hiểm yếu, thuận lợi cho việc phòng thủ và phát triển.",
         score: 10,
         icon: <MapPin className="h-5 w-5" />,
-        historicalInfo: "Phú Xuân từng là kinh đô của chúa Nguyễn từ thế kỷ 17. Vị trí này nằm giữa hai miền Nam - Bắc, thuận lợi cho việc kiểm soát toàn bộ lãnh thổ. Địa thế được bao bọc bởi núi Ngự Bình và sông Hương, tạo nên thế phòng thủ tự nhiên."
+        historicalInfo: "Phú Xuân từng là kinh đô của chúa Nguyễn từ thế kỷ 17. Vị trí này nằm giữa hai miền Nam - Bắc, thuận lợi cho việc kiểm soát toàn bộ lãnh thổ.",
+        consequence: "Việc chọn Phú Xuân làm kinh đô giúp triều Nguyễn dễ dàng quản lý cả nước và phát triển quan hệ ngoại giao với các nước láng giềng.",
+        learnMore: {
+          title: "Lịch sử Phú Xuân",
+          content: "Phú Xuân không chỉ là trung tâm chính trị mà còn là trung tâm văn hóa của cả nước. Nơi đây hội tụ những giá trị văn hóa độc đáo của dân tộc.",
+          image: "/assets/images/phu-xuan.jpg"
+        }
       },
       {
         id: "hanoi",
@@ -42,46 +58,55 @@ const gameSteps: GameStep[] = [
         result: "Thăng Long tuy là kinh đô cổ với nhiều lợi thế về văn hóa và kinh tế, nhưng nằm quá xa phương Nam, khó kiểm soát toàn bộ lãnh thổ.",
         score: 5,
         icon: <Building2 className="h-5 w-5" />,
-        historicalInfo: "Thăng Long là kinh đô của các triều đại từ thời Lý, với hệ thống thành quách đồ sộ và nền văn hóa lâu đời. Tuy nhiên, vị trí này quá xa phía Nam và còn nhiều dấu ấn của triều Lê."
-      },
-      {
-        id: "saigon",
-        text: "Vùng đất Gia Định (Sài Gòn)",
-        result: "Gia Định tuy là căn cứ địa cũ với tiềm năng phát triển thương mại, nhưng nằm quá xa phương Bắc, không thuận lợi cho việc cai quản toàn quốc.",
-        score: 5,
-        icon: <Building2 className="h-5 w-5" />,
-        historicalInfo: "Gia Định là vùng đất trù phú với tiềm năng thương mại lớn nhờ vị trí gần biển và hệ thống sông ngòi. Tuy nhiên, vị trí này quá xa Thăng Long."
+        historicalInfo: "Thăng Long là kinh đô của các triều đại từ thời Lý, với hệ thống thành quách đồ sộ và nền văn hóa lâu đời.",
+        consequence: "Việc giữ Thăng Long làm kinh đô có thể gây khó khăn trong việc kiểm soát các vùng đất phía Nam và ảnh hưởng đến sự ổn định của triều đại.",
+        learnMore: {
+          title: "Di sản Thăng Long",
+          content: "Thăng Long - Hà Nội là trung tâm văn hóa, chính trị lâu đời với hơn 1000 năm lịch sử phát triển.",
+          image: "/assets/images/thang-long.jpg"
+        }
       }
     ]
   },
   {
-    id: "geomancy",
-    title: "Chọn phương án phong thủy",
-    description: "Các nhà phong thủy đã khảo sát địa thế, bệ hạ chọn phương án nào để xây dựng kinh thành? Mỗi phương án đều có những ưu điểm riêng về mặt phong thủy và chiến lược.",
+    id: "defense",
+    title: "Chiến lược phòng thủ",
+    description: "Bệ hạ cần quyết định phương án phòng thủ cho kinh thành. Điều này sẽ ảnh hưởng trực tiếp đến an ninh của triều đình.",
+    historicalContext: "Kinh thành không chỉ là trung tâm chính trị mà còn phải là một pháo đài kiên cố, bảo vệ triều đình trước mọi hiểm họa.",
     choices: [
       {
-        id: "mountain_river",
-        text: "Dựa vào núi Ngự Bình, sông Hương",
-        result: "Xuất sắc! Núi Ngự Bình như án ngự phía Nam, sông Hương uốn quanh như rồng chầu, tạo nên thế đất 'tọa sơn hướng thủy' hoàn hảo cho một kinh đô phồn thịnh.",
+        id: "modern_defense",
+        text: "Kết hợp phòng thủ truyền thống và hiện đại",
+        result: "Sáng suốt! Việc kết hợp hào lũy truyền thống với công sự theo kiểu Vauban sẽ tạo nên hệ thống phòng thủ vững chắc.",
         score: 10,
-        icon: <Wind className="h-5 w-5" />,
-        historicalInfo: "Theo nguyên lý phong thủy truyền thống, thế đất 'tọa sơn hướng thủy' là lựa chọn lý tưởng cho kinh đô. Núi Ngự Bình được ví như bàn tay che chở, trong khi sông Hương uốn lượn như con rồng chầu."
-      },
+        icon: <Swords className="h-5 w-5" />,
+        historicalInfo: "Vua Gia Long đã học hỏi kỹ thuật xây dựng phòng thủ từ các chuyên gia phương Tây.",
+        learnMore: {
+          title: "Kiến trúc Vauban",
+          content: "Kiến trúc Vauban là phong cách xây dựng công sự phòng thủ tiên tiến của Pháp, được áp dụng trong xây dựng Kinh thành Huế.",
+          image: "/assets/images/vauban.jpg"
+        }
+      }
+    ]
+  },
+  {
+    id: "culture",
+    title: "Phát triển văn hóa",
+    description: "Kinh đô mới cần có những định hướng phát triển văn hóa. Bệ hạ chọn phương án nào?",
+    historicalContext: "Văn hóa không chỉ là nền tảng tinh thần mà còn là sức mạnh mềm của một vương triều.",
+    choices: [
       {
-        id: "flat_land",
-        text: "Chọn vùng đất bằng phẳng",
-        result: "Đất bằng phẳng tuy dễ xây dựng nhưng thiếu các yếu tố phong thủy quan trọng, không tạo được thế đất vững mạnh cho kinh đô.",
-        score: 5,
-        icon: <Wind className="h-5 w-5" />,
-        historicalInfo: "Vùng đất bằng phẳng có ưu điểm là dễ quy hoạch và xây dựng, nhưng lại thiếu các yếu tố phong thủy cốt lõi như núi non che chắn và dòng nước bao bọc."
-      },
-      {
-        id: "coast",
-        text: "Gần biển để thuận tiện giao thương",
-        result: "Vị trí quá gần biển không tốt cho phong thủy, dễ bị ảnh hưởng bởi bão tố và các yếu tố thời tiết khắc nghiệt.",
-        score: 5,
-        icon: <Wind className="h-5 w-5" />,
-        historicalInfo: "Mặc dù vị trí gần biển có lợi thế về giao thương và phát triển kinh tế, nhưng theo phong thủy, đây không phải là lựa chọn tốt cho kinh đô."
+        id: "traditional",
+        text: "Bảo tồn và phát triển văn hóa truyền thống",
+        result: "Xuất sắc! Việc giữ gìn bản sắc văn hóa dân tộc sẽ tạo nền tảng vững chắc cho sự phát triển của triều đại.",
+        score: 10,
+        icon: <Book className="h-5 w-5" />,
+        historicalInfo: "Triều Nguyễn đã có những đóng góp to lớn trong việc bảo tồn và phát triển văn hóa Việt Nam.",
+        learnMore: {
+          title: "Văn hóa cung đình Huế",
+          content: "Văn hóa cung đình Huế là sự kết hợp hài hòa giữa truyền thống và những tinh hoa văn hóa mới.",
+          image: "/assets/images/culture.jpg"
+        }
       }
     ]
   }
@@ -101,7 +126,6 @@ export default function RolePlayGame() {
     setScore(score + choice.score);
     setSelectedChoices([...selectedChoices, choice.id]);
 
-    // Show the next button after a delay to allow reading
     setTimeout(() => {
       setShowNextButton(true);
     }, 2000);
@@ -186,6 +210,15 @@ export default function RolePlayGame() {
                     Bước {currentStep + 1}/{gameSteps.length}
                   </span>
                 </div>
+
+                {gameSteps[currentStep].historicalContext && (
+                  <div className="p-4 bg-primary/5 rounded-lg mb-4">
+                    <p className="text-sm italic">
+                      {gameSteps[currentStep].historicalContext}
+                    </p>
+                  </div>
+                )}
+
                 <div className="p-4 bg-accent/20 rounded-lg mb-6">
                   <p className="text-sm md:text-base">{gameSteps[currentStep].description}</p>
                 </div>
@@ -231,6 +264,21 @@ export default function RolePlayGame() {
                                     </p>
                                   </div>
                                 )}
+                                {choice.consequence && (
+                                  <div className="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                                    <h4 className="text-sm font-medium mb-1">Hệ quả lịch sử:</h4>
+                                    <p className="text-xs md:text-sm">{choice.consequence}</p>
+                                  </div>
+                                )}
+                                {choice.learnMore && (
+                                  <div className="mt-4 p-4 bg-primary/5 rounded-lg">
+                                    <h4 className="text-sm font-medium mb-2 flex items-center gap-2">
+                                      <FileText className="h-4 w-4" />
+                                      Tìm hiểu thêm: {choice.learnMore.title}
+                                    </h4>
+                                    <p className="text-xs md:text-sm">{choice.learnMore.content}</p>
+                                  </div>
+                                )}
                               </motion.div>
                             )}
                           </div>
@@ -247,21 +295,14 @@ export default function RolePlayGame() {
                   animate={{ opacity: 1, y: 0 }}
                   className="mt-4 flex justify-end"
                 >
-                  <Button
-                    onClick={handleNext}
-                    className="gap-2"
-                    disabled={readyForNext}
-                  >
+                  <Button onClick={handleNext} className="gap-2" disabled={readyForNext}>
                     {currentStep === gameSteps.length - 1 ? 'Kết thúc' : 'Tiếp theo'}
                     <ChevronRight className="h-4 w-4" />
                   </Button>
                 </motion.div>
               )}
 
-              <Progress
-                value={(currentStep / gameSteps.length) * 100}
-                className="h-2 mt-4"
-              />
+              <Progress value={(currentStep / gameSteps.length) * 100} className="h-2 mt-4" />
             </motion.div>
           ) : (
             <motion.div

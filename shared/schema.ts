@@ -85,7 +85,7 @@ export const pointTransactions = pgTable("point_transactions", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
-// Resources schema with enhanced cultural metadata
+// Resources schema with enhanced multimedia support
 export const resources = pgTable("resources", {
   id: serial("id").primaryKey(),
   title: text("title").notNull(),
@@ -105,6 +105,18 @@ export const resources = pgTable("resources", {
   authorInfo: text("author_info"),
   sourceInfo: text("source_info"),
   languages: text("languages").array(),
+  // New fields for enhanced multimedia support
+  format: text("format"), // e.g., "mp4", "mp3", "glb"
+  duration: text("duration"), // For video/audio
+  fileSize: text("file_size"),
+  dimensions: text("dimensions"), // For images/videos
+  transcription: text("transcription"), // For audio/video content
+  modelFormat: text("model_format"), // For 3D models: "glb", "gltf", etc.
+  textureUrls: text("texture_urls").array(), // For 3D models
+  previewUrls: text("preview_urls").array(), // Multiple preview images
+  license: text("license"), // Usage rights information
+  quality: text("quality"), // e.g., "HD", "4K", "Standard"
+  interactiveData: jsonb("interactive_data"), // For interactive 3D content
 });
 
 export const messages = pgTable("messages", {
@@ -152,15 +164,19 @@ export const insertCategorySchema = createInsertSchema(categories).omit({
   id: true,
 });
 
+// Enhanced metadata schema for different resource types
 export const insertResourceSchema = createInsertSchema(resources).omit({
   id: true,
   createdAt: true,
 }).extend({
   metadata: z.object({
+    // Common metadata
     format: z.string().optional(),
     resolution: z.string().optional(),
     duration: z.string().optional(),
     size: z.string().optional(),
+
+    // Cultural metadata
     technique: z.string().optional(),
     materials: z.array(z.string()).optional(),
     conservation: z.string().optional(),
@@ -169,6 +185,28 @@ export const insertResourceSchema = createInsertSchema(resources).omit({
     ritualUse: z.string().optional(),
     seasonalContext: z.string().optional(),
     traditionalPractices: z.string().optional(),
+
+    // Technical metadata for different types
+    video: z.object({
+      codec: z.string(),
+      bitrate: z.string(),
+      frameRate: z.string(),
+      aspectRatio: z.string(),
+    }).optional(),
+
+    audio: z.object({
+      codec: z.string(),
+      bitrate: z.string(),
+      sampleRate: z.string(),
+      channels: z.string(),
+    }).optional(),
+
+    model3d: z.object({
+      polygonCount: z.string(),
+      textureResolution: z.string(),
+      fileFormat: z.string(),
+      renderEngine: z.string(),
+    }).optional(),
   }).optional(),
 });
 
@@ -176,7 +214,6 @@ export const insertMessageSchema = createInsertSchema(messages).omit({
   id: true,
   createdAt: true,
 });
-
 
 // Types
 export type Location = typeof locations.$inferSelect;
@@ -244,12 +281,11 @@ export type PointTransactionType =
   | "review";
 
 export type ResourceType = 
-  | "document"
-  | "image"
+  | "image" 
   | "video"
   | "audio"
-  | "research"
   | "3d_model"
+  | "document"
   | "manuscript"
   | "artifact"
   | "ritual_description"
@@ -259,10 +295,7 @@ export type ResourceType =
   | "craft_technique"
   | "oral_history"
   | "architecture"
-  | "royal_decree"
   | "historical_map";
-
-export type ChatRole = "user" | "assistant";
 
 export type ResourceCategory =
   | "imperial_artifacts"
@@ -279,3 +312,5 @@ export type ResourceCategory =
   | "oral_traditions"
   | "decorative_arts"
   | "cultural_landscapes";
+
+export type ChatRole = "user" | "assistant";

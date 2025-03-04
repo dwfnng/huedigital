@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Crown, Building2, Map } from "lucide-react";
+import { Crown, Building2, Map, Scale } from "lucide-react";
 import RolePlayGame from "@/components/games/RolePlayGame";
 import BuildingGame from "@/components/games/BuildingGame";
 import TreasureHuntGame from "@/components/games/TreasureHuntGame";
+import MinisterGame from "@/components/games/MinisterGame";
 
 function GameCard({ icon: Icon, title, description, onClick }: { 
   icon: any; 
@@ -41,7 +42,7 @@ export default function GamePage() {
     minister: {
       title: "Quan thần thời Minh Mạng",
       description: "Giúp nhà vua xử lý một vụ án trong triều đình, áp dụng luật pháp thời Nguyễn.",
-      component: <div className="text-center p-8 text-muted-foreground">Trò chơi đang được phát triển...</div>
+      component: <MinisterGame />
     },
     building: {
       title: "Điện Cần Chánh",
@@ -92,7 +93,7 @@ export default function GamePage() {
               onClick={() => setSelectedGame('role_play')}
             />
             <GameCard
-              icon={Crown}
+              icon={Scale}
               title="Quan thần thời Minh Mạng"
               description="Giúp nhà vua xử lý một vụ án trong triều đình, áp dụng luật pháp thời Nguyễn."
               onClick={() => setSelectedGame('minister')}
