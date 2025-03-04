@@ -1,147 +1,148 @@
-import { motion } from "framer-motion";
-import { Link } from "wouter";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useState, useCallback } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Library, MapPin, MessageSquare, BarChart2, Upload, Gamepad2, Ticket, BookText } from "lucide-react";
-import { SiFacebook } from "react-icons/si";
+import SearchBar from "@/components/SearchBar";
+import ResourceList from "@/components/ResourceList";
+import ResourceDetails from "@/components/ResourceDetails";
+import CategoryList from "@/components/CategoryList";
+import ResourceTypeFilter from "@/components/ResourceTypeFilter";
+import { motion } from "framer-motion";
+import { Library } from "lucide-react";
+import type { Resource, ResourceType, Category } from "@shared/schema";
+import { apiRequest } from "@/lib/queryClient";
 
-const features = [
-  {
-    icon: Library,
-    title: "Kho học liệu",
-    description: "Truy cập kho tài liệu số hóa phong phú về di sản văn hóa Huế",
-    href: "/library"
-  },
-  {
-    icon: MapPin,
-    title: "Bản đồ số",
-    description: "Khám phá di tích lịch sử qua bản đồ tương tác",
-    href: "/map"
-  },
-  {
-    icon: BookText,
-    title: "Diễn đàn",
-    description: "Tham gia thảo luận và chia sẻ kiến thức về văn hóa Huế",
-    href: "/forum"
-  },
-  {
-    icon: BarChart2,
-    title: "Dữ liệu thực",
-    description: "Thông tin cập nhật về thời tiết và hoạt động du lịch",
-    href: "/live-data"
-  },
-  {
-    icon: MessageSquare,
-    title: "Trò chuyện AI",
-    description: "Tương tác với trí tuệ nhân tạo để tìm hiểu về Huế",
-    href: "/chat"
-  },
-  {
-    icon: Gamepad2,
-    title: "Game giáo dục",
-    description: "Học về văn hóa Huế qua các trò chơi tương tác",
-    href: "/game"
+const container = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.2
+    }
   }
-];
+};
+
+const item = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0 }
+};
 
 export default function Home() {
+  const [selectedResource, setSelectedResource] = useState<Resource | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedType, setSelectedType] = useState<ResourceType | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+
+  const { data: resources = [] } = useQuery<Resource[]>({
+    queryKey: ["/api/resources/search", searchQuery],
+    queryFn: async () => {
+      if (!searchQuery) {
+        const res = await apiRequest("GET", "/api/resources");
+        return res.json();
+      }
+      const res = await apiRequest(
+        "GET", 
+        `/api/resources/search/${searchQuery}`
+      );
+      return res.json();
+    },
+  });
+
+  const { data: categories = [] } = useQuery<Category[]>({
+    queryKey: ["/api/categories"],
+  });
+
+  const filteredResources = resources.filter(resource => {
+    if (selectedType && resource.type !== selectedType) return false;
+    if (selectedCategory && resource.category !== selectedCategory) return false;
+    return true;
+  });
+
+  const handleSearch = useCallback((query: string) => {
+    setSearchQuery(query);
+  }, []);
+
   return (
-    <div className="container mx-auto px-4 py-8">
-      {/* Hero Section */}
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="text-center max-w-3xl mx-auto mb-16"
-      >
-        <h1 className="text-4xl font-bold mb-4">
-          Khám phá di sản văn hóa Huế
-          <br />
-          <span className="text-primary">trong thời đại số</span>
-        </h1>
-        <p className="text-xl text-muted-foreground mb-8">
-          Nền tảng tương tác kỹ thuật số toàn diện giúp bạn tìm hiểu, khám phá và
-          bảo tồn di sản văn hóa độc đáo của cố đô Huế
-        </p>
-        <div className="flex gap-4 justify-center">
-          <Button asChild size="lg">
-            <Link href="/library">Khám phá ngay</Link>
-          </Button>
-          <Button asChild variant="outline" size="lg">
-            <Link href="/map">Xem bản đồ</Link>
-          </Button>
-        </div>
-      </motion.div>
+    <motion.div
+      className="container mx-auto p-4"
+      variants={container}
+      initial="hidden"
+      animate="show"
+    >
+      <div className="max-w-3xl mx-auto">
+        <motion.div variants={item} className="flex items-center gap-3 mb-6">
+          <div className="p-3 rounded-full bg-primary/10">
+            <Library className="h-6 w-6 text-primary" />
+          </div>
+          <div>
+            <h1 className="text-3xl font-bold">Kho học liệu số</h1>
+            <p className="text-muted-foreground mt-1">
+              Khám phá bộ sưu tập tài liệu số hóa, hình ảnh, video và âm thanh về di sản văn hóa Huế
+            </p>
+          </div>
+        </motion.div>
 
-      {/* Features Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
-        {features.map((feature, index) => (
-          <motion.div
-            key={feature.title}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.1 }}
-          >
-            <Card className="hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <feature.icon className="h-8 w-8 text-primary mb-2" />
-                <CardTitle>{feature.title}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">{feature.description}</p>
-                <Button asChild variant="link" className="mt-4 p-0">
-                  <Link href={feature.href}>Khám phá thêm →</Link>
-                </Button>
-              </CardContent>
-            </Card>
-          </motion.div>
-        ))}
+        <Card className="overflow-hidden">
+          <CardContent className="p-0">
+            <Tabs defaultValue="browse" className="w-full">
+              <motion.div variants={item} className="px-4 pt-4">
+                <TabsList className="w-full grid grid-cols-2">
+                  <TabsTrigger value="browse" className="text-base">
+                    Duyệt tài liệu
+                  </TabsTrigger>
+                  <TabsTrigger value="categories" className="text-base">
+                    Danh mục
+                  </TabsTrigger>
+                </TabsList>
+              </motion.div>
+
+              <TabsContent value="browse" className="m-0">
+                <div className="space-y-4 p-4">
+                  <motion.div variants={item}>
+                    <SearchBar 
+                      onSearch={handleSearch}
+                      placeholder="Tìm kiếm tài liệu..."
+                    />
+                  </motion.div>
+
+                  <motion.div variants={item}>
+                    <ResourceTypeFilter
+                      selectedType={selectedType}
+                      onSelectType={setSelectedType}
+                    />
+                  </motion.div>
+
+                  <motion.div variants={item}>
+                    <ResourceList
+                      resources={filteredResources}
+                      onResourceSelect={setSelectedResource}
+                    />
+                  </motion.div>
+                </div>
+              </TabsContent>
+
+              <TabsContent value="categories" className="m-0">
+                <div className="p-4">
+                  <motion.div variants={item}>
+                    <CategoryList
+                      categories={categories}
+                      selectedCategory={selectedCategory}
+                      onSelectCategory={setSelectedCategory}
+                    />
+                  </motion.div>
+                </div>
+              </TabsContent>
+            </Tabs>
+          </CardContent>
+        </Card>
+
+        <ResourceDetails
+          resource={selectedResource}
+          onClose={() => setSelectedResource(null)}
+        />
       </div>
-
-      {/* Footer */}
-      <footer className="border-t pt-8 mt-16">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-2xl font-bold mb-4">Về chúng tôi</h2>
-          <p className="text-muted-foreground mb-6">
-            Huế Digital được thành lập năm 2025 với sứ mệnh bảo tồn và phát huy giá trị
-            di sản văn hóa Huế thông qua công nghệ số.
-          </p>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-            <div>
-              <h3 className="font-semibold mb-2">Người sáng lập</h3>
-              <p>Phan Xuân Dương</p>
-              <p>Nguyễn Thị Diệu Nghiêm</p>
-            </div>
-            <div>
-              <h3 className="font-semibold mb-2">Liên hệ</h3>
-              <p>
-                <a 
-                  href="mailto:pxuanduong2703@gmail.com"
-                  className="text-primary hover:underline"
-                >
-                  pxuanduong2703@gmail.com
-                </a>
-              </p>
-              <p>
-                <a 
-                  href="https://www.facebook.com/duong.phan2703"
-                  className="text-primary hover:underline inline-flex items-center gap-1"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <SiFacebook className="h-4 w-4" />
-                  Facebook
-                </a>
-              </p>
-            </div>
-          </div>
-
-          <div className="text-sm text-muted-foreground">
-            <p>© 2025 Huế Digital. Bảo lưu mọi quyền.</p>
-          </div>
-        </div>
-      </footer>
-    </div>
+    </motion.div>
   );
 }

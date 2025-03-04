@@ -30,8 +30,16 @@ function MainNav() {
             </span>
           </Link>
 
-          {/* Main navigation - Reordered according to requirements */}
+          {/* Main navigation */}
           <div className="flex items-center gap-1 ml-8 flex-wrap">
+            <Link 
+              href="/map" 
+              className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-primary/10 transition-colors"
+            >
+              <MapPin className="h-4 w-4" />
+              Bản đồ số
+            </Link>
+
             <Link 
               href="/library" 
               className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-primary/10 transition-colors"
@@ -41,11 +49,19 @@ function MainNav() {
             </Link>
 
             <Link 
-              href="/map" 
+              href="/live-data" 
               className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-primary/10 transition-colors"
             >
-              <MapPin className="h-4 w-4" />
-              Bản đồ số
+              <BarChart2 className="h-4 w-4" />
+              Dữ liệu thực
+            </Link>
+
+            <Link 
+              href="/ticket" 
+              className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-primary/10 transition-colors"
+            >
+              <Ticket className="h-4 w-4" />
+              Đặt vé
             </Link>
 
             <Link 
@@ -57,11 +73,11 @@ function MainNav() {
             </Link>
 
             <Link 
-              href="/live-data" 
+              href="/contribute" 
               className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-primary/10 transition-colors"
             >
-              <BarChart2 className="h-4 w-4" />
-              Dữ liệu thực
+              <Upload className="h-4 w-4" />
+              Đóng góp
             </Link>
 
             <Link 
@@ -78,22 +94,6 @@ function MainNav() {
             >
               <Gamepad2 className="h-4 w-4" />
               Game giáo dục
-            </Link>
-
-            <Link 
-              href="/ticket" 
-              className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-primary/10 transition-colors"
-            >
-              <Ticket className="h-4 w-4" />
-              Đặt vé
-            </Link>
-
-            <Link 
-              href="/contribute" 
-              className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-primary/10 transition-colors"
-            >
-              <Upload className="h-4 w-4" />
-              Đóng góp
             </Link>
           </div>
         </div>
