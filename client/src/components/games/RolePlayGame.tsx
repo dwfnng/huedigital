@@ -144,14 +144,14 @@ export default function RolePlayGame() {
   };
 
   return (
-    <Card className="w-full max-w-2xl mx-auto">
-      <CardContent className="p-6">
-        <div className="text-center mb-6">
-          <div className="inline-block p-2 bg-primary/10 rounded-full mb-2">
-            <Crown className="h-5 w-5 text-primary" />
+    <Card className="w-full max-w-4xl mx-auto bg-background/95 backdrop-blur-md">
+      <CardContent className="p-4 md:p-6">
+        <div className="text-center mb-4 md:mb-6">
+          <div className="inline-block p-2 md:p-3 bg-primary/10 rounded-full mb-2 md:mb-3">
+            <Crown className="h-5 w-5 md:h-6 md:w-6 text-primary" />
           </div>
-          <h2 className="text-lg font-semibold">Nhập vai vua Gia Long</h2>
-          <p className="text-sm text-muted-foreground">
+          <h2 className="text-lg md:text-xl font-semibold">Nhập vai vua Gia Long</h2>
+          <p className="text-sm md:text-base text-muted-foreground max-w-2xl mx-auto">
             Đưa ra những quyết định quan trọng trong việc chọn vị trí và xây dựng kinh đô mới
           </p>
         </div>
@@ -163,18 +163,26 @@ export default function RolePlayGame() {
               initial="hidden"
               animate="visible"
               exit="hidden"
-              variants={fadeIn}
+              variants={{
+                hidden: { opacity: 0, y: 20 },
+                visible: { opacity: 1, y: 0, transition: { duration: 0.3 } }
+              }}
               className="relative"
             >
               <div className="mb-4">
-                <h3 className="text-base font-medium mb-2">{gameSteps[currentStep].title}</h3>
-                <p className="text-sm text-muted-foreground mb-4">{gameSteps[currentStep].description}</p>
+                <h3 className="text-base md:text-lg font-medium mb-2">{gameSteps[currentStep].title}</h3>
+                <p className="text-sm md:text-base text-muted-foreground mb-4">
+                  {gameSteps[currentStep].description}
+                </p>
               </div>
 
-              <ScrollArea className="h-[400px] rounded-md border p-3">
-                <div className="space-y-4">
+              <ScrollArea className="h-[450px] md:h-[500px] rounded-md border p-4">
+                <div className="space-y-3">
                   {gameSteps[currentStep].choices.map((choice) => (
-                    <motion.div key={choice.id} variants={fadeIn}>
+                    <motion.div key={choice.id} variants={{
+                      hidden: { opacity: 0, y: 20 },
+                      visible: { opacity: 1, y: 0 }
+                    }}>
                       <Button
                         variant="outline"
                         className={`w-full justify-start gap-3 h-auto p-4 text-left ${
@@ -187,8 +195,8 @@ export default function RolePlayGame() {
                           <div className="p-2 bg-primary/10 rounded-lg shrink-0">
                             {choice.icon}
                           </div>
-                          <div className="flex-1">
-                            <p className="text-sm font-medium">{choice.text}</p>
+                          <div className="flex-1 space-y-1">
+                            <p className="text-sm md:text-base font-medium">{choice.text}</p>
                             {selectedChoice?.id === choice.id && (
                               <motion.div
                                 initial={{ opacity: 0, height: 0 }}
@@ -196,11 +204,13 @@ export default function RolePlayGame() {
                                 className="mt-3 space-y-2"
                               >
                                 <div className="p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
-                                  <p className="text-sm">{choice.result}</p>
+                                  <p className="text-sm md:text-base">{choice.result}</p>
                                 </div>
                                 {choice.historicalInfo && (
                                   <div className="p-3 bg-muted/30 rounded-lg">
-                                    <p className="text-sm text-muted-foreground">{choice.historicalInfo}</p>
+                                    <p className="text-xs md:text-sm text-muted-foreground">
+                                      {choice.historicalInfo}
+                                    </p>
                                   </div>
                                 )}
                               </motion.div>
@@ -217,21 +227,28 @@ export default function RolePlayGame() {
             <motion.div
               initial="hidden"
               animate="visible"
-              variants={fadeIn}
-              className="text-center py-4"
+              variants={{
+                hidden: { opacity: 0, y: 20 },
+                visible: { opacity: 1, y: 0, transition: { duration: 0.3 } }
+              }}
+              className="text-center py-6"
             >
               <div className="mb-6">
-                <div className="inline-block p-2 bg-primary/10 rounded-full mb-2">
+                <div className="inline-block p-3 bg-primary/10 rounded-full mb-3">
                   {getGameResult().icon}
                 </div>
-                <h3 className="text-lg font-semibold mb-2">{getGameResult().title}</h3>
-                <p className="text-sm text-muted-foreground">{getGameResult().description}</p>
-                <div className="mt-4 p-3 bg-muted/30 rounded-lg">
-                  <p className="text-sm">Điểm số của bệ hạ: {score}/{gameSteps.length * 10}</p>
+                <h3 className="text-lg md:text-xl font-semibold mb-2">{getGameResult().title}</h3>
+                <p className="text-sm md:text-base text-muted-foreground max-w-2xl mx-auto">
+                  {getGameResult().description}
+                </p>
+                <div className="mt-4 p-3 bg-muted/30 rounded-lg inline-block">
+                  <p className="text-sm md:text-base">
+                    Điểm số của bệ hạ: {score}/{gameSteps.length * 10}
+                  </p>
                 </div>
               </div>
 
-              <Button onClick={resetGame} className="text-sm">
+              <Button onClick={resetGame} size="lg" className="text-sm md:text-base">
                 Chơi lại
               </Button>
             </motion.div>

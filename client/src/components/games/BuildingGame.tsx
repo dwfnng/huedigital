@@ -179,57 +179,15 @@ export default function BuildingGame() {
     }
   };
 
-  const renderCategorySection = (category: string, elements: ArchitecturalElement[]) => (
-    <div className="space-y-2">
-      {elements.map((element) => (
-        <motion.div key={element.id} variants={fadeIn}>
-          <div className="relative">
-            <Button
-              variant={selectedElements[category] === element.id ? "default" : "outline"}
-              className="w-full justify-start gap-2 h-auto p-2 text-left text-sm"
-              onClick={() => handleElementSelect(category, element.id)}
-            >
-              <div className="p-1 bg-primary/10 rounded-lg shrink-0">
-                {element.icon}
-              </div>
-              <div>
-                <p className="text-xs font-medium">{element.name}</p>
-                <p className="text-xs text-muted-foreground">{element.description}</p>
-              </div>
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="absolute right-1 top-1 h-6 w-6"
-              onClick={() => setShowInfo(showInfo === element.id ? null : element.id)}
-            >
-              <Info className="h-3 w-3" />
-            </Button>
-          </div>
-          {showInfo === element.id && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              className="mt-1 p-2 bg-muted/50 rounded-lg"
-            >
-              <p className="text-xs">{element.historicalInfo}</p>
-            </motion.div>
-          )}
-        </motion.div>
-      ))}
-    </div>
-  );
-
   return (
-    <Card className="w-full max-w-xl mx-auto">
-      <CardContent className="p-3">
-        <div className="text-center mb-3">
-          <div className="inline-block p-1.5 bg-primary/10 rounded-full mb-2">
-            <Building2 className="h-4 w-4 text-primary" />
+    <Card className="w-full max-w-3xl mx-auto bg-background/95 backdrop-blur-md">
+      <CardContent className="p-4 md:p-6">
+        <div className="text-center mb-4">
+          <div className="inline-block p-2 bg-primary/10 rounded-full mb-2">
+            <Building2 className="h-5 w-5 text-primary" />
           </div>
-          <h2 className="text-base font-semibold">Xây dựng Điện Cần Chánh</h2>
-          <p className="text-xs text-muted-foreground">
+          <h2 className="text-lg md:text-xl font-semibold">Xây dựng Điện Cần Chánh</h2>
+          <p className="text-sm text-muted-foreground">
             Chọn các yếu tố kiến trúc để xây dựng lại Điện Cần Chánh theo phong cách cung đình Huế
           </p>
         </div>
@@ -246,28 +204,85 @@ export default function BuildingGame() {
               }
             }}
           >
-            <Tabs defaultValue="foundation" className="space-y-4" onChange={setCurrentCategory}>
+            <Tabs 
+              value={currentCategory} 
+              onValueChange={setCurrentCategory}
+              className="space-y-4"
+            >
               <TabsList className="w-full grid grid-cols-5 gap-1">
-                <TabsTrigger value="foundation" className="text-xs py-1">Nền móng</TabsTrigger>
-                <TabsTrigger value="columns" className="text-xs py-1">Cột trụ</TabsTrigger>
-                <TabsTrigger value="decoration" className="text-xs py-1">Trang trí</TabsTrigger>
-                <TabsTrigger value="landscaping" className="text-xs py-1">Cảnh quan</TabsTrigger>
-                <TabsTrigger value="colors" className="text-xs py-1">Màu sắc</TabsTrigger>
+                <TabsTrigger value="foundation" className="text-xs py-1.5">
+                  Nền móng
+                </TabsTrigger>
+                <TabsTrigger value="columns" className="text-xs py-1.5">
+                  Cột trụ
+                </TabsTrigger>
+                <TabsTrigger value="decoration" className="text-xs py-1.5">
+                  Trang trí
+                </TabsTrigger>
+                <TabsTrigger value="landscaping" className="text-xs py-1.5">
+                  Cảnh quan
+                </TabsTrigger>
+                <TabsTrigger value="colors" className="text-xs py-1.5">
+                  Màu sắc
+                </TabsTrigger>
               </TabsList>
 
-              <ScrollArea className="h-[300px] rounded-md border p-2">
-                {renderCategorySection(currentCategory, architecturalElements[currentCategory as keyof typeof architecturalElements])}
+              <ScrollArea className="h-[400px] md:h-[450px] rounded-md border p-4">
+                <div className="space-y-3">
+                  {architecturalElements[currentCategory as keyof typeof architecturalElements].map((element) => (
+                    <motion.div key={element.id} variants={{
+                      hidden: { opacity: 0, y: 10 },
+                      visible: { opacity: 1, y: 0, transition: { duration: 0.2 } }
+                    }}>
+                      <div className="relative group">
+                        <Button
+                          variant={selectedElements[currentCategory] === element.id ? "default" : "outline"}
+                          className="w-full justify-start gap-3 h-auto p-4 text-left hover:bg-accent transition-colors"
+                          onClick={() => handleElementSelect(currentCategory, element.id)}
+                        >
+                          <div className="flex items-start gap-3 w-full">
+                            <div className="p-2 bg-primary/10 rounded-lg shrink-0">
+                              {element.icon}
+                            </div>
+                            <div>
+                              <p className="text-sm font-medium">{element.name}</p>
+                              <p className="text-xs text-muted-foreground">{element.description}</p>
+                            </div>
+                          </div>
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity"
+                          onClick={() => setShowInfo(showInfo === element.id ? null : element.id)}
+                        >
+                          <Info className="h-4 w-4" />
+                        </Button>
+                      </div>
+                      {showInfo === element.id && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: "auto" }}
+                          exit={{ opacity: 0, height: 0 }}
+                          className="mt-2 p-3 bg-muted/50 rounded-lg"
+                        >
+                          <p className="text-sm">{element.historicalInfo}</p>
+                        </motion.div>
+                      )}
+                    </motion.div>
+                  ))}
+                </div>
               </ScrollArea>
 
               <div className="flex justify-center">
                 <Button
-                  size="sm"
+                  size="lg"
                   onClick={() => setShowResult(true)}
                   disabled={Object.keys(selectedElements).length < 5}
-                  className="gap-1"
+                  className="gap-2"
                 >
-                  <Ruler className="h-3 w-3" />
-                  <span className="text-xs">Hoàn thành công trình</span>
+                  <Ruler className="h-4 w-4" />
+                  <span>Hoàn thành công trình</span>
                 </Button>
               </div>
             </Tabs>
@@ -276,33 +291,37 @@ export default function BuildingGame() {
           <motion.div
             initial="hidden"
             animate="visible"
-            variants={fadeIn}
-            className="text-center py-3"
+            variants={{
+              hidden: { opacity: 0, y: 20 },
+              visible: { opacity: 1, y: 0, transition: { duration: 0.3 } }
+            }}
+            className="text-center py-6"
           >
-            <div className="mb-3">
-              <div className="inline-block p-2 bg-primary/10 rounded-full mb-2">
-                <Award className="h-4 w-4 text-primary" />
+            <div className="mb-6">
+              <div className="inline-block p-3 bg-primary/10 rounded-full mb-3">
+                <Award className="h-6 w-6 text-primary" />
               </div>
-              <h3 className="text-sm font-semibold mb-1">
+              <h3 className="text-xl font-semibold mb-2">
                 {getEvaluation(calculateScore()).title}
               </h3>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-base text-muted-foreground">
                 {getEvaluation(calculateScore()).description}
               </p>
-              <div className="mt-2 p-2 bg-muted/30 rounded-lg">
-                <p className="text-xs">Điểm số của bạn: {calculateScore()}/50</p>
+              <div className="mt-4 p-3 bg-muted/30 rounded-lg inline-block">
+                <p className="text-base">Điểm số của bạn: {calculateScore()}/50</p>
               </div>
             </div>
 
             <Button
-              size="sm"
+              size="lg"
               onClick={() => {
                 setSelectedElements({});
                 setShowResult(false);
               }}
-              className="text-xs"
+              className="gap-2"
             >
-              Thử lại
+              <Building2 className="h-4 w-4" />
+              <span>Thử lại</span>
             </Button>
           </motion.div>
         )}
