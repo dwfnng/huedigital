@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { motion, AnimatePresence } from "framer-motion";
-import { Crown, MapPin, Building2, Wind, Scroll, Star, ChevronRight, Book, Swords, FileText } from "lucide-react";
+import { Crown, MapPin, Building2, Wind, Scroll, Star, ChevronRight, Book, Swords, FileText, Anchor } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 
 interface Choice {
@@ -48,7 +48,7 @@ const gameSteps: GameStep[] = [
         consequence: "Việc chọn Phú Xuân làm kinh đô giúp triều Nguyễn dễ dàng quản lý cả nước và phát triển quan hệ ngoại giao với các nước láng giềng.",
         learnMore: {
           title: "Lịch sử Phú Xuân",
-          content: "Phú Xuân không chỉ là trung tâm chính trị mà còn là trung tâm văn hóa của cả nước. Nơi đây hội tụ những giá trị văn hóa độc đáo của dân tộc.",
+          content: "Phú Xuân là vùng đất địa linh nhân kiệt, nơi hội tụ những giá trị văn hóa độc đáo. Với hệ thống sông Hương và núi Ngự Bình, đây là nơi có địa thế đẹp, hợp phong thủy theo quan niệm thời bấy giờ.",
           image: "/assets/images/phu-xuan.jpg"
         }
       },
@@ -62,8 +62,22 @@ const gameSteps: GameStep[] = [
         consequence: "Việc giữ Thăng Long làm kinh đô có thể gây khó khăn trong việc kiểm soát các vùng đất phía Nam và ảnh hưởng đến sự ổn định của triều đại.",
         learnMore: {
           title: "Di sản Thăng Long",
-          content: "Thăng Long - Hà Nội là trung tâm văn hóa, chính trị lâu đời với hơn 1000 năm lịch sử phát triển.",
+          content: "Thăng Long - Hà Nội là trung tâm văn hóa, chính trị lâu đời với hơn 1000 năm lịch sử phát triển. Tuy nhiên, vị trí này không còn phù hợp với bối cảnh mới của đất nước sau thống nhất.",
           image: "/assets/images/thang-long.jpg"
+        }
+      },
+      {
+        id: "saigon",
+        text: "Chọn Gia Định (Sài Gòn)",
+        result: "Gia Định tuy là vùng đất mới phát triển với tiềm năng thương mại lớn, nhưng vị trí quá xa trung tâm, không thuận lợi cho việc cai quản đất nước.",
+        score: 3,
+        icon: <Anchor className="h-5 w-5" />,
+        historicalInfo: "Gia Định là vùng đất trù phú, có cảng sông thuận lợi cho giao thương, nhưng chưa có cơ sở hạ tầng và truyền thống văn hóa đủ mạnh.",
+        consequence: "Việc đặt kinh đô ở Gia Định sẽ gây khó khăn trong việc quản lý các vùng miền khác, đặc biệt là khu vực Bắc Bộ.",
+        learnMore: {
+          title: "Tiềm năng Gia Định",
+          content: "Gia Định có vị trí thuận lợi cho giao thương đường biển, nhưng chưa đủ điều kiện để trở thành trung tâm chính trị - văn hóa của cả nước vào thời điểm đó.",
+          image: "/assets/images/gia-dinh.jpg"
         }
       }
     ]
@@ -118,17 +132,29 @@ export default function RolePlayGame() {
   const [selectedChoices, setSelectedChoices] = useState<string[]>([]);
   const [showResult, setShowResult] = useState(false);
   const [selectedChoice, setSelectedChoice] = useState<Choice | null>(null);
+  const [confirmedChoice, setConfirmedChoice] = useState<Choice | null>(null);
   const [showNextButton, setShowNextButton] = useState(false);
   const [readyForNext, setReadyForNext] = useState(false);
 
   const handleChoice = (choice: Choice) => {
-    setSelectedChoice(choice);
-    setScore(score + choice.score);
-    setSelectedChoices([...selectedChoices, choice.id]);
+    if (!confirmedChoice) {
+      setSelectedChoice(choice);
+    }
+  };
 
-    setTimeout(() => {
+  const confirmChoice = () => {
+    if (selectedChoice) {
+      setConfirmedChoice(selectedChoice);
+      setScore(score + selectedChoice.score);
+      setSelectedChoices([...selectedChoices, selectedChoice.id]);
       setShowNextButton(true);
-    }, 2000);
+    }
+  };
+
+  const changeChoice = () => {
+    setSelectedChoice(null);
+    setConfirmedChoice(null);
+    setShowNextButton(false);
   };
 
   const handleNext = () => {
@@ -137,6 +163,7 @@ export default function RolePlayGame() {
       if (currentStep < gameSteps.length - 1) {
         setCurrentStep(currentStep + 1);
         setSelectedChoice(null);
+        setConfirmedChoice(null);
         setShowNextButton(false);
         setReadyForNext(false);
       } else {
@@ -173,6 +200,7 @@ export default function RolePlayGame() {
     setSelectedChoices([]);
     setShowResult(false);
     setSelectedChoice(null);
+    setConfirmedChoice(null);
     setShowNextButton(false);
     setReadyForNext(false);
   };
@@ -235,12 +263,12 @@ export default function RolePlayGame() {
                       }}
                     >
                       <Button
-                        variant="outline"
+                        variant={selectedChoice?.id === choice.id ? "secondary" : "outline"}
                         className={`w-full justify-start gap-3 h-auto p-4 text-left ${
-                          selectedChoice?.id === choice.id ? 'border-primary' : ''
+                          confirmedChoice?.id === choice.id ? 'border-primary bg-primary/10' : ''
                         }`}
-                        onClick={() => !selectedChoice && handleChoice(choice)}
-                        disabled={selectedChoice !== null}
+                        onClick={() => !confirmedChoice && handleChoice(choice)}
+                        disabled={confirmedChoice !== null && confirmedChoice.id !== choice.id}
                       >
                         <div className="flex items-start gap-3 w-full">
                           <div className="p-2 bg-primary/10 rounded-lg shrink-0">
@@ -248,15 +276,17 @@ export default function RolePlayGame() {
                           </div>
                           <div className="flex-1 space-y-1">
                             <p className="text-sm md:text-base font-medium">{choice.text}</p>
-                            {selectedChoice?.id === choice.id && (
+                            {(confirmedChoice?.id === choice.id || selectedChoice?.id === choice.id) && (
                               <motion.div
                                 initial={{ opacity: 0, height: 0 }}
                                 animate={{ opacity: 1, height: "auto" }}
                                 className="mt-3 space-y-2"
                               >
-                                <div className="p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
-                                  <p className="text-sm md:text-base">{choice.result}</p>
-                                </div>
+                                {confirmedChoice?.id === choice.id && (
+                                  <div className="p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
+                                    <p className="text-sm md:text-base">{choice.result}</p>
+                                  </div>
+                                )}
                                 {choice.historicalInfo && (
                                   <div className="p-3 bg-muted/30 rounded-lg">
                                     <p className="text-xs md:text-sm text-muted-foreground">
@@ -264,13 +294,13 @@ export default function RolePlayGame() {
                                     </p>
                                   </div>
                                 )}
-                                {choice.consequence && (
+                                {choice.consequence && confirmedChoice?.id === choice.id && (
                                   <div className="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
                                     <h4 className="text-sm font-medium mb-1">Hệ quả lịch sử:</h4>
                                     <p className="text-xs md:text-sm">{choice.consequence}</p>
                                   </div>
                                 )}
-                                {choice.learnMore && (
+                                {choice.learnMore && confirmedChoice?.id === choice.id && (
                                   <div className="mt-4 p-4 bg-primary/5 rounded-lg">
                                     <h4 className="text-sm font-medium mb-2 flex items-center gap-2">
                                       <FileText className="h-4 w-4" />
@@ -288,6 +318,21 @@ export default function RolePlayGame() {
                   ))}
                 </div>
               </ScrollArea>
+
+              {selectedChoice && !confirmedChoice && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mt-4 flex justify-end gap-2"
+                >
+                  <Button variant="outline" onClick={changeChoice}>
+                    Đổi lựa chọn
+                  </Button>
+                  <Button onClick={confirmChoice}>
+                    Xác nhận lựa chọn
+                  </Button>
+                </motion.div>
+              )}
 
               {showNextButton && (
                 <motion.div
