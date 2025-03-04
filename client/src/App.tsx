@@ -16,6 +16,7 @@ import TicketPage from "@/pages/ticket";
 import ContributePage from "@/pages/contribute";
 import LiveDataPage from "@/pages/live-data";
 import NotFound from "@/pages/not-found";
+import GameAnswers from "@/pages/game-answers"; // Added import for GameAnswers component
 import { useState, useEffect } from "react";
 
 function MainNav() {
@@ -30,16 +31,8 @@ function MainNav() {
             </span>
           </Link>
 
-          {/* Main navigation */}
+          {/* Main navigation - Reordered according to requirements */}
           <div className="flex items-center gap-1 ml-8 flex-wrap">
-            <Link 
-              href="/map" 
-              className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-primary/10 transition-colors"
-            >
-              <MapPin className="h-4 w-4" />
-              Bản đồ số
-            </Link>
-
             <Link 
               href="/library" 
               className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-primary/10 transition-colors"
@@ -49,19 +42,11 @@ function MainNav() {
             </Link>
 
             <Link 
-              href="/live-data" 
+              href="/map" 
               className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-primary/10 transition-colors"
             >
-              <BarChart2 className="h-4 w-4" />
-              Dữ liệu thực
-            </Link>
-
-            <Link 
-              href="/ticket" 
-              className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-primary/10 transition-colors"
-            >
-              <Ticket className="h-4 w-4" />
-              Đặt vé
+              <MapPin className="h-4 w-4" />
+              Bản đồ số
             </Link>
 
             <Link 
@@ -73,11 +58,11 @@ function MainNav() {
             </Link>
 
             <Link 
-              href="/contribute" 
+              href="/live-data" 
               className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-primary/10 transition-colors"
             >
-              <Upload className="h-4 w-4" />
-              Đóng góp
+              <BarChart2 className="h-4 w-4" />
+              Dữ liệu thực
             </Link>
 
             <Link 
@@ -94,6 +79,22 @@ function MainNav() {
             >
               <Gamepad2 className="h-4 w-4" />
               Game giáo dục
+            </Link>
+
+            <Link 
+              href="/ticket" 
+              className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-primary/10 transition-colors"
+            >
+              <Ticket className="h-4 w-4" />
+              Đặt vé
+            </Link>
+
+            <Link 
+              href="/contribute" 
+              className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-primary/10 transition-colors"
+            >
+              <Upload className="h-4 w-4" />
+              Đóng góp
             </Link>
           </div>
         </div>
@@ -140,6 +141,7 @@ function Router() {
       <Route path="/chat" component={Chat} />
       <Route path="/map" component={MapPage} />
       <Route path="/game" component={GamePage} />
+      <Route path="/game-answers" component={GameAnswers} /> {/* Added route for GameAnswers */}
       <Route path="/forum" component={ForumPage} />
       <Route path="/library" component={LibraryPage} />
       <Route path="/ticket" component={TicketPage} />

@@ -26,58 +26,106 @@ interface Clue {
 
 const initialClues: Clue[] = [
   {
-    id: "1",
-    title: "Mật thư của vua Tự Đức",
-    description: "Giải mã câu đố sau để tìm vị trí tiếp theo:\n'Ta là nơi cất giữ tri thức\nNơi các học sĩ trau dồi văn chương\nTàng thư quý giá triều đường\nTìm ta ở chốn văn đường phía đông'",
-    hint: "Đây là nơi lưu trữ sách vở và tài liệu quan trọng của triều đình, nằm ở phía Đông của Hoàng thành",
-    answer: "tang thu lau",
-    historicalInfo: "Tàng Thư Lâu là thư viện của triều Nguyễn, nơi lưu trữ các sách vở, tài liệu quan trọng của triều đình. Công trình này được xây dựng vào năm 1825 dưới thời vua Minh Mạng, thể hiện tầm quan trọng của việc giáo dục và lưu trữ văn hóa trong triều đình nhà Nguyễn.",
+    id: "imperial-seal",
+    title: "Ấn tín hoàng gia",
+    description: "Ta là nơi lưu giữ những sắc lệnh thiêng liêng, nơi các vua triều Nguyễn cất giữ ấn tín quốc gia. Tìm ta trong Tử Cấm Thành.",
+    hint: "Đây là nơi thờ các vị vua triều Nguyễn",
+    answer: "dien the mieu",
+    historicalInfo: "Điện Thế Miếu là nơi thờ các vị vua triều Nguyễn và lưu giữ các ấn tín, sắc lệnh quan trọng của triều đình. Đây là công trình nằm trong khu vực Tử Cấm Thành - nơi chỉ có vua và những người được phép mới được vào.",
     location: {
-      id: "dai-noi",
-      name: "Đại Nội Huế",
-      nameEn: "Imperial City",
-      description: "Quần thể di tích cung đình rộng hơn 500 hecta, nơi hoàng đế triều Nguyễn sinh sống và làm việc.",
-      type: "heritage"
-    },
-    unlocked: true
-  },
-  {
-    id: "2",
-    title: "Bí mật của Tàng Thư Lâu",
-    description: "Phía sau giá sách cổ, bạn tìm thấy một mảnh giấy với nội dung:\n'Nơi vua ngự triều đường\nMỗi sáng nghe tấu chương\nCửu trùng cao vời vợi\nNgai vàng điểm kim cương'",
-    hint: "Đây là nơi vua làm việc chính thức với các quan lại, nằm ở trung tâm Hoàng thành",
-    answer: "can chanh dien",
-    historicalInfo: "Điện Cần Chánh là nơi vua làm việc hằng ngày, tiếp kiến các quan và ban hành các chỉ dụ quan trọng. Điện được xây dựng theo kiến trúc truyền thống với nhiều chi tiết nghệ thuật độc đáo, thể hiện quyền uy tối cao của hoàng đế.",
-    location: {
-      id: "dai-noi",
-      name: "Đại Nội Huế",
-      nameEn: "Imperial City",
-      description: "Trung tâm quyền lực của triều Nguyễn, nơi diễn ra các hoạt động chính trị quan trọng.",
+      id: "forbidden-city",
+      name: "Tử Cấm Thành",
+      nameEn: "Forbidden Purple City",
+      description: "Khu vực riêng tư của hoàng gia, nơi sinh sống và làm việc của vua và gia đình.",
       type: "heritage"
     },
     unlocked: false
   },
   {
-    id: "3",
-    title: "Lời nhắn từ quá khứ",
-    description: "Trên bức tường điện Cần Chánh, một dòng chữ cổ hiện ra:\n'Bắc có rồng bay phượng múa\nNam có núi ngự sông quanh\nTìm nơi thiêng đất trời\nNơi vua dâng lễ vật'",
-    hint: "Đây là nơi tổ chức các nghi lễ tế trời đất quan trọng của triều đình, nằm ở phía Nam kinh thành",
-    answer: "dan nam giao",
-    historicalInfo: "Đàn Nam Giao là công trình kiến trúc tôn giáo quan trọng, nơi vua chủ trì tế lễ Giao - một nghi lễ quan trọng nhất của triều đình nhà Nguyễn. Đây là biểu tượng của quan niệm 'phụng thiên thừa vận' và mối liên hệ giữa nhà vua với trời đất.",
+    id: "royal-audience",
+    title: "Nơi vua gặp các quan",
+    description: "Vượt qua Ngọ Môn, rẽ về hướng đông, tìm nơi vua ngự để gặp các quan. Nơi đây từng là trung tâm quyền lực của triều Nguyễn.",
+    hint: "Đây là nơi vua làm việc và ban chiếu chỉ",
+    answer: "dien can chanh",
+    historicalInfo: "Điện Cần Chánh là nơi vua triều Nguyễn thường xuyên làm việc, tiếp kiến các quan và ban chiếu chỉ. Đây là tòa nhà quan trọng nhất trong Hoàng thành về mặt chính trị.",
     location: {
-      id: "nam-giao",
-      name: "Đàn Nam Giao",
-      nameEn: "Nam Giao Esplanade",
-      description: "Công trình kiến trúc tôn giáo quan trọng, nơi các vua triều Nguyễn thực hiện nghi lễ tế Giao.",
-      type: "monument"
+      id: "dai-noi",
+      name: "Đại Nội Huế",
+      nameEn: "Imperial City",
+      description: "Trung tâm chính trị của triều Nguyễn, nơi diễn ra các hoạt động quản lý đất nước.",
+      type: "heritage"
     },
     unlocked: false
   },
   {
-    id: "4",
-    title: "Dấu tích hoàng cung",
-    description: "Tại Đàn Nam Giao, một bức phù điêu cổ mang thông điệp:\n'Nơi đây cung nữ ca vang\nTiếng đàn véo von vọng sang điện rồng\nTìm nơi âm nhạc mênh mông\nCung đình di sản một vòng time gian'",
-    hint: "Đây là nơi biểu diễn nhã nhạc cung đình Huế, di sản văn hóa phi vật thể được UNESCO công nhận",
+    id: "huong-river-bridge",
+    title: "Cầu trên sông Hương",
+    description: "Ta là cây cầu nối liền hai bờ sông Hương, được xây dựng dưới triều vua Thiệu Trị. Ban đêm ánh đèn ta phản chiếu trên mặt nước tạo nên khung cảnh tuyệt đẹp.",
+    hint: "Cây cầu biểu tượng của thành phố Huế",
+    answer: "cau truong tien",
+    historicalInfo: "Cầu Trường Tiền (hay còn gọi là cầu Tràng Tiền) là biểu tượng của thành phố Huế, được xây dựng năm 1899 dưới triều vua Thành Thái. Cầu có 6 nhịp với chiều dài 402,60m và rộng 6m.",
+    location: {
+      id: "huong-river",
+      name: "Sông Hương",
+      nameEn: "Perfume River",
+      description: "Dòng sông chảy qua trung tâm thành phố Huế, là biểu tượng của vẻ đẹp trữ tình của cố đô.",
+      type: "heritage"
+    },
+    unlocked: false
+  },
+  {
+    id: "tu-duc-tomb",
+    title: "Nơi vua làm thơ",
+    description: "Nơi đây vua Tự Đức từng dành nhiều thời gian để sáng tác thơ văn. Cảnh quan nơi đây hài hòa giữa kiến trúc và thiên nhiên.",
+    hint: "Lăng tẩm đẹp nhất của các vua triều Nguyễn",
+    answer: "lang tu duc",
+    historicalInfo: "Lăng Tự Đức được xây dựng từ năm 1864-1867, là nơi vua Tự Đức thường xuyên lui tới để nghỉ ngơi, đọc sách và làm thơ trước khi mất. Đây là một quần thể kiến trúc đẹp với hồ nước, đình tạ và cảnh quan thiên nhiên hài hòa.",
+    location: {
+      id: "thuy-xuan",
+      name: "Thủy Xuân",
+      nameEn: "Thuy Xuan",
+      description: "Vùng ngoại ô Huế, nơi có nhiều lăng tẩm của các vua triều Nguyễn.",
+      type: "heritage"
+    },
+    unlocked: false
+  },
+  {
+    id: "spiritual-pagoda",
+    title: "Tháp bên sông Hương",
+    description: "Ta là tháp cổ bên dòng sông Hương, nơi lưu giữ xe hơi của vị Bồ Tát hiện đại. Người dân Huế coi ta là biểu tượng tâm linh của xứ Huế.",
+    hint: "Ngôi chùa cổ nhất Huế, có tháp Phước Duyên 7 tầng",
+    answer: "chua thien mu",
+    historicalInfo: "Chùa Thiên Mụ (Chùa Linh Mụ) được xây dựng năm 1601 dưới thời chúa Nguyễn Hoàng. Tháp Phước Duyên 7 tầng của chùa là biểu tượng của Huế. Tại đây còn lưu giữ chiếc xe Austin của Hòa thượng Thích Quảng Đức - người đã tự thiêu phản đối chính sách đàn áp Phật giáo năm 1963.",
+    location: {
+      id: "kim-long",
+      name: "Kim Long",
+      nameEn: "Kim Long",
+      description: "Khu vực phía tây thành phố Huế, nơi có chùa Thiên Mụ nổi tiếng.",
+      type: "heritage"
+    },
+    unlocked: false
+  },
+  {
+    id: "education-center",
+    title: "Trung tâm giáo dục",
+    description: "Nơi đây là trung tâm giáo dục cao nhất của triều Nguyễn, đào tạo nên nhiều nhân tài cho đất nước. Tìm ta ở phía nam kinh thành.",
+    hint: "Trường đại học đầu tiên của Việt Nam thời phong kiến",
+    answer: "quoc tu giam",
+    historicalInfo: "Quốc Tử Giám Huế là trường đại học đầu tiên của Việt Nam, được xây dựng năm 1908 dưới triều vua Duy Tân. Đây là nơi đào tạo quan lại và nhân tài cho triều Nguyễn.",
+    location: {
+      id: "dong-ba",
+      name: "Đông Ba",
+      nameEn: "Dong Ba",
+      description: "Khu vực phía đông Huế, gần chợ Đông Ba nổi tiếng.",
+      type: "education"
+    },
+    unlocked: false
+  },
+  {
+    id: "traditional-arts",
+    title: "Nghệ thuật cung đình",
+    description: "Ta là nơi vua và hoàng gia thưởng thức nghệ thuật truyền thống, nơi lưu giữ di sản văn hóa phi vật thể được UNESCO công nhận",
+    hint: "Nơi biểu diễn nhã nhạc cung đình Huế",
     answer: "duyet thi duong",
     historicalInfo: "Duyệt Thị Đường là nơi vua và hoàng gia thưởng thức các buổi biểu diễn nghệ thuật, đặc biệt là nhã nhạc cung đình Huế - được UNESCO công nhận là di sản văn hóa phi vật thể vào năm 2003. Nơi đây không chỉ là không gian giải trí mà còn là nơi bảo tồn và phát triển nghệ thuật truyền thống.",
     location: {
