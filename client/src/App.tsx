@@ -16,7 +16,6 @@ import TicketPage from "@/pages/ticket";
 import ContributePage from "@/pages/contribute";
 import LiveDataPage from "@/pages/live-data";
 import NotFound from "@/pages/not-found";
-import GameAnswers from "@/pages/game-answers"; // Added import for GameAnswers component
 import { useState, useEffect } from "react";
 
 function MainNav() {
@@ -141,7 +140,6 @@ function Router() {
       <Route path="/chat" component={Chat} />
       <Route path="/map" component={MapPage} />
       <Route path="/game" component={GamePage} />
-      <Route path="/game-answers" component={GameAnswers} /> {/* Added route for GameAnswers */}
       <Route path="/forum" component={ForumPage} />
       <Route path="/library" component={LibraryPage} />
       <Route path="/ticket" component={TicketPage} />
