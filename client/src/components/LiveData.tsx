@@ -51,7 +51,7 @@ export default function LiveData() {
   // Weather data query
   const { data: weather } = useQuery<WeatherData>({
     queryKey: ["/api/weather"],
-    refetchInterval: 900000, // Refetch every 15 minutes
+    refetchInterval: 300000, // Refetch every 5 minutes
   });
 
   // Traffic data query
@@ -123,7 +123,7 @@ export default function LiveData() {
                         </p>
                         <div className="text-xs text-muted-foreground mt-1">
                           <p>Độ ẩm: {weather?.main?.humidity !== undefined ? `${weather.main.humidity}%` : 'N/A'}</p>
-                          <p>Gió: {weather?.wind?.speed !== undefined ? `${weather.wind.speed} m/s` : 'N/A'}</p>
+                          <p>Gió: {weather?.wind?.speed !== undefined ? `${Math.round(weather.wind.speed * 3.6)} km/h` : 'N/A'}</p>
                           <p>Áp suất: {weather?.main?.pressure !== undefined ? `${weather.main.pressure} hPa` : 'N/A'}</p>
                         </div>
                       </div>
@@ -148,8 +148,11 @@ export default function LiveData() {
                   <div className="text-sm text-muted-foreground">
                     <p>{visitors.count.toLocaleString()} khách</p>
                     <p className="text-xs">
-                      {visitors.trend === "up" ? "↑ Tăng" : 
+                      Xu hướng: {visitors.trend === "up" ? "↑ Tăng" : 
                        visitors.trend === "down" ? "↓ Giảm" : "→ Ổn định"}
+                    </p>
+                    <p className="text-xs">
+                      Cập nhật: {new Date(visitors.lastUpdated).toLocaleTimeString()}
                     </p>
                   </div>
                 ) : (
@@ -170,8 +173,8 @@ export default function LiveData() {
                 {traffic ? (
                   <div className="text-sm text-muted-foreground">
                     <p>
-                      {traffic.level === "low" ? "Thông thoáng" :
-                       traffic.level === "medium" ? "Bình thường" : "Đông đúc"}
+                      {traffic.level === "low" ? "🟢 Thông thoáng" :
+                       traffic.level === "medium" ? "🟡 Bình thường" : "🔴 Đông đúc"}
                     </p>
                     <p className="text-xs">
                       Cập nhật: {new Date(traffic.lastUpdated).toLocaleTimeString()}

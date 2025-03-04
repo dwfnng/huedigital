@@ -30,7 +30,7 @@ router.get("/api/weather", async (_req, res) => {
 
     // Fetch new weather data
     const response = await fetch(
-      `https://api.openweathermap.org/data/2.5/weather?lat=${HUE_COORDINATES.lat}&lon=${HUE_COORDINATES.lon}&units=metric&appid=${process.env.OPENWEATHER_API_KEY}`
+      `https://api.openweathermap.org/data/2.5/weather?lat=${HUE_COORDINATES.lat}&lon=${HUE_COORDINATES.lon}&units=metric&appid=${process.env.OPENWEATHER_API_KEY}&lang=vi`
     );
 
     if (!response.ok) {
@@ -41,12 +41,20 @@ router.get("/api/weather", async (_req, res) => {
     const data = await response.json();
     console.log("Weather data received:", data);
 
+    // Format the weather data
     const weatherData = {
-      temperature: Math.round(data.main.temp),
-      description: data.weather[0].description,
-      humidity: data.main.humidity,
-      windSpeed: Math.round(data.wind.speed * 3.6), // Convert m/s to km/h
-      lastUpdated: new Date().toISOString()
+      main: {
+        temp: data.main.temp,
+        humidity: data.main.humidity,
+        pressure: data.main.pressure
+      },
+      weather: [{
+        description: data.weather[0].description,
+        icon: data.weather[0].icon
+      }],
+      wind: {
+        speed: data.wind.speed
+      }
     };
 
     // Update cache
