@@ -4,6 +4,21 @@ import axios from 'axios';
 const API_KEY = process.env.OPENWEATHER_API_KEY || "ef0b0973b783e0614ac87612ec04344b";
 const CITY = 'Hue,vn';
 
+// Fetch weather data from OpenWeatherMap API
+export const fetchWeatherData = async () => {
+  try {
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${CITY}&units=metric&appid=${API_KEY}&lang=vi`;
+    console.log(`Fetching weather data from: ${url}`);
+    
+    const response = await axios.get(url);
+    console.log('Weather data received:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching weather data:', error);
+    throw error;
+  }
+};
+
 interface WeatherResponseFull {
   coord: {
     lon: number;
