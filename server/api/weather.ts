@@ -13,7 +13,7 @@ interface WeatherResponse {
   windSpeed: number;
 }
 
-// Simple weather description mapping
+// Simple weather code mapping
 const getWeatherDescription = (code: number): string => {
   // WMO Weather interpretation codes (WW)
   // https://open-meteo.com/en/docs
@@ -34,17 +34,21 @@ router.get('/', async (req, res) => {
   try {
     console.log('Đang lấy dữ liệu thời tiết cho Huế...');
 
-    // Using Open-Meteo API - free, no auth required
-    const response = await fetch(
-      `https://api.open-meteo.com/v1/forecast?latitude=${HUE_LAT}&longitude=${HUE_LON}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&timezone=Asia/Ho_Chi_Minh`
-    );
+    // Using Open-Meteo API with detailed parameters
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${HUE_LAT}&longitude=${HUE_LON}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&timezone=Asia/Ho_Chi_Minh`;
+    console.log('API URL:', url);
+
+    const response = await fetch(url);
+    console.log('API Status:', response.status);
 
     if (!response.ok) {
+      const errorText = await response.text();
+      console.error('API Error Response:', errorText);
       throw new Error(`Open-Meteo API error: ${response.status}`);
     }
 
     const data = await response.json();
-    console.log('Dữ liệu thời tiết nhận được:', data);
+    console.log('Raw weather data:', data);
 
     if (!data.current) {
       throw new Error('Không có dữ liệu thời tiết hiện tại');
@@ -57,7 +61,7 @@ router.get('/', async (req, res) => {
       windSpeed: Math.round(data.current.wind_speed_10m * 3.6) // Convert to km/h
     };
 
-    console.log('Dữ liệu đã xử lý:', weatherData);
+    console.log('Processed weather data:', weatherData);
     res.json(weatherData);
 
   } catch (error) {
