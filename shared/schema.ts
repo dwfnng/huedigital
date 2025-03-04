@@ -114,7 +114,20 @@ export const messages = pgTable("messages", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
-// Schemas
+// New tables for tickets
+export const tickets = pgTable("tickets", {
+  id: serial("id").primaryKey(),
+  userId: serial("user_id").notNull(),
+  locationId: serial("location_id").notNull(),
+  visitDate: timestamp("visit_date").notNull(),
+  quantity: numeric("quantity").notNull(),
+  status: text("status").notNull(), // pending, confirmed, used, cancelled
+  bookingCode: text("booking_code").notNull(),
+  price: numeric("price").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+// Existing schema definitions remain...
 export const insertLocationSchema = createInsertSchema(locations).omit({ 
   id: true,
   isActive: true 
@@ -177,8 +190,14 @@ export const insertMessageSchema = createInsertSchema(messages).omit({
   createdAt: true,
 });
 
+// New schema for tickets
+export const insertTicketSchema = createInsertSchema(tickets).omit({
+  id: true,
+  bookingCode: true,
+  createdAt: true,
+});
 
-// Types
+// Update types
 export type Location = typeof locations.$inferSelect;
 export type InsertLocation = z.infer<typeof insertLocationSchema>;
 export type User = typeof users.$inferSelect;
@@ -197,8 +216,10 @@ export type Resource = typeof resources.$inferSelect;
 export type InsertResource = z.infer<typeof insertResourceSchema>;
 export type Message = typeof messages.$inferSelect;
 export type InsertMessage = z.infer<typeof insertMessageSchema>;
+export type Ticket = typeof tickets.$inferSelect;
+export type InsertTicket = z.infer<typeof insertTicketSchema>;
 
-// Enums
+// Update enums
 export type LocationType = 
   | "historical_site" 
   | "restaurant" 
@@ -269,3 +290,9 @@ export type ResourceCategory =
   | "oral_traditions"
   | "decorative_arts"
   | "cultural_landscapes";
+
+export type TicketStatus = 
+  | "pending"
+  | "confirmed" 
+  | "used"
+  | "cancelled";

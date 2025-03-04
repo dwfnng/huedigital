@@ -2,7 +2,7 @@ import {
   type Location, type User, type Discussion, type Comment, type Contribution, type Review,
   type InsertLocation, type InsertUser, type InsertDiscussion, type InsertComment,
   type InsertContribution, type InsertReview, type Resource, type Category, type InsertResource, type InsertCategory,
-  type Product, type InsertProduct
+  type Ticket, type InsertTicket
 } from "@shared/schema";
 
 export interface IStorage {
@@ -62,6 +62,13 @@ export interface IStorage {
   getAllProducts(): Promise<Product[]>;
   getProductById(id: number): Promise<Product | undefined>;
   createProduct(product: InsertProduct): Promise<Product>;
+
+  // Ticket methods
+  createTicket(ticket: InsertTicket): Promise<Ticket>;
+  getTicketById(id: number): Promise<Ticket | undefined>;
+  getTicketsByUserId(userId: number): Promise<Ticket[]>;
+  getTicketsByLocationId(locationId: number): Promise<Ticket[]>;
+  updateTicketStatus(id: number, status: string): Promise<Ticket>;
 }
 
 export class MemStorage implements IStorage {
@@ -75,6 +82,7 @@ export class MemStorage implements IStorage {
   private resources: Resource[] = [];
   private categories: Category[] = [];
   private products: Product[] = [];
+  private tickets: Ticket[] = [];
   private nextId = 1;
 
   constructor() {
@@ -494,6 +502,240 @@ export class MemStorage implements IStorage {
     return this.nextId++;
   }
 
+  // Products
+  async getAllProducts(): Promise<Product[]> {
+    return this.products;
+  }
+
+  async getProductById(id: number): Promise<Product | undefined> {
+    return this.products.find(p => p.id === id);
+  }
+
+  async createProduct(product: InsertProduct): Promise<Product> {
+    const newProduct = { ...product, id: this.getNextId() } as Product;
+    this.products.push(newProduct);
+    return newProduct;
+  }
+
+  // Users
+  async createUser(user: InsertUser): Promise<User> {
+    const newUser = { ...user, id: this.getNextId() } as User;
+    this.users.push(newUser);
+    return newUser;
+  }
+
+  async getUserById(id: number): Promise<User | undefined> {
+    return this.users.find(u => u.id === id);
+  }
+
+  async getUserByUsername(username: string): Promise<User | undefined> {
+    return this.users.find(u => u.username === username);
+  }
+
+  async updateUserPoints(userId: number, points: string): Promise<User> {
+    const user = await this.getUserById(userId);
+    if (!user) throw new Error('User not found');
+    user.points = points;
+    return user;
+  }
+
+  // Discussions
+  async createDiscussion(discussion: InsertDiscussion): Promise<Discussion> {
+    const newDiscussion = { ...discussion, id: this.getNextId(), views: 0 } as Discussion;
+    this.discussions.push(newDiscussion);
+    return newDiscussion;
+  }
+
+  async getDiscussionById(id: number): Promise<Discussion | undefined> {
+    return this.discussions.find(d => d.id === id);
+  }
+
+  async getDiscussionsByCategory(category: string): Promise<Discussion[]> {
+    return this.discussions.filter(d => d.category === category);
+  }
+
+  async getAllDiscussions(): Promise<Discussion[]> {
+    return this.discussions;
+  }
+
+  async incrementDiscussionViews(id: number): Promise<void> {
+    const discussion = await this.getDiscussionById(id);
+    if (discussion) {
+      discussion.views++;
+    }
+  }
+
+  // Comments
+  async createComment(comment: InsertComment): Promise<Comment> {
+    const newComment = { ...comment, id: this.getNextId() } as Comment;
+    this.comments.push(newComment);
+    return newComment;
+  }
+
+  async getCommentsByDiscussionId(discussionId: number): Promise<Comment[]> {
+    return this.comments.filter(c => c.discussionId === discussionId);
+  }
+
+  // Contributions
+  async createContribution(contribution: InsertContribution): Promise<Contribution> {
+    const newContribution = { ...contribution, id: this.getNextId() } as Contribution;
+    this.contributions.push(newContribution);
+    return newContribution;
+  }
+
+  async getContributionsByUserId(userId: number): Promise<Contribution[]> {
+    return this.contributions.filter(c => c.userId === userId);
+  }
+
+  async getContributionsByLocationId(locationId: number): Promise<Contribution[]> {
+    return this.contributions.filter(c => c.locationId === locationId);
+  }
+
+  async getPendingContributions(): Promise<Contribution[]> {
+    return this.contributions.filter(c => c.status === "pending");
+  }
+
+  async updateContributionStatus(id: number, status: string): Promise<Contribution> {
+    const contribution = this.contributions.find(c => c.id === id);
+    if (!contribution) throw new Error('Contribution not found');
+    contribution.status = status;
+    return contribution;
+  }
+
+  // Reviews
+  async createReview(review: InsertReview): Promise<Review> {
+    const newReview = { ...review, id: this.getNextId() } as Review;
+    this.reviews.push(newReview);
+    return newReview;
+  }
+
+  async getReviewsByLocationId(locationId: number): Promise<Review[]> {
+    return this.reviews.filter(r => r.locationId === locationId);
+  }
+
+  async getReviewsByUserId(userId: number): Promise<Review[]> {
+    return this.reviews.filter(r => r.userId === userId);
+  }
+
+  // Point Transactions
+  async createPointTransaction(
+    userId: number,
+    points: string,
+    type: string,
+    referenceId: number
+  ): Promise<void> {
+    this.pointTransactions.push({
+      id: this.getNextId(),
+      userId,
+      points,
+      type,
+      referenceId,
+      createdAt: new Date()
+    });
+  }
+
+  async getPointTransactionsByUserId(userId: number): Promise<any[]> {
+    return this.pointTransactions.filter(t => t.userId === userId);
+  }
+
+  // Locations
+  async getAllLocations(): Promise<Location[]> {
+    return this.locations;
+  }
+
+  async getLocationById(id: number): Promise<Location | undefined> {
+    return this.locations.find(l => l.id === id);
+  }
+
+  async searchLocations(query: string): Promise<Location[]> {
+    const lowerQuery = query.toLowerCase();
+    return this.locations.filter(l =>
+      l.name.toLowerCase().includes(lowerQuery)
+    );
+  }
+
+  async createLocation(location: InsertLocation): Promise<Location> {
+    const newLocation = { ...location, id: this.getNextId() } as Location;
+    this.locations.push(newLocation);
+    return newLocation;
+  }
+
+  // Resources
+  async getAllResources(): Promise<Resource[]> {
+    return this.resources;
+  }
+
+  async getResourceById(id: number): Promise<Resource | undefined> {
+    return this.resources.find(r => r.id === id);
+  }
+
+  async getResourcesByType(type: string): Promise<Resource[]> {
+    return this.resources.filter(r => r.type === type);
+  }
+
+  async getResourcesByCategory(category: string): Promise<Resource[]> {
+    return this.resources.filter(r => r.category === category);
+  }
+
+  async searchResources(query: string): Promise<Resource[]> {
+    const lowerQuery = query.toLowerCase();
+    return this.resources.filter(r =>
+      r.title.toLowerCase().includes(lowerQuery)
+    );
+  }
+
+  async createResource(resource: InsertResource): Promise<Resource> {
+    const newResource = { ...resource, id: this.getNextId() } as Resource;
+    this.resources.push(newResource);
+    return newResource;
+  }
+
+  // Categories
+  async getAllCategories(): Promise<Category[]> {
+    return this.categories;
+  }
+
+  async getCategoryById(id: number): Promise<Category | undefined> {
+    return this.categories.find(c => c.id === id);
+  }
+
+  async createCategory(category: InsertCategory): Promise<Category> {
+    const newCategory = { ...category, id: this.getNextId() } as Category;
+    this.categories.push(newCategory);
+    return newCategory;
+  }
+
+  // Implement ticket methods
+  async createTicket(ticket: InsertTicket): Promise<Ticket> {
+    const bookingCode = Math.random().toString(36).substring(2, 8).toUpperCase();
+    const newTicket = { 
+      ...ticket, 
+      id: this.getNextId(),
+      bookingCode,
+      createdAt: new Date() 
+    } as Ticket;
+    this.tickets.push(newTicket);
+    return newTicket;
+  }
+
+  async getTicketById(id: number): Promise<Ticket | undefined> {
+    return this.tickets.find(t => t.id === id);
+  }
+
+  async getTicketsByUserId(userId: number): Promise<Ticket[]> {
+    return this.tickets.filter(t => t.userId === userId);
+  }
+
+  async getTicketsByLocationId(locationId: number): Promise<Ticket[]> {
+    return this.tickets.filter(t => t.locationId === locationId);
+  }
+
+  async updateTicketStatus(id: number, status: string): Promise<Ticket> {
+    const ticket = await this.getTicketById(id);
+    if (!ticket) throw new Error('Ticket not found');
+    ticket.status = status;
+    return ticket;
+  }
   // Products
   async getAllProducts(): Promise<Product[]> {
     return this.products;
