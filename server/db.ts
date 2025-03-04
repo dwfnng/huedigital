@@ -1,10 +1,4 @@
-import { drizzle } from "drizzle-orm/node-postgres";
-import { Pool } from "pg";
+// Database connection is temporarily disabled in favor of in-memory storage
+// Will be re-enabled when PostgreSQL setup is ready
 
-// Create PostgreSQL pool
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-});
-
-// Create drizzle database instance
-export const db = drizzle(pool);
+export const db = null;

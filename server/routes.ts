@@ -1,10 +1,7 @@
 import type { Express } from "express";
 import { createServer } from "http";
 import { storage } from "./storage";
-import { 
-  insertLocationSchema, insertResourceSchema, insertCategorySchema,
-  insertTicketSchema
-} from "@shared/schema";
+import { insertLocationSchema, insertResourceSchema, insertCategorySchema } from "@shared/schema";
 import { getChatResponse } from "./services/openai";
 import forumRouter from "./routes/forum";
 import contributionsRouter from "./routes/contributions";
@@ -127,41 +124,6 @@ export async function registerRoutes(app: Express) {
     } catch (error) {
       console.error("Chat error:", error);
       res.status(500).json({ message: "Failed to get chat response" });
-    }
-  });
-
-  // Ticket routes
-  app.post("/api/tickets", async (req, res) => {
-    const parseResult = insertTicketSchema.safeParse(req.body);
-    if (!parseResult.success) {
-      res.status(400).json({ message: "Invalid ticket data" });
-      return;
-    }
-    const ticket = await storage.createTicket(parseResult.data);
-    res.status(201).json(ticket);
-  });
-
-  app.get("/api/tickets/user/:userId", async (req, res) => {
-    const tickets = await storage.getTicketsByUserId(Number(req.params.userId));
-    res.json(tickets);
-  });
-
-  app.get("/api/tickets/location/:locationId", async (req, res) => {
-    const tickets = await storage.getTicketsByLocationId(Number(req.params.locationId));
-    res.json(tickets);
-  });
-
-  app.patch("/api/tickets/:id/status", async (req, res) => {
-    const { status } = req.body;
-    if (!status) {
-      res.status(400).json({ message: "Status is required" });
-      return;
-    }
-    try {
-      const ticket = await storage.updateTicketStatus(Number(req.params.id), status);
-      res.json(ticket);
-    } catch (error) {
-      res.status(404).json({ message: "Ticket not found" });
     }
   });
 

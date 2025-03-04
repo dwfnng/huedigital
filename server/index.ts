@@ -1,35 +1,10 @@
 import express, { type Request, Response, NextFunction } from "express";
-import session from "express-session";
-import passport from "passport";
-import connectPgSimple from "connect-pg-simple";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
-import authRouter from "./routes/auth";
 
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-
-// Session configuration
-const PgSession = connectPgSimple(session);
-app.use(session({
-  store: new PgSession({
-    conObject: {
-      connectionString: process.env.DATABASE_URL,
-    },
-  }),
-  secret: process.env.SESSION_SECRET || 'your-secret-key',
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
-    secure: process.env.NODE_ENV === 'production',
-  }
-}));
-
-// Initialize Passport and restore authentication state from session
-app.use(passport.initialize());
-app.use(passport.session());
 
 // Add detailed startup logging middleware
 app.use((req, res, next) => {
@@ -70,12 +45,16 @@ async function startServer(retryCount = 0) {
     log("Starting server initialization...");
     log(`Environment: ${process.env.NODE_ENV}, FAST_START: ${process.env.FAST_START}`);
 
-    // Register authentication routes
-    log("Registering authentication routes...");
-    app.use('/api/auth', authRouter);
-    log("Authentication routes registered");
+    // Kill any existing process on port 5000
+    try {
+      const { execSync } = require('child_process');
+      execSync('fuser -k 5000/tcp');
+      log("Cleared port 5000");
+    } catch (e) {
+      // Ignore errors if no process was using the port
+    }
 
-    log("Registering main application routes...");
+    log("Registering routes...");
     const server = await registerRoutes(app);
     log("Routes registered successfully");
 

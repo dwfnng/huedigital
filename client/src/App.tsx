@@ -5,74 +5,60 @@ import { Toaster } from "@/components/ui/toaster";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Link } from "wouter";
-import { MapPin, MessageSquare, Gamepad2, BookText, ChevronUp, Ticket, Upload, Library } from 'lucide-react';
+import { MapPin, MessageSquare, Gamepad2, BookText, ChevronUp } from 'lucide-react';
 import Home from "@/pages/home";
 import Chat from "@/pages/chat";
 import MapPage from "@/pages/map";
 import GamePage from "@/pages/game";
 import ForumPage from "@/pages/forum";
-import TicketPage from "@/pages/ticket";
-import LibraryPage from "@/pages/library";
-import ContributionsPage from "@/pages/contributions";
 import NotFound from "@/pages/not-found";
 import { useState, useEffect } from "react";
-
-const MENU_ITEMS = [
-  {
-    group: "Khám phá",
-    items: [
-      { href: "/map", icon: MapPin, label: "Bản đồ số" },
-      { href: "/ticket", icon: Ticket, label: "Đặt vé tham quan" },
-      { href: "/chat", icon: MessageSquare, label: "Trò chuyện AI" }
-    ]
-  },
-  {
-    group: "Học liệu",
-    items: [
-      { href: "/library", icon: Library, label: "Kho học liệu số" },
-      { href: "/game", icon: Gamepad2, label: "Game giáo dục" },
-      { href: "/forum", icon: BookText, label: "Diễn đàn" }
-    ]
-  },
-  {
-    group: "Cộng đồng",
-    items: [
-      { href: "/contributions", icon: Upload, label: "Đóng góp tư liệu" }
-    ]
-  }
-];
 
 function MainNav() {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm border-b">
       <nav className="container mx-auto">
-        <div className="flex h-16 items-center px-4">
+        <div className="flex h-16 items-center px-4 gap-8">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 mr-8">
+          <Link href="/" className="flex items-center gap-2">
             <span className="text-xl font-bold bg-gradient-to-r from-primary via-primary/80 to-primary bg-clip-text text-transparent">
               Huế Digital
             </span>
           </Link>
 
           {/* Main navigation */}
-          <div className="flex gap-8">
-            {MENU_ITEMS.map((group) => (
-              <div key={group.group} className="flex flex-col">
-                <span className="text-xs text-muted-foreground mb-1">{group.group}</span>
-                <div className="flex gap-1">
-                  {group.items.map((item) => (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      className="flex items-center gap-2 px-3 py-1.5 rounded-md hover:bg-primary/10 transition-colors"
-                    >
-                      <item.icon className="h-4 w-4" />
-                      <span className="text-sm">{item.label}</span>
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            ))}
+          <div className="flex gap-1 flex-1">
+            <Link 
+              href="/map" 
+              className="flex items-center gap-2 px-4 py-2 rounded-md hover:bg-primary/10 transition-colors"
+            >
+              <MapPin className="h-4 w-4" />
+              Bản đồ số
+            </Link>
+
+            <Link 
+              href="/forum" 
+              className="flex items-center gap-2 px-4 py-2 rounded-md hover:bg-primary/10 transition-colors"
+            >
+              <BookText className="h-4 w-4" />
+              Diễn đàn
+            </Link>
+
+            <Link 
+              href="/chat" 
+              className="flex items-center gap-2 px-4 py-2 rounded-md hover:bg-primary/10 transition-colors"
+            >
+              <MessageSquare className="h-4 w-4" />
+              Trò chuyện AI
+            </Link>
+
+            <Link 
+              href="/game" 
+              className="flex items-center gap-2 px-4 py-2 rounded-md hover:bg-primary/10 transition-colors"
+            >
+              <Gamepad2 className="h-4 w-4" />
+              Game giáo dục
+            </Link>
           </div>
         </div>
       </nav>
@@ -119,9 +105,6 @@ function Router() {
       <Route path="/map" component={MapPage} />
       <Route path="/game" component={GamePage} />
       <Route path="/forum" component={ForumPage} />
-      <Route path="/ticket" component={TicketPage} />
-      <Route path="/library" component={LibraryPage} />
-      <Route path="/contributions" component={ContributionsPage} />
       <Route component={NotFound} />
     </Switch>
   );
