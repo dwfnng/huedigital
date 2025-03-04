@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Library, MapPin, MessageSquare, BarChart2, Upload, Gamepad2, Ticket, BookText } from "lucide-react";
+import { Library, MapPin, MessageSquare, BarChart2, Upload, Gamepad2, Ticket, BookText, Globe, History, Building } from "lucide-react";
 import { SiFacebook } from "react-icons/si";
 
 const features = [
@@ -44,6 +44,24 @@ const features = [
   }
 ];
 
+const highlights = [
+  {
+    icon: History,
+    title: "Di sản UNESCO",
+    description: "Quần thể di tích Cố đô Huế được UNESCO công nhận là Di sản Văn hóa Thế giới năm 1993"
+  },
+  {
+    icon: Building,
+    title: "Kinh thành Huế",
+    description: "Được xây dựng từ năm 1805, là trung tâm chính trị của triều Nguyễn, với diện tích 520ha"
+  },
+  {
+    icon: Globe,
+    title: "Văn hóa độc đáo",
+    description: "Nơi giao thoa của nghệ thuật cung đình và dân gian, từ ẩm thực đến âm nhạc truyền thống"
+  }
+];
+
 export default function Home() {
   return (
     <div className="container mx-auto px-4 py-8">
@@ -70,6 +88,40 @@ export default function Home() {
           <Button asChild variant="outline" size="lg">
             <Link href="/map">Xem bản đồ</Link>
           </Button>
+        </div>
+      </motion.div>
+
+      {/* Introduction Section */}
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.2 }}
+        className="max-w-4xl mx-auto mb-16 text-center"
+      >
+        <h2 className="text-3xl font-bold mb-6">Về Cố đô Huế</h2>
+        <p className="text-lg text-muted-foreground mb-8">
+          Huế - kinh đô cuối cùng của Việt Nam dưới triều Nguyễn (1802-1945), là một trong những trung tâm 
+          văn hóa, giáo dục và du lịch lớn của Việt Nam. Thành phố nằm bên dòng sông Hương thơ mộng, 
+          với hệ thống di tích lịch sử, văn hóa phong phú và đa dạng.
+        </p>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+          {highlights.map((highlight, index) => (
+            <motion.div
+              key={highlight.title}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 + index * 0.1 }}
+            >
+              <Card className="text-center">
+                <CardContent className="pt-6">
+                  <highlight.icon className="h-12 w-12 text-primary mx-auto mb-4" />
+                  <h3 className="font-semibold mb-2">{highlight.title}</h3>
+                  <p className="text-sm text-muted-foreground">{highlight.description}</p>
+                </CardContent>
+              </Card>
+            </motion.div>
+          ))}
         </div>
       </motion.div>
 
