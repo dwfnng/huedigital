@@ -2,119 +2,98 @@ import { Switch, Route } from "wouter";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./lib/queryClient";
 import { Toaster } from "@/components/ui/toaster";
-import { NavigationMenu, NavigationMenuItem, NavigationMenuList } from "@/components/ui/navigation-menu";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { Link } from "wouter";
-import { Library, MapPin, MessageSquare, Gamepad2, Activity, Ticket, Upload, BookText } from 'lucide-react';
+import { MapPin, MessageSquare, Gamepad2, BookText, ChevronUp } from 'lucide-react';
 import Home from "@/pages/home";
 import Chat from "@/pages/chat";
 import MapPage from "@/pages/map";
 import GamePage from "@/pages/game";
-import LiveDataPage from "@/pages/live-data";
-import TicketPage from "@/pages/ticket";
 import ForumPage from "@/pages/forum";
-import ContributionsPage from "@/pages/contributions";
 import NotFound from "@/pages/not-found";
+import { useState, useEffect } from "react";
 
 function MainNav() {
   return (
-    <NavigationMenu className="bg-gradient-to-r from-primary/5 via-background to-primary/5 backdrop-blur-sm border-b sticky top-0 z-50">
-      <div className="container mx-auto flex h-16 items-center px-4">
-        <NavigationMenuList className="gap-6">
-          <NavigationMenuItem>
-            <Link href="/" className="flex items-center gap-2">
-              <div className="bg-primary/10 p-2 rounded-full">
-                <Library className="h-5 w-5 text-primary" />
-              </div>
-              <span className="text-xl font-bold bg-gradient-to-r from-primary via-primary/80 to-primary bg-clip-text text-transparent">
-                Hue Digital
-              </span>
-            </Link>
-          </NavigationMenuItem>
+    <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm border-b">
+      <nav className="container mx-auto">
+        <div className="flex h-16 items-center px-4 gap-8">
+          {/* Logo */}
+          <Link href="/" className="flex items-center gap-2">
+            <span className="text-xl font-bold bg-gradient-to-r from-primary via-primary/80 to-primary bg-clip-text text-transparent">
+              Huế Digital
+            </span>
+          </Link>
 
-          <div className="h-6 w-px bg-border mx-2" /> {/* Divider */}
-
-          <NavigationMenuItem>
+          {/* Main navigation */}
+          <div className="flex gap-1 flex-1">
             <Link 
               href="/map" 
-              className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-primary/10 transition-colors"
+              className="flex items-center gap-2 px-4 py-2 rounded-md hover:bg-primary/10 transition-colors"
             >
               <MapPin className="h-4 w-4" />
               Bản đồ số
             </Link>
-          </NavigationMenuItem>
 
-          <NavigationMenuItem>
             <Link 
               href="/forum" 
-              className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-primary/10 transition-colors"
+              className="flex items-center gap-2 px-4 py-2 rounded-md hover:bg-primary/10 transition-colors"
             >
               <BookText className="h-4 w-4" />
               Diễn đàn
             </Link>
-          </NavigationMenuItem>
 
-          <NavigationMenuItem>
-            <Link 
-              href="/contributions" 
-              className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-primary/10 transition-colors"
-            >
-              <Upload className="h-4 w-4" />
-              Đóng góp tư liệu
-            </Link>
-          </NavigationMenuItem>
-
-          <NavigationMenuItem>
-            <Link 
-              href="/" 
-              className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-primary/10 transition-colors"
-            >
-              <Library className="h-4 w-4" />
-              Kho học liệu số
-            </Link>
-          </NavigationMenuItem>
-
-          <NavigationMenuItem>
             <Link 
               href="/chat" 
-              className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-primary/10 transition-colors"
+              className="flex items-center gap-2 px-4 py-2 rounded-md hover:bg-primary/10 transition-colors"
             >
               <MessageSquare className="h-4 w-4" />
               Trò chuyện AI
             </Link>
-          </NavigationMenuItem>
 
-          <NavigationMenuItem>
             <Link 
               href="/game" 
-              className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-primary/10 transition-colors"
+              className="flex items-center gap-2 px-4 py-2 rounded-md hover:bg-primary/10 transition-colors"
             >
               <Gamepad2 className="h-4 w-4" />
               Game giáo dục
             </Link>
-          </NavigationMenuItem>
+          </div>
+        </div>
+      </nav>
+    </header>
+  );
+}
 
-          <NavigationMenuItem>
-            <Link 
-              href="/live-data" 
-              className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-primary/10 transition-colors"
-            >
-              <Activity className="h-4 w-4" />
-              Dữ liệu thực
-            </Link>
-          </NavigationMenuItem>
+function BackToTop() {
+  const [show, setShow] = useState(false);
 
-          <NavigationMenuItem>
-            <Link 
-              href="/ticket" 
-              className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-primary/10 transition-colors"
-            >
-              <Ticket className="h-4 w-4" />
-              Đặt vé
-            </Link>
-          </NavigationMenuItem>
-        </NavigationMenuList>
-      </div>
-    </NavigationMenu>
+  useEffect(() => {
+    const handleScroll = () => {
+      setShow(window.scrollY > 200);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  return (
+    <Button
+      variant="outline"
+      size="icon"
+      className={cn(
+        "fixed bottom-4 right-4 z-50 rounded-full opacity-0 transition-all duration-300",
+        show && "opacity-100"
+      )}
+      onClick={scrollToTop}
+    >
+      <ChevronUp className="h-4 w-4" />
+    </Button>
   );
 }
 
@@ -125,10 +104,7 @@ function Router() {
       <Route path="/chat" component={Chat} />
       <Route path="/map" component={MapPage} />
       <Route path="/game" component={GamePage} />
-      <Route path="/live-data" component={LiveDataPage} />
-      <Route path="/ticket" component={TicketPage} />
       <Route path="/forum" component={ForumPage} />
-      <Route path="/contributions" component={ContributionsPage} />
       <Route component={NotFound} />
     </Switch>
   );
@@ -139,9 +115,10 @@ export default function App() {
     <QueryClientProvider client={queryClient}>
       <div className="min-h-screen bg-background">
         <MainNav />
-        <main className="py-6 fade-in">
+        <main className="pt-20 pb-6 fade-in">
           <Router />
         </main>
+        <BackToTop />
       </div>
       <Toaster />
     </QueryClientProvider>

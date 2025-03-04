@@ -21,18 +21,53 @@
     background-attachment: fixed;
     background-blend-mode: overlay;
   }
-
-  .gradient-overlay {
-    @apply absolute inset-0 pointer-events-none;
-    background: radial-gradient(
-      circle at center,
-      rgba(var(--primary-rgb), 0.08) 0%,
-      rgba(var(--primary-rgb), 0.04) 50%,
-      rgba(var(--primary-rgb), 0.02) 100%
-    );
-  }
 }
 
+/* Leaflet map styles */
+.leaflet-container {
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.leaflet-popup-content-wrapper {
+  @apply bg-background/95 backdrop-blur-sm border border-border shadow-lg rounded-lg;
+}
+
+.leaflet-popup-content {
+  @apply p-2 m-0;
+}
+
+.leaflet-popup-tip {
+  @apply bg-background/95;
+}
+
+.leaflet-control-zoom {
+  @apply border border-border rounded-lg overflow-hidden shadow-lg;
+}
+
+.leaflet-control-zoom-in,
+.leaflet-control-zoom-out {
+  @apply bg-background/95 hover:bg-accent text-foreground border-border;
+}
+
+.leaflet-marker-icon {
+  @apply transition-transform duration-200;
+}
+
+.leaflet-marker-icon:hover {
+  @apply scale-110;
+}
+
+.gradient-overlay {
+  @apply absolute inset-0 pointer-events-none;
+  background: radial-gradient(
+    circle at center,
+    rgba(var(--primary-rgb), 0.08) 0%,
+    rgba(var(--primary-rgb), 0.04) 50%,
+    rgba(var(--primary-rgb), 0.02) 100%
+  );
+}
 /* Game-specific backgrounds with enhanced gradients */
 .heritage-section {
   @apply relative bg-gradient-to-br from-red-50/95 to-orange-50/95 dark:from-red-950/95 dark:to-orange-950/95;

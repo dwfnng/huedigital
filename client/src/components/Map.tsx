@@ -1,110 +1,46 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Search, Navigation, Layers, MapPin } from "lucide-react";
+import { Search, Navigation } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import type { Location } from "@shared/schema";
-import { Loader } from "@googlemaps/js-api-loader";
-import { DEFAULT_CENTER, DEFAULT_ZOOM, MAP_STYLES, getMarkerIcon } from "@/lib/mapUtils";
+import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
+import { DEFAULT_CENTER, DEFAULT_ZOOM, MAP_STYLES, createMarkerIcon } from "@/lib/mapUtils";
+import 'leaflet/dist/leaflet.css';
+import L from 'leaflet';
+
+// Fix for default marker icons
+// @ts-ignore
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: '/icons/marker-icon-2x.png',
+  iconUrl: '/icons/marker-icon.png',
+  shadowUrl: '/icons/marker-shadow.png',
+});
 
 interface MapProps {
   onMarkerClick?: (location: Location) => void;
+}
+
+function FlyToMarker({ position }: { position: [number, number] }) {
+  const map = useMap();
+  useEffect(() => {
+    map.flyTo(position, 17);
+  }, [map, position]);
+  return null;
 }
 
 export default function Map({ onMarkerClick }: MapProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
   const [filteredLocations, setFilteredLocations] = useState<Location[]>([]);
-  const [mapError, setMapError] = useState<string | null>(null);
-  const mapRef = useRef<HTMLDivElement>(null);
-  const [map, setMap] = useState<google.maps.Map | null>(null);
-  const [markers, setMarkers] = useState<google.maps.Marker[]>([]);
-  const [directionsRenderer, setDirectionsRenderer] = useState<google.maps.DirectionsRenderer | null>(null);
 
   const { data: locations = [] } = useQuery<Location[]>({
     queryKey: ["/api/locations"],
   });
-
-  useEffect(() => {
-    const initMap = async () => {
-      try {
-        const loader = new Loader({
-          apiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
-          version: "weekly",
-          libraries: ["places"]
-        });
-
-        const google = await loader.load();
-
-        if (!mapRef.current) return;
-
-        const map = new google.maps.Map(mapRef.current, {
-          center: DEFAULT_CENTER,
-          zoom: DEFAULT_ZOOM,
-          styles: MAP_STYLES,
-          mapTypeControl: false,
-          fullscreenControl: false,
-          streetViewControl: false,
-          gestureHandling: "cooperative"
-        });
-
-        const directionsRenderer = new google.maps.DirectionsRenderer({
-          map,
-          suppressMarkers: true,
-          preserveViewport: true
-        });
-
-        setMap(map);
-        setDirectionsRenderer(directionsRenderer);
-        setMapError(null);
-      } catch (error) {
-        console.error("Error loading Google Maps:", error);
-        setMapError("Không thể tải bản đồ. Vui lòng thử lại sau.");
-        toast({
-          title: "Lỗi",
-          description: "Không thể tải bản đồ. Vui lòng thử lại sau.",
-          variant: "destructive"
-        });
-      }
-    };
-
-    initMap();
-  }, []);
-
-  useEffect(() => {
-    if (!map || !locations.length) return;
-
-    // Clear existing markers
-    markers.forEach(marker => marker.setMap(null));
-    const newMarkers: google.maps.Marker[] = [];
-
-    // Add markers for all locations
-    locations.forEach(location => {
-      const position = {
-        lat: parseFloat(location.latitude),
-        lng: parseFloat(location.longitude)
-      };
-
-      const marker = new google.maps.Marker({
-        position,
-        map,
-        title: location.name,
-        icon: getMarkerIcon(location.type),
-        animation: google.maps.Animation.DROP
-      });
-
-      marker.addListener("click", () => {
-        handleLocationSelect(location);
-      });
-
-      newMarkers.push(marker);
-    });
-
-    setMarkers(newMarkers);
-  }, [map, locations]);
 
   useEffect(() => {
     if (searchQuery.trim() === "") {
@@ -123,16 +59,6 @@ export default function Map({ onMarkerClick }: MapProps) {
 
   const handleLocationSelect = (location: Location) => {
     setSelectedLocation(location);
-    const position = {
-      lat: parseFloat(location.latitude),
-      lng: parseFloat(location.longitude)
-    };
-
-    if (map) {
-      map.panTo(position);
-      map.setZoom(17);
-    }
-
     if (onMarkerClick) {
       onMarkerClick(location);
     }
@@ -165,14 +91,21 @@ export default function Map({ onMarkerClick }: MapProps) {
                   if (navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition(
                       (position) => {
-                        const pos = {
-                          lat: position.coords.latitude,
-                          lng: position.coords.longitude,
-                        };
-                        if (map) {
-                          map.panTo(pos);
-                          map.setZoom(15);
-                        }
+                        const pos: [number, number] = [
+                          position.coords.latitude,
+                          position.coords.longitude,
+                        ];
+                        setSelectedLocation({
+                          id: 'current-location',
+                          name: 'Vị trí của bạn',
+                          nameEn: 'Your location',
+                          type: 'current_location',
+                          description: '',
+                          descriptionEn: '',
+                          latitude: pos[0].toString(),
+                          longitude: pos[1].toString(),
+                          imageUrl: ''
+                        });
                       },
                       () => {
                         toast({
@@ -231,23 +164,42 @@ export default function Map({ onMarkerClick }: MapProps) {
 
       <Card className="md:col-span-2 h-full overflow-hidden glass">
         <CardContent className="p-0 h-full relative">
-          {mapError ? (
-            <div className="absolute inset-0 flex items-center justify-center bg-background/80">
-              <div className="text-center p-4">
-                <MapPin className="h-8 w-8 mx-auto mb-2 text-muted-foreground" />
-                <p className="text-muted-foreground">{mapError}</p>
-                <Button
-                  variant="outline"
-                  className="mt-4"
-                  onClick={() => window.location.reload()}
-                >
-                  Tải lại trang
-                </Button>
-              </div>
-            </div>
-          ) : (
-            <div ref={mapRef} className="w-full h-full" />
-          )}
+          <MapContainer
+            center={DEFAULT_CENTER}
+            zoom={DEFAULT_ZOOM}
+            className="w-full h-full"
+            zoomControl={false}
+          >
+            <TileLayer
+              url={MAP_STYLES.url}
+              attribution={MAP_STYLES.attribution}
+            />
+            {locations.map(location => (
+              <Marker
+                key={location.id}
+                position={[parseFloat(location.latitude), parseFloat(location.longitude)]}
+                icon={createMarkerIcon(location)}
+                eventHandlers={{
+                  click: () => handleLocationSelect(location)
+                }}
+              >
+                <Popup>
+                  <div className="text-sm">
+                    <h3 className="font-medium">{location.name}</h3>
+                    <p className="text-muted-foreground">{location.nameEn}</p>
+                  </div>
+                </Popup>
+              </Marker>
+            ))}
+            {selectedLocation && (
+              <FlyToMarker 
+                position={[
+                  parseFloat(selectedLocation.latitude),
+                  parseFloat(selectedLocation.longitude)
+                ]} 
+              />
+            )}
+          </MapContainer>
         </CardContent>
       </Card>
     </div>
