@@ -4,16 +4,17 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Search, Navigation } from "lucide-react";
+import { Search, Navigation, CornerDownLeft } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import type { Location } from "@shared/schema";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import { DEFAULT_CENTER, DEFAULT_ZOOM, MAP_STYLES, createMarkerIcon } from "@/lib/mapUtils";
 import 'leaflet/dist/leaflet.css';
+import 'leaflet-routing-machine/dist/leaflet-routing-machine.css';
 import L from 'leaflet';
+import 'leaflet-routing-machine';
 
 // Fix for default marker icons
-// @ts-ignore
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: '/icons/marker-icon-2x.png',
@@ -23,6 +24,37 @@ L.Icon.Default.mergeOptions({
 
 interface MapProps {
   onMarkerClick?: (location: Location) => void;
+}
+
+function RoutingMachine({ start, end }: { start?: [number, number]; end?: [number, number] }) {
+  const map = useMap();
+
+  useEffect(() => {
+    if (!start || !end) return;
+
+    const routingControl = L.Routing.control({
+      waypoints: [
+        L.latLng(start[0], start[1]),
+        L.latLng(end[0], end[1])
+      ],
+      routeWhileDragging: true,
+      showAlternatives: true,
+      lineOptions: {
+        styles: [{ color: '#6366f1', weight: 4 }],
+        extendToWaypoints: true,
+        missingRouteTolerance: 0
+      },
+      altLineOptions: {
+        styles: [{ color: '#94a3b8', weight: 3, opacity: 0.7 }]
+      }
+    }).addTo(map);
+
+    return () => {
+      map.removeControl(routingControl);
+    };
+  }, [map, start, end]);
+
+  return null;
 }
 
 function FlyToMarker({ position }: { position: [number, number] }) {
@@ -37,6 +69,9 @@ export default function Map({ onMarkerClick }: MapProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
   const [filteredLocations, setFilteredLocations] = useState<Location[]>([]);
+  const [startLocation, setStartLocation] = useState<[number, number] | undefined>();
+  const [endLocation, setEndLocation] = useState<[number, number] | undefined>();
+  const [isRoutingMode, setIsRoutingMode] = useState(false);
 
   const { data: locations = [] } = useQuery<Location[]>({
     queryKey: ["/api/locations"],
@@ -58,10 +93,34 @@ export default function Map({ onMarkerClick }: MapProps) {
   }, [searchQuery, locations]);
 
   const handleLocationSelect = (location: Location) => {
-    setSelectedLocation(location);
-    if (onMarkerClick) {
-      onMarkerClick(location);
+    const position: [number, number] = [parseFloat(location.latitude), parseFloat(location.longitude)];
+
+    if (isRoutingMode) {
+      if (!startLocation) {
+        setStartLocation(position);
+        toast({
+          title: "Điểm đi",
+          description: `Đã chọn ${location.name} làm điểm bắt đầu`,
+        });
+      } else {
+        setEndLocation(position);
+        toast({
+          title: "Điểm đến",
+          description: `Đã chọn ${location.name} làm điểm kết thúc`,
+        });
+      }
+    } else {
+      setSelectedLocation(location);
+      if (onMarkerClick) {
+        onMarkerClick(location);
+      }
     }
+  };
+
+  const resetRouting = () => {
+    setStartLocation(undefined);
+    setEndLocation(undefined);
+    setIsRoutingMode(false);
   };
 
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
@@ -95,17 +154,25 @@ export default function Map({ onMarkerClick }: MapProps) {
                           position.coords.latitude,
                           position.coords.longitude,
                         ];
-                        setSelectedLocation({
-                          id: 'current-location',
-                          name: 'Vị trí của bạn',
-                          nameEn: 'Your location',
-                          type: 'current_location',
-                          description: '',
-                          descriptionEn: '',
-                          latitude: pos[0].toString(),
-                          longitude: pos[1].toString(),
-                          imageUrl: ''
-                        });
+                        if (isRoutingMode && !startLocation) {
+                          setStartLocation(pos);
+                          toast({
+                            title: "Điểm đi",
+                            description: "Đã chọn vị trí hiện tại làm điểm bắt đầu",
+                          });
+                        } else {
+                          setSelectedLocation({
+                            id: 'current-location',
+                            name: 'Vị trí của bạn',
+                            nameEn: 'Your location',
+                            type: 'current_location',
+                            description: '',
+                            descriptionEn: '',
+                            latitude: pos[0].toString(),
+                            longitude: pos[1].toString(),
+                            imageUrl: ''
+                          });
+                        }
                       },
                       () => {
                         toast({
@@ -120,7 +187,46 @@ export default function Map({ onMarkerClick }: MapProps) {
               >
                 <Navigation className="h-4 w-4" />
               </Button>
+              <Button
+                variant={isRoutingMode ? "default" : "outline"}
+                size="icon"
+                title="Chỉ đường"
+                onClick={() => {
+                  setIsRoutingMode(!isRoutingMode);
+                  if (!isRoutingMode) {
+                    toast({
+                      title: "Chế độ chỉ đường",
+                      description: "Chọn điểm bắt đầu và điểm kết thúc trên bản đồ",
+                    });
+                  } else {
+                    resetRouting();
+                  }
+                }}
+              >
+                <CornerDownLeft className="h-4 w-4" />
+              </Button>
             </div>
+            {isRoutingMode && (
+              <div className="mt-2 text-sm">
+                <p className="text-muted-foreground">
+                  {!startLocation 
+                    ? "Chọn điểm bắt đầu" 
+                    : !endLocation 
+                    ? "Chọn điểm kết thúc"
+                    : "Đã chọn cả hai điểm"}
+                </p>
+                {(startLocation || endLocation) && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="mt-1 text-xs"
+                    onClick={resetRouting}
+                  >
+                    Đặt lại
+                  </Button>
+                )}
+              </div>
+            )}
           </div>
 
           <ScrollArea className="h-[calc(100%-5rem)] custom-scrollbar">
@@ -191,13 +297,16 @@ export default function Map({ onMarkerClick }: MapProps) {
                 </Popup>
               </Marker>
             ))}
-            {selectedLocation && (
+            {selectedLocation && !isRoutingMode && (
               <FlyToMarker 
                 position={[
                   parseFloat(selectedLocation.latitude),
                   parseFloat(selectedLocation.longitude)
                 ]} 
               />
+            )}
+            {startLocation && endLocation && (
+              <RoutingMachine start={startLocation} end={endLocation} />
             )}
           </MapContainer>
         </CardContent>
