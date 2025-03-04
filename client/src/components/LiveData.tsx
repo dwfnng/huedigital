@@ -119,7 +119,7 @@ export default function LiveData() {
                         <p className="text-sm text-muted-foreground capitalize">{weather?.weather?.[0]?.description || 'Không có dữ liệu'}</p>
                         <div className="text-xs text-muted-foreground mt-1">
                           <p>Độ ẩm: {weather?.main?.humidity !== undefined ? `${weather.main.humidity}%` : 'N/A'}</p>
-                          <p>Gió: {weather?.wind?.speed !== undefined ? `${weather.wind.speed} m/s` : 'N/A'}</p>
+                          <p>Gió: {weather?.wind?.speed !== undefined ? `${weather.wind.speed} m/s` : 'N/A'}</p> m/s` : 'N/A'}</p>
                           <p>Áp suất: {weather?.main?.pressure !== undefined ? `${weather.main.pressure} hPa` : 'N/A'}</p>
                         </div>
                       </div>
