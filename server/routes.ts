@@ -6,12 +6,14 @@ import { getChatResponse } from "./services/openai";
 import forumRouter from "./routes/forum";
 import contributionsRouter from "./routes/contributions";
 import liveDataRouter from "./routes/live-data";
+import shortUrlRouter from "./routes/shortUrls";
 
 export async function registerRoutes(app: Express) {
   // Đăng ký các router mới
   app.use(forumRouter);
   app.use(contributionsRouter);
   app.use(liveDataRouter);
+  app.use(shortUrlRouter);
 
   app.get("/api/locations", async (_req, res) => {
     const locations = await storage.getAllLocations();
