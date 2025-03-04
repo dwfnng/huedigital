@@ -5,10 +5,18 @@ import { Cloud, Users, Car, Clock } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 
 interface WeatherData {
-  temperature: number;
-  description: string;
-  humidity: number;
-  windSpeed: number;
+  main: {
+    temp: number;
+    humidity: number;
+    pressure: number;
+  };
+  weather: {
+    description: string;
+    icon: string;
+  }[];
+  wind: {
+    speed: number;
+  };
 }
 
 interface TrafficData {
@@ -98,9 +106,24 @@ export default function LiveData() {
                 <h3 className="font-medium">Thời tiết</h3>
                 {weather ? (
                   <div className="text-sm text-muted-foreground">
-                    <p>{weather.temperature}°C - {weather.description}</p>
-                    <p>Độ ẩm: {weather.humidity}%</p>
-                    <p>Gió: {weather.windSpeed} km/h</p>
+                    <div className="flex items-center gap-2">
+                      {weather?.weather?.[0]?.icon && (
+                        <img 
+                          src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`} 
+                          alt="Weather icon" 
+                          className="w-12 h-12"
+                        />
+                      )}
+                      <div>
+                        <h3 className="text-lg font-medium">{weather?.main?.temp ? Math.round(weather.main.temp) : ''}°C</h3>
+                        <p className="text-sm text-muted-foreground capitalize">{weather?.weather?.[0]?.description}</p>
+                        <div className="text-xs text-muted-foreground mt-1">
+                          <p>Độ ẩm: {weather?.main?.humidity}%</p>
+                          <p>Gió: {weather?.wind?.speed} m/s</p>
+                          <p>Áp suất: {weather?.main?.pressure} hPa</p>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 ) : (
                   <p className="text-sm text-muted-foreground">Đang cập nhật...</p>
