@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Link } from "wouter";
 import { MapPin, MessageSquare, Gamepad2, BookText, ChevronUp, Ticket, Upload, Library } from 'lucide-react';
-import { UserProvider } from "@/contexts/UserContext";
 import Home from "@/pages/home";
 import Chat from "@/pages/chat";
 import MapPage from "@/pages/map";
@@ -15,8 +14,6 @@ import ForumPage from "@/pages/forum";
 import TicketPage from "@/pages/ticket";
 import LibraryPage from "@/pages/library";
 import ContributionsPage from "@/pages/contributions";
-import LoginPage from "@/pages/login";
-import RegisterPage from "@/pages/register";
 import NotFound from "@/pages/not-found";
 import { useState, useEffect } from "react";
 
@@ -125,8 +122,6 @@ function Router() {
       <Route path="/ticket" component={TicketPage} />
       <Route path="/library" component={LibraryPage} />
       <Route path="/contributions" component={ContributionsPage} />
-      <Route path="/login" component={LoginPage} />
-      <Route path="/register" component={RegisterPage} />
       <Route component={NotFound} />
     </Switch>
   );
@@ -135,16 +130,14 @@ function Router() {
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <UserProvider>
-        <div className="min-h-screen bg-background">
-          <MainNav />
-          <main className="pt-20 pb-6 fade-in">
-            <Router />
-          </main>
-          <BackToTop />
-        </div>
-        <Toaster />
-      </UserProvider>
+      <div className="min-h-screen bg-background">
+        <MainNav />
+        <main className="pt-20 pb-6 fade-in">
+          <Router />
+        </main>
+        <BackToTop />
+      </div>
+      <Toaster />
     </QueryClientProvider>
   );
 }
