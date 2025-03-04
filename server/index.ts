@@ -79,8 +79,8 @@ async function startServer(retryCount = 0) {
     }
 
     // Try to start on preferred port first
-    const preferredPort = parseInt(process.env.PORT || "5000", 10);
-    const portRange = [preferredPort, 5001, 5002, 5003]; // Fallback ports
+    const preferredPort = parseInt(process.env.PORT || "3000", 10);
+    const portRange = [preferredPort, 5000, 5001, 5002]; // Fallback ports
     let port = preferredPort;
     let started = false;
 
@@ -90,12 +90,12 @@ async function startServer(retryCount = 0) {
 
         await new Promise((resolve, reject) => {
           const startupTimeout = setTimeout(() => {
-            reject(new Error("Server startup timed out after 10 seconds"));
-          }, 10000);
+            reject(new Error("Server startup timed out after 15 seconds"));
+          }, 15000);
 
           server.listen({
             port: tryPort,
-            host: "0.0.0.0",
+            host: "0.0.0.0", // Quan trọng: Đảm bảo nghe trên tất cả các giao diện
           }, () => {
             clearTimeout(startupTimeout);
             port = tryPort;
