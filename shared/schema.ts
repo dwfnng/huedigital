@@ -201,10 +201,18 @@ export type InsertMessage = z.infer<typeof insertMessageSchema>;
 // Enums
 export type LocationType = 
   | "historical_site" 
-  | "restaurant" 
-  | "hotel" 
-  | "restroom" 
-  | "parking";
+  | "monument"
+  | "palace"
+  | "temple"
+  | "communal_house"
+  | "tomb"
+  | "ritual"
+  | "library"
+  | "education"
+  | "government"
+  | "military"
+  | "museum"
+  | "landscape";
 
 export type UserRole =
   | "student"
@@ -221,7 +229,9 @@ export type DiscussionCategory =
 export type ContributionType =
   | "image"
   | "video"
-  | "document";
+  | "document"
+  | "audio"
+  | "3d_model";
 
 export type ContributionStatus =
   | "pending"

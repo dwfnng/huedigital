@@ -5,12 +5,15 @@ import { Toaster } from "@/components/ui/toaster";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Link } from "wouter";
-import { MapPin, MessageSquare, Gamepad2, BookText, ChevronUp } from 'lucide-react';
+import { MapPin, MessageSquare, Gamepad2, BookText, ChevronUp, Upload, Ticket, Library } from 'lucide-react';
 import Home from "@/pages/home";
 import Chat from "@/pages/chat";
 import MapPage from "@/pages/map";
 import GamePage from "@/pages/game";
 import ForumPage from "@/pages/forum";
+import LibraryPage from "@/pages/library";
+import TicketPage from "@/pages/ticket";
+import ContributePage from "@/pages/contribute";
 import NotFound from "@/pages/not-found";
 import { useState, useEffect } from "react";
 
@@ -18,7 +21,7 @@ function MainNav() {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm border-b">
       <nav className="container mx-auto">
-        <div className="flex h-16 items-center px-4 gap-8">
+        <div className="flex h-16 items-center px-4">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
             <span className="text-xl font-bold bg-gradient-to-r from-primary via-primary/80 to-primary bg-clip-text text-transparent">
@@ -27,26 +30,50 @@ function MainNav() {
           </Link>
 
           {/* Main navigation */}
-          <div className="flex gap-1 flex-1">
+          <div className="flex items-center gap-1 ml-8 flex-wrap">
             <Link 
               href="/map" 
-              className="flex items-center gap-2 px-4 py-2 rounded-md hover:bg-primary/10 transition-colors"
+              className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-primary/10 transition-colors"
             >
               <MapPin className="h-4 w-4" />
               Bản đồ số
             </Link>
 
             <Link 
+              href="/library" 
+              className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-primary/10 transition-colors"
+            >
+              <Library className="h-4 w-4" />
+              Kho học liệu
+            </Link>
+
+            <Link 
+              href="/ticket" 
+              className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-primary/10 transition-colors"
+            >
+              <Ticket className="h-4 w-4" />
+              Đặt vé
+            </Link>
+
+            <Link 
               href="/forum" 
-              className="flex items-center gap-2 px-4 py-2 rounded-md hover:bg-primary/10 transition-colors"
+              className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-primary/10 transition-colors"
             >
               <BookText className="h-4 w-4" />
               Diễn đàn
             </Link>
 
             <Link 
+              href="/contribute" 
+              className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-primary/10 transition-colors"
+            >
+              <Upload className="h-4 w-4" />
+              Đóng góp
+            </Link>
+
+            <Link 
               href="/chat" 
-              className="flex items-center gap-2 px-4 py-2 rounded-md hover:bg-primary/10 transition-colors"
+              className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-primary/10 transition-colors"
             >
               <MessageSquare className="h-4 w-4" />
               Trò chuyện AI
@@ -54,7 +81,7 @@ function MainNav() {
 
             <Link 
               href="/game" 
-              className="flex items-center gap-2 px-4 py-2 rounded-md hover:bg-primary/10 transition-colors"
+              className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-primary/10 transition-colors"
             >
               <Gamepad2 className="h-4 w-4" />
               Game giáo dục
@@ -105,6 +132,9 @@ function Router() {
       <Route path="/map" component={MapPage} />
       <Route path="/game" component={GamePage} />
       <Route path="/forum" component={ForumPage} />
+      <Route path="/library" component={LibraryPage} />
+      <Route path="/ticket" component={TicketPage} />
+      <Route path="/contribute" component={ContributePage} />
       <Route component={NotFound} />
     </Switch>
   );
