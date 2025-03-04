@@ -15,7 +15,7 @@ interface WeatherResponse {
   cloudCover: number;
 }
 
-// Weather code to Vietnamese description mapping
+// Detailed weather descriptions in Vietnamese
 const weatherDescriptions: { [key: number]: string } = {
   0: "Trời quang đãng",
   1: "Ít mây",
@@ -37,7 +37,9 @@ const weatherDescriptions: { [key: number]: string } = {
 
 router.get('/', async (req, res) => {
   try {
-    // Make request to Open-Meteo API with detailed parameters
+    console.log('Fetching new weather data...');
+
+    // Using Open-Meteo API which is free and doesn't require API key
     const response = await fetch(
       `https://api.open-meteo.com/v1/forecast?latitude=${HUE_LAT}&longitude=${HUE_LON}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,cloud_cover,precipitation&timezone=Asia/Ho_Chi_Minh`
     );
@@ -62,11 +64,12 @@ router.get('/', async (req, res) => {
     // Cache response for 5 minutes
     res.setHeader('Cache-Control', 's-maxage=300');
     res.json(weatherData);
+
   } catch (error) {
     console.error('Error fetching weather data:', error);
     res.status(500).json({ 
       error: 'Không thể lấy dữ liệu thời tiết',
-      details: error.message 
+      details: error instanceof Error ? error.message : 'Unknown error'
     });
   }
 });
