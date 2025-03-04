@@ -5,7 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Link } from "wouter";
-import { MapPin, MessageSquare, Gamepad2, BookText, ChevronUp, Upload, Ticket, Library } from 'lucide-react';
+import { MapPin, MessageSquare, Gamepad2, BookText, ChevronUp, Upload, Ticket, Library, BarChart2 } from 'lucide-react';
 import Home from "@/pages/home";
 import Chat from "@/pages/chat";
 import MapPage from "@/pages/map";
@@ -14,6 +14,7 @@ import ForumPage from "@/pages/forum";
 import LibraryPage from "@/pages/library";
 import TicketPage from "@/pages/ticket";
 import ContributePage from "@/pages/contribute";
+import LiveDataPage from "@/pages/live-data";
 import NotFound from "@/pages/not-found";
 import { useState, useEffect } from "react";
 
@@ -45,6 +46,14 @@ function MainNav() {
             >
               <Library className="h-4 w-4" />
               Kho học liệu
+            </Link>
+
+            <Link 
+              href="/live-data" 
+              className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-primary/10 transition-colors"
+            >
+              <BarChart2 className="h-4 w-4" />
+              Dữ liệu thực
             </Link>
 
             <Link 
@@ -135,6 +144,7 @@ function Router() {
       <Route path="/library" component={LibraryPage} />
       <Route path="/ticket" component={TicketPage} />
       <Route path="/contribute" component={ContributePage} />
+      <Route path="/live-data" component={LiveDataPage} />
       <Route component={NotFound} />
     </Switch>
   );

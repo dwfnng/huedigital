@@ -12,7 +12,7 @@ const HUE_COORDINATES = { lat: 16.4637, lon: 107.5909 };
 
 // Cache storage
 let weatherCache = {
-  data: null,
+  data: null as any,
   timestamp: 0
 };
 
@@ -26,16 +26,20 @@ router.get("/api/weather", async (_req, res) => {
       return res.json(weatherCache.data);
     }
 
+    console.log("Fetching new weather data...");
+
     // Fetch new weather data
     const response = await fetch(
       `https://api.openweathermap.org/data/2.5/weather?lat=${HUE_COORDINATES.lat}&lon=${HUE_COORDINATES.lon}&units=metric&appid=${process.env.OPENWEATHER_API_KEY}`
     );
 
     if (!response.ok) {
+      console.error("Weather API error:", await response.text());
       throw new Error("Failed to fetch weather data");
     }
 
     const data = await response.json();
+    console.log("Weather data received:", data);
 
     const weatherData = {
       temperature: Math.round(data.main.temp),
@@ -95,27 +99,12 @@ router.get("/api/locations/stats", async (_req, res) => {
       id: location.id,
       name: location.name,
       visitorCount: Math.floor(Math.random() * 200) + 100, // Simulated data
-      trafficLevel: ["low", "medium", "high"][Math.floor(Math.random() * 3)] as const
+      trafficLevel: ["low", "medium", "high"][Math.floor(Math.random() * 3)] as "low" | "medium" | "high"
     }));
     res.json(popularLocations);
   } catch (error) {
     console.error("Error fetching location stats:", error);
     res.status(500).json({ message: "Error fetching location stats" });
-  }
-});
-
-// API để cập nhật dữ liệu thời gian thực (cần authentication trong môi trường thực tế)
-router.post("/api/live-data", async (req, res) => {
-  try {
-    const { type, data } = req.body;
-    
-    // Trong thực tế, bạn sẽ lưu dữ liệu này vào database
-    // await storage.updateLiveData(type, data);
-    
-    res.status(200).json({ message: `${type} data updated successfully` });
-  } catch (error) {
-    console.error("Error updating live data:", error);
-    res.status(500).json({ message: "Error updating live data" });
   }
 });
 
