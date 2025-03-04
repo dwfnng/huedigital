@@ -1,6 +1,10 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
+import * as dotenv from 'dotenv';
+
+// Load environment variables from .env file
+dotenv.config();
 
 const app = express();
 app.use(express.json());
@@ -79,10 +83,12 @@ async function startServer(retryCount = 0) {
     }
 
     // Try to start on preferred port first
-    const preferredPort = parseInt(process.env.PORT || "3000", 10);
-    const portRange = [preferredPort, 5000, 5001, 5002]; // Fallback ports
+    const preferredPort = parseInt(process.env.PORT || "5000", 10);
+    const portRange = [preferredPort, 5000, 5001, 5002]; // Fallback ports with 5000 as priority for Replit
     let port = preferredPort;
     let started = false;
+    
+    log(`Attempting to start with preferred port: ${preferredPort}`);
 
     for (const tryPort of portRange) {
       try {
