@@ -1,10 +1,6 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
-import * as dotenv from 'dotenv';
-
-// Load environment variables from .env file
-dotenv.config();
 
 const app = express();
 app.use(express.json());
@@ -84,11 +80,9 @@ async function startServer(retryCount = 0) {
 
     // Try to start on preferred port first
     const preferredPort = parseInt(process.env.PORT || "5000", 10);
-    const portRange = [preferredPort, 5000, 5001, 5002]; // Fallback ports with 5000 as priority for Replit
+    const portRange = [preferredPort, 5001, 5002, 5003]; // Fallback ports
     let port = preferredPort;
     let started = false;
-    
-    log(`Attempting to start with preferred port: ${preferredPort}`);
 
     for (const tryPort of portRange) {
       try {
@@ -96,12 +90,12 @@ async function startServer(retryCount = 0) {
 
         await new Promise((resolve, reject) => {
           const startupTimeout = setTimeout(() => {
-            reject(new Error("Server startup timed out after 15 seconds"));
-          }, 15000);
+            reject(new Error("Server startup timed out after 10 seconds"));
+          }, 10000);
 
           server.listen({
             port: tryPort,
-            host: "0.0.0.0", // Quan trọng: Đảm bảo nghe trên tất cả các giao diện
+            host: "0.0.0.0",
           }, () => {
             clearTimeout(startupTimeout);
             port = tryPort;
