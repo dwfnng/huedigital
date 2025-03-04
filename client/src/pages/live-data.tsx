@@ -10,7 +10,7 @@ export default function LiveDataPage() {
           Thông tin cập nhật về thời tiết, sự kiện, mật độ du khách và giao thông tại Huế
         </p>
 
-        <LiveData />
+        <LiveDataa />
       </div>
     </div>
   );
