@@ -1,33 +1,57 @@
 import express from 'express';
-import OpenAI from 'openai';
+import { createHash } from 'crypto';
 
 const router = express.Router();
 
-// Initialize xAI client
-const xai = new OpenAI({ 
-  baseURL: "https://api.x.ai/v1", 
-  apiKey: process.env.XAI_API_KEY 
-});
+// Simple in-memory cache
+const cache = new Map<string, { response: string; timestamp: number }>();
+const CACHE_TTL = 1000 * 60 * 60; // 1 hour
 
 interface ChatMessage {
   role: 'system' | 'user' | 'assistant';
   content: string;
 }
 
-// Detailed system prompt with Vietnamese cultural context
-const SYSTEM_PROMPT = `Bạn là một chuyên gia về văn hóa và lịch sử Huế, với kiến thức sâu rộng về:
+const SYSTEM_PROMPT = `Bạn là một chuyên gia về văn hóa và lịch sử Huế. Hãy trả lời các câu hỏi về:
 - Di tích lịch sử và kiến trúc cung đình thời Nguyễn
 - Văn hóa, phong tục, tập quán của người Huế
 - Ẩm thực và nghệ thuật truyền thống
 - Địa danh và các điểm tham quan nổi tiếng
 
-Nhiệm vụ của bạn là:
-1. Trả lời mọi câu hỏi về Huế một cách chi tiết và chính xác
-2. Sử dụng tiếng Việt có dấu, dễ hiểu
-3. Ưu tiên cung cấp thông tin lịch sử và văn hóa có căn cứ
-4. Giải thích các thuật ngữ chuyên ngành khi cần thiết
+Hãy trả lời ngắn gọn, chính xác và dễ hiểu.`;
 
-Nếu không chắc chắn về thông tin, hãy thông báo rõ ràng cho người dùng.`;
+// Get cached response if available
+const getCachedResponse = (message: string): string | null => {
+  const hash = createHash('md5').update(message).digest('hex');
+  const cached = cache.get(hash);
+
+  if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
+    console.log('Sử dụng câu trả lời từ cache');
+    return cached.response;
+  }
+  return null;
+};
+
+// Cache a new response
+const cacheResponse = (message: string, response: string) => {
+  const hash = createHash('md5').update(message).digest('hex');
+  cache.set(hash, { response, timestamp: Date.now() });
+};
+
+// Default responses for common errors
+const getDefaultResponse = (message: string): string => {
+  const lowercaseMsg = message.toLowerCase();
+
+  if (lowercaseMsg.includes('thời tiết')) {
+    return 'Bạn có thể xem thông tin thời tiết trong phần "Dữ liệu thực" của ứng dụng.';
+  }
+
+  if (lowercaseMsg.includes('giá') || lowercaseMsg.includes('vé')) {
+    return 'Bạn có thể xem thông tin về giá vé và đặt vé trong phần "Đặt vé" của ứng dụng.';
+  }
+
+  return 'Tôi là trợ lý AI chuyên về văn hóa và lịch sử Huế. Bạn có thể hỏi tôi về các di tích, phong tục, ẩm thực hoặc nghệ thuật truyền thống của Huế.';
+};
 
 router.post('/', async (req, res) => {
   try {
@@ -37,47 +61,54 @@ router.post('/', async (req, res) => {
       return res.status(400).json({ error: 'Vui lòng nhập nội dung tin nhắn' });
     }
 
-    console.log('Đang xử lý câu hỏi:', message);
+    console.log('Câu hỏi nhận được:', message);
 
-    const messages: ChatMessage[] = [
-      { role: 'system', content: SYSTEM_PROMPT },
-      { role: 'user', content: message }
-    ];
+    // Check cache first
+    const cachedResponse = getCachedResponse(message);
+    if (cachedResponse) {
+      return res.json({ reply: cachedResponse });
+    }
 
-    const response = await xai.chat.completions.create({
-      model: "grok-2-1212",
-      messages: messages,
-      temperature: 0.7,
-      max_tokens: 1000,
-      n: 1
-    });
+    // Using Hugging Face's API
+    const response = await fetch(
+      "https://api-inference.huggingface.co/models/vinai/PhoGPT-7B5",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${process.env.HUGGINGFACE_API_KEY}`
+        },
+        body: JSON.stringify({
+          inputs: `${SYSTEM_PROMPT}\n\nNgười dùng: ${message}\n\nTrợ lý:`,
+          parameters: {
+            max_new_tokens: 500,
+            temperature: 0.7,
+            top_p: 0.9,
+            do_sample: true
+          }
+        })
+      }
+    );
 
-    const reply = response.choices[0].message.content;
-    console.log('Phản hồi từ AI:', reply);
+    if (!response.ok) {
+      console.log('Lỗi API, sử dụng câu trả lời mặc định');
+      const defaultReply = getDefaultResponse(message);
+      return res.json({ reply: defaultReply });
+    }
+
+    const result = await response.json();
+    const reply = result[0].generated_text;
+
+    // Cache the successful response
+    cacheResponse(message, reply);
+
+    console.log('Câu trả lời:', reply);
     res.json({ reply });
 
   } catch (error) {
-    console.error('xAI API error:', error);
-
-    // Handle different types of errors
-    if (error instanceof Error) {
-      if (error.message.includes('401')) {
-        res.status(500).json({ 
-          error: 'Lỗi xác thực API. Vui lòng kiểm tra lại cấu hình.',
-          details: error.message 
-        });
-      } else {
-        res.status(500).json({ 
-          error: 'Không thể kết nối với trợ lý AI',
-          details: error.message 
-        });
-      }
-    } else {
-      res.status(500).json({ 
-        error: 'Lỗi không xác định',
-        details: 'Unknown error occurred'
-      });
-    }
+    console.error('Lỗi xử lý chat:', error);
+    const defaultReply = getDefaultResponse(req.body.message);
+    res.json({ reply: defaultReply });
   }
 });
 
