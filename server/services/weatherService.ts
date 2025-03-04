@@ -62,7 +62,14 @@ export async function getWeatherData() {
     console.log("Fetching new weather data...");
     const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${CITY}&units=metric&appid=${API_KEY}`);
     const data = response.data as WeatherResponseFull;
-    console.log("Weather data received:", data);
+    
+    // Kiểm tra dữ liệu nhận được
+    if (!data || !data.main || !data.weather || data.weather.length === 0) {
+      console.error("Received incomplete weather data:", data);
+      throw new Error("Received incomplete weather data from API");
+    }
+    
+    console.log("Weather data received:", JSON.stringify(data));
     
     // Trả về dữ liệu đầy đủ từ API
     return data;
