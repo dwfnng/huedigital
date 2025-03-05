@@ -1,12 +1,12 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { motion } from "framer-motion";
-import { 
-  FileText, 
-  Image, 
-  Video, 
-  Music, 
-  GraduationCap, 
+import {
+  FileText,
+  Image,
+  Video,
+  Music,
+  GraduationCap,
   Box,
   Calendar,
   Clock
@@ -55,7 +55,7 @@ const item = {
 export default function ResourceList({ resources, onResourceSelect }: ResourceListProps) {
   return (
     <ScrollArea className="h-[calc(100vh-16rem)]">
-      <motion.div 
+      <motion.div
         className="space-y-4 p-4"
         variants={container}
         initial="hidden"
@@ -73,6 +73,22 @@ export default function ResourceList({ resources, onResourceSelect }: ResourceLi
                     {getResourceIcon(resource.type)}
                   </div>
                   <div className="flex-1 min-w-0">
+                    {resource.thumbnailUrl && (
+                      <div className="mb-3">
+                        <img
+                          src={resource.thumbnailUrl}
+                          alt={resource.title}
+                          className="w-full h-32 object-cover rounded-lg"
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement;
+                            const fallbackUrl = 'https://placehold.co/600x400/png?text=Image+Not+Found';
+                            if (target.src !== fallbackUrl) {
+                              target.src = fallbackUrl;
+                            }
+                          }}
+                        />
+                      </div>
+                    )}
                     <h3 className="font-semibold truncate">{resource.title}</h3>
                     <p className="text-sm text-muted-foreground truncate">
                       {resource.titleEn}

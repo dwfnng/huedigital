@@ -26,10 +26,11 @@ import { apiRequest } from "@/lib/queryClient";
 
 // Fix for default marker icons
 delete (L.Icon.Default.prototype as any)._getIconUrl;
+// Fix marker icon paths
 L.Icon.Default.mergeOptions({
-  iconRetinaUrl: '/icons/marker-icon-2x.png',
-  iconUrl: '/icons/marker-icon.png',
-  shadowUrl: '/icons/marker-shadow.png',
+  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
+  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png'
 });
 
 interface MapProps {
@@ -195,8 +196,12 @@ export default function Map({ onMarkerClick }: MapProps) {
     setIsRoutingMode(false);
   };
 
+  // Update handleImageError with better fallback
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    e.currentTarget.src = '/images/placeholder-location.jpg';
+    const fallbackUrl = 'https://placehold.co/600x400/png?text=Image+Not+Found';
+    if (e.currentTarget.src !== fallbackUrl) {
+      e.currentTarget.src = fallbackUrl;
+    }
   };
 
   return (
