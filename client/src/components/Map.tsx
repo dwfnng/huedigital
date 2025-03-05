@@ -386,18 +386,8 @@ export default function Map({ onMarkerClick }: MapProps) {
                   }}
                 >
                   <Popup className="custom-popup">
-                    <div className="text-sm p-2">
-                      <div className="w-full h-32 relative rounded-lg overflow-hidden mb-2">
-                        <img
-                          src={location.imageUrl || 'https://placehold.co/600x400/png?text=No+Image'}
-                          alt={location.name}
-                          className="absolute inset-0 w-full h-full object-cover"
-                          onError={handleImageError}
-                        />
-                      </div>
-                      <h3 className="font-medium">{location.name}</h3>
-                      <p className="text-muted-foreground text-xs">{location.nameEn}</p>
-                      <p className="text-xs mt-1">{location.type.replace('_', ' ')}</p>
+                    <div className="text-sm">
+                      <h3 className="font-medium text-center">{location.name}</h3>
                     </div>
                   </Popup>
                 </Marker>
