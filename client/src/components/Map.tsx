@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Search, Navigation, CornerDownLeft, Star, StarOff } from "lucide-react";
+import { Search, Navigation, CornerDownLeft, Star } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import type { Location, InsertFavoriteRoute } from "@shared/schema";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
@@ -36,12 +36,12 @@ interface MapProps {
   onMarkerClick?: (location: Location) => void;
 }
 
-function RoutingMachine({ start, end }: { start?: [number, number]; end?: [number, number] }) {
-  const map = useMap();
+// Custom hook for routing control
+function useRoutingControl(map: L.Map | null, start?: [number, number], end?: [number, number]) {
   const [routingControl, setRoutingControl] = useState<L.Routing.Control | null>(null);
 
   useEffect(() => {
-    if (!start || !end) return;
+    if (!map || !start || !end) return;
 
     const control = L.Routing.control({
       waypoints: [
@@ -69,7 +69,14 @@ function RoutingMachine({ start, end }: { start?: [number, number]; end?: [numbe
     };
   }, [map, start, end]);
 
-  return { routingControl };
+  return routingControl;
+}
+
+// RoutingMachine component now just handles the routing visualization
+function RoutingMachine({ start, end }: { start?: [number, number]; end?: [number, number] }) {
+  const map = useMap();
+  useRoutingControl(map, start, end);
+  return null;
 }
 
 function FlyToMarker({ position }: { position: [number, number] }) {
@@ -101,7 +108,7 @@ export default function Map({ onMarkerClick }: MapProps) {
   });
 
   const saveRouteMutation = useMutation({
-    mutationFn: (route: InsertFavoriteRoute) => 
+    mutationFn: (route: InsertFavoriteRoute) =>
       apiRequest("/api/favorite-routes", {
         method: "POST",
         body: route,
@@ -130,7 +137,7 @@ export default function Map({ onMarkerClick }: MapProps) {
       setFilteredLocations(locations);
     } else {
       const query = searchQuery.toLowerCase();
-      const filtered = locations.filter(location => 
+      const filtered = locations.filter(location =>
         location.name.toLowerCase().includes(query) ||
         location.nameEn.toLowerCase().includes(query) ||
         location.description.toLowerCase().includes(query) ||
@@ -207,9 +214,9 @@ export default function Map({ onMarkerClick }: MapProps) {
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
               </div>
-              <Button 
-                variant="outline" 
-                size="icon" 
+              <Button
+                variant="outline"
+                size="icon"
                 title="Vị trí của bạn"
                 onClick={() => {
                   if (navigator.geolocation) {
@@ -274,9 +281,9 @@ export default function Map({ onMarkerClick }: MapProps) {
             {isRoutingMode && (
               <div className="mt-2 text-sm">
                 <p className="text-muted-foreground">
-                  {!startLocation 
-                    ? "Chọn điểm bắt đầu" 
-                    : !endLocation 
+                  {!startLocation
+                    ? "Chọn điểm bắt đầu"
+                    : !endLocation
                     ? "Chọn điểm kết thúc"
                     : "Đã chọn cả hai điểm"}
                 </p>
@@ -309,7 +316,7 @@ export default function Map({ onMarkerClick }: MapProps) {
           <ScrollArea className="h-[calc(100%-5rem)] custom-scrollbar">
             <div className="divide-y">
               {filteredLocations.map((location, index) => (
-                <div 
+                <div
                   key={location.id}
                   className={`p-3 cursor-pointer transition-all hover:bg-primary/5 ${
                     selectedLocation?.id === location.id ? 'bg-primary/10' : ''
@@ -375,11 +382,11 @@ export default function Map({ onMarkerClick }: MapProps) {
               </Marker>
             ))}
             {selectedLocation && !isRoutingMode && (
-              <FlyToMarker 
+              <FlyToMarker
                 position={[
                   parseFloat(selectedLocation.latitude),
                   parseFloat(selectedLocation.longitude)
-                ]} 
+                ]}
               />
             )}
             {startLocation && endLocation && (
