@@ -68,26 +68,39 @@ router.get("/api/visitors", async (_req, res) => {
   res.json(visitorData);
 });
 
-// Events endpoint
+// Events endpoint with future events
 router.get("/api/events", async (_req, res) => {
+  const now = new Date();
+  const oneMonthFromNow = new Date(now.getFullYear(), now.getMonth() + 1, now.getDate());
+  const twoMonthsFromNow = new Date(now.getFullYear(), now.getMonth() + 2, now.getDate());
+
   const events = [
     {
       id: "evt-1",
-      title: "Festival Huế 2024",
-      startDate: "2024-04-01",
-      endDate: "2024-04-07",
+      title: "Festival Huế 2025",
+      startDate: oneMonthFromNow.toISOString().split('T')[0],
+      endDate: new Date(oneMonthFromNow.getTime() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
       location: "Đại Nội",
-      description: "Lễ hội văn hóa nghệ thuật quốc tế"
+      description: "Lễ hội văn hóa nghệ thuật quốc tế với nhiều hoạt động độc đáo"
     },
     {
       id: "evt-2",
-      title: "Triển lãm Nghệ thuật Cung đình",
-      startDate: "2024-03-15",
-      endDate: "2024-03-20",
+      title: "Triển lãm Di sản Huế",
+      startDate: twoMonthsFromNow.toISOString().split('T')[0],
+      endDate: new Date(twoMonthsFromNow.getTime() + 5 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
       location: "Bảo tàng Mỹ thuật Huế",
-      description: "Trưng bày các tác phẩm nghệ thuật thời Nguyễn"
+      description: "Trưng bày các hiện vật quý từ thời Nguyễn được phục dựng bằng công nghệ số"
+    },
+    {
+      id: "evt-3",
+      title: "Đêm Hoàng Cung",
+      startDate: new Date(oneMonthFromNow.getTime() + 14 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+      endDate: new Date(oneMonthFromNow.getTime() + 16 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+      location: "Đại Nội",
+      description: "Tái hiện không gian văn hóa cung đình Huế về đêm"
     }
   ];
+
   res.json(events);
 });
 
