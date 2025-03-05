@@ -106,17 +106,28 @@ export const resources = pgTable("resources", {
   sourceInfo: text("source_info"),
   languages: text("languages").array(),
   // New fields for enhanced multimedia support
-  format: text("format"), // e.g., "mp4", "mp3", "glb"
-  duration: text("duration"), // For video/audio
+  format: text("format"), // e.g., "mp4", "mp3", "pdf", "docx"
+  duration: text("duration"), // For video/audio content
   fileSize: text("file_size"),
   dimensions: text("dimensions"), // For images/videos
-  transcription: text("transcription"), // For audio/video content
-  modelFormat: text("model_format"), // For 3D models: "glb", "gltf", etc.
-  textureUrls: text("texture_urls").array(), // For 3D models
-  previewUrls: text("preview_urls").array(), // Multiple preview images
-  license: text("license"), // Usage rights information
-  quality: text("quality"), // e.g., "HD", "4K", "Standard"
-  interactiveData: jsonb("interactive_data"), // For interactive 3D content
+  transcript: text("transcript"), // For audio/video content
+  textContent: text("text_content"), // For storing formatted text content
+  imageUrls: text("image_urls").array(), // For multiple images
+  videoUrl: text("video_url"), // For video content
+  references: jsonb("references"), // For citations and references
+  lastUpdated: timestamp("last_updated"),
+  status: text("status").default("published"),
+  viewCount: numeric("view_count").default("0"),
+  downloadCount: numeric("download_count").default("0"),
+  // Cultural context fields
+  culturalSignificance: text("cultural_significance"),
+  historicalPeriod: text("historical_period"),
+  geographicalContext: text("geographical_context"),
+  relatedEvents: jsonb("related_events"),
+  // Interactive content
+  hasInteractiveElements: boolean("has_interactive_elements").default(false),
+  interactiveType: text("interactive_type"), // e.g., "3d_model", "quiz", "timeline"
+  interactiveConfig: jsonb("interactive_config"),
 });
 
 export const messages = pgTable("messages", {
@@ -126,7 +137,6 @@ export const messages = pgTable("messages", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
-// New table for favorite routes
 export const favoriteRoutes = pgTable("favorite_routes", {
   id: serial("id").primaryKey(),
   userId: serial("user_id").notNull(),
@@ -139,7 +149,6 @@ export const favoriteRoutes = pgTable("favorite_routes", {
   isActive: boolean("is_active").default(true).notNull(),
 });
 
-// Schemas
 export const insertLocationSchema = createInsertSchema(locations).omit({ 
   id: true,
   isActive: true 
@@ -188,6 +197,9 @@ export const insertFavoriteRouteSchema = createInsertSchema(favoriteRoutes).omit
 export const insertResourceSchema = createInsertSchema(resources).omit({
   id: true,
   createdAt: true,
+  viewCount: true,
+  downloadCount: true,
+  lastUpdated: true,
 }).extend({
   metadata: z.object({
     // Common metadata
@@ -221,11 +233,11 @@ export const insertResourceSchema = createInsertSchema(resources).omit({
       channels: z.string(),
     }).optional(),
 
-    model3d: z.object({
-      polygonCount: z.string(),
-      textureResolution: z.string(),
-      fileFormat: z.string(),
-      renderEngine: z.string(),
+    document: z.object({
+      pageCount: z.number(),
+      wordCount: z.number(),
+      hasImages: z.boolean(),
+      language: z.string(),
     }).optional(),
   }).optional(),
 });
@@ -304,36 +316,27 @@ export type PointTransactionType =
   | "review";
 
 export type ResourceType = 
-  | "image" 
+  | "document"
+  | "image"
   | "video"
   | "audio"
+  | "interactive"
   | "3d_model"
-  | "document"
-  | "manuscript"
-  | "artifact"
-  | "ritual_description"
-  | "folk_song"
-  | "traditional_music"
-  | "dance_performance"
-  | "craft_technique"
-  | "oral_history"
-  | "architecture"
-  | "historical_map";
+  | "article"
+  | "research_paper"
+  | "historical_record"
+  | "cultural_artifact";
 
 export type ResourceCategory =
-  | "imperial_artifacts"
-  | "royal_ceremonies"
+  | "heritage_sites"
   | "traditional_crafts"
-  | "folk_customs"
-  | "religious_practices"
-  | "historical_documents"
-  | "architectural_heritage"
   | "performing_arts"
   | "culinary_heritage"
-  | "traditional_medicine"
-  | "local_festivals"
+  | "festivals_and_rituals"
+  | "historical_documents"
   | "oral_traditions"
-  | "decorative_arts"
-  | "cultural_landscapes";
+  | "architecture"
+  | "royal_artifacts"
+  | "cultural_practices";
 
 export type ChatRole = "user" | "assistant";

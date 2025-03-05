@@ -23,21 +23,11 @@ import {
   Video,
   Image as ImageIcon,
   FileAudio,
-  Box,
-  File3D
+  File
 } from "lucide-react";
 import type { Resource } from "@shared/schema";
 import { motion } from "framer-motion";
 import ShareButton from "@/components/ShareButton";
-
-// Add support for 3D model viewer
-import { Canvas } from '@react-three/fiber';
-import { useGLTF, OrbitControls, Stage } from '@react-three/drei';
-
-function Model({ url }: { url: string }) {
-  const { scene } = useGLTF(url);
-  return <primitive object={scene} />;
-}
 
 function ResourceMetadataSection({ title, content }: { title: string, content: React.ReactNode }) {
   return (
@@ -81,22 +71,17 @@ const MediaViewer = ({ resource }: { resource: Resource }) => {
       return (
         <div className="relative bg-black rounded-lg overflow-hidden">
           <video
-            src={resource.contentUrl}
+            src={resource.videoUrl || resource.contentUrl}
             controls
             className="w-full"
             poster={resource.thumbnailUrl}
           >
             <track
               kind="captions"
-              src={resource.metadata?.transcription}
+              src={resource.transcript}
               label="Vietnamese"
             />
           </video>
-          {resource.metadata?.quality && (
-            <div className="absolute top-2 right-2 bg-black/50 text-white px-2 py-1 text-xs rounded-full">
-              {resource.metadata.quality}
-            </div>
-          )}
         </div>
       );
 
@@ -116,28 +101,35 @@ const MediaViewer = ({ resource }: { resource: Resource }) => {
               controls
               className="w-full"
             />
-            {resource.metadata?.transcription && (
+            {resource.transcript && (
               <div className="mt-4 p-4 bg-muted rounded-lg text-sm">
                 <h4 className="font-medium mb-2">Lời thoại:</h4>
-                <p>{resource.metadata.transcription}</p>
+                <p>{resource.transcript}</p>
               </div>
             )}
           </div>
         </div>
       );
 
-    case "3d_model":
+    case "document":
       return (
-        <div className="relative bg-black/5 rounded-lg overflow-hidden" style={{ height: '400px' }}>
-          <Canvas>
-            <Stage environment="city" intensity={0.6}>
-              <Model url={resource.contentUrl} />
-            </Stage>
-            <OrbitControls autoRotate />
-          </Canvas>
-          {resource.metadata?.model3d && (
-            <div className="absolute top-2 right-2 bg-black/50 text-white px-2 py-1 text-xs rounded-full">
-              {resource.metadata.model3d.fileFormat}
+        <div className="space-y-4">
+          <div className="prose prose-sm dark:prose-invert max-w-none">
+            {resource.textContent && (
+              <div dangerouslySetInnerHTML={{ __html: resource.textContent }} />
+            )}
+          </div>
+          {resource.imageUrls && resource.imageUrls.length > 0 && (
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+              {resource.imageUrls.map((url, index) => (
+                <div key={index} className="relative aspect-video rounded-lg overflow-hidden">
+                  <img
+                    src={url}
+                    alt={`Hình ảnh ${index + 1}`}
+                    className="absolute inset-0 w-full h-full object-cover hover:scale-105 transition-transform"
+                  />
+                </div>
+              ))}
             </div>
           )}
         </div>
@@ -162,9 +154,6 @@ interface ResourceMetadata {
   seasonalContext?: string;
   traditionalPractices?: string;
   dimensions?: string;
-  quality?: string;
-  transcription?: string;
-  model3d?: { fileFormat: string };
 }
 
 interface ResourceDetailsProps {
@@ -260,7 +249,9 @@ export default function ResourceDetails({
 
         <ScrollArea className="h-[calc(100vh-8rem)] mt-6 pr-4">
           <div className="space-y-6">
-            {resource.contentUrl && <MediaViewer resource={resource} />}
+            {(resource.contentUrl || resource.videoUrl || resource.imageUrls || resource.textContent) && 
+              <MediaViewer resource={resource} />
+            }
 
             {/* Cultural Period Information */}
             {resource.culturalPeriod && (
@@ -449,7 +440,7 @@ export default function ResourceDetails({
               </Button>
               <ShareButton
                 title={resource.title}
-                description={resource.description}
+                description={resource.description || ''}
                 url={resource.contentUrl}
               />
             </motion.div>
