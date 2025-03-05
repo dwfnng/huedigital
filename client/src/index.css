@@ -103,15 +103,11 @@ body {
 
 /* Map tile loading optimization */
 .leaflet-tile {
-  @apply will-change-opacity transition-opacity duration-200;
+  @apply opacity-0 transition-opacity duration-200;
 }
 
 .leaflet-tile-loaded {
   @apply opacity-100;
-}
-
-.leaflet-tile-loading {
-  @apply opacity-0;
 }
 
 /* Map zoom controls */

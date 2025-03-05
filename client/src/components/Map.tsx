@@ -12,9 +12,22 @@ import { MapContainer, TileLayer, Marker, Popup, useMap, ZoomControl } from 'rea
 import { DEFAULT_CENTER, DEFAULT_ZOOM, MAP_STYLES, createMarkerIcon } from "@/lib/mapUtils";
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-routing-machine/dist/leaflet-routing-machine.css';
+import type { Routing } from 'leaflet-routing-machine';
 import L from 'leaflet';
-import 'leaflet-routing-machine';
 import { motion, AnimatePresence } from "framer-motion";
+
+declare module 'leaflet' {
+  namespace Routing {
+    interface Control extends L.Control {
+      getPlan(): any;
+      setWaypoints(waypoints: L.LatLng[]): any;
+    }
+    interface ControlStatic {
+      new(options?: any): Control;
+    }
+    let control: ControlStatic;
+  }
+}
 
 // Custom hook for routing control
 function useRoutingControl(map: L.Map | null, start?: [number, number], end?: [number, number]) {
