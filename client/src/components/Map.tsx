@@ -8,7 +8,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Search, Navigation, CornerDownLeft, Maximize2, Minimize2 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import type { Location } from "@shared/schema";
-import { MapContainer, TileLayer, Marker, Popup, useMap, ZoomControl } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import { DEFAULT_CENTER, DEFAULT_ZOOM, MAP_STYLES, createMarkerIcon } from "@/lib/mapUtils";
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-routing-machine/dist/leaflet-routing-machine.css';
@@ -70,7 +70,7 @@ function FlyToMarker({ position, zoom = 17 }: { position: [number, number]; zoom
     map.flyTo(position, zoom, {
       duration: 1,
       easeLinearity: 0.25,
-      padding: [50, 50] // Add padding for even zoom
+      padding: [100, 100] // Increased padding for better zoom
     });
   }, [map, position, zoom]);
   return null;
@@ -122,7 +122,7 @@ export default function Map({ onMarkerClick }: { onMarkerClick?: (location: Loca
       } else {
         setEndLocation(position);
         toast({
-          title: "Điểm đến", 
+          title: "Điểm đến",
           description: `Đã chọn ${location.name} làm điểm kết thúc`,
         });
       }
@@ -141,9 +141,9 @@ export default function Map({ onMarkerClick }: { onMarkerClick?: (location: Loca
 
   const containerStyle = {
     display: 'grid',
-    gridTemplateColumns: isFullScreen ? '1fr' : '280px 1fr',
+    gridTemplateColumns: isFullScreen ? '1fr' : '260px 1fr',
     gap: '1rem',
-    height: '100%',
+    height: '85vh', // Reduced height
     transition: 'all 0.3s ease-in-out'
   };
 
@@ -158,7 +158,7 @@ export default function Map({ onMarkerClick }: { onMarkerClick?: (location: Loca
             transition={{ duration: 0.2 }}
           >
             <Card className="h-full overflow-hidden glass">
-              <CardContent className="p-0 h-full flex flex-col max-h-screen">
+              <CardContent className="p-0 h-full flex flex-col max-h-full">
                 <div className="p-4 border-b shrink-0">
                   <div className="flex gap-2">
                     <div className="relative flex-1">
@@ -299,9 +299,6 @@ export default function Map({ onMarkerClick }: { onMarkerClick?: (location: Loca
             zoomControl={false}
             ref={setMapRef}
           >
-            {/*Removed duplicate zoom control*/}
-            {/*<ZoomControl position="bottomright" />*/}
-
             <Button
               variant="outline"
               size="icon"
