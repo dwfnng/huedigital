@@ -7,14 +7,14 @@ import {
   Video,
   Music,
   GraduationCap,
-  Book,
+  Box,
   Calendar,
-  Tag,
+  Clock
 } from "lucide-react";
 import type { Resource } from "@shared/schema";
-import { resources } from "@/data/resources";
 
 interface ResourceListProps {
+  resources: Resource[];
   onResourceSelect: (resource: Resource) => void;
 }
 
@@ -28,10 +28,10 @@ const getResourceIcon = (type: string) => {
       return <Video className="h-6 w-6" />;
     case "audio":
       return <Music className="h-6 w-6" />;
-    case "research_paper":
+    case "research":
       return <GraduationCap className="h-6 w-6" />;
-    case "article":
-      return <Book className="h-6 w-6" />;
+    case "3d_model":
+      return <Box className="h-6 w-6" />;
     default:
       return <FileText className="h-6 w-6" />;
   }
@@ -52,15 +52,7 @@ const item = {
   show: { opacity: 1, y: 0 }
 };
 
-export default function ResourceList({ onResourceSelect }: ResourceListProps) {
-  if (!resources || resources.length === 0) {
-    return (
-      <div className="flex items-center justify-center h-[calc(100vh-16rem)]">
-        <p className="text-muted-foreground">Không có tài liệu nào</p>
-      </div>
-    );
-  }
-
+export default function ResourceList({ resources, onResourceSelect }: ResourceListProps) {
   return (
     <ScrollArea className="h-[calc(100vh-16rem)]">
       <motion.div
@@ -82,41 +74,47 @@ export default function ResourceList({ onResourceSelect }: ResourceListProps) {
                   </div>
                   <div className="flex-1 min-w-0">
                     {resource.thumbnailUrl && (
-                      <div className="mb-3 relative aspect-video rounded-lg overflow-hidden">
+                      <div className="mb-3">
                         <img
-                          src={resource.thumbnailUrl}
+                          src={resource.thumbnailUrl || 'https://placehold.co/600x400/png?text=No+Image'}
                           alt={resource.title}
-                          className="absolute inset-0 w-full h-full object-cover"
+                          className="w-full h-32 object-cover rounded-lg"
                           onError={(e) => {
                             const target = e.target as HTMLImageElement;
-                            target.src = '/assets/images/placeholders/no-image.svg';
+                            const fallbackUrl = 'https://placehold.co/600x400/png?text=Image+Not+Found';
+                            if (target.src !== fallbackUrl) {
+                              target.src = fallbackUrl;
+                            }
                           }}
                         />
                       </div>
                     )}
-                    <h3 className="font-semibold truncate text-lg text-foreground">{resource.title}</h3>
-                    {resource.titleEn && (
-                      <p className="text-sm text-muted-foreground truncate">
-                        {resource.titleEn}
-                      </p>
-                    )}
+                    <h3 className="font-semibold truncate">{resource.title}</h3>
+                    <p className="text-sm text-muted-foreground truncate">
+                      {resource.titleEn}
+                    </p>
                     {resource.description && (
                       <p className="text-sm mt-2 line-clamp-2 text-muted-foreground">
                         {resource.description}
                       </p>
                     )}
-                    <div className="flex flex-wrap items-center gap-4 mt-3 text-xs text-muted-foreground">
-                      <div className="flex items-center gap-1">
-                        <Calendar className="h-3 w-3" />
-                        {new Date(resource.createdAt).toLocaleDateString('vi-VN')}
-                      </div>
-                      {resource.tags && resource.tags.length > 0 && (
+                    <div className="flex items-center gap-4 mt-3 text-xs text-muted-foreground">
+                      {resource.metadata?.format && (
                         <div className="flex items-center gap-1">
-                          <Tag className="h-3 w-3" />
-                          <span className="truncate">
-                            {resource.tags.slice(0, 3).join(', ')}
-                            {resource.tags.length > 3 && '...'}
-                          </span>
+                          <FileText className="h-3 w-3" />
+                          {resource.metadata.format.toUpperCase()}
+                        </div>
+                      )}
+                      {resource.metadata?.duration && (
+                        <div className="flex items-center gap-1">
+                          <Clock className="h-3 w-3" />
+                          {resource.metadata.duration}
+                        </div>
+                      )}
+                      {resource.createdAt && (
+                        <div className="flex items-center gap-1">
+                          <Calendar className="h-3 w-3" />
+                          {new Date(resource.createdAt).toLocaleDateString('vi-VN')}
                         </div>
                       )}
                     </div>
