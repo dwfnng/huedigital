@@ -2,6 +2,126 @@ import { pgTable, text, serial, timestamp, jsonb, numeric, boolean } from "drizz
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
+// Enhanced Resources schema for cultural content
+export const resources = pgTable("resources", {
+  id: serial("id").primaryKey(),
+  title: text("title").notNull(),
+  titleEn: text("title_en"),
+  description: text("description"),
+  descriptionEn: text("description_en"),
+  type: text("type").notNull(),
+  category: text("category").notNull(),
+  contentUrl: text("content_url"),
+  thumbnailUrl: text("thumbnail_url"),
+  imageUrls: text("image_urls").array(),
+  textContent: text("text_content"), // Nội dung chính từ file Word
+  format: text("format"), // docx, pdf, etc.
+  author: text("author"),
+  source: text("source"),
+  tags: text("tags").array(),
+
+  // Cultural context
+  culturalPeriod: text("cultural_period"),
+  historicalPeriod: text("historical_period"),
+  geographicalContext: text("geographical_context"),
+  culturalSignificance: text("cultural_significance"),
+
+  // Metadata
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  lastUpdated: timestamp("last_updated"),
+  status: text("status").default("published"),
+  viewCount: numeric("view_count").default("0"),
+
+  // For community contributions
+  contributorId: serial("contributor_id"),
+  reviewStatus: text("review_status").default("pending"),
+  reviewedBy: serial("reviewed_by"),
+  reviewedAt: timestamp("reviewed_at"),
+  comments: jsonb("comments").default([]),
+});
+
+// Schema for user contributions and discussions
+export const discussions = pgTable("discussions", {
+  id: serial("id").primaryKey(),
+  title: text("title").notNull(),
+  content: text("content").notNull(),
+  userId: serial("user_id").notNull(),
+  category: text("category").notNull(),
+  tags: text("tags").array(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  lastUpdated: timestamp("last_updated"),
+  status: text("status").default("published"),
+  views: numeric("views").default("0"),
+  likes: numeric("likes").default("0"),
+  resourceId: serial("resource_id"), // Liên kết với tài liệu gốc nếu có
+});
+
+// Schema for comments
+export const comments = pgTable("comments", {
+  id: serial("id").primaryKey(),
+  content: text("content").notNull(),
+  userId: serial("user_id").notNull(),
+  discussionId: serial("discussion_id"),
+  resourceId: serial("resource_id"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at"),
+  status: text("status").default("published"),
+});
+
+// Insert schemas
+export const insertResourceSchema = createInsertSchema(resources).omit({
+  id: true,
+  createdAt: true,
+  lastUpdated: true,
+  viewCount: true,
+  comments: true,
+});
+
+export const insertDiscussionSchema = createInsertSchema(discussions).omit({
+  id: true,
+  createdAt: true,
+  lastUpdated: true,
+  views: true,
+  likes: true,
+});
+
+export const insertCommentSchema = createInsertSchema(comments).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+// Types
+export type Resource = typeof resources.$inferSelect;
+export type InsertResource = z.infer<typeof insertResourceSchema>;
+export type Discussion = typeof discussions.$inferSelect;
+export type InsertDiscussion = z.infer<typeof insertDiscussionSchema>;
+export type Comment = typeof comments.$inferSelect;
+export type InsertComment = z.infer<typeof insertCommentSchema>;
+
+// Enums
+export type ResourceType =
+  | "article"
+  | "document"
+  | "image_gallery"
+  | "video"
+  | "audio";
+
+export type ResourceCategory =
+  | "historical_site"
+  | "architecture"
+  | "traditional_craft"
+  | "performing_art"
+  | "festival_ritual"
+  | "cultural_practice"
+  | "culinary_heritage";
+
+export type ResourceStatus =
+  | "draft"
+  | "pending_review"
+  | "published"
+  | "archived";
+
 // Categories schema with enhanced cultural focus
 export const categories = pgTable("categories", {
   id: serial("id").primaryKey(),
@@ -37,44 +157,6 @@ export const users = pgTable("users", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
-export const discussions = pgTable("discussions", {
-  id: serial("id").primaryKey(),
-  title: text("title").notNull(),
-  content: text("content").notNull(),
-  userId: serial("user_id").notNull(),
-  category: text("category").notNull(),
-  views: numeric("views").default("0").notNull(),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-});
-
-export const comments = pgTable("comments", {
-  id: serial("id").primaryKey(),
-  content: text("content").notNull(),
-  userId: serial("user_id").notNull(),
-  discussionId: serial("discussion_id").notNull(),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-});
-
-export const contributions = pgTable("contributions", {
-  id: serial("id").primaryKey(),
-  title: text("title").notNull(),
-  description: text("description").notNull(),
-  type: text("type").notNull(),
-  url: text("url").notNull(),
-  userId: serial("user_id").notNull(),
-  locationId: serial("location_id"),
-  status: text("status").default("pending").notNull(),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-});
-
-export const reviews = pgTable("reviews", {
-  id: serial("id").primaryKey(),
-  content: text("content").notNull(),
-  rating: numeric("rating").notNull(),
-  userId: serial("user_id").notNull(),
-  locationId: serial("location_id").notNull(),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-});
 
 export const pointTransactions = pgTable("point_transactions", {
   id: serial("id").primaryKey(),
@@ -83,51 +165,6 @@ export const pointTransactions = pgTable("point_transactions", {
   type: text("type").notNull(),
   referenceId: serial("reference_id").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
-});
-
-// Resources schema with enhanced multimedia support
-export const resources = pgTable("resources", {
-  id: serial("id").primaryKey(),
-  title: text("title").notNull(),
-  titleEn: text("title_en"),
-  description: text("description"),
-  descriptionEn: text("description_en"),
-  type: text("type").notNull(),
-  category: text("category").notNull(),
-  contentUrl: text("content_url").notNull(),
-  thumbnailUrl: text("thumbnail_url"),
-  metadata: jsonb("metadata").default({}).notNull(),
-  culturalPeriod: text("cultural_period"),
-  historicalContext: text("historical_context"),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-  relatedLocationId: serial("related_location_id"),
-  tags: text("tags").array(),
-  authorInfo: text("author_info"),
-  sourceInfo: text("source_info"),
-  languages: text("languages").array(),
-  // New fields for enhanced multimedia support
-  format: text("format"), // e.g., "mp4", "mp3", "pdf", "docx"
-  duration: text("duration"), // For video/audio content
-  fileSize: text("file_size"),
-  dimensions: text("dimensions"), // For images/videos
-  transcript: text("transcript"), // For audio/video content
-  textContent: text("text_content"), // For storing formatted text content
-  imageUrls: text("image_urls").array(), // For multiple images
-  videoUrl: text("video_url"), // For video content
-  references: jsonb("references"), // For citations and references
-  lastUpdated: timestamp("last_updated"),
-  status: text("status").default("published"),
-  viewCount: numeric("view_count").default("0"),
-  downloadCount: numeric("download_count").default("0"),
-  // Cultural context fields
-  culturalSignificance: text("cultural_significance"),
-  historicalPeriod: text("historical_period"),
-  geographicalContext: text("geographical_context"),
-  relatedEvents: jsonb("related_events"),
-  // Interactive content
-  hasInteractiveElements: boolean("has_interactive_elements").default(false),
-  interactiveType: text("interactive_type"), // e.g., "3d_model", "quiz", "timeline"
-  interactiveConfig: jsonb("interactive_config"),
 });
 
 export const messages = pgTable("messages", {
@@ -160,86 +197,15 @@ export const insertUserSchema = createInsertSchema(users).omit({
   createdAt: true,
 });
 
-export const insertDiscussionSchema = createInsertSchema(discussions).omit({
-  id: true,
-  views: true,
-  createdAt: true,
-});
-
-export const insertCommentSchema = createInsertSchema(comments).omit({
-  id: true,
-  createdAt: true,
-});
-
-export const insertContributionSchema = createInsertSchema(contributions).omit({
-  id: true,
-  status: true,
-  createdAt: true,
-});
-
-export const insertReviewSchema = createInsertSchema(reviews).omit({
-  id: true,
-  createdAt: true,
-});
-
 export const insertCategorySchema = createInsertSchema(categories).omit({
   id: true,
 });
 
-// Schema for inserting favorite routes
+
 export const insertFavoriteRouteSchema = createInsertSchema(favoriteRoutes).omit({
   id: true,
   createdAt: true,
   isActive: true
-});
-
-// Enhanced metadata schema for different resource types
-export const insertResourceSchema = createInsertSchema(resources).omit({
-  id: true,
-  createdAt: true,
-  viewCount: true,
-  downloadCount: true,
-  lastUpdated: true,
-}).extend({
-  metadata: z.object({
-    // Common metadata
-    format: z.string().optional(),
-    resolution: z.string().optional(),
-    duration: z.string().optional(),
-    size: z.string().optional(),
-
-    // Cultural metadata
-    technique: z.string().optional(),
-    materials: z.array(z.string()).optional(),
-    conservation: z.string().optional(),
-    culturalSignificance: z.string().optional(),
-    historicalEvents: z.array(z.string()).optional(),
-    ritualUse: z.string().optional(),
-    seasonalContext: z.string().optional(),
-    traditionalPractices: z.string().optional(),
-
-    // Technical metadata for different types
-    video: z.object({
-      codec: z.string(),
-      bitrate: z.string(),
-      frameRate: z.string(),
-      aspectRatio: z.string(),
-    }).optional(),
-
-    audio: z.object({
-      codec: z.string(),
-      bitrate: z.string(),
-      sampleRate: z.string(),
-      channels: z.string(),
-    }).optional(),
-
-    document: z.object({
-      pageCount: z.number(),
-      wordCount: z.number(),
-      hasImages: z.boolean(),
-      language: z.string(),
-    }).optional(),
-  }).optional(),
 });
 
 export const insertMessageSchema = createInsertSchema(messages).omit({
@@ -247,28 +213,20 @@ export const insertMessageSchema = createInsertSchema(messages).omit({
   createdAt: true,
 });
 
+
+// Type definitions for favorite routes
+export type FavoriteRoute = typeof favoriteRoutes.$inferSelect;
+export type InsertFavoriteRoute = z.infer<typeof insertFavoriteRouteSchema>;
+
 // Types
 export type Location = typeof locations.$inferSelect;
 export type InsertLocation = z.infer<typeof insertLocationSchema>;
 export type User = typeof users.$inferSelect;
 export type InsertUser = z.infer<typeof insertUserSchema>;
-export type Discussion = typeof discussions.$inferSelect;
-export type InsertDiscussion = z.infer<typeof insertDiscussionSchema>;
-export type Comment = typeof comments.$inferSelect;
-export type InsertComment = z.infer<typeof insertCommentSchema>;
-export type Contribution = typeof contributions.$inferSelect;
-export type InsertContribution = z.infer<typeof insertContributionSchema>;
-export type Review = typeof reviews.$inferSelect;
-export type InsertReview = z.infer<typeof insertReviewSchema>;
 export type Category = typeof categories.$inferSelect;
 export type InsertCategory = z.infer<typeof insertCategorySchema>;
-export type Resource = typeof resources.$inferSelect;
-export type InsertResource = z.infer<typeof insertResourceSchema>;
 export type Message = typeof messages.$inferSelect;
 export type InsertMessage = z.infer<typeof insertMessageSchema>;
-// Type definitions for favorite routes
-export type FavoriteRoute = typeof favoriteRoutes.$inferSelect;
-export type InsertFavoriteRoute = z.infer<typeof insertFavoriteRouteSchema>;
 
 // Enums
 export type LocationType = 
@@ -298,17 +256,6 @@ export type DiscussionCategory =
   | "experience"
   | "preservation";
 
-export type ContributionType =
-  | "image"
-  | "video"
-  | "document"
-  | "audio"
-  | "3d_model";
-
-export type ContributionStatus =
-  | "pending"
-  | "approved"
-  | "rejected";
 
 export type PointTransactionType =
   | "contribution"
@@ -326,6 +273,7 @@ export type ResourceType =
   | "research_paper"
   | "historical_record"
   | "cultural_artifact";
+
 
 export type ResourceCategory =
   | "heritage_sites"
