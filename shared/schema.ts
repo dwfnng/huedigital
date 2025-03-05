@@ -137,6 +137,33 @@ export type Comment = typeof comments.$inferSelect;
 export type InsertComment = z.infer<typeof insertCommentSchema>;
 
 
+// Add contribution schema after the resources schema
+export const contributions = pgTable("contributions", {
+  id: serial("id").primaryKey(),
+  userId: serial("user_id").notNull(),
+  title: text("title").notNull(),
+  description: text("description"),
+  type: text("type").notNull(),
+  url: text("url"),
+  status: text("status").default("pending").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  reviewedAt: timestamp("reviewed_at"),
+  reviewedBy: serial("reviewed_by"),
+  locationId: serial("location_id"),
+});
+
+// Add contribution schema after other insert schemas
+export const insertContributionSchema = createInsertSchema(contributions).omit({
+  id: true,
+  createdAt: true,
+  reviewedAt: true,
+  reviewedBy: true,
+});
+
+// Add contribution types after other types
+export type Contribution = typeof contributions.$inferSelect;
+export type InsertContribution = z.infer<typeof insertContributionSchema>;
+
 // Categories schema with enhanced cultural focus
 export const categories = pgTable("categories", {
   id: serial("id").primaryKey(),

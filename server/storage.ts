@@ -1,16 +1,14 @@
 import {
-  type Location, type User, type Discussion, type Comment, type Contribution, type Review,
+  type Location, type User, type Discussion, type Comment, type Contribution,
   type InsertLocation, type InsertUser, type InsertDiscussion, type InsertComment,
-  type InsertContribution, type InsertReview, type Resource, type Category, type InsertResource, type InsertCategory,
-  type FavoriteRoute, type InsertFavoriteRoute, type Product, type InsertProduct
+  type InsertContribution, type Resource, type Category, type InsertResource, 
+  type InsertCategory, type FavoriteRoute, type InsertFavoriteRoute
 } from "@shared/schema";
 import { eq } from "drizzle-orm";
 import { db } from "./db";
 import {
-  resources, discussions, comments,
-  type Resource as ResourceSchema, type InsertResource as InsertResourceSchema,
-  type Discussion as DiscussionSchema, type InsertDiscussion as InsertDiscussionSchema,
-  type Comment as CommentSchema, type InsertComment as InsertCommentSchema, users, contributions, reviews, pointTransactions, locations, categories, favoriteRoutes
+  resources, discussions, comments, contributions,
+  locations, categories, favoriteRoutes, users
 } from "@shared/schema";
 
 export interface IStorage {
@@ -146,19 +144,41 @@ export class DatabaseStorage implements IStorage {
 
   // Contributions
   async createContribution(contribution: InsertContribution): Promise<Contribution> {
-    throw new Error("Method not implemented.");
+    const [newContribution] = await db
+      .insert(contributions)
+      .values(contribution)
+      .returning();
+    return newContribution;
   }
+
   async getContributionsByUserId(userId: number): Promise<Contribution[]> {
-    throw new Error("Method not implemented.");
+    return await db
+      .select()
+      .from(contributions)
+      .where(eq(contributions.userId, userId));
   }
+
   async getContributionsByLocationId(locationId: number): Promise<Contribution[]> {
-    throw new Error("Method not implemented.");
+    return await db
+      .select()
+      .from(contributions)
+      .where(eq(contributions.locationId, locationId));
   }
+
   async getPendingContributions(): Promise<Contribution[]> {
-    throw new Error("Method not implemented.");
+    return await db
+      .select()
+      .from(contributions)
+      .where(eq(contributions.status, "pending"));
   }
+
   async updateContributionStatus(id: number, status: string): Promise<Contribution> {
-    throw new Error("Method not implemented.");
+    const [updatedContribution] = await db
+      .update(contributions)
+      .set({ status, reviewedAt: new Date() })
+      .where(eq(contributions.id, id))
+      .returning();
+    return updatedContribution;
   }
 
   // Reviews
@@ -263,7 +283,7 @@ export class DatabaseStorage implements IStorage {
     throw new Error("Method not implemented.");
   }
 
-    // Favorite Routes implementation
+  // Favorite Routes
   async getFavoriteRoutes(userId: number): Promise<FavoriteRoute[]> {
     throw new Error("Method not implemented.");
   }
