@@ -12,9 +12,9 @@ import {
   Clock
 } from "lucide-react";
 import type { Resource } from "@shared/schema";
+import { resources } from "@/data/resources";
 
 interface ResourceListProps {
-  resources: Resource[];
   onResourceSelect: (resource: Resource) => void;
 }
 
@@ -52,29 +52,7 @@ const item = {
   show: { opacity: 1, y: 0 }
 };
 
-export default function ResourceList({ resources, onResourceSelect }: ResourceListProps) {
-  const formatImageUrl = (url: string | null) => {
-    if (!url) return 'https://placehold.co/600x400/png?text=No+Image';
-
-    // Handle relative paths
-    if (url.startsWith('./') || url.startsWith('../')) {
-      return new URL(url, window.location.origin).toString();
-    }
-
-    // Handle already absolute URLs
-    if (url.startsWith('http://') || url.startsWith('https://')) {
-      return url;
-    }
-
-    // Handle paths without protocol
-    if (url.startsWith('//')) {
-      return `https:${url}`;
-    }
-
-    // Default case: assume it's a relative path
-    return `${window.location.origin}/${url.replace(/^\//, '')}`;
-  };
-
+export default function ResourceList({ onResourceSelect }: ResourceListProps) {
   return (
     <ScrollArea className="h-[calc(100vh-16rem)]">
       <motion.div
@@ -98,15 +76,12 @@ export default function ResourceList({ resources, onResourceSelect }: ResourceLi
                     {resource.thumbnailUrl && (
                       <div className="mb-3 relative aspect-video rounded-lg overflow-hidden">
                         <img
-                          src={formatImageUrl(resource.thumbnailUrl)}
+                          src={resource.thumbnailUrl}
                           alt={resource.title}
                           className="absolute inset-0 w-full h-full object-cover"
                           onError={(e) => {
                             const target = e.target as HTMLImageElement;
-                            const fallbackUrl = 'https://placehold.co/600x400/png?text=Image+Not+Found';
-                            if (target.src !== fallbackUrl) {
-                              target.src = fallbackUrl;
-                            }
+                            target.src = 'https://placehold.co/600x400/png?text=Image+Not+Found';
                           }}
                         />
                       </div>
@@ -125,12 +100,6 @@ export default function ResourceList({ resources, onResourceSelect }: ResourceLi
                         <div className="flex items-center gap-1">
                           <FileText className="h-3 w-3" />
                           {resource.format.toUpperCase()}
-                        </div>
-                      )}
-                      {resource.duration && (
-                        <div className="flex items-center gap-1">
-                          <Clock className="h-3 w-3" />
-                          {resource.duration}
                         </div>
                       )}
                       {resource.createdAt && (
