@@ -1,19 +1,14 @@
 import { useEffect, useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { LayersControl, LayerGroup } from 'react-leaflet';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Search, Navigation, CornerDownLeft, Star } from "lucide-react";
+import { Search, Navigation, CornerDownLeft, Star, Map as MapIcon } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import type { Location, InsertFavoriteRoute } from "@shared/schema";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
@@ -365,27 +360,50 @@ export default function Map({ onMarkerClick }: MapProps) {
             className="w-full h-full"
             zoomControl={false}
           >
-            <TileLayer
-              url={MAP_STYLES.url}
-              attribution={MAP_STYLES.attribution}
-            />
-            {locations.map(location => (
-              <Marker
-                key={location.id}
-                position={[parseFloat(location.latitude), parseFloat(location.longitude)]}
-                icon={createMarkerIcon(location)}
-                eventHandlers={{
-                  click: () => handleLocationSelect(location)
-                }}
-              >
-                <Popup>
-                  <div className="text-sm">
-                    <h3 className="font-medium">{location.name}</h3>
-                    <p className="text-muted-foreground">{location.nameEn}</p>
-                  </div>
-                </Popup>
-              </Marker>
-            ))}
+            <LayersControl position="topright">
+              <LayersControl.BaseLayer checked name="OpenStreetMap">
+                <TileLayer
+                  url={MAP_STYLES.default.url}
+                  attribution={MAP_STYLES.attribution}
+                />
+              </LayersControl.BaseLayer>
+              <LayersControl.BaseLayer name="Satellite">
+                <TileLayer
+                  url={MAP_STYLES.satellite.url}
+                  attribution={MAP_STYLES.attribution}
+                />
+              </LayersControl.BaseLayer>
+            </LayersControl>
+
+            <LayerGroup>
+              {locations.map(location => (
+                <Marker
+                  key={location.id}
+                  position={[parseFloat(location.latitude), parseFloat(location.longitude)]}
+                  icon={createMarkerIcon(location)}
+                  eventHandlers={{
+                    click: () => handleLocationSelect(location)
+                  }}
+                >
+                  <Popup className="custom-popup">
+                    <div className="text-sm p-2">
+                      <div className="w-full h-32 relative rounded-lg overflow-hidden mb-2">
+                        <img
+                          src={location.imageUrl || 'https://placehold.co/600x400/png?text=No+Image'}
+                          alt={location.name}
+                          className="absolute inset-0 w-full h-full object-cover"
+                          onError={handleImageError}
+                        />
+                      </div>
+                      <h3 className="font-medium">{location.name}</h3>
+                      <p className="text-muted-foreground text-xs">{location.nameEn}</p>
+                      <p className="text-xs mt-1">{location.type.replace('_', ' ')}</p>
+                    </div>
+                  </Popup>
+                </Marker>
+              ))}
+            </LayerGroup>
+
             {selectedLocation && !isRoutingMode && (
               <FlyToMarker
                 position={[

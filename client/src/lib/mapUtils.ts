@@ -5,9 +5,14 @@ import { Icon } from 'leaflet';
 export const DEFAULT_CENTER: [number, number] = [16.4637, 107.5909];
 export const DEFAULT_ZOOM = 15;
 
-// Update map tile layer to use HTTPS
+// Update map tile layer styles
 export const MAP_STYLES = {
-  url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+  default: {
+    url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+  },
+  satellite: {
+    url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+  },
   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 };
 

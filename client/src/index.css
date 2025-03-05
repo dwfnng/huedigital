@@ -68,6 +68,88 @@
     rgba(var(--primary-rgb), 0.02) 100%
   );
 }
+
+/* Enhanced Leaflet map styles */
+.leaflet-container {
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.leaflet-popup-content-wrapper {
+  @apply bg-background/95 backdrop-blur-sm border border-border shadow-lg rounded-lg;
+}
+
+.leaflet-popup-content {
+  @apply p-0 m-0 min-w-[200px];
+}
+
+.leaflet-popup-tip {
+  @apply bg-background/95;
+}
+
+.leaflet-control-layers {
+  @apply bg-background/95 backdrop-blur-sm border border-border rounded-lg shadow-lg !important;
+}
+
+.leaflet-control-layers-toggle {
+  @apply w-8 h-8 !important;
+}
+
+.leaflet-control-layers-base label {
+  @apply text-sm text-foreground cursor-pointer;
+}
+
+.leaflet-routing-container {
+  @apply bg-background/95 backdrop-blur-sm border border-border rounded-lg shadow-lg max-w-xs !important;
+  @apply text-sm text-foreground !important;
+}
+
+.leaflet-routing-alt {
+  @apply max-h-48 overflow-y-auto custom-scrollbar !important;
+}
+
+.leaflet-routing-alt h2 {
+  @apply text-base font-medium !important;
+}
+
+.leaflet-routing-alt table {
+  @apply w-full !important;
+}
+
+.leaflet-routing-alt tr:hover {
+  @apply bg-primary/5 !important;
+}
+
+.leaflet-routing-geocoders {
+  @apply border-b border-border !important;
+}
+
+.leaflet-routing-geocoders input {
+  @apply bg-background text-foreground border border-input !important;
+}
+
+.leaflet-routing-geocoder-result {
+  @apply bg-background text-foreground border border-input !important;
+}
+
+.leaflet-routing-geocoder-result li:hover {
+  @apply bg-primary/5 !important;
+}
+
+/* Custom popup enhancements */
+.custom-popup .leaflet-popup-content {
+  @apply p-0 m-0 min-w-[240px] max-w-[300px];
+}
+
+.custom-popup .leaflet-popup-content-wrapper {
+  @apply p-0 overflow-hidden;
+}
+
+.custom-popup .leaflet-popup-tip-container {
+  @apply left-1/2 -translate-x-1/2;
+}
+
 /* Game-specific backgrounds with enhanced gradients */
 .heritage-section {
   @apply relative bg-gradient-to-br from-red-50/95 to-orange-50/95 dark:from-red-950/95 dark:to-orange-950/95;
