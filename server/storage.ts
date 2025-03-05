@@ -4,6 +4,30 @@ import {
   type InsertContribution, type InsertReview, type Resource, type Category, type InsertResource, type InsertCategory,
   type FavoriteRoute, type InsertFavoriteRoute
 } from "@shared/schema";
+import session from "express-session";
+import createMemoryStore from "memorystore";
+
+const MemoryStore = createMemoryStore(session);
+
+// Product types (these were missing and causing LSP errors)
+export interface Product {
+  id: number;
+  name: string;
+  description: string;
+  price: string;
+  imageUrl: string;
+  category: string;
+  stock: string;
+}
+
+export interface InsertProduct {
+  name: string;
+  description: string;
+  price: string;
+  imageUrl: string;
+  category: string;
+  stock: string;
+}
 
 export interface IStorage {
   // Users
@@ -68,6 +92,9 @@ export interface IStorage {
   getFavoriteRouteById(id: number): Promise<FavoriteRoute | undefined>;
   createFavoriteRoute(route: InsertFavoriteRoute): Promise<FavoriteRoute>;
   deleteFavoriteRoute(id: number): Promise<void>;
+
+  // Session store
+  sessionStore: session.Store;
 }
 
 export class MemStorage implements IStorage {
@@ -81,9 +108,14 @@ export class MemStorage implements IStorage {
   private resources: Resource[] = [];
   private categories: Category[] = [];
   private favoriteRoutes: FavoriteRoute[] = [];
+  private products: Product[] = [];
   private nextId = 1;
+  public sessionStore: session.Store;
 
   constructor() {
+    this.sessionStore = new MemoryStore({
+      checkPeriod: 86400000 // Clear expired entries every 24h
+    });
     this.initializeData();
   }
 
@@ -308,7 +340,7 @@ export class MemStorage implements IStorage {
       }
     ];
 
-    // Initialize resources with proper content types and URLs
+    // Update resources initialization to match schema
     this.resources = [
       {
         id: this.getNextId(),
@@ -320,13 +352,25 @@ export class MemStorage implements IStorage {
         category: "architecture",
         contentUrl: "https://vietnam.vnanet.vn/vietnamese/kien-truc-co-do-hue-tinh-hoa-nghe-thuat-xay-dung-co-truyen-viet-nam-59451.html",
         thumbnailUrl: "/attached_assets/kien-truc.jpg",
-        metadata: {
-          format: "jpg",
-          resolution: "4K",
-          year: "2024",
-          count: "50+ images",
-          source: "Trung tâm Bảo tồn Di tích Cố đô Huế"
-        },
+        metadata: {},
+        culturalPeriod: "Nguyen Dynasty",
+        historicalContext: "19th Century",
+        relatedLocationId: 1,
+        tags: ["architecture", "heritage", "nguyen-dynasty"],
+        authorInfo: "Heritage Conservation Center",
+        sourceInfo: "National Archives",
+        languages: ["vi", "en"],
+        format: "jpg",
+        duration: null,
+        fileSize: "10MB",
+        dimensions: "4000x3000",
+        transcription: null,
+        modelFormat: null,
+        textureUrls: [],
+        previewUrls: [],
+        license: "CC BY-NC-SA",
+        quality: "4K",
+        interactiveData: null,
         createdAt: new Date()
       },
       {
@@ -345,6 +389,24 @@ export class MemStorage implements IStorage {
           language: "Vietnamese, English",
           author: "PGS.TS. Phan Thanh Hải"
         },
+        culturalPeriod: "Nguyen Dynasty",
+        historicalContext: "19th Century",
+        relatedLocationId: 1,
+        tags: ["art", "decoration", "nguyen-dynasty"],
+        authorInfo: "PGS.TS. Phan Thanh Hải",
+        sourceInfo: "Bao Tang Lich Su",
+        languages: ["vi", "en"],
+        format: "pdf",
+        duration: null,
+        fileSize: "5MB",
+        dimensions: null,
+        transcription: null,
+        modelFormat: null,
+        textureUrls: [],
+        previewUrls: [],
+        license: "CC BY-NC-SA",
+        quality: null,
+        interactiveData: null,
         createdAt: new Date()
       },
       {
@@ -363,6 +425,24 @@ export class MemStorage implements IStorage {
           quality: "Studio",
           performers: "Nhóm Nhã nhạc Cung đình Huế"
         },
+        culturalPeriod: "Nguyen Dynasty",
+        historicalContext: "19th-20th Century",
+        relatedLocationId: 1,
+        tags: ["music", "culture", "unesco"],
+        authorInfo: "Nhom Nha Nhac Cung Dinh Hue",
+        sourceInfo: "UNESCO",
+        languages: ["vi"],
+        format: "mp3, mp4",
+        duration: 3600000,
+        fileSize: "500MB",
+        dimensions: null,
+        transcription: null,
+        modelFormat: null,
+        textureUrls: [],
+        previewUrls: [],
+        license: "CC BY-NC-SA",
+        quality: "Studio",
+        interactiveData: null,
         createdAt: new Date()
       },
       {
@@ -382,6 +462,24 @@ export class MemStorage implements IStorage {
           year: "2024",
           author: "Trung tâm Bảo tồn Di tích Cố đô Huế"
         },
+        culturalPeriod: "Nguyen Dynasty",
+        historicalContext: "19th Century",
+        relatedLocationId: 1,
+        tags: ["architecture", "heritage", "nguyen-dynasty"],
+        authorInfo: "Heritage Conservation Center",
+        sourceInfo: "National Archives",
+        languages: ["vi", "en"],
+        format: "pdf",
+        duration: null,
+        fileSize: "10MB",
+        dimensions: null,
+        transcription: null,
+        modelFormat: null,
+        textureUrls: [],
+        previewUrls: [],
+        license: "CC BY-NC-SA",
+        quality: null,
+        interactiveData: null,
         createdAt: new Date()
       },
       {
@@ -401,60 +499,29 @@ export class MemStorage implements IStorage {
           year: "2024",
           publisher: "NXB Thuận Hóa"
         },
+        culturalPeriod: "Nguyen Dynasty",
+        historicalContext: "19th Century",
+        relatedLocationId: 1,
+        tags: ["festival", "culture", "nguyen-dynasty"],
+        authorInfo: "NXB Thuan Hoa",
+        sourceInfo: "Huong Xua Online",
+        languages: ["vi", "en"],
+        format: "pdf",
+        duration: null,
+        fileSize: "15MB",
+        dimensions: null,
+        transcription: null,
+        modelFormat: null,
+        textureUrls: [],
+        previewUrls: [],
+        license: "CC BY-NC-SA",
+        quality: null,
+        interactiveData: null,
         createdAt: new Date()
       }
     ];
 
-    // Initialize products with proper image URLs
-    this.products = [
-      {
-        id: this.getNextId(),
-        name: "Nón lá Huế thêu hoa",
-        description: "Nón lá truyền thống với hoa văn thêu tay",
-        price: "120000",
-        imageUrl: "/attached_assets/pexels-karen-w-lim-415441-1089318.jpg",
-        category: "traditional",
-        stock: "50"
-      },
-      {
-        id: this.getNextId(),
-        name: "Tranh thủy mặc Huế",
-        description: "Tranh thủy mặc vẽ cảnh Huế",
-        price: "250000",
-        imageUrl: "/attached_assets/pexels-uyen-bui-205258074-11937353.jpg",
-        category: "art",
-        stock: "20"
-      },
-      {
-        id: this.getNextId(),
-        name: "Áo dài truyền thống",
-        description: "Áo dài may thủ công với chất liệu lụa Huế",
-        price: "850000",
-        imageUrl: "/attached_assets/pexels-th-vinh-flute-822138648-21011475.jpg",
-        category: "clothing",
-        stock: "15"
-      },
-      {
-        id: this.getNextId(),
-        name: "Tượng rồng đá Huế",
-        description: "Tượng rồng đá điêu khắc thủ công",
-        price: "450000",
-        imageUrl: "/attached_assets/pexels-vinhb-29790971.jpg",
-        category: "sculpture",
-        stock: "10"
-      },
-      {
-        id: this.getNextId(),
-        name: "Trầm hương Huế",
-        description: "Trầm hương nguyên chất từ Huế",
-        price: "180000",
-        imageUrl: "/attached_assets/pexels-vietnam-photographer-27418892.jpg",
-        category: "traditional",
-        stock: "30"
-      }
-    ];
-
-    // Initialize categories
+    // Initialize categories without createdAt
     this.categories = [
       {
         id: this.getNextId(),
@@ -462,7 +529,8 @@ export class MemStorage implements IStorage {
         nameEn: "Heritage",
         description: "Các di sản văn hóa Huế",
         descriptionEn: "Hue cultural heritage",
-        createdAt: new Date()
+        parentId: 0,
+        iconUrl: null
       },
       {
         id: this.getNextId(),
@@ -470,7 +538,8 @@ export class MemStorage implements IStorage {
         nameEn: "Culture",
         description: "Văn hóa và phong tục Huế",
         descriptionEn: "Hue culture and customs",
-        createdAt: new Date()
+        parentId: 0,
+        iconUrl: null
       },
       {
         id: this.getNextId(),
@@ -478,7 +547,8 @@ export class MemStorage implements IStorage {
         nameEn: "Art",
         description: "Nghệ thuật truyền thống Huế",
         descriptionEn: "Hue traditional arts",
-        createdAt: new Date()
+        parentId: 0,
+        iconUrl: null
       }
     ];
 
