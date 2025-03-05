@@ -42,12 +42,34 @@ function ResourceMetadataSection({ title, content }: { title: string, content: R
 }
 
 const MediaViewer = ({ resource }: { resource: Resource }) => {
+  const formatImageUrl = (url: string | null) => {
+    if (!url) return 'https://placehold.co/600x400/png?text=No+Image';
+
+    // Handle relative paths
+    if (url.startsWith('./') || url.startsWith('../')) {
+      return new URL(url, window.location.origin).toString();
+    }
+
+    // Handle already absolute URLs
+    if (url.startsWith('http://') || url.startsWith('https://')) {
+      return url;
+    }
+
+    // Handle paths without protocol
+    if (url.startsWith('//')) {
+      return `https:${url}`;
+    }
+
+    // Default case: assume it's a relative path
+    return `${window.location.origin}/${url.replace(/^\//, '')}`;
+  };
+
   switch (resource.type) {
     case "image":
       return (
         <div className="relative bg-black/5 rounded-lg overflow-hidden">
           <img
-            src={resource.contentUrl || 'https://placehold.co/600x400/png?text=No+Image'}
+            src={formatImageUrl(resource.contentUrl)}
             alt={resource.title}
             className="w-full h-auto object-contain"
             loading="lazy"
@@ -59,11 +81,6 @@ const MediaViewer = ({ resource }: { resource: Resource }) => {
               }
             }}
           />
-          {resource.metadata?.dimensions && (
-            <div className="absolute bottom-2 right-2 bg-black/50 text-white px-2 py-1 text-xs rounded-full">
-              {resource.metadata.dimensions}
-            </div>
-          )}
         </div>
       );
 
@@ -71,16 +88,18 @@ const MediaViewer = ({ resource }: { resource: Resource }) => {
       return (
         <div className="relative bg-black rounded-lg overflow-hidden">
           <video
-            src={resource.videoUrl || resource.contentUrl}
+            src={formatImageUrl(resource.videoUrl || resource.contentUrl)}
             controls
             className="w-full"
-            poster={resource.thumbnailUrl}
+            poster={formatImageUrl(resource.thumbnailUrl)}
           >
-            <track
-              kind="captions"
-              src={resource.transcript}
-              label="Vietnamese"
-            />
+            {resource.transcript && (
+              <track
+                kind="captions"
+                src={resource.transcript}
+                label="Vietnamese"
+              />
+            )}
           </video>
         </div>
       );
@@ -90,14 +109,14 @@ const MediaViewer = ({ resource }: { resource: Resource }) => {
         <div className="space-y-4">
           {resource.thumbnailUrl && (
             <img
-              src={resource.thumbnailUrl}
+              src={formatImageUrl(resource.thumbnailUrl)}
               alt={resource.title}
               className="w-full rounded-lg"
             />
           )}
           <div className="bg-muted/30 p-4 rounded-lg">
             <audio
-              src={resource.contentUrl}
+              src={formatImageUrl(resource.contentUrl)}
               controls
               className="w-full"
             />
@@ -112,21 +131,32 @@ const MediaViewer = ({ resource }: { resource: Resource }) => {
       );
 
     case "document":
+    default:
       return (
-        <div className="space-y-4">
+        <div className="space-y-6">
           <div className="prose prose-sm dark:prose-invert max-w-none">
             {resource.textContent && (
-              <div dangerouslySetInnerHTML={{ __html: resource.textContent }} />
+              <div 
+                className="formatted-content"
+                dangerouslySetInnerHTML={{ __html: resource.textContent }} 
+              />
             )}
           </div>
           {resource.imageUrls && resource.imageUrls.length > 0 && (
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {resource.imageUrls.map((url, index) => (
-                <div key={index} className="relative aspect-video rounded-lg overflow-hidden">
+                <div key={index} className="relative aspect-video rounded-lg overflow-hidden bg-muted">
                   <img
-                    src={url}
-                    alt={`Hình ảnh ${index + 1}`}
+                    src={formatImageUrl(url)}
+                    alt={`${resource.title} - Hình ${index + 1}`}
                     className="absolute inset-0 w-full h-full object-cover hover:scale-105 transition-transform"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      const fallbackUrl = 'https://placehold.co/600x400/png?text=Image+Not+Found';
+                      if (target.src !== fallbackUrl) {
+                        target.src = fallbackUrl;
+                      }
+                    }}
                   />
                 </div>
               ))}
@@ -134,9 +164,6 @@ const MediaViewer = ({ resource }: { resource: Resource }) => {
           )}
         </div>
       );
-
-    default:
-      return null;
   }
 };
 
@@ -216,21 +243,6 @@ export default function ResourceDetails({
           </ul>
         )}
 
-        {metadata.ritualUse && renderSection(
-          "Nghi lễ sử dụng",
-          <p className="text-sm text-muted-foreground">{metadata.ritualUse}</p>
-        )}
-
-        {metadata.seasonalContext && renderSection(
-          "Bối cảnh theo mùa",
-          <p className="text-sm text-muted-foreground">{metadata.seasonalContext}</p>
-        )}
-
-        {metadata.traditionalPractices && renderSection(
-          "Thực hành truyền thống",
-          <p className="text-sm text-muted-foreground">{metadata.traditionalPractices}</p>
-        )}
-
         {metadata.conservation && renderSection(
           "Bảo tồn",
           <p className="text-sm text-muted-foreground">{metadata.conservation}</p>
@@ -244,7 +256,9 @@ export default function ResourceDetails({
       <SheetContent className="w-full sm:max-w-xl overflow-hidden">
         <SheetHeader className="space-y-1">
           <SheetTitle className="text-2xl">{resource.title}</SheetTitle>
-          <SheetDescription className="text-base">{resource.titleEn}</SheetDescription>
+          {resource.titleEn && (
+            <SheetDescription className="text-base">{resource.titleEn}</SheetDescription>
+          )}
         </SheetHeader>
 
         <ScrollArea className="h-[calc(100vh-8rem)] mt-6 pr-4">
@@ -253,49 +267,22 @@ export default function ResourceDetails({
               <MediaViewer resource={resource} />
             }
 
-            {/* Cultural Period Information */}
-            {resource.culturalPeriod && (
-              <motion.div
-                className="rounded-lg bg-primary/5 p-4"
-                initial="hidden"
-                animate="visible"
-                variants={fadeIn}
-              >
-                <div className="flex items-center gap-2 mb-2">
-                  <History className="h-4 w-4 text-primary" />
-                  <h4 className="font-medium">Thời kỳ văn hóa</h4>
-                </div>
-                <p className="text-sm text-muted-foreground">{resource.culturalPeriod}</p>
-              </motion.div>
-            )}
-
-
             {/* Description */}
-            <motion.div
-              className="space-y-4"
-              initial="hidden"
-              animate="visible"
-              variants={fadeIn}
-            >
-              <p className="text-sm leading-relaxed">{resource.description}</p>
-              {resource.descriptionEn && (
-                <p className="text-sm leading-relaxed text-muted-foreground">{resource.descriptionEn}</p>
-              )}
-            </motion.div>
-
-            {/* Historical Context */}
-            {resource.historicalContext && (
+            {resource.description && (
               <motion.div
-                className="space-y-2 border-t pt-4"
+                className="space-y-4"
                 initial="hidden"
                 animate="visible"
                 variants={fadeIn}
               >
-                <div className="flex items-center gap-2">
-                  <BookOpen className="h-4 w-4 text-primary" />
-                  <h4 className="font-medium">Bối cảnh lịch sử</h4>
+                <div className="prose prose-sm dark:prose-invert">
+                  <div dangerouslySetInnerHTML={{ __html: resource.description }} />
                 </div>
-                <p className="text-sm text-muted-foreground">{resource.historicalContext}</p>
+                {resource.descriptionEn && (
+                  <p className="text-sm leading-relaxed text-muted-foreground">
+                    {resource.descriptionEn}
+                  </p>
+                )}
               </motion.div>
             )}
 
@@ -318,30 +305,6 @@ export default function ResourceDetails({
                     </span>
                   ))}
                 </div>
-              </motion.div>
-            )}
-
-            {/* Related Location */}
-            {resource.relatedLocationId && (
-              <motion.div
-                className="space-y-2 border-t pt-4"
-                initial="hidden"
-                animate="visible"
-                variants={fadeIn}
-              >
-                <div className="flex items-center gap-2">
-                  <MapPin className="h-4 w-4 text-primary" />
-                  <h4 className="font-medium">Địa điểm liên quan</h4>
-                </div>
-                <Button
-                  variant="outline"
-                  className="w-full justify-start"
-                  onClick={() => {
-                    // Handle navigation to location
-                  }}
-                >
-                  Xem trên bản đồ
-                </Button>
               </motion.div>
             )}
 
@@ -372,44 +335,6 @@ export default function ResourceDetails({
                 </div>
               )}
             </motion.div>
-
-            {/* Languages */}
-            {resource.languages && resource.languages.length > 0 && (
-              <motion.div
-                className="space-y-2 border-t pt-4"
-                initial="hidden"
-                animate="visible"
-                variants={fadeIn}
-              >
-                <div className="flex items-center gap-2">
-                  <Globe className="h-4 w-4 text-primary" />
-                  <h4 className="font-medium">Ngôn ngữ</h4>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {resource.languages.map((language, index) => (
-                    <span key={index} className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">
-                      {language}
-                    </span>
-                  ))}
-                </div>
-              </motion.div>
-            )}
-
-            {/* Technical Metadata */}
-            {resource.metadata && (
-              <motion.div
-                className="space-y-4 border-t pt-4"
-                initial="hidden"
-                animate="visible"
-                variants={fadeIn}
-              >
-                <div className="flex items-center gap-2">
-                  <Info className="h-4 w-4 text-primary" />
-                  <h4 className="font-medium">Thông tin chi tiết</h4>
-                </div>
-                {formatMetadata(resource.metadata as ResourceMetadata)}
-              </motion.div>
-            )}
 
             {/* Action Buttons */}
             <motion.div

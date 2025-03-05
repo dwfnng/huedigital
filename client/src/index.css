@@ -23,6 +23,81 @@ body {
   background-blend-mode: overlay;
 }
 
+/* Resource content styles */
+.formatted-content {
+  @apply space-y-4 text-foreground;
+}
+
+.formatted-content h1 {
+  @apply text-2xl font-bold mt-6 mb-4;
+}
+
+.formatted-content h2 {
+  @apply text-xl font-bold mt-5 mb-3;
+}
+
+.formatted-content h3 {
+  @apply text-lg font-bold mt-4 mb-2;
+}
+
+.formatted-content p {
+  @apply leading-relaxed mb-4;
+}
+
+.formatted-content ul,
+.formatted-content ol {
+  @apply pl-6 mb-4 space-y-2;
+}
+
+.formatted-content ul {
+  @apply list-disc;
+}
+
+.formatted-content ol {
+  @apply list-decimal;
+}
+
+.formatted-content blockquote {
+  @apply border-l-4 border-primary/30 pl-4 my-4 italic;
+}
+
+.formatted-content img {
+  @apply rounded-lg mx-auto my-4 max-w-full h-auto;
+}
+
+.formatted-content figure {
+  @apply my-6;
+}
+
+.formatted-content figcaption {
+  @apply text-sm text-center text-muted-foreground mt-2;
+}
+
+.formatted-content pre {
+  @apply bg-muted p-4 rounded-lg overflow-x-auto my-4;
+}
+
+.formatted-content code {
+  @apply bg-muted px-1.5 py-0.5 rounded text-sm;
+}
+
+.formatted-content table {
+  @apply w-full border-collapse my-4;
+}
+
+.formatted-content th,
+.formatted-content td {
+  @apply border border-border p-2 text-sm;
+}
+
+.formatted-content th {
+  @apply bg-muted font-medium;
+}
+
+.formatted-content a {
+  @apply text-primary hover:underline;
+}
+
 /* Leaflet map styles */
 .leaflet-container {
   width: 100%;
@@ -35,7 +110,7 @@ body {
 }
 
 .leaflet-popup-content {
-  @apply p-2 m-0;
+  @apply p-0 m-0 min-w-[120px] max-w-[200px] text-center;
 }
 
 .leaflet-popup-tip {
@@ -52,11 +127,13 @@ body {
 }
 
 .leaflet-marker-icon {
-  @apply transition-transform duration-200;
+  @apply transition-all duration-300;
 }
 
 .leaflet-marker-icon:hover {
-  @apply scale-110;
+  @apply scale-110 -translate-y-1;
+  filter: drop-shadow(0 4px 3px rgb(0 0 0 / 0.07)) 
+          drop-shadow(0 2px 2px rgb(0 0 0 / 0.06));
 }
 
 .gradient-overlay {
@@ -67,25 +144,6 @@ body {
     rgba(var(--primary-rgb), 0.04) 50%,
     rgba(var(--primary-rgb), 0.02) 100%
   );
-}
-
-/* Enhanced Leaflet map styles */
-.leaflet-container {
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-}
-
-.leaflet-popup-content-wrapper {
-  @apply bg-background/95 backdrop-blur-sm border border-border shadow-lg rounded-lg;
-}
-
-.leaflet-popup-content {
-  @apply p-0 m-0 min-w-[200px];
-}
-
-.leaflet-popup-tip {
-  @apply bg-background/95;
 }
 
 .leaflet-control-layers {
@@ -137,6 +195,7 @@ body {
   @apply bg-primary/5 !important;
 }
 
+
 /* Custom popup enhancements */
 .custom-popup .leaflet-popup-content-wrapper {
   @apply bg-background/95 backdrop-blur-sm border border-border shadow-lg rounded-lg;
@@ -150,17 +209,6 @@ body {
 .custom-popup .leaflet-popup-tip {
   @apply bg-background/95;
 }
-
-.leaflet-marker-icon {
-  @apply transition-all duration-300;
-}
-
-.leaflet-marker-icon:hover {
-  @apply scale-110 -translate-y-1;
-  filter: drop-shadow(0 4px 3px rgb(0 0 0 / 0.07)) 
-          drop-shadow(0 2px 2px rgb(0 0 0 / 0.06));
-}
-
 
 /* Game-specific backgrounds with enhanced gradients */
 .heritage-section {

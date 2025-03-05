@@ -7,7 +7,7 @@ import {
   Video,
   Music,
   GraduationCap,
-  Box,
+  Book,
   Calendar,
   Clock
 } from "lucide-react";
@@ -28,10 +28,10 @@ const getResourceIcon = (type: string) => {
       return <Video className="h-6 w-6" />;
     case "audio":
       return <Music className="h-6 w-6" />;
-    case "research":
+    case "research_paper":
       return <GraduationCap className="h-6 w-6" />;
-    case "3d_model":
-      return <Box className="h-6 w-6" />;
+    case "article":
+      return <Book className="h-6 w-6" />;
     default:
       return <FileText className="h-6 w-6" />;
   }
@@ -53,6 +53,28 @@ const item = {
 };
 
 export default function ResourceList({ resources, onResourceSelect }: ResourceListProps) {
+  const formatImageUrl = (url: string | null) => {
+    if (!url) return 'https://placehold.co/600x400/png?text=No+Image';
+
+    // Handle relative paths
+    if (url.startsWith('./') || url.startsWith('../')) {
+      return new URL(url, window.location.origin).toString();
+    }
+
+    // Handle already absolute URLs
+    if (url.startsWith('http://') || url.startsWith('https://')) {
+      return url;
+    }
+
+    // Handle paths without protocol
+    if (url.startsWith('//')) {
+      return `https:${url}`;
+    }
+
+    // Default case: assume it's a relative path
+    return `${window.location.origin}/${url.replace(/^\//, '')}`;
+  };
+
   return (
     <ScrollArea className="h-[calc(100vh-16rem)]">
       <motion.div
@@ -74,11 +96,11 @@ export default function ResourceList({ resources, onResourceSelect }: ResourceLi
                   </div>
                   <div className="flex-1 min-w-0">
                     {resource.thumbnailUrl && (
-                      <div className="mb-3">
+                      <div className="mb-3 relative aspect-video rounded-lg overflow-hidden">
                         <img
-                          src={resource.thumbnailUrl || 'https://placehold.co/600x400/png?text=No+Image'}
+                          src={formatImageUrl(resource.thumbnailUrl)}
                           alt={resource.title}
-                          className="w-full h-32 object-cover rounded-lg"
+                          className="absolute inset-0 w-full h-full object-cover"
                           onError={(e) => {
                             const target = e.target as HTMLImageElement;
                             const fallbackUrl = 'https://placehold.co/600x400/png?text=Image+Not+Found';
@@ -99,16 +121,16 @@ export default function ResourceList({ resources, onResourceSelect }: ResourceLi
                       </p>
                     )}
                     <div className="flex items-center gap-4 mt-3 text-xs text-muted-foreground">
-                      {resource.metadata?.format && (
+                      {resource.format && (
                         <div className="flex items-center gap-1">
                           <FileText className="h-3 w-3" />
-                          {resource.metadata.format.toUpperCase()}
+                          {resource.format.toUpperCase()}
                         </div>
                       )}
-                      {resource.metadata?.duration && (
+                      {resource.duration && (
                         <div className="flex items-center gap-1">
                           <Clock className="h-3 w-3" />
-                          {resource.metadata.duration}
+                          {resource.duration}
                         </div>
                       )}
                       {resource.createdAt && (
