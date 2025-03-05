@@ -66,6 +66,14 @@ const cases: Case[] = [
         consequence: "Quá trình điều tra kéo dài có thể gây bất ổn, nhưng kết quả sẽ có tính thuyết phục cao.",
         score: 10,
         historicalInfo: "Triều Nguyễn có bộ máy hành chính chặt chẽ với hệ thống lưu trữ hồ sơ đất đai chi tiết."
+      },
+      {
+        id: "favor_a",
+        text: "Phán quyết theo hướng có lợi cho gia tộc A",
+        reasoning: "Tôn trọng sắc phong của tiên đế",
+        consequence: "Gia tộc B bất mãn, có thể gây mất ổn định xã hội",
+        score: 5,
+        historicalInfo: "Các sắc phong thời Gia Long thường được coi là bằng chứng pháp lý quan trọng."
       }
     ],
     historicalBackground: {
@@ -101,12 +109,79 @@ const cases: Case[] = [
         consequence: "Tạo tiền lệ tốt cho việc chống tham nhũng, nhưng có thể ảnh hưởng đến sự ổn định của bộ máy hành chính.",
         score: 9,
         historicalInfo: "Vua Minh Mạng nổi tiếng với các biện pháp chống tham nhũng quyết liệt."
+      },
+      {
+        id: "reform",
+        text: "Cải cách hệ thống thu thuế",
+        reasoning: "Giải quyết vấn đề từ gốc rễ",
+        consequence: "Mất thời gian để triển khai, nhưng mang lại hiệu quả lâu dài",
+        score: 10,
+        historicalInfo: "Triều Nguyễn đã thực hiện nhiều cải cách quan trọng trong hệ thống thuế khóa."
+      },
+      {
+        id: "transfer",
+        text: "Điều chuyển công tác và phạt nhẹ",
+        reasoning: "Duy trì ổn định và tránh xáo trộn lớn",
+        consequence: "Không đủ sức răn đe, có thể khuyến khích hành vi tương tự",
+        score: 4,
+        historicalInfo: "Việc điều chuyển công tác thường được áp dụng cho các vi phạm nhỏ."
       }
     ],
     historicalBackground: {
       title: "Cải cách hành chính thời Minh Mạng",
       content: "Vua Minh Mạng đã thực hiện nhiều cải cách để hiện đại hóa bộ máy hành chính và chống tham nhũng.",
       relevance: "Việc xử lý tham nhũng phản ánh quyết tâm cải cách và hiện đại hóa đất nước của triều Nguyễn."
+    }
+  },
+  {
+    id: "foreign_trade",
+    title: "Chính sách thương mại",
+    description: "Thương nhân phương Tây đề nghị mở rộng quan hệ buôn bán.",
+    context: "Đoàn thương nhân từ các nước phương Tây mang nhiều hàng hóa mới lạ và đề nghị thiết lập quan hệ thương mại thường xuyên.",
+    evidence: [
+      {
+        text: "Báo cáo về lợi ích kinh tế từ việc buôn bán",
+        type: "document"
+      },
+      {
+        text: "Quan sát về kỹ thuật và vũ khí tiên tiến",
+        type: "physical"
+      },
+      {
+        text: "Lời cảnh báo từ các quan văn thần",
+        type: "testimony"
+      }
+    ],
+    choices: [
+      {
+        id: "open",
+        text: "Chấp nhận mở cửa có kiểm soát",
+        reasoning: "Tận dụng cơ hội phát triển kinh tế và học hỏi kỹ thuật mới",
+        consequence: "Thúc đẩy phát triển kinh tế nhưng có thể ảnh hưởng đến truyền thống",
+        score: 8,
+        historicalInfo: "Một số cảng thị của Việt Nam đã từng là điểm giao thương quốc tế sôi động."
+      },
+      {
+        id: "restrict",
+        text: "Hạn chế giao thương, chỉ cho phép ở một số cảng",
+        reasoning: "Duy trì kiểm soát và bảo vệ văn hóa truyền thống",
+        consequence: "Giảm thiểu rủi ro nhưng có thể bỏ lỡ cơ hội phát triển",
+        score: 6,
+        historicalInfo: "Chính sách bế quan tỏa cảng từng được áp dụng trong lịch sử Việt Nam."
+      },
+      {
+        id: "reject",
+        text: "Từ chối đề nghị thương mại",
+        reasoning: "Bảo vệ chủ quyền và văn hóa truyền thống",
+        consequence: "Tránh được ảnh hưởng nước ngoài nhưng có thể dẫn đến cô lập",
+        score: 4,
+        historicalInfo: "Chính sách đóng cửa đã gây ra nhiều hạn chế trong phát triển đất nước."
+      }
+    ],
+    historicalBackground: {
+      title: "Quan hệ thương mại thời Nguyễn",
+      content: "Triều Nguyễn có chính sách thương mại thận trọng với phương Tây, vừa muốn phát triển kinh tế vừa lo ngại ảnh hưởng văn hóa và chính trị.",
+      relevance: "Quyết định về chính sách thương mại có ảnh hưởng sâu rộng đến sự phát triển của đất nước."
     }
   }
 ];

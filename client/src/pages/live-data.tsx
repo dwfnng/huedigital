@@ -74,12 +74,12 @@ export default function LiveDataPage() {
     refetchInterval: 60000
   });
 
-  const getTrafficStatusColor = (status: string) => {
+  const getTrafficStatusIcon = (status: string) => {
     switch (status) {
-      case 'high': return 'text-red-500';
-      case 'medium': return 'text-yellow-500';
-      case 'low': return 'text-green-500';
-      default: return 'text-muted-foreground';
+      case 'high': return <span className="flex items-center text-red-500">● Đông đúc</span>;
+      case 'medium': return <span className="flex items-center text-yellow-500">● Bình thường</span>;
+      case 'low': return <span className="flex items-center text-green-500">● Thông thoáng</span>;
+      default: return <span className="text-muted-foreground">○ Không xác định</span>;
     }
   };
 
@@ -159,10 +159,7 @@ export default function LiveDataPage() {
                       <div key={route.id} className="border-b pb-3 last:border-0 last:pb-0">
                         <div className="flex justify-between items-center mb-1">
                           <h3 className="font-medium">{route.name}</h3>
-                          <span className={getTrafficStatusColor(route.status)}>
-                            {route.status === 'high' ? '⚫ Đông đúc' :
-                             route.status === 'medium' ? '⚫ Bình thường' : '⚫ Thông thoáng'}
-                          </span>
+                          {getTrafficStatusIcon(route.status)}
                         </div>
                         <p className="text-sm text-muted-foreground">{route.description}</p>
                       </div>
