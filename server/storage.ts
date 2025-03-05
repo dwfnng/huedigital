@@ -2,7 +2,7 @@ import {
   type Location, type User, type Discussion, type Comment, type Contribution, type Review,
   type InsertLocation, type InsertUser, type InsertDiscussion, type InsertComment,
   type InsertContribution, type InsertReview, type Resource, type Category, type InsertResource, type InsertCategory,
-  type FavoriteRoute, type InsertFavoriteRoute, type Product, type InsertProduct
+  type FavoriteRoute, type InsertFavoriteRoute
 } from "@shared/schema";
 
 export interface IStorage {
@@ -81,7 +81,6 @@ export class MemStorage implements IStorage {
   private resources: Resource[] = [];
   private categories: Category[] = [];
   private favoriteRoutes: FavoriteRoute[] = [];
-  private products: Product[] = [];
   private nextId = 1;
 
   constructor() {
@@ -401,71 +400,6 @@ export class MemStorage implements IStorage {
           language: "Vietnamese, English",
           year: "2024",
           publisher: "NXB Thuận Hóa"
-        },
-        createdAt: new Date()
-      },
-      {
-        id: this.getNextId(),
-        title: "Kiến trúc cung đình triều Nguyễn",
-        titleEn: "Nguyen Dynasty Court Architecture",
-        description: "Nghiên cứu về đặc điểm kiến trúc cung đình thời Nguyễn, từ bố cục tổng thể đến chi tiết trang trí",
-        descriptionEn: "Research on Nguyen Dynasty court architectural characteristics, from overall layout to decorative details",
-        type: "academic_paper",
-        category: "architectural_heritage",
-        contentUrl: "/resources/architecture/nguyen-dynasty-court",
-        thumbnailUrl: "/attached_assets/kien-truc.jpg",
-        metadata: {
-          format: "pdf",
-          pages: "45",
-          language: "Vietnamese, English",
-          year: "2024",
-          publisher: "Trung tâm Bảo tồn Di tích Cố đô Huế"
-        },
-        academicLevel: "graduate",
-        researchDomain: "architecture",
-        culturalPeriod: "Nguyễn Dynasty (1802-1945)",
-        historicalContext: "Giai đoạn xây dựng và phát triển kinh đô Huế",
-        learningObjectives: [
-          "Hiểu về nguyên tắc quy hoạch không gian cung đình Huế",
-          "Phân tích đặc điểm kiến trúc thời Nguyễn",
-          "Nắm được ý nghĩa văn hóa trong trang trí cung đình"
-        ],
-        createdAt: new Date()
-      },
-      {
-        id: this.getNextId(),
-        title: "Nhã nhạc cung đình Huế - Di sản văn hóa phi vật thể",
-        titleEn: "Hue Royal Court Music - Intangible Cultural Heritage",
-        description: "Tổng quan về nghệ thuật Nhã nhạc, từ lịch sử hình thành đến vai trò trong nghi lễ cung đình",
-        descriptionEn: "Overview of Nha Nhac art, from its historical formation to its role in court ceremonies",
-        type: "research_report",
-        category: "performing_arts",
-        contentUrl: "/resources/music/nha-nhac",
-        thumbnailUrl: "/attached_assets/nha-nhac.jpg",
-        metadata: {
-          format: "pdf",
-          pages: "60",
-          language: "Vietnamese, English",
-          year: "2024",
-          publisher: "Viện Nghiên cứu Âm nhạc Việt Nam"
-        },
-        culturalSignificance: "Di sản văn hóa phi vật thể đại diện của nhân loại được UNESCO công nhận năm 2003",
-        createdAt: new Date()
-      },
-      {
-        id: this.getNextId(),
-        title: "Trang phục cung đình triều Nguyễn",
-        titleEn: "Nguyen Dynasty Court Costumes",
-        description: "Nghiên cứu về trang phục cung đình, từ chất liệu, kiểu dáng đến ý nghĩa văn hóa",
-        type: "cultural_analysis",
-        category: "imperial_artifacts",
-        contentUrl: "/resources/costume/nguyen-dynasty",
-        thumbnailUrl: "/attached_assets/trang-phuc.jpg",
-        metadata: {
-          format: "pdf",
-          pages: "35",
-          language: "Vietnamese, English",
-          year: "2024"
         },
         createdAt: new Date()
       }

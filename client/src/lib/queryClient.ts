@@ -1,4 +1,11 @@
-import { QueryClient } from "@tanstack/react-query";
+import { QueryClient, QueryFunction } from "@tanstack/react-query";
+
+async function throwIfResNotOk(res: Response) {
+  if (!res.ok) {
+    const text = (await res.text()) || res.statusText;
+    throw new Error(`${res.status}: ${text}`);
+  }
+}
 
 export async function apiRequest(
   method: string,
@@ -12,23 +19,39 @@ export async function apiRequest(
     credentials: "include",
   });
 
-  if (!res.ok) {
-    const text = (await res.text()) || res.statusText;
-    throw new Error(`${res.status}: ${text}`);
-  }
-
+  await throwIfResNotOk(res);
   return res;
 }
+
+type UnauthorizedBehavior = "returnNull" | "throw";
+export const getQueryFn: <T>(options: {
+  on401: UnauthorizedBehavior;
+}) => QueryFunction<T> =
+  ({ on401: unauthorizedBehavior }) =>
+  async ({ queryKey }) => {
+    const res = await fetch(queryKey[0] as string, {
+      credentials: "include",
+    });
+
+    if (unauthorizedBehavior === "returnNull" && res.status === 401) {
+      return null;
+    }
+
+    await throwIfResNotOk(res);
+    return await res.json();
+  };
 
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: Infinity, // Keep data fresh forever
-      cacheTime: Infinity, // Never delete from cache
-      retry: false, // Don't retry failed requests
+      queryFn: getQueryFn({ on401: "throw" }),
+      refetchInterval: false,
       refetchOnWindowFocus: false,
-      refetchOnReconnect: false,
-      refetchOnMount: false
+      staleTime: Infinity,
+      retry: false,
+    },
+    mutations: {
+      retry: false,
     },
   },
 });
