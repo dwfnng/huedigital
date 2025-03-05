@@ -228,7 +228,6 @@ export default function Map({ onMarkerClick }: MapProps) {
               </div>
             )}
           </div>
-
           <ScrollArea className="h-[calc(100%-5rem)] custom-scrollbar">
             <div className="divide-y">
               {filteredLocations.map((location, index) => (

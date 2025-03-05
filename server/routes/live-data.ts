@@ -1,112 +1,104 @@
 import express from "express";
 import { storage } from "../storage";
-import { z } from "zod";
-import fetch from "node-fetch";
+import { fetchWeatherData } from "../services/weatherService";
 
 const router = express.Router();
-
-// Constants
-const WEATHER_CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
-const TRAFFIC_UPDATE_INTERVAL = 15 * 60 * 1000; // 15 minutes
-const HUE_COORDINATES = { lat: 16.4637, lon: 107.5909 };
-
-// Cache storage
-let weatherCache = {
-  data: null as any,
-  timestamp: 0
-};
 
 // Weather data endpoint
 router.get("/api/weather", async (_req, res) => {
   try {
-    const now = Date.now();
+    const weatherData = await fetchWeatherData();
 
-    // Return cached data if still valid
-    if (weatherCache.data && (now - weatherCache.timestamp) < WEATHER_CACHE_DURATION) {
-      return res.json(weatherCache.data);
-    }
-
-    console.log("Fetching new weather data...");
-
-    // Fetch new weather data
-    const response = await fetch(
-      `https://api.openweathermap.org/data/2.5/weather?lat=${HUE_COORDINATES.lat}&lon=${HUE_COORDINATES.lon}&units=metric&appid=${process.env.OPENWEATHER_API_KEY}&lang=vi`
-    );
-
-    if (!response.ok) {
-      console.error("Weather API error:", await response.text());
-      throw new Error("Failed to fetch weather data");
-    }
-
-    const data = await response.json();
-    console.log("Weather data received:", data);
-
-    // Format the weather data
-    const weatherData = {
-      main: {
-        temp: data.main.temp,
-        humidity: data.main.humidity,
-        pressure: data.main.pressure
-      },
-      weather: [{
-        description: data.weather[0].description,
-        icon: data.weather[0].icon
-      }],
-      wind: {
-        speed: data.wind.speed
-      }
+    // Format the weather data for frontend
+    const formattedWeather = {
+      temp: weatherData.main.temp,
+      humidity: weatherData.main.humidity,
+      description: weatherData.weather[0].description,
+      windSpeed: weatherData.wind.speed,
+      icon: weatherData.weather[0].icon,
+      lastUpdated: new Date(weatherData.dt * 1000).toISOString()
     };
 
-    // Update cache
-    weatherCache = {
-      data: weatherData,
-      timestamp: now
-    };
-
-    res.json(weatherData);
+    res.json(formattedWeather);
   } catch (error) {
-    console.error("Error fetching weather data:", error);
-    res.status(500).json({ message: "Error fetching weather data" });
+    console.error("Weather API error:", error);
+    res.status(503).json({ 
+      error: "Không thể lấy dữ liệu thời tiết",
+      message: "Vui lòng thử lại sau"
+    });
   }
 });
 
-// Traffic data endpoint
+// Traffic data endpoint - enhanced with more details
 router.get("/api/traffic", async (_req, res) => {
-  try {
-    const trafficData = {
-      level: "medium" as const,
-      lastUpdated: new Date().toISOString()
-    };
-    res.json(trafficData);
-  } catch (error) {
-    console.error("Error fetching traffic data:", error);
-    res.status(500).json({ message: "Error fetching traffic data" });
-  }
+  const trafficData = {
+    level: "medium" as const,
+    lastUpdated: new Date().toISOString(),
+    routes: [
+      {
+        id: "route-1",
+        name: "Đường Lê Duẩn",
+        status: "high",
+        description: "Đông đúc do giờ cao điểm"
+      },
+      {
+        id: "route-2",
+        name: "Đường Hùng Vương",
+        status: "medium",
+        description: "Lưu thông bình thường"
+      },
+      {
+        id: "route-3",
+        name: "Cầu Trường Tiền",
+        status: "low",
+        description: "Thông thoáng"
+      }
+    ]
+  };
+  res.json(trafficData);
 });
 
 // Visitor data endpoint
 router.get("/api/visitors", async (_req, res) => {
-  try {
-    const visitorData = {
-      count: Math.floor(Math.random() * 1000) + 500, // Simulated data
-      trend: "up" as const,
-      lastUpdated: new Date().toISOString()
-    };
-    res.json(visitorData);
-  } catch (error) {
-    console.error("Error fetching visitor data:", error);
-    res.status(500).json({ message: "Error fetching visitor data" });
-  }
+  const visitorData = {
+    count: Math.floor(Math.random() * 1000) + 500,
+    trend: "up" as const,
+    lastUpdated: new Date().toISOString()
+  };
+  res.json(visitorData);
 });
 
-// Popular locations stats
+// Events endpoint
+router.get("/api/events", async (_req, res) => {
+  const events = [
+    {
+      id: "evt-1",
+      title: "Festival Huế 2024",
+      startDate: "2024-04-01",
+      endDate: "2024-04-07",
+      location: "Đại Nội",
+      description: "Lễ hội văn hóa nghệ thuật quốc tế"
+    },
+    {
+      id: "evt-2",
+      title: "Triển lãm Nghệ thuật Cung đình",
+      startDate: "2024-03-15",
+      endDate: "2024-03-20",
+      location: "Bảo tàng Mỹ thuật Huế",
+      description: "Trưng bày các tác phẩm nghệ thuật thời Nguyễn"
+    }
+  ];
+  res.json(events);
+});
+
+// Location stats endpoint
 router.get("/api/locations/stats", async (_req, res) => {
   try {
     const locations = await storage.getAllLocations();
     const popularLocations = locations.slice(0, 5).map(location => ({
       id: location.id,
       name: location.name,
-      visitorCount: Math.floor(Math.random() * 200) + 100, // Simulated data
+      visitorCount: Math.floor(Math.random() * 200) + 100,
       trafficLevel: ["low", "medium", "high"][Math.floor(Math.random() * 3)] as "low" | "medium" | "high"
     }));
     res.json(popularLocations);

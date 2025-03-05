@@ -1,22 +1,19 @@
-
 import axios from 'axios';
 
-const API_KEY = process.env.OPENWEATHER_API_KEY || "ef0b0973b783e0614ac87612ec04344b";
-const CITY = 'Hue,vn';
+// Constants
+const CACHE_DURATION = 10 * 60 * 1000; // 10 minutes in milliseconds
+const HUE_CITY_ID = 1580240; // City ID for Huế
+const API_KEY = process.env.OPENWEATHERMAP_API_KEY;
 
-// Fetch weather data from OpenWeatherMap API
-export const fetchWeatherData = async () => {
-  try {
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=${CITY}&units=metric&appid=${API_KEY}&lang=vi`;
-    console.log(`Fetching weather data from: ${url}`);
-    
-    const response = await axios.get(url);
-    console.log('Weather data received:', response.data);
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching weather data:', error);
-    throw error;
-  }
+// Cache structure
+interface WeatherCache {
+  data: WeatherResponseFull | null;
+  timestamp: number;
+}
+
+let weatherCache: WeatherCache = {
+  data: null,
+  timestamp: 0
 };
 
 interface WeatherResponseFull {
@@ -72,24 +69,48 @@ interface WeatherResponseFull {
   cod: number;
 }
 
-export async function getWeatherData() {
+export async function getWeatherData(): Promise<WeatherResponseFull> {
   try {
+    const now = Date.now();
+
+    // Return cached data if still valid
+    if (weatherCache.data && (now - weatherCache.timestamp) < CACHE_DURATION) {
+      console.log("Returning cached weather data");
+      return weatherCache.data;
+    }
+
     console.log("Fetching new weather data...");
-    const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${CITY}&units=metric&appid=${API_KEY}`);
+    const url = `https://api.openweathermap.org/data/2.5/weather?id=${HUE_CITY_ID}&units=metric&appid=${API_KEY}&lang=vi`;
+
+    const response = await axios.get(url);
     const data = response.data as WeatherResponseFull;
-    
-    // Kiểm tra dữ liệu nhận được
+
+    // Validate data
     if (!data || !data.main || !data.weather || data.weather.length === 0) {
-      console.error("Received incomplete weather data:", data);
       throw new Error("Received incomplete weather data from API");
     }
-    
-    console.log("Weather data received:", JSON.stringify(data));
-    
-    // Trả về dữ liệu đầy đủ từ API
+
+    // Update cache
+    weatherCache = {
+      data,
+      timestamp: now
+    };
+
+    console.log("Weather data fetched and cached successfully");
     return data;
   } catch (error) {
     console.error("Error fetching weather data:", error);
-    throw error;
+
+    // If we have cached data, return it even if expired
+    if (weatherCache.data) {
+      console.log("Returning expired cached data due to error");
+      return weatherCache.data;
+    }
+
+    throw new Error("Failed to fetch weather data and no cached data available");
   }
+}
+
+export async function fetchWeatherData() {
+  return getWeatherData();
 }
