@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { LayersControl, LayerGroup } from 'react-leaflet';
 import { Card, CardContent } from "@/components/ui/card";
@@ -8,29 +8,16 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Search, Navigation, CornerDownLeft, Star, Map as MapIcon } from "lucide-react";
+import { Search, Navigation, CornerDownLeft, Star, Maximize2, Minimize2 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import type { Location, InsertFavoriteRoute } from "@shared/schema";
-import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, useMap, ZoomControl } from 'react-leaflet';
 import { DEFAULT_CENTER, DEFAULT_ZOOM, MAP_STYLES, createMarkerIcon } from "@/lib/mapUtils";
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-routing-machine/dist/leaflet-routing-machine.css';
 import L from 'leaflet';
 import 'leaflet-routing-machine';
 import { apiRequest } from "@/lib/queryClient";
-
-// Fix for default marker icons
-delete (L.Icon.Default.prototype as any)._getIconUrl;
-// Fix marker icon paths
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
-  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png',
-  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png'
-});
-
-interface MapProps {
-  onMarkerClick?: (location: Location) => void;
-}
 
 // Custom hook for routing control
 function useRoutingControl(map: L.Map | null, start?: [number, number], end?: [number, number]) {
@@ -46,6 +33,7 @@ function useRoutingControl(map: L.Map | null, start?: [number, number], end?: [n
       ],
       routeWhileDragging: true,
       showAlternatives: true,
+      fitSelectedRoutes: true,
       lineOptions: {
         styles: [{ color: '#6366f1', weight: 4 }],
         extendToWaypoints: true,
@@ -53,7 +41,8 @@ function useRoutingControl(map: L.Map | null, start?: [number, number], end?: [n
       },
       altLineOptions: {
         styles: [{ color: '#94a3b8', weight: 3, opacity: 0.7 }]
-      }
+      },
+      createMarker: () => null // Don't create markers for waypoints
     }).addTo(map);
 
     setRoutingControl(control);
@@ -68,7 +57,6 @@ function useRoutingControl(map: L.Map | null, start?: [number, number], end?: [n
   return routingControl;
 }
 
-// RoutingMachine component now just handles the routing visualization
 function RoutingMachine({ start, end }: { start?: [number, number]; end?: [number, number] }) {
   const map = useMap();
   useRoutingControl(map, start, end);
@@ -78,12 +66,15 @@ function RoutingMachine({ start, end }: { start?: [number, number]; end?: [numbe
 function FlyToMarker({ position }: { position: [number, number] }) {
   const map = useMap();
   useEffect(() => {
-    map.flyTo(position, 17);
+    map.flyTo(position, 17, {
+      duration: 1.5,
+      easeLinearity: 0.25
+    });
   }, [map, position]);
   return null;
 }
 
-export default function Map({ onMarkerClick }: MapProps) {
+export default function Map({ onMarkerClick }: { onMarkerClick?: (location: Location) => void }) {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
   const [filteredLocations, setFilteredLocations] = useState<Location[]>([]);
@@ -93,55 +84,29 @@ export default function Map({ onMarkerClick }: MapProps) {
   const [isSaveRouteDialogOpen, setIsSaveRouteDialogOpen] = useState(false);
   const [routeName, setRouteName] = useState("");
   const [routeDescription, setRouteDescription] = useState("");
+  const [isExpanded, setIsExpanded] = useState(false);
   const queryClient = useQueryClient();
 
   const { data: locations = [] } = useQuery<Location[]>({
     queryKey: ["/api/locations"],
   });
 
-  const { data: favoriteRoutes = [] } = useQuery({
-    queryKey: ["/api/favorite-routes"],
-  });
+  // Memoize filtered locations
+  const memoizedFilteredLocations = useMemo(() => {
+    if (searchQuery.trim() === "") return locations;
 
-  const saveRouteMutation = useMutation({
-    mutationFn: (route: InsertFavoriteRoute) =>
-      apiRequest("/api/favorite-routes", {
-        method: "POST",
-        body: route,
-      }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/favorite-routes"] });
-      toast({
-        title: "Lưu thành công",
-        description: "Tuyến đường đã được lưu vào danh sách yêu thích",
-      });
-      setIsSaveRouteDialogOpen(false);
-      setRouteName("");
-      setRouteDescription("");
-    },
-    onError: () => {
-      toast({
-        title: "Lỗi",
-        description: "Không thể lưu tuyến đường. Vui lòng thử lại sau.",
-        variant: "destructive",
-      });
-    },
-  });
+    const query = searchQuery.toLowerCase();
+    return locations.filter(location =>
+      location.name.toLowerCase().includes(query) ||
+      location.nameEn.toLowerCase().includes(query) ||
+      location.description.toLowerCase().includes(query) ||
+      location.descriptionEn.toLowerCase().includes(query)
+    );
+  }, [searchQuery, locations]);
 
   useEffect(() => {
-    if (searchQuery.trim() === "") {
-      setFilteredLocations(locations);
-    } else {
-      const query = searchQuery.toLowerCase();
-      const filtered = locations.filter(location =>
-        location.name.toLowerCase().includes(query) ||
-        location.nameEn.toLowerCase().includes(query) ||
-        location.description.toLowerCase().includes(query) ||
-        location.descriptionEn.toLowerCase().includes(query)
-      );
-      setFilteredLocations(filtered);
-    }
-  }, [searchQuery, locations]);
+    setFilteredLocations(memoizedFilteredLocations);
+  }, [memoizedFilteredLocations]);
 
   const handleLocationSelect = (location: Location) => {
     const position: [number, number] = [parseFloat(location.latitude), parseFloat(location.longitude)];
@@ -168,39 +133,20 @@ export default function Map({ onMarkerClick }: MapProps) {
     }
   };
 
-  const handleSaveRoute = () => {
-    if (!startLocation || !endLocation) return;
-
-    const routeData = {
-      start: startLocation,
-      end: endLocation,
-    };
-
-    saveRouteMutation.mutate({
-      name: routeName,
-      description: routeDescription,
-      startLocationId: 1, // We'll need to get the actual location IDs
-      endLocationId: 2,
-      routeData,
-    });
-  };
-
   const resetRouting = () => {
     setStartLocation(undefined);
     setEndLocation(undefined);
     setIsRoutingMode(false);
   };
 
-  // Update handleImageError with better fallback
-  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    const fallbackUrl = 'https://placehold.co/600x400/png?text=Image+Not+Found';
-    if (e.currentTarget.src !== fallbackUrl) {
-      e.currentTarget.src = fallbackUrl;
-    }
-  };
+  const containerClassNames = isExpanded 
+    ? "grid md:grid-cols-4 gap-4 h-full" 
+    : "grid md:grid-cols-3 gap-4 h-full";
+
+  const mapColSpan = isExpanded ? "md:col-span-3" : "md:col-span-2";
 
   return (
-    <div className="grid md:grid-cols-3 gap-4 h-full">
+    <div className={containerClassNames}>
       <Card className="md:col-span-1 h-full overflow-hidden glass">
         <CardContent className="p-0 h-full">
           <div className="p-4 border-b">
@@ -214,6 +160,14 @@ export default function Map({ onMarkerClick }: MapProps) {
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
               </div>
+              <Button
+                variant="outline"
+                size="icon"
+                title={isExpanded ? "Thu nhỏ bản đồ" : "Mở rộng bản đồ"}
+                onClick={() => setIsExpanded(!isExpanded)}
+              >
+                {isExpanded ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
+              </Button>
               <Button
                 variant="outline"
                 size="icon"
@@ -278,40 +232,6 @@ export default function Map({ onMarkerClick }: MapProps) {
                 <CornerDownLeft className="h-4 w-4" />
               </Button>
             </div>
-            {isRoutingMode && (
-              <div className="mt-2 text-sm">
-                <p className="text-muted-foreground">
-                  {!startLocation
-                    ? "Chọn điểm bắt đầu"
-                    : !endLocation
-                    ? "Chọn điểm kết thúc"
-                    : "Đã chọn cả hai điểm"}
-                </p>
-                {(startLocation || endLocation) && (
-                  <div className="flex gap-2 mt-2">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="text-xs"
-                      onClick={resetRouting}
-                    >
-                      Đặt lại
-                    </Button>
-                    {startLocation && endLocation && (
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="text-xs gap-1"
-                        onClick={() => setIsSaveRouteDialogOpen(true)}
-                      >
-                        <Star className="h-3 w-3" />
-                        Lưu tuyến đường
-                      </Button>
-                    )}
-                  </div>
-                )}
-              </div>
-            )}
           </div>
           <ScrollArea className="h-[calc(100%-5rem)] custom-scrollbar">
             <div className="divide-y">
@@ -327,9 +247,8 @@ export default function Map({ onMarkerClick }: MapProps) {
                   <div className="flex items-start gap-3">
                     <div className="w-16 h-16 rounded-lg overflow-hidden bg-muted">
                       <img
-                        src={location.imageUrl}
+                        src={location.imageUrl || 'https://placehold.co/600x400/png?text=No+Image'}
                         alt={location.name}
-                        onError={handleImageError}
                         className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
                       />
                     </div>
@@ -352,7 +271,7 @@ export default function Map({ onMarkerClick }: MapProps) {
         </CardContent>
       </Card>
 
-      <Card className="md:col-span-2 h-full overflow-hidden glass">
+      <Card className={`${mapColSpan} h-full overflow-hidden glass`}>
         <CardContent className="p-0 h-full relative">
           <MapContainer
             center={DEFAULT_CENTER}
@@ -360,6 +279,8 @@ export default function Map({ onMarkerClick }: MapProps) {
             className="w-full h-full"
             zoomControl={false}
           >
+            <ZoomControl position="bottomright" />
+
             <LayersControl position="topright">
               <LayersControl.BaseLayer checked name="OpenStreetMap">
                 <TileLayer
@@ -367,7 +288,7 @@ export default function Map({ onMarkerClick }: MapProps) {
                   attribution={MAP_STYLES.attribution}
                 />
               </LayersControl.BaseLayer>
-              <LayersControl.BaseLayer name="Satellite">
+              <LayersControl.BaseLayer name="Vệ tinh">
                 <TileLayer
                   url={MAP_STYLES.satellite.url}
                   attribution={MAP_STYLES.attribution}
@@ -385,21 +306,19 @@ export default function Map({ onMarkerClick }: MapProps) {
                     click: () => handleLocationSelect(location)
                   }}
                 >
-                  <Popup className="custom-popup">
-                    <div className="text-sm p-2">
-                      <div className="w-full h-32 relative rounded-lg overflow-hidden mb-2">
-                        <img
-                          src={location.imageUrl || 'https://placehold.co/600x400/png?text=No+Image'}
-                          alt={location.name}
-                          className="absolute inset-0 w-full h-full object-cover"
-                          onError={handleImageError}
-                        />
+                  {selectedLocation?.id === location.id && (
+                    <Popup
+                      className="custom-popup"
+                      closeButton={false}
+                      autoClose={false}
+                      closeOnClick={false}
+                    >
+                      <div className="text-sm p-2">
+                        <h3 className="font-medium">{location.name}</h3>
+                        <p className="text-xs text-muted-foreground">{location.nameEn}</p>
                       </div>
-                      <h3 className="font-medium">{location.name}</h3>
-                      <p className="text-muted-foreground text-xs">{location.nameEn}</p>
-                      <p className="text-xs mt-1">{location.type.replace('_', ' ')}</p>
-                    </div>
-                  </Popup>
+                    </Popup>
+                  )}
                 </Marker>
               ))}
             </LayerGroup>
@@ -412,57 +331,13 @@ export default function Map({ onMarkerClick }: MapProps) {
                 ]}
               />
             )}
+
             {startLocation && endLocation && (
               <RoutingMachine start={startLocation} end={endLocation} />
             )}
           </MapContainer>
         </CardContent>
       </Card>
-
-      <Dialog open={isSaveRouteDialogOpen} onOpenChange={setIsSaveRouteDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Lưu tuyến đường</DialogTitle>
-            <DialogDescription>
-              Đặt tên và mô tả cho tuyến đường để lưu vào danh sách yêu thích
-            </DialogDescription>
-          </DialogHeader>
-          <div className="space-y-4 pt-4">
-            <div className="space-y-2">
-              <Label htmlFor="route-name">Tên tuyến đường</Label>
-              <Input
-                id="route-name"
-                value={routeName}
-                onChange={(e) => setRouteName(e.target.value)}
-                placeholder="Ví dụ: Đường đến Đại Nội"
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="route-description">Mô tả (tùy chọn)</Label>
-              <Textarea
-                id="route-description"
-                value={routeDescription}
-                onChange={(e) => setRouteDescription(e.target.value)}
-                placeholder="Thêm ghi chú về tuyến đường này"
-              />
-            </div>
-            <div className="flex justify-end gap-2">
-              <Button
-                variant="outline"
-                onClick={() => setIsSaveRouteDialogOpen(false)}
-              >
-                Hủy
-              </Button>
-              <Button
-                onClick={handleSaveRoute}
-                disabled={!routeName.trim()}
-              >
-                Lưu lại
-              </Button>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 }
