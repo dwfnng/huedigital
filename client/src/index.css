@@ -5,28 +5,29 @@
 @layer base {
   :root {
     --background-pattern-overlay: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23a78bfa' fill-opacity='0.05'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z'%3E%3C/path%3E%3C/g%3E%3C/svg%3E");
+    --background-pattern-texture: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23a78bfa' fill-opacity='0.03'%3E%3Cpath d='M50 50c0-5.523 4.477-10 10-10s10 4.477 10 10-4.477 10-10 10c0 5.523-4.477 10-10 10s-10-4.477-10-10 4.477-10 10-10zM10 10c0-5.523 4.477-10 10-10s10 4.477 10 10-4.477 10-10 10c0 5.523-4.477 10-10 10S0 25.523 0 20s4.477-10 10-10zm10 8c4.418 0 8-3.582 8-8s-3.582-8-8-8-8 3.582-8 8 3.582 8 8 8zm40 40c4.418 0 8-3.582 8-8s-3.582-8-8-8-8 3.582-8 8 3.582 8 8 8z' /%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased text-foreground;
+    background-color: hsl(var(--background));
+    background-image: var(--background-pattern-overlay), var(--background-pattern-texture);
+    background-position: center;
+    background-repeat: repeat;
+    background-attachment: fixed;
+    background-blend-mode: overlay;
   }
 }
 
-* {
-  @apply border-border;
-}
-
-body {
-  @apply font-sans antialiased text-foreground;
-  background-color: hsl(var(--background));
-  background-image: var(--background-pattern-overlay);
-  background-position: center;
-  background-repeat: repeat;
-  background-attachment: fixed;
-}
-
-/* Leaflet map optimizations */
+/* Leaflet map styles */
 .leaflet-container {
   width: 100%;
   height: 100%;
   z-index: 1;
-  @apply transition-all duration-300;
 }
 
 .leaflet-popup-content-wrapper {
@@ -34,17 +35,61 @@ body {
 }
 
 .leaflet-popup-content {
-  @apply p-0 m-0 min-w-[100px] !important;
+  @apply p-2 m-0;
 }
 
 .leaflet-popup-tip {
   @apply bg-background/95;
 }
 
-/* Layer control styling */
+.leaflet-control-zoom {
+  @apply border border-border rounded-lg overflow-hidden shadow-lg;
+}
+
+.leaflet-control-zoom-in,
+.leaflet-control-zoom-out {
+  @apply bg-background/95 hover:bg-accent text-foreground border-border;
+}
+
+.leaflet-marker-icon {
+  @apply transition-transform duration-200;
+}
+
+.leaflet-marker-icon:hover {
+  @apply scale-110;
+}
+
+.gradient-overlay {
+  @apply absolute inset-0 pointer-events-none;
+  background: radial-gradient(
+    circle at center,
+    rgba(var(--primary-rgb), 0.08) 0%,
+    rgba(var(--primary-rgb), 0.04) 50%,
+    rgba(var(--primary-rgb), 0.02) 100%
+  );
+}
+
+/* Enhanced Leaflet map styles */
+.leaflet-container {
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.leaflet-popup-content-wrapper {
+  @apply bg-background/95 backdrop-blur-sm border border-border shadow-lg rounded-lg;
+}
+
+.leaflet-popup-content {
+  @apply p-0 m-0 min-w-[200px];
+}
+
+.leaflet-popup-tip {
+  @apply bg-background/95;
+}
+
 .leaflet-control-layers {
   @apply bg-background/95 backdrop-blur-sm border border-border rounded-lg shadow-lg !important;
-  @apply top-16 right-4 !important;
 }
 
 .leaflet-control-layers-toggle {
@@ -55,11 +100,9 @@ body {
   @apply text-sm text-foreground cursor-pointer;
 }
 
-/* Routing container styling */
 .leaflet-routing-container {
-  @apply bg-background/95 backdrop-blur-sm border border-border rounded-lg shadow-lg max-w-[300px] !important;
+  @apply bg-background/95 backdrop-blur-sm border border-border rounded-lg shadow-lg max-w-xs !important;
   @apply text-sm text-foreground !important;
-  @apply right-0 top-0 !important;
 }
 
 .leaflet-routing-alt {
@@ -78,50 +121,156 @@ body {
   @apply bg-primary/5 !important;
 }
 
-/* Custom popup styling */
+.leaflet-routing-geocoders {
+  @apply border-b border-border !important;
+}
+
+.leaflet-routing-geocoders input {
+  @apply bg-background text-foreground border border-input !important;
+}
+
+.leaflet-routing-geocoder-result {
+  @apply bg-background text-foreground border border-input !important;
+}
+
+.leaflet-routing-geocoder-result li:hover {
+  @apply bg-primary/5 !important;
+}
+
+/* Custom popup enhancements */
 .custom-popup .leaflet-popup-content {
-  @apply p-0 m-0 min-w-[100px] !important;
+  @apply p-0 m-0 min-w-[240px] max-w-[300px];
 }
 
 .custom-popup .leaflet-popup-content-wrapper {
-  @apply p-0 overflow-hidden rounded-lg shadow-md;
+  @apply p-0 overflow-hidden;
 }
 
 .custom-popup .leaflet-popup-tip-container {
   @apply left-1/2 -translate-x-1/2;
 }
 
-/* Marker animations */
-.leaflet-marker-icon {
+/* Game-specific backgrounds with enhanced gradients */
+.heritage-section {
+  @apply relative bg-gradient-to-br from-red-50/95 to-orange-50/95 dark:from-red-950/95 dark:to-orange-950/95;
+  background-image: radial-gradient(circle at center, rgba(var(--primary-rgb), 0.05) 0%, transparent 70%),
+                    var(--background-pattern-texture);
+}
+
+.historical-section {
+  @apply relative bg-gradient-to-br from-emerald-50/95 to-teal-50/95 dark:from-emerald-950/95 dark:to-teal-950/95;
+  background-image: radial-gradient(circle at center, rgba(var(--primary-rgb), 0.05) 0%, transparent 70%),
+                    var(--background-pattern-texture);
+}
+
+.cultural-section {
+  @apply relative bg-gradient-to-br from-purple-50/95 to-indigo-50/95 dark:from-purple-950/95 dark:to-indigo-950/95;
+  background-image: radial-gradient(circle at center, rgba(var(--primary-rgb), 0.05) 0%, transparent 70%),
+                    var(--background-pattern-texture);
+}
+
+/* Enhanced transitions and animations */
+.transition-smooth {
   @apply transition-all duration-300 ease-in-out;
 }
 
-.leaflet-marker-icon:hover {
-  @apply scale-110;
+.hover-lift {
+  @apply hover:-translate-y-1 transition-transform duration-200;
 }
 
-/* Map tile loading optimization */
-.leaflet-tile {
-  @apply opacity-0 transition-opacity duration-200;
+.hover-glow {
+  @apply hover:shadow-lg hover:shadow-primary/10 transition-shadow duration-200;
 }
 
-.leaflet-tile-loaded {
-  @apply opacity-100;
+.hover-scale {
+  @apply hover:scale-105 transition-transform duration-200;
 }
 
-/* Map zoom controls */
-.leaflet-control-zoom {
-  @apply bg-background/95 backdrop-blur-sm border border-border rounded-lg shadow-lg !important;
-  @apply bottom-8 right-8 !important;
-  position: absolute !important;
+.fade-in {
+  @apply opacity-0 animate-[fadeIn_0.5s_ease-in-out_forwards];
 }
 
-.leaflet-control-zoom-in,
-.leaflet-control-zoom-out {
-  @apply border-0 hover:bg-primary/10 transition-colors !important;
+.slide-in {
+  @apply translate-y-4 opacity-0 animate-[slideIn_0.5s_ease-out_forwards];
 }
 
-/* Custom scrollbar */
+.pop-in {
+  @apply scale-95 opacity-0 animate-[popIn_0.3s_ease-out_forwards];
+}
+
+.floating {
+  animation: floating 3s ease-in-out infinite;
+}
+
+/* Animation Keyframes */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes floating {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+/* Game card hover effects */
+.game-card {
+  @apply transition-all duration-300 ease-in-out;
+  @apply hover:shadow-lg hover:shadow-primary/10;
+  @apply hover:-translate-y-1;
+  @apply active:translate-y-0 active:shadow-md;
+}
+
+/* Glass effect for game overlays */
+.glass {
+  @apply bg-background/80 backdrop-blur-sm;
+  @apply border border-white/20;
+  @apply shadow-xl shadow-black/5;
+}
+
+/* Interactive elements */
+.interactive-element {
+  @apply transition-colors duration-200;
+  @apply hover:bg-primary/10 active:bg-primary/20;
+  @apply focus:outline-none focus:ring-2 focus:ring-primary/20;
+}
+
+/* Custom scrollbar for game containers */
 .custom-scrollbar {
   scrollbar-width: thin;
   scrollbar-color: hsl(var(--primary)) transparent;
@@ -138,4 +287,73 @@ body {
 .custom-scrollbar::-webkit-scrollbar-thumb {
   background-color: hsl(var(--primary)/0.3);
   border-radius: 20px;
+}
+
+/* Game image hover effects */
+.game-image {
+  @apply transition-transform duration-300 ease-in-out;
+  @apply hover:scale-105;
+}
+
+/* Choice cards in games */
+.choice-card {
+  @apply transition-all duration-200;
+  @apply hover:bg-primary/5;
+  @apply active:bg-primary/10;
+  @apply border border-transparent;
+  @apply hover:border-primary/20;
+  @apply rounded-lg p-4;
+}
+
+/* Game result animations */
+.result-appear {
+  animation: resultAppear 0.5s ease-out forwards;
+}
+
+@keyframes resultAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Game background patterns */
+.pattern-grid {
+  background-image: linear-gradient(to right, rgba(var(--primary-rgb), 0.1) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(var(--primary-rgb), 0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.pattern-dots {
+  background-image: radial-gradient(rgba(var(--primary-rgb), 0.2) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+/* Game content formatting */
+.game-text {
+  white-space: pre-line;
+  line-height: 1.6;
+}
+
+.game-description {
+  @apply text-sm md:text-base;
+  white-space: pre-line;
+  line-height: 1.6;
+}
+
+.game-result {
+  @apply text-sm md:text-base;
+  white-space: pre-line;
+  line-height: 1.6;
+  margin-bottom: 0.5rem;
+}
+
+.game-historical-info {
+  @apply text-xs md:text-sm text-muted-foreground;
+  white-space: pre-line;
+  line-height: 1.6;
 }
