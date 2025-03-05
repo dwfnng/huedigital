@@ -10,6 +10,9 @@ export const MAP_STYLES = {
   default: {
     url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
   },
+  detailed: {
+    url: 'https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png',
+  },
   satellite: {
     url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
   },
@@ -27,6 +30,8 @@ const getIconUrl = (type: string): string => {
       return 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-gold.png';
     case 'palace':
       return 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-violet.png';
+    case 'current_location':
+      return 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-orange.png';  
     default:
       return 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png';
   }
