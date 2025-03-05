@@ -71,6 +71,10 @@ interface WeatherResponseFull {
 
 export async function getWeatherData(): Promise<WeatherResponseFull> {
   try {
+    if (!API_KEY) {
+      throw new Error('OpenWeatherMap API key is not configured');
+    }
+
     const now = Date.now();
 
     // Return cached data if still valid
