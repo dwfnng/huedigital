@@ -36,7 +36,7 @@ body {
 }
 
 .leaflet-popup-content {
-  @apply p-0 m-0 min-w-[160px] !important;
+  @apply p-0 m-0 min-w-[100px] !important;
 }
 
 .leaflet-popup-tip {
@@ -46,6 +46,7 @@ body {
 /* Layer control styling */
 .leaflet-control-layers {
   @apply bg-background/95 backdrop-blur-sm border border-border rounded-lg shadow-lg !important;
+  @apply top-16 right-4 !important;
 }
 
 .leaflet-control-layers-toggle {
@@ -81,11 +82,11 @@ body {
 
 /* Custom popup styling */
 .custom-popup .leaflet-popup-content {
-  @apply p-0 m-0 min-w-[160px] !important;
+  @apply p-0 m-0 min-w-[100px] !important;
 }
 
 .custom-popup .leaflet-popup-content-wrapper {
-  @apply p-0 overflow-hidden rounded-lg;
+  @apply p-0 overflow-hidden rounded-lg shadow-md;
 }
 
 .custom-popup .leaflet-popup-tip-container {

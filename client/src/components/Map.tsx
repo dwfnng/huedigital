@@ -33,7 +33,7 @@ function useRoutingControl(map: L.Map | null, start?: [number, number], end?: [n
   useEffect(() => {
     if (!map || !start || !end) return;
 
-    const control = L.Routing.control({
+    const control = new L.Routing.Control({
       waypoints: [
         L.latLng(start[0], start[1]),
         L.latLng(end[0], end[1])
@@ -141,7 +141,7 @@ export default function Map({ onMarkerClick }: { onMarkerClick?: (location: Loca
 
   const containerStyle = {
     display: 'grid',
-    gridTemplateColumns: isFullScreen ? '1fr' : '300px 1fr',
+    gridTemplateColumns: isFullScreen ? '1fr' : '280px 1fr',
     gap: '1rem',
     height: '100%',
     transition: 'all 0.3s ease-in-out'
@@ -299,7 +299,8 @@ export default function Map({ onMarkerClick }: { onMarkerClick?: (location: Loca
             zoomControl={false}
             ref={setMapRef}
           >
-            <ZoomControl position="bottomright" />
+            {/*Removed duplicate zoom control*/}
+            {/*<ZoomControl position="bottomright" />*/}
 
             <Button
               variant="outline"
