@@ -202,7 +202,9 @@ export class DatabaseStorage implements IStorage {
 
   // Locations
   async getAllLocations(): Promise<Location[]> {
-    throw new Error("Method not implemented.");
+    return await db
+      .select()
+      .from(locations);
   }
   async getLocationById(id: number): Promise<Location | undefined> {
     throw new Error("Method not implemented.");

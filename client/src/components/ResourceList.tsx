@@ -53,6 +53,14 @@ const item = {
 };
 
 export default function ResourceList({ onResourceSelect }: ResourceListProps) {
+  if (!resources || resources.length === 0) {
+    return (
+      <div className="flex items-center justify-center h-[calc(100vh-16rem)]">
+        <p className="text-muted-foreground">Không có tài liệu nào</p>
+      </div>
+    );
+  }
+
   return (
     <ScrollArea className="h-[calc(100vh-16rem)]">
       <motion.div
