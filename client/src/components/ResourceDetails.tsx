@@ -57,7 +57,7 @@ const MediaViewer = ({ resource }: { resource: Resource }) => {
       return (
         <div className="relative bg-black/5 rounded-lg overflow-hidden">
           <img
-            src={resource.contentUrl}
+            src={resource.contentUrl || 'https://placehold.co/600x400/png?text=No+Image'}
             alt={resource.title}
             className="w-full h-auto object-contain"
             loading="lazy"

@@ -76,7 +76,7 @@ export default function ResourceList({ resources, onResourceSelect }: ResourceLi
                     {resource.thumbnailUrl && (
                       <div className="mb-3">
                         <img
-                          src={resource.thumbnailUrl}
+                          src={resource.thumbnailUrl || 'https://placehold.co/600x400/png?text=No+Image'}
                           alt={resource.title}
                           className="w-full h-32 object-cover rounded-lg"
                           onError={(e) => {
