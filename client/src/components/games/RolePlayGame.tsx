@@ -126,7 +126,7 @@ const gameSteps: GameStep[] = [
   }
 ];
 
-export default function RolePlayGame() {
+const RolePlayGame = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [score, setScore] = useState(0);
   const [selectedChoices, setSelectedChoices] = useState<string[]>([]);
@@ -241,7 +241,7 @@ export default function RolePlayGame() {
 
                 {gameSteps[currentStep].historicalContext && (
                   <div className="p-3 md:p-4 bg-primary/5 rounded-lg mb-4">
-                    <p className="text-sm italic">
+                    <p className="text-sm md:text-base">
                       {gameSteps[currentStep].historicalContext}
                     </p>
                   </div>
@@ -270,26 +270,26 @@ export default function RolePlayGame() {
                         onClick={() => !confirmedChoice && handleChoice(choice)}
                         disabled={confirmedChoice !== null && confirmedChoice.id !== choice.id}
                       >
-                        <div className="flex items-start gap-2 md:gap-3 w-full">
+                        <div className="flex items-start gap-2 md:gap-3 w-full overflow-hidden">
                           <div className="p-2 bg-primary/10 rounded-lg shrink-0">
                             {choice.icon}
                           </div>
-                          <div className="flex-1 space-y-1">
-                            <p className="text-sm md:text-base font-medium">{choice.text}</p>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm md:text-base font-medium mb-1 break-words">{choice.text}</p>
                             {(confirmedChoice?.id === choice.id || selectedChoice?.id === choice.id) && (
                               <motion.div
                                 initial={{ opacity: 0, height: 0 }}
                                 animate={{ opacity: 1, height: "auto" }}
-                                className="mt-2 md:mt-3 space-y-2"
+                                className="mt-2 md:mt-3 space-y-2 overflow-x-auto"
                               >
                                 {confirmedChoice?.id === choice.id && (
                                   <div className="p-2 md:p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
-                                    <p className="text-sm md:text-base">{choice.result}</p>
+                                    <p className="text-sm md:text-base break-words">{choice.result}</p>
                                   </div>
                                 )}
                                 {choice.historicalInfo && (
                                   <div className="p-2 md:p-3 bg-muted/30 rounded-lg">
-                                    <p className="text-xs md:text-sm text-muted-foreground">
+                                    <p className="text-xs md:text-sm text-muted-foreground break-words">
                                       {choice.historicalInfo}
                                     </p>
                                   </div>
@@ -297,7 +297,7 @@ export default function RolePlayGame() {
                                 {choice.consequence && confirmedChoice?.id === choice.id && (
                                   <div className="p-2 md:p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
                                     <h4 className="text-sm font-medium mb-1">Hệ quả lịch sử:</h4>
-                                    <p className="text-xs md:text-sm">{choice.consequence}</p>
+                                    <p className="text-xs md:text-sm break-words">{choice.consequence}</p>
                                   </div>
                                 )}
                                 {choice.learnMore && confirmedChoice?.id === choice.id && (
@@ -306,7 +306,7 @@ export default function RolePlayGame() {
                                       <FileText className="h-4 w-4" />
                                       Tìm hiểu thêm: {choice.learnMore.title}
                                     </h4>
-                                    <p className="text-xs md:text-sm">{choice.learnMore.content}</p>
+                                    <p className="text-xs md:text-sm break-words">{choice.learnMore.content}</p>
                                   </div>
                                 )}
                               </motion.div>
@@ -325,14 +325,14 @@ export default function RolePlayGame() {
                   animate={{ opacity: 1, y: 0 }}
                   className="mt-4 flex justify-end gap-2"
                 >
-                  <Button 
-                    variant="outline" 
+                  <Button
+                    variant="outline"
                     onClick={changeChoice}
                     className="text-sm md:text-base py-2 md:py-3"
                   >
                     Đổi lựa chọn
                   </Button>
-                  <Button 
+                  <Button
                     onClick={confirmChoice}
                     className="text-sm md:text-base py-2 md:py-3"
                   >
@@ -347,9 +347,9 @@ export default function RolePlayGame() {
                   animate={{ opacity: 1, y: 0 }}
                   className="mt-4 flex justify-end"
                 >
-                  <Button 
-                    onClick={handleNext} 
-                    className="gap-2 text-sm md:text-base py-2 md:py-3" 
+                  <Button
+                    onClick={handleNext}
+                    className="gap-2 text-sm md:text-base py-2 md:py-3"
                     disabled={readyForNext}
                   >
                     {currentStep === gameSteps.length - 1 ? 'Kết thúc' : 'Tiếp theo'}
@@ -385,9 +385,9 @@ export default function RolePlayGame() {
                 </div>
               </div>
 
-              <Button 
-                onClick={resetGame} 
-                size="lg" 
+              <Button
+                onClick={resetGame}
+                size="lg"
                 className="text-sm md:text-base py-2 md:py-3"
               >
                 Chơi lại
@@ -398,4 +398,6 @@ export default function RolePlayGame() {
       </CardContent>
     </Card>
   );
-}
+};
+
+export default RolePlayGame;
