@@ -29,7 +29,6 @@ declare module 'leaflet' {
   }
 }
 
-// Custom hook for routing control
 function useRoutingControl(map: L.Map | null, start?: [number, number], end?: [number, number]) {
   useEffect(() => {
     if (!map || !start || !end) return;
@@ -50,7 +49,7 @@ function useRoutingControl(map: L.Map | null, start?: [number, number], end?: [n
       altLineOptions: {
         styles: [{ color: '#94a3b8', weight: 3, opacity: 0.7 }]
       },
-      createMarker: () => null // Don't create markers for waypoints
+      createMarker: () => null
     }).addTo(map);
 
     return () => {
@@ -70,7 +69,8 @@ function FlyToMarker({ position, zoom = 17 }: { position: [number, number]; zoom
   useEffect(() => {
     map.flyTo(position, zoom, {
       duration: 1,
-      easeLinearity: 0.25
+      easeLinearity: 0.25,
+      padding: [50, 50] // Add padding for even zoom
     });
   }, [map, position, zoom]);
   return null;
@@ -158,8 +158,8 @@ export default function Map({ onMarkerClick }: { onMarkerClick?: (location: Loca
             transition={{ duration: 0.2 }}
           >
             <Card className="h-full overflow-hidden glass">
-              <CardContent className="p-0 h-full">
-                <div className="p-4 border-b">
+              <CardContent className="p-0 h-full flex flex-col max-h-screen">
+                <div className="p-4 border-b shrink-0">
                   <div className="flex gap-2">
                     <div className="relative flex-1">
                       <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -241,7 +241,7 @@ export default function Map({ onMarkerClick }: { onMarkerClick?: (location: Loca
                     </Button>
                   </div>
                 </div>
-                <ScrollArea className="h-[calc(100%-5rem)] custom-scrollbar">
+                <ScrollArea className="flex-1">
                   <div className="divide-y">
                     {filteredLocations.map((location, index) => (
                       <motion.div

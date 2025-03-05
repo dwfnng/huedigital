@@ -113,6 +113,8 @@ body {
 /* Map zoom controls */
 .leaflet-control-zoom {
   @apply bg-background/95 backdrop-blur-sm border border-border rounded-lg shadow-lg !important;
+  @apply bottom-8 right-8 !important;
+  position: absolute !important;
 }
 
 .leaflet-control-zoom-in,
