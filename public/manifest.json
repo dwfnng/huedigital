@@ -1,3 +1,4 @@
+
 {
   "name": "Hue Digital Tour Guide",
   "short_name": "Hue Guide",
@@ -6,7 +7,11 @@
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#1e40af",
-  "orientation": "portrait-primary",
+  "orientation": "any",
+  "categories": ["education", "travel", "history"],
+  "dir": "ltr",
+  "lang": "vi-VN",
+  "prefer_related_applications": false,
   "icons": [
     {
       "src": "/icon-192.png",
@@ -19,6 +24,15 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshots/mobile-home.jpg",
+      "sizes": "750x1334",
+      "type": "image/jpeg",
+      "platform": "narrow",
+      "label": "Màn hình chính Hue Guide"
     }
   ]
 }

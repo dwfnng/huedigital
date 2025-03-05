@@ -1,5 +1,11 @@
+
+import { useIsMobile } from "@/hooks/use-mobile";
+
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
+
+  const { isMobile } = useIsMobile();
+
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { motion, AnimatePresence } from "framer-motion";

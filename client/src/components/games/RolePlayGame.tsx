@@ -1,9 +1,15 @@
+
+import { useIsMobile } from "@/hooks/use-mobile";
+
 import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { motion, AnimatePresence } from "framer-motion";
+
+  const { isMobile } = useIsMobile();
+
 import { Crown, MapPin, Building2, Wind, Scroll, Star, ChevronRight, Book, Swords, FileText, Anchor } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 
