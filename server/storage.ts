@@ -2,7 +2,7 @@ import {
   type Location, type User, type Discussion, type Comment, type Contribution, type Review,
   type InsertLocation, type InsertUser, type InsertDiscussion, type InsertComment,
   type InsertContribution, type InsertReview, type Resource, type Category, type InsertResource, type InsertCategory,
-  type FavoriteRoute, type InsertFavoriteRoute, type Product, type InsertProduct
+  type FavoriteRoute, type InsertFavoriteRoute
 } from "@shared/schema";
 
 export interface IStorage {
@@ -81,7 +81,6 @@ export class MemStorage implements IStorage {
   private resources: Resource[] = [];
   private categories: Category[] = [];
   private favoriteRoutes: FavoriteRoute[] = [];
-  private products: Product[] = [];
   private nextId = 1;
 
   constructor() {
@@ -89,6 +88,7 @@ export class MemStorage implements IStorage {
   }
 
   private initializeData() {
+    // Initialize locations with proper structure
     this.locations = [
       {
         id: this.getNextId(),
@@ -99,7 +99,43 @@ export class MemStorage implements IStorage {
         type: "heritage_site",
         latitude: "16.4698",
         longitude: "107.5796",
-        imageUrl: "https://upload.wikimedia.org/wikipedia/commons/d/d7/Meridian_Gate%2C_Imperial_City%2C_Hu%E1%BA%BF_%282020%29.jpg",
+        imageUrl: "/attached_assets/pexels-vinhb-29790971.jpg",
+        isActive: true
+      },
+      {
+        id: this.getNextId(),
+        name: "Kỳ Đài",
+        nameEn: "Ky Dai Flagpole",
+        description: "Kỳ Đài Huế là công trình kiến trúc nằm trong quần thể di tích Cố đô Huế, được xây dựng năm 1807 dưới thời vua Gia Long. Đây là nơi thường trực treo cờ triều Nguyễn, với chiều cao 37m, gồm 3 tầng hình bát giác thu nhỏ dần về phía trên.",
+        descriptionEn: "Ky Dai Flagpole is an architectural work within the Hue Ancient Capital complex, built in 1807 under Emperor Gia Long. It was used to fly the Nguyen Dynasty flag, standing 37m tall with 3 octagonal tiers that gradually narrow towards the top.",
+        type: "monument",
+        latitude: "16.4715",
+        longitude: "107.5828",
+        imageUrl: "/attached_assets/ky-dai.jpg",
+        isActive: true
+      },
+      {
+        id: this.getNextId(),
+        name: "Trường Quốc Tử Giám",
+        nameEn: "National Academy",
+        description: "Trường Quốc Tử Giám là trường đại học đầu tiên của triều Nguyễn, được xây dựng năm 1821 dưới thời vua Minh Mạng. Nơi đây đào tạo quan lại và trí thức cho triều đình, với hệ thống giáo dục theo mô hình Nho giáo truyền thống.",
+        descriptionEn: "The National Academy was the first university of the Nguyen Dynasty, built in 1821 under Emperor Minh Mang. It trained officials and scholars for the court, following traditional Confucian educational system.",
+        type: "education",
+        latitude: "16.4680",
+        longitude: "107.5790",
+        imageUrl: "/attached_assets/quoc-tu-giam.jpg",
+        isActive: true
+      },
+      {
+        id: this.getNextId(),
+        name: "Điện Long An",
+        nameEn: "Long An Palace",
+        description: "Điện Long An được xây dựng năm 1845 dưới thời vua Thiệu Trị, là nơi thờ các vị hoàng đế triều Nguyễn. Hiện nay công trình được sử dụng làm Bảo tàng Mỹ thuật Cung đình Huế, trưng bày nhiều hiện vật quý về nghệ thuật cung đình.",
+        descriptionEn: "Long An Palace was built in 1845 under Emperor Thieu Tri, serving as a temple for Nguyen Dynasty emperors. Today it houses the Museum of Royal Fine Arts, displaying precious royal art artifacts.",
+        type: "museum",
+        latitude: "16.4695",
+        longitude: "107.5793",
+        imageUrl: "/attached_assets/long-an.jpg",
         isActive: true
       },
       {
@@ -111,19 +147,163 @@ export class MemStorage implements IStorage {
         type: "palace",
         latitude: "16.4700",
         longitude: "107.5792",
-        imageUrl: "https://upload.wikimedia.org/wikipedia/commons/6/6c/Thai_Hoa_Palace_Hue_%282020%29.jpg",
+        imageUrl: "/attached_assets/thai-hoa.jpg",
+        isActive: true
+      },
+      {
+        id: this.getNextId(),
+        name: "Hồ Tịnh Tâm",
+        nameEn: "Tinh Tam Lake",
+        description: "Hồ Tịnh Tâm được xây dựng năm 1833 dưới thời vua Minh Mạng, là một trong những cảnh quan đẹp nhất trong Hoàng thành. Hồ có diện tích khoảng 5 hecta, nổi tiếng với hoa sen và các công trình kiến trúc xung quanh như đình Tịnh Tâm.",
+        descriptionEn: "Tinh Tam Lake was built in 1833 under Emperor Minh Mang, one of the most beautiful landscapes in the Citadel. The 5-hectare lake is famous for its lotus flowers and surrounding architecture like Tinh Tam Pavilion.",
+        type: "landscape",
+        latitude: "16.4705",
+        longitude: "107.5785",
+        imageUrl: "/attached_assets/tinh-tam.jpg",
+        isActive: true
+      },
+      {
+        id: this.getNextId(),
+        name: "Cửu Vị Thần Công",
+        nameEn: "Nine Sacred Cannons",
+        description: "Cửu Vị Thần Công là 9 khẩu đại bác được đúc năm 1804 dưới thời vua Gia Long, mỗi khẩu tượng trưng cho một vị thần và bốn mùa. Có trọng lượng từ 1,900 đến 2,900 kg, là biểu tượng của quyền lực và sức mạnh quân sự triều Nguyễn.",
+        descriptionEn: "The Nine Sacred Cannons were cast in 1804 under Emperor Gia Long, each representing a deity and the four seasons. Weighing between 1,900 and 2,900 kg, they symbolize the Nguyen Dynasty's military power and authority.",
+        type: "artifact",
+        latitude: "16.4697",
+        longitude: "107.5799",
+        imageUrl: "/attached_assets/cuu-vi-than-cong.jpg",
+        isActive: true
+      },
+      {
+        id: this.getNextId(),
+        name: "Lăng Gia Long",
+        nameEn: "Gia Long Tomb",
+        description: "Lăng Gia Long là lăng mộ của vua Gia Long và Hoàng hậu Thừa Thiên Cao, được xây dựng từ 1814-1820. Quần thể rộng khoảng 11,700 hecta với kiến trúc hài hòa giữa nhân tạo và thiên nhiên, nằm trong thung lũng Thiên Thọ.",
+        descriptionEn: "Gia Long Tomb is the mausoleum of Emperor Gia Long and Empress Thua Thien Cao, built from 1814-1820. The 11,700-hectare complex features architecture harmoniously blending with nature in Thien Tho Valley.",
+        type: "tomb",
+        latitude: "16.4198",
+        longitude: "107.5438",
+        imageUrl: "/attached_assets/lang-gia-long.jpg",
+        isActive: true
+      },
+      {
+        id: this.getNextId(),
+        name: "Lăng Minh Mạng",
+        nameEn: "Minh Mang Tomb",
+        description: "Lăng Minh Mạng được xây dựng từ 1840-1843, là công trình kiến trúc hoàn hảo nhất trong các lăng tẩm triều Nguyễn. Quần thể gồm 40 công trình kiến trúc được bố trí đối xứng qua trục chính Bắc-Nam, thể hiện quan niệm về vũ trụ và âm dương.",
+        descriptionEn: "Minh Mang Tomb was built from 1840-1843, considered the most architecturally perfect among Nguyen Dynasty mausoleums. The complex includes 40 structures arranged symmetrically along the North-South axis, reflecting cosmic and yin-yang concepts.",
+        type: "tomb",
+        latitude: "16.4470",
+        longitude: "107.5530",
+        imageUrl: "/attached_assets/lang-minh-mang.jpg",
+        isActive: true
+      },
+      {
+        id: this.getNextId(),
+        name: "Lăng Thiệu Trị",
+        nameEn: "Thieu Tri Tomb",
+        description: "Lăng Thiệu Trị được xây dựng năm 1848, là lăng mộ đơn giản nhất trong các lăng vua triều Nguyễn. Điểm đặc biệt là lăng được xây dựng theo di chúc của vua, chú trọng sự giản dị và tiết kiệm.",
+        descriptionEn: "Thieu Tri Tomb was built in 1848, the simplest among Nguyen Dynasty royal tombs. Notably, it was built according to the emperor's will, emphasizing simplicity and frugality.",
+        type: "tomb",
+        latitude: "16.4530",
+        longitude: "107.5570",
+        imageUrl: "/attached_assets/lang-thieu-tri.jpg",
+        isActive: true
+      },
+      {
+        id: this.getNextId(),
+        name: "Lăng Khải Định",
+        nameEn: "Khai Dinh Tomb",
+        description: "Lăng Khải Định được xây dựng từ 1920-1931, là lăng mộ cuối cùng của triều Nguyễn. Kiến trúc độc đáo kết hợp phong cách Đông-Tây, với các họa tiết trang trí tinh xảo bằng mảnh sứ và thủy tinh.",
+        descriptionEn: "Khai Dinh Tomb was built from 1920-1931, the last tomb of the Nguyen Dynasty. Its unique architecture combines Eastern and Western styles, featuring intricate decorations made from ceramic and glass pieces.",
+        type: "tomb",
+        latitude: "16.4200",
+        longitude: "107.5780",
+        imageUrl: "/attached_assets/lang-khai-dinh.jpg",
+        isActive: true
+      },
+      {
+        id: this.getNextId(),
+        name: "Lăng Tự Đức",
+        nameEn: "Tu Duc Tomb",
+        description: "Quần thể lăng mộ rộng 12 ha được xây dựng từ 1864-1867, là nơi nghỉ ngơi và làm việc của vua Tự Đức sinh thời. Kiến trúc tinh tế với hồ Lưu Khiêm, điện Luân Khiêm và vườn thơ Xung Khiêm thể hiện tính cách văn nhân của vị vua thi sĩ.",
+        descriptionEn: "A 12-hectare tomb complex built from 1864-1867, served as Emperor Tu Duc's retreat and workplace. Features elegant architecture with Luu Khiem Lake, Luan Khiem Palace and Xung Khiem Poetry Garden reflecting the poet-emperor's scholarly nature.",
+        type: "tomb",
+        latitude: "16.4570",
+        longitude: "107.5530",
+        imageUrl: "/attached_assets/lang-tu-duc.jpg",
+        isActive: true
+      },
+      {
+        id: this.getNextId(),
+        name: "Đình Phú Xuân",
+        nameEn: "Phu Xuan Communal House",
+        description: "Đình Phú Xuân là công trình kiến trúc cổ được xây dựng từ thời Nguyễn, là nơi thờ thành hoàng và tổ chức các nghi lễ quan trọng của làng. Kiến trúc đình thể hiện nghệ thuật chạm khắc gỗ tinh xảo thời Nguyễn.",
+        descriptionEn: "Phu Xuan Communal House is an ancient architectural work built during the Nguyen Dynasty, used for village deity worship and important ceremonies. Its architecture showcases exquisite Nguyen Dynasty woodcarving art.",
+        type: "communal_house",
+        latitude: "16.4720",
+        longitude: "107.5840",
+        imageUrl: "/attached_assets/dinh-phu-xuan.jpg",
+        isActive: true
+      },
+      {
+        id: this.getNextId(),
+        name: "Viện Cơ Mật",
+        nameEn: "Co Mat Institute",
+        description: "Viện Cơ Mật là cơ quan tham mưu cao nhất của triều Nguyễn, được thành lập năm 1834 dưới thời vua Minh Mạng. Nơi đây từng là trung tâm hoạch định chính sách và điều hành đất nước.",
+        descriptionEn: "Co Mat Institute was the highest advisory body of the Nguyen Dynasty, established in 1834 under Emperor Minh Mang. It served as the center for policy planning and national administration.",
+        type: "government",
+        latitude: "16.4690",
+        longitude: "107.5795",
+        imageUrl: "/attached_assets/vien-co-mat.jpg",
+        isActive: true
+      },
+      {
+        id: this.getNextId(),
+        name: "Văn Miếu",
+        nameEn: "Temple of Literature",
+        description: "Văn Miếu Huế được xây dựng năm 1808 thời vua Gia Long, thờ Khổng Tử và các bậc hiền triết. Nơi đây là biểu tượng của nền giáo dục Nho học và tổ chức các kỳ thi Hương của triều Nguyễn.",
+        descriptionEn: "Hue Temple of Literature was built in 1808 under Emperor Gia Long, dedicated to Confucius and other sages. It symbolizes Confucian education and hosted the regional examinations of the Nguyen Dynasty.",
+        type: "temple",
+        latitude: "16.4630",
+        longitude: "107.5780",
+        imageUrl: "/attached_assets/van-mieu.jpg",
+        isActive: true
+      },
+      {
+        id: this.getNextId(),
+        name: "Đàn Nam Giao",
+        nameEn: "Nam Giao Esplanade",
+        description: "Đàn Nam Giao là công trình kiến trúc tôn giáo quy mô lớn, nơi vua triều Nguyễn thực hiện tế lễ Giao hàng năm. Quần thể gồm ba cấp đàn hình vuông, tròn và bát giác tượng trưng cho Thiên - Địa - Nhân.",
+        descriptionEn: "Nam Giao Esplanade is a large religious architectural complex where Nguyen emperors performed annual Heaven and Earth worship ceremonies. The three-tiered altar includes square, round, and octagonal levels symbolizing Heaven, Earth, and Human.",
+        type: "ritual",
+        latitude: "16.4510",
+        longitude: "107.5670",
+        imageUrl: "/attached_assets/dan-nam-giao.jpg",
+        isActive: true
+      },
+      {
+        id: this.getNextId(),
+        name: "Điện Hòn Chén",
+        nameEn: "Hon Chen Temple",
+        description: "Điện Hòn Chén là quần thể kiến trúc tôn giáo nằm bên bờ sông Hương, thờ Thiên Y A Na - nữ thần của người Chăm. Nơi đây là điểm giao thoa văn hóa Việt-Chăm độc đáo.",
+        descriptionEn: "Hon Chen Temple is a religious architectural complex on the Perfume River bank, dedicated to Thien Y A Na - a Cham goddess. It represents a unique intersection of Vietnamese and Cham cultures.",
+        type: "temple",
+        latitude: "16.4180",
+        longitude: "107.5350",
+        imageUrl: "/attached_assets/dien-hon-chen.jpg",
         isActive: true
       },
       {
         id: this.getNextId(),
         name: "Chùa Thiên Mụ",
-        nameEn: "Thien Mu Pagoda", 
+        nameEn: "Thien Mu Pagoda",
         description: "Ngôi chùa cổ nhất Huế, được xây dựng năm 1601. Tháp Phước Duyên 7 tầng cao 21m là biểu tượng của Huế. Chùa còn lưu giữ nhiều cổ vật quý như chuông đồng đúc năm 1710 và bia đá khắc thơ của các vua triều Nguyễn.",
         descriptionEn: "The oldest pagoda in Hue, built in 1601. The 21-meter, 7-story Phuoc Duyen tower is Hue's iconic symbol. The pagoda preserves many precious artifacts including a bronze bell cast in 1710 and stone steles with poems by Nguyen Dynasty emperors.",
         type: "temple",
         latitude: "16.4539",
         longitude: "107.5537",
-        imageUrl: "https://upload.wikimedia.org/wikipedia/commons/9/9a/Thien_Mu_Pagoda_2019.jpg",
+        imageUrl: "/attached_assets/thien-mu.jpg",
         isActive: true
       }
     ];
@@ -402,7 +582,7 @@ export class MemStorage implements IStorage {
   }
 
   async getContributionsByUserId(userId: number): Promise<Contribution[]> {
-      return this.contributions.filter(c => c.userId === userId);
+    return this.contributions.filter(c => c.userId === userId);
   }
 
   async getContributionsByLocationId(locationId: number): Promise<Contribution[]> {
