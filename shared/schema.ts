@@ -17,7 +17,7 @@ export const categories = pgTable("categories", {
 export const locations = pgTable("locations", {
   id: serial("id").primaryKey(),
   name: text("name").notNull(),
-  nameEn: text("name_en").notNull(), 
+  nameEn: text("name_en").notNull(),
   description: text("description").notNull(),
   descriptionEn: text("description_en").notNull(),
   type: text("type").notNull(),
@@ -30,7 +30,7 @@ export const locations = pgTable("locations", {
 export const users = pgTable("users", {
   id: serial("id").primaryKey(),
   username: text("username").notNull(),
-  email: text("email").notNull(), 
+  email: text("email").notNull(),
   password: text("password").notNull(),
   role: text("role").notNull(),
   points: numeric("points").default("0").notNull(),
@@ -105,18 +105,21 @@ export const resources = pgTable("resources", {
   authorInfo: text("author_info"),
   sourceInfo: text("source_info"),
   languages: text("languages").array(),
-  // New fields for enhanced multimedia support
-  format: text("format"), // e.g., "mp4", "mp3", "glb"
-  duration: text("duration"), // For video/audio
-  fileSize: text("file_size"),
-  dimensions: text("dimensions"), // For images/videos
-  transcription: text("transcription"), // For audio/video content
-  modelFormat: text("model_format"), // For 3D models: "glb", "gltf", etc.
-  textureUrls: text("texture_urls").array(), // For 3D models
-  previewUrls: text("preview_urls").array(), // Multiple preview images
-  license: text("license"), // Usage rights information
-  quality: text("quality"), // e.g., "HD", "4K", "Standard"
-  interactiveData: jsonb("interactive_data"), // For interactive 3D content
+  // New academic fields
+  academicLevel: text("academic_level"), // e.g., "undergraduate", "graduate"
+  researchDomain: text("research_domain"), // e.g., "history", "architecture"
+  citationInfo: text("citation_info"),
+  references: text("references").array(),
+  // Cultural heritage fields
+  culturalSignificance: text("cultural_significance"),
+  preservationStatus: text("preservation_status"),
+  traditionalUses: text("traditional_uses"),
+  socialContext: text("social_context"),
+  // Educational content
+  learningObjectives: text("learning_objectives").array(),
+  teachingMaterials: jsonb("teaching_materials"),
+  studyGuides: jsonb("study_guides"),
+  assessmentTools: jsonb("assessment_tools"),
 });
 
 export const messages = pgTable("messages", {
@@ -140,9 +143,9 @@ export const favoriteRoutes = pgTable("favorite_routes", {
 });
 
 // Schemas
-export const insertLocationSchema = createInsertSchema(locations).omit({ 
+export const insertLocationSchema = createInsertSchema(locations).omit({
   id: true,
-  isActive: true 
+  isActive: true
 });
 
 export const insertUserSchema = createInsertSchema(users).omit({
@@ -259,8 +262,8 @@ export type FavoriteRoute = typeof favoriteRoutes.$inferSelect;
 export type InsertFavoriteRoute = z.infer<typeof insertFavoriteRouteSchema>;
 
 // Enums
-export type LocationType = 
-  | "historical_site" 
+export type LocationType =
+  | "historical_site"
   | "monument"
   | "palace"
   | "temple"
@@ -303,8 +306,8 @@ export type PointTransactionType =
   | "discussion"
   | "review";
 
-export type ResourceType = 
-  | "image" 
+export type ResourceType =
+  | "image"
   | "video"
   | "audio"
   | "3d_model"
@@ -318,7 +321,12 @@ export type ResourceType =
   | "craft_technique"
   | "oral_history"
   | "architecture"
-  | "historical_map";
+  | "historical_map"
+  | "academic_paper"
+  | "research_report"
+  | "educational_material"
+  | "cultural_analysis"
+  | "preservation_guide";
 
 export type ResourceCategory =
   | "imperial_artifacts"
@@ -334,6 +342,10 @@ export type ResourceCategory =
   | "local_festivals"
   | "oral_traditions"
   | "decorative_arts"
-  | "cultural_landscapes";
+  | "cultural_landscapes"
+  | "academic_research"
+  | "educational_resources"
+  | "cultural_studies"
+  | "conservation";
 
 export type ChatRole = "user" | "assistant";
