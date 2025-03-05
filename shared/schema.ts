@@ -86,6 +86,20 @@ export const pointTransactions = pgTable("point_transactions", {
 });
 
 // Resources schema with enhanced multimedia support
+//Type definition added here
+export type ResourceMetadata = {
+  format?: string;
+  pages?: string;
+  language?: string;
+  year?: string;
+  publisher?: string;
+  duration?: string;
+  quality?: string;
+  performers?: string;
+  count?: string;
+  source?: string;
+};
+
 export const resources = pgTable("resources", {
   id: serial("id").primaryKey(),
   title: text("title").notNull(),
@@ -96,7 +110,7 @@ export const resources = pgTable("resources", {
   category: text("category").notNull(),
   contentUrl: text("content_url").notNull(),
   thumbnailUrl: text("thumbnail_url"),
-  metadata: jsonb("metadata").default({}).notNull(),
+  metadata: jsonb("metadata").$type<ResourceMetadata>().default({}).notNull(),
   culturalPeriod: text("cultural_period"),
   historicalContext: text("historical_context"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
@@ -105,7 +119,7 @@ export const resources = pgTable("resources", {
   authorInfo: text("author_info"),
   sourceInfo: text("source_info"),
   languages: text("languages").array(),
-  // New academic fields
+  // Academic fields
   academicLevel: text("academic_level"), // e.g., "undergraduate", "graduate"
   researchDomain: text("research_domain"), // e.g., "history", "architecture"
   citationInfo: text("citation_info"),
