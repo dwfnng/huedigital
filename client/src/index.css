@@ -250,3 +250,28 @@
   background-image: radial-gradient(rgba(var(--primary-rgb), 0.2) 1px, transparent 1px);
   background-size: 20px 20px;
 }
+
+/* Game content formatting */
+.game-text {
+  white-space: pre-line;
+  line-height: 1.6;
+}
+
+.game-description {
+  @apply text-sm md:text-base;
+  white-space: pre-line;
+  line-height: 1.6;
+}
+
+.game-result {
+  @apply text-sm md:text-base;
+  white-space: pre-line;
+  line-height: 1.6;
+  margin-bottom: 0.5rem;
+}
+
+.game-historical-info {
+  @apply text-xs md:text-sm text-muted-foreground;
+  white-space: pre-line;
+  line-height: 1.6;
+}

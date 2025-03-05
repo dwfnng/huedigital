@@ -35,48 +35,58 @@ const gameSteps: GameStep[] = [
   {
     id: "location",
     title: "Chọn vị trí xây dựng kinh đô",
-    description: "Thưa bệ hạ, nơi đâu sẽ là vị trí lý tưởng để xây dựng kinh đô mới của triều Nguyễn? Mỗi lựa chọn sẽ ảnh hưởng đến tương lai phát triển của vương triều.",
-    historicalContext: "Sau khi thống nhất đất nước năm 1802, vua Gia Long cần chọn một vị trí chiến lược để xây dựng kinh đô mới, đánh dấu sự khởi đầu của triều Nguyễn.",
+    description: `Thưa bệ hạ, nơi đâu sẽ là vị trí lý tưởng để xây dựng kinh đô mới của triều Nguyễn? 
+
+    Mỗi lựa chọn sẽ ảnh hưởng đến tương lai phát triển của vương triều.`,
+    historicalContext: `Sau khi thống nhất đất nước năm 1802, vua Gia Long cần chọn một vị trí chiến lược để xây dựng kinh đô mới, đánh dấu sự khởi đầu của triều Nguyễn.`,
     choices: [
       {
         id: "hue",
         text: "Vùng đất Phú Xuân (Huế)",
-        result: "Một lựa chọn sáng suốt! Vùng đất Phú Xuân nằm ở vị trí trung tâm đất nước, có núi sông bao bọc, địa thế hiểm yếu, thuận lợi cho việc phòng thủ và phát triển.",
+        result: `Một lựa chọn sáng suốt! 
+
+        Vùng đất Phú Xuân nằm ở vị trí trung tâm đất nước, có núi sông bao bọc, địa thế hiểm yếu, thuận lợi cho việc phòng thủ và phát triển.`,
         score: 10,
         icon: <MapPin className="h-5 w-5" />,
-        historicalInfo: "Phú Xuân từng là kinh đô của chúa Nguyễn từ thế kỷ 17. Vị trí này nằm giữa hai miền Nam - Bắc, thuận lợi cho việc kiểm soát toàn bộ lãnh thổ.",
-        consequence: "Việc chọn Phú Xuân làm kinh đô giúp triều Nguyễn dễ dàng quản lý cả nước và phát triển quan hệ ngoại giao với các nước láng giềng.",
+        historicalInfo: `Phú Xuân từng là kinh đô của chúa Nguyễn từ thế kỷ 17. 
+
+        Vị trí này nằm giữa hai miền Nam - Bắc, thuận lợi cho việc kiểm soát toàn bộ lãnh thổ.`,
+        consequence: `Việc chọn Phú Xuân làm kinh đô giúp triều Nguyễn dễ dàng quản lý cả nước và phát triển quan hệ ngoại giao với các nước láng giềng.`,
         learnMore: {
           title: "Lịch sử Phú Xuân",
-          content: "Phú Xuân là vùng đất địa linh nhân kiệt, nơi hội tụ những giá trị văn hóa độc đáo. Với hệ thống sông Hương và núi Ngự Bình, đây là nơi có địa thế đẹp, hợp phong thủy theo quan niệm thời bấy giờ.",
+          content: `Phú Xuân là vùng đất địa linh nhân kiệt, nơi hội tụ những giá trị văn hóa độc đáo. 
+
+          Với hệ thống sông Hương và núi Ngự Bình, đây là nơi có địa thế đẹp, hợp phong thủy theo quan niệm thời bấy giờ.`,
           image: "/assets/images/phu-xuan.jpg"
         }
       },
       {
         id: "hanoi",
         text: "Giữ nguyên Thăng Long (Hà Nội)",
-        result: "Thăng Long tuy là kinh đô cổ với nhiều lợi thế về văn hóa và kinh tế, nhưng nằm quá xa phương Nam, khó kiểm soát toàn bộ lãnh thổ.",
+        result: `Thăng Long tuy là kinh đô cổ với nhiều lợi thế về văn hóa và kinh tế, nhưng nằm quá xa phương Nam, khó kiểm soát toàn bộ lãnh thổ.`,
         score: 5,
         icon: <Building2 className="h-5 w-5" />,
-        historicalInfo: "Thăng Long là kinh đô của các triều đại từ thời Lý, với hệ thống thành quách đồ sộ và nền văn hóa lâu đời.",
-        consequence: "Việc giữ Thăng Long làm kinh đô có thể gây khó khăn trong việc kiểm soát các vùng đất phía Nam và ảnh hưởng đến sự ổn định của triều đại.",
+        historicalInfo: `Thăng Long là kinh đô của các triều đại từ thời Lý, với hệ thống thành quách đồ sộ và nền văn hóa lâu đời.`,
+        consequence: `Việc giữ Thăng Long làm kinh đô có thể gây khó khăn trong việc kiểm soát các vùng đất phía Nam và ảnh hưởng đến sự ổn định của triều đại.`,
         learnMore: {
           title: "Di sản Thăng Long",
-          content: "Thăng Long - Hà Nội là trung tâm văn hóa, chính trị lâu đời với hơn 1000 năm lịch sử phát triển. Tuy nhiên, vị trí này không còn phù hợp với bối cảnh mới của đất nước sau thống nhất.",
+          content: `Thăng Long - Hà Nội là trung tâm văn hóa, chính trị lâu đời với hơn 1000 năm lịch sử phát triển. 
+
+          Tuy nhiên, vị trí này không còn phù hợp với bối cảnh mới của đất nước sau thống nhất.`,
           image: "/assets/images/thang-long.jpg"
         }
       },
       {
         id: "saigon",
         text: "Chọn Gia Định (Sài Gòn)",
-        result: "Gia Định tuy là vùng đất mới phát triển với tiềm năng thương mại lớn, nhưng vị trí quá xa trung tâm, không thuận lợi cho việc cai quản đất nước.",
+        result: `Gia Định tuy là vùng đất mới phát triển với tiềm năng thương mại lớn, nhưng vị trí quá xa trung tâm, không thuận lợi cho việc cai quản đất nước.`,
         score: 3,
         icon: <Anchor className="h-5 w-5" />,
-        historicalInfo: "Gia Định là vùng đất trù phú, có cảng sông thuận lợi cho giao thương, nhưng chưa có cơ sở hạ tầng và truyền thống văn hóa đủ mạnh.",
-        consequence: "Việc đặt kinh đô ở Gia Định sẽ gây khó khăn trong việc quản lý các vùng miền khác, đặc biệt là khu vực Bắc Bộ.",
+        historicalInfo: `Gia Định là vùng đất trù phú, có cảng sông thuận lợi cho giao thương, nhưng chưa có cơ sở hạ tầng và truyền thống văn hóa đủ mạnh.`,
+        consequence: `Việc đặt kinh đô ở Gia Định sẽ gây khó khăn trong việc quản lý các vùng miền khác, đặc biệt là khu vực Bắc Bộ.`,
         learnMore: {
           title: "Tiềm năng Gia Định",
-          content: "Gia Định có vị trí thuận lợi cho giao thương đường biển, nhưng chưa đủ điều kiện để trở thành trung tâm chính trị - văn hóa của cả nước vào thời điểm đó.",
+          content: `Gia Định có vị trí thuận lợi cho giao thương đường biển, nhưng chưa đủ điều kiện để trở thành trung tâm chính trị - văn hóa của cả nước vào thời điểm đó.`,
           image: "/assets/images/gia-dinh.jpg"
         }
       }
@@ -85,19 +95,23 @@ const gameSteps: GameStep[] = [
   {
     id: "defense",
     title: "Chiến lược phòng thủ",
-    description: "Bệ hạ cần quyết định phương án phòng thủ cho kinh thành. Điều này sẽ ảnh hưởng trực tiếp đến an ninh của triều đình.",
-    historicalContext: "Kinh thành không chỉ là trung tâm chính trị mà còn phải là một pháo đài kiên cố, bảo vệ triều đình trước mọi hiểm họa.",
+    description: `Bệ hạ cần quyết định phương án phòng thủ cho kinh thành. 
+
+    Điều này sẽ ảnh hưởng trực tiếp đến an ninh của triều đình.`,
+    historicalContext: `Kinh thành không chỉ là trung tâm chính trị mà còn phải là một pháo đài kiên cố, bảo vệ triều đình trước mọi hiểm họa.`,
     choices: [
       {
         id: "modern_defense",
         text: "Kết hợp phòng thủ truyền thống và hiện đại",
-        result: "Sáng suốt! Việc kết hợp hào lũy truyền thống với công sự theo kiểu Vauban sẽ tạo nên hệ thống phòng thủ vững chắc.",
+        result: `Sáng suốt! 
+
+        Việc kết hợp hào lũy truyền thống với công sự theo kiểu Vauban sẽ tạo nên hệ thống phòng thủ vững chắc.`,
         score: 10,
         icon: <Swords className="h-5 w-5" />,
-        historicalInfo: "Vua Gia Long đã học hỏi kỹ thuật xây dựng phòng thủ từ các chuyên gia phương Tây.",
+        historicalInfo: `Vua Gia Long đã học hỏi kỹ thuật xây dựng phòng thủ từ các chuyên gia phương Tây.`,
         learnMore: {
           title: "Kiến trúc Vauban",
-          content: "Kiến trúc Vauban là phong cách xây dựng công sự phòng thủ tiên tiến của Pháp, được áp dụng trong xây dựng Kinh thành Huế.",
+          content: `Kiến trúc Vauban là phong cách xây dựng công sự phòng thủ tiên tiến của Pháp, được áp dụng trong xây dựng Kinh thành Huế.`,
           image: "/assets/images/vauban.jpg"
         }
       }
@@ -106,19 +120,23 @@ const gameSteps: GameStep[] = [
   {
     id: "culture",
     title: "Phát triển văn hóa",
-    description: "Kinh đô mới cần có những định hướng phát triển văn hóa. Bệ hạ chọn phương án nào?",
-    historicalContext: "Văn hóa không chỉ là nền tảng tinh thần mà còn là sức mạnh mềm của một vương triều.",
+    description: `Kinh đô mới cần có những định hướng phát triển văn hóa. 
+
+    Bệ hạ chọn phương án nào?`,
+    historicalContext: `Văn hóa không chỉ là nền tảng tinh thần mà còn là sức mạnh mềm của một vương triều.`,
     choices: [
       {
         id: "traditional",
         text: "Bảo tồn và phát triển văn hóa truyền thống",
-        result: "Xuất sắc! Việc giữ gìn bản sắc văn hóa dân tộc sẽ tạo nền tảng vững chắc cho sự phát triển của triều đại.",
+        result: `Xuất sắc! 
+
+        Việc giữ gìn bản sắc văn hóa dân tộc sẽ tạo nền tảng vững chắc cho sự phát triển của triều đại.`,
         score: 10,
         icon: <Book className="h-5 w-5" />,
-        historicalInfo: "Triều Nguyễn đã có những đóng góp to lớn trong việc bảo tồn và phát triển văn hóa Việt Nam.",
+        historicalInfo: `Triều Nguyễn đã có những đóng góp to lớn trong việc bảo tồn và phát triển văn hóa Việt Nam.`,
         learnMore: {
           title: "Văn hóa cung đình Huế",
-          content: "Văn hóa cung đình Huế là sự kết hợp hài hòa giữa truyền thống và những tinh hoa văn hóa mới.",
+          content: `Văn hóa cung đình Huế là sự kết hợp hài hòa giữa truyền thống và những tinh hoa văn hóa mới.`,
           image: "/assets/images/culture.jpg"
         }
       }
@@ -241,14 +259,14 @@ const RolePlayGame = () => {
 
                 {gameSteps[currentStep].historicalContext && (
                   <div className="p-3 md:p-4 bg-primary/5 rounded-lg mb-4">
-                    <p className="text-sm md:text-base">
+                    <p className="game-text">
                       {gameSteps[currentStep].historicalContext}
                     </p>
                   </div>
                 )}
 
                 <div className="p-3 md:p-4 bg-accent/20 rounded-lg mb-4 md:mb-6">
-                  <p className="text-sm md:text-base">{gameSteps[currentStep].description}</p>
+                  <p className="game-description">{gameSteps[currentStep].description}</p>
                 </div>
               </div>
 
@@ -284,12 +302,12 @@ const RolePlayGame = () => {
                               >
                                 {confirmedChoice?.id === choice.id && (
                                   <div className="p-2 md:p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
-                                    <p className="text-sm md:text-base break-words">{choice.result}</p>
+                                    <p className="game-result">{choice.result}</p>
                                   </div>
                                 )}
                                 {choice.historicalInfo && (
                                   <div className="p-2 md:p-3 bg-muted/30 rounded-lg">
-                                    <p className="text-xs md:text-sm text-muted-foreground break-words">
+                                    <p className="game-historical-info">
                                       {choice.historicalInfo}
                                     </p>
                                   </div>

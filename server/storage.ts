@@ -2,7 +2,7 @@ import {
   type Location, type User, type Discussion, type Comment, type Contribution, type Review,
   type InsertLocation, type InsertUser, type InsertDiscussion, type InsertComment,
   type InsertContribution, type InsertReview, type Resource, type Category, type InsertResource, type InsertCategory,
-  type Product, type InsertProduct
+  type FavoriteRoute, type InsertFavoriteRoute
 } from "@shared/schema";
 
 export interface IStorage {
@@ -62,6 +62,12 @@ export interface IStorage {
   getAllProducts(): Promise<Product[]>;
   getProductById(id: number): Promise<Product | undefined>;
   createProduct(product: InsertProduct): Promise<Product>;
+
+  // Favorite Routes
+  getFavoriteRoutes(userId: number): Promise<FavoriteRoute[]>;
+  getFavoriteRouteById(id: number): Promise<FavoriteRoute | undefined>;
+  createFavoriteRoute(route: InsertFavoriteRoute): Promise<FavoriteRoute>;
+  deleteFavoriteRoute(id: number): Promise<void>;
 }
 
 export class MemStorage implements IStorage {
@@ -74,7 +80,7 @@ export class MemStorage implements IStorage {
   private locations: Location[] = [];
   private resources: Resource[] = [];
   private categories: Category[] = [];
-  private products: Product[] = [];
+  private favoriteRoutes: FavoriteRoute[] = [];
   private nextId = 1;
 
   constructor() {
@@ -695,6 +701,33 @@ export class MemStorage implements IStorage {
     const newCategory = { ...category, id: this.getNextId() } as Category;
     this.categories.push(newCategory);
     return newCategory;
+  }
+
+  // Favorite Routes implementation
+  async getFavoriteRoutes(userId: number): Promise<FavoriteRoute[]> {
+    return this.favoriteRoutes.filter(route => route.userId === userId && route.isActive);
+  }
+
+  async getFavoriteRouteById(id: number): Promise<FavoriteRoute | undefined> {
+    return this.favoriteRoutes.find(route => route.id === id && route.isActive);
+  }
+
+  async createFavoriteRoute(route: InsertFavoriteRoute): Promise<FavoriteRoute> {
+    const newRoute = {
+      ...route,
+      id: this.getNextId(),
+      createdAt: new Date(),
+      isActive: true
+    } as FavoriteRoute;
+    this.favoriteRoutes.push(newRoute);
+    return newRoute;
+  }
+
+  async deleteFavoriteRoute(id: number): Promise<void> {
+    const routeIndex = this.favoriteRoutes.findIndex(r => r.id === id);
+    if (routeIndex !== -1) {
+      this.favoriteRoutes[routeIndex].isActive = false;
+    }
   }
 }
 

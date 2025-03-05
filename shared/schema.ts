@@ -126,6 +126,19 @@ export const messages = pgTable("messages", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
+// New table for favorite routes
+export const favoriteRoutes = pgTable("favorite_routes", {
+  id: serial("id").primaryKey(),
+  userId: serial("user_id").notNull(),
+  name: text("name").notNull(),
+  startLocationId: serial("start_location_id").notNull(),
+  endLocationId: serial("end_location_id").notNull(),
+  description: text("description"),
+  routeData: jsonb("route_data").notNull(), // Store route coordinates and waypoints
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  isActive: boolean("is_active").default(true).notNull(),
+});
+
 // Schemas
 export const insertLocationSchema = createInsertSchema(locations).omit({ 
   id: true,
@@ -162,6 +175,13 @@ export const insertReviewSchema = createInsertSchema(reviews).omit({
 
 export const insertCategorySchema = createInsertSchema(categories).omit({
   id: true,
+});
+
+// Schema for inserting favorite routes
+export const insertFavoriteRouteSchema = createInsertSchema(favoriteRoutes).omit({
+  id: true,
+  createdAt: true,
+  isActive: true
 });
 
 // Enhanced metadata schema for different resource types
@@ -234,6 +254,9 @@ export type Resource = typeof resources.$inferSelect;
 export type InsertResource = z.infer<typeof insertResourceSchema>;
 export type Message = typeof messages.$inferSelect;
 export type InsertMessage = z.infer<typeof insertMessageSchema>;
+// Type definitions for favorite routes
+export type FavoriteRoute = typeof favoriteRoutes.$inferSelect;
+export type InsertFavoriteRoute = z.infer<typeof insertFavoriteRouteSchema>;
 
 // Enums
 export type LocationType = 
