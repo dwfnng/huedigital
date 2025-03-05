@@ -14,8 +14,8 @@ export const resources = pgTable("resources", {
   contentUrl: text("content_url"),
   thumbnailUrl: text("thumbnail_url"),
   imageUrls: text("image_urls").array(),
-  textContent: text("text_content"), // Nội dung chính từ file Word
-  format: text("format"), // docx, pdf, etc.
+  textContent: text("text_content"),
+  format: text("format"),
   author: text("author"),
   source: text("source"),
   tags: text("tags").array(),
@@ -40,6 +40,53 @@ export const resources = pgTable("resources", {
   comments: jsonb("comments").default([]),
 });
 
+// Insert schemas
+export const insertResourceSchema = createInsertSchema(resources).omit({
+  id: true,
+  createdAt: true,
+  lastUpdated: true,
+  viewCount: true,
+  comments: true,
+});
+
+// Types
+export type Resource = typeof resources.$inferSelect;
+export type InsertResource = z.infer<typeof insertResourceSchema>;
+
+// Enums for resource types and categories
+export enum ResourceType {
+  DOCUMENT = "document",
+  IMAGE = "image",
+  VIDEO = "video",
+  AUDIO = "audio",
+  INTERACTIVE = "interactive",
+  MODEL_3D = "3d_model",
+  ARTICLE = "article",
+  RESEARCH_PAPER = "research_paper",
+  HISTORICAL_RECORD = "historical_record",
+  CULTURAL_ARTIFACT = "cultural_artifact"
+}
+
+export enum ResourceCategory {
+  HERITAGE_SITES = "heritage_sites",
+  TRADITIONAL_CRAFTS = "traditional_crafts", 
+  PERFORMING_ARTS = "performing_arts",
+  CULINARY_HERITAGE = "culinary_heritage",
+  FESTIVALS_RITUALS = "festivals_and_rituals",
+  HISTORICAL_DOCUMENTS = "historical_documents",
+  ORAL_TRADITIONS = "oral_traditions",
+  ARCHITECTURE = "architecture",
+  ROYAL_ARTIFACTS = "royal_artifacts",
+  CULTURAL_PRACTICES = "cultural_practices"
+}
+
+export enum ResourceStatus {
+  DRAFT = "draft",
+  PENDING_REVIEW = "pending_review",
+  PUBLISHED = "published", 
+  ARCHIVED = "archived"
+}
+
 // Schema for user contributions and discussions
 export const discussions = pgTable("discussions", {
   id: serial("id").primaryKey(),
@@ -53,7 +100,7 @@ export const discussions = pgTable("discussions", {
   status: text("status").default("published"),
   views: numeric("views").default("0"),
   likes: numeric("likes").default("0"),
-  resourceId: serial("resource_id"), // Liên kết với tài liệu gốc nếu có
+  resourceId: serial("resource_id"), 
 });
 
 // Schema for comments
@@ -69,14 +116,6 @@ export const comments = pgTable("comments", {
 });
 
 // Insert schemas
-export const insertResourceSchema = createInsertSchema(resources).omit({
-  id: true,
-  createdAt: true,
-  lastUpdated: true,
-  viewCount: true,
-  comments: true,
-});
-
 export const insertDiscussionSchema = createInsertSchema(discussions).omit({
   id: true,
   createdAt: true,
@@ -92,35 +131,11 @@ export const insertCommentSchema = createInsertSchema(comments).omit({
 });
 
 // Types
-export type Resource = typeof resources.$inferSelect;
-export type InsertResource = z.infer<typeof insertResourceSchema>;
 export type Discussion = typeof discussions.$inferSelect;
 export type InsertDiscussion = z.infer<typeof insertDiscussionSchema>;
 export type Comment = typeof comments.$inferSelect;
 export type InsertComment = z.infer<typeof insertCommentSchema>;
 
-// Enums
-export type ResourceType =
-  | "article"
-  | "document"
-  | "image_gallery"
-  | "video"
-  | "audio";
-
-export type ResourceCategory =
-  | "historical_site"
-  | "architecture"
-  | "traditional_craft"
-  | "performing_art"
-  | "festival_ritual"
-  | "cultural_practice"
-  | "culinary_heritage";
-
-export type ResourceStatus =
-  | "draft"
-  | "pending_review"
-  | "published"
-  | "archived";
 
 // Categories schema with enhanced cultural focus
 export const categories = pgTable("categories", {
@@ -157,7 +172,6 @@ export const users = pgTable("users", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
-
 export const pointTransactions = pgTable("point_transactions", {
   id: serial("id").primaryKey(),
   userId: serial("user_id").notNull(),
@@ -181,7 +195,7 @@ export const favoriteRoutes = pgTable("favorite_routes", {
   startLocationId: serial("start_location_id").notNull(),
   endLocationId: serial("end_location_id").notNull(),
   description: text("description"),
-  routeData: jsonb("route_data").notNull(), // Store route coordinates and waypoints
+  routeData: jsonb("route_data").notNull(), 
   createdAt: timestamp("created_at").defaultNow().notNull(),
   isActive: boolean("is_active").default(true).notNull(),
 });
@@ -201,7 +215,6 @@ export const insertCategorySchema = createInsertSchema(categories).omit({
   id: true,
 });
 
-
 export const insertFavoriteRouteSchema = createInsertSchema(favoriteRoutes).omit({
   id: true,
   createdAt: true,
@@ -212,7 +225,6 @@ export const insertMessageSchema = createInsertSchema(messages).omit({
   id: true,
   createdAt: true,
 });
-
 
 // Type definitions for favorite routes
 export type FavoriteRoute = typeof favoriteRoutes.$inferSelect;
@@ -256,35 +268,9 @@ export type DiscussionCategory =
   | "experience"
   | "preservation";
 
-
 export type PointTransactionType =
   | "contribution"
   | "discussion"
   | "review";
-
-export type ResourceType = 
-  | "document"
-  | "image"
-  | "video"
-  | "audio"
-  | "interactive"
-  | "3d_model"
-  | "article"
-  | "research_paper"
-  | "historical_record"
-  | "cultural_artifact";
-
-
-export type ResourceCategory =
-  | "heritage_sites"
-  | "traditional_crafts"
-  | "performing_arts"
-  | "culinary_heritage"
-  | "festivals_and_rituals"
-  | "historical_documents"
-  | "oral_traditions"
-  | "architecture"
-  | "royal_artifacts"
-  | "cultural_practices";
 
 export type ChatRole = "user" | "assistant";

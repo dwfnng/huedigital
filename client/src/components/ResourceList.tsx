@@ -9,7 +9,7 @@ import {
   GraduationCap,
   Book,
   Calendar,
-  Clock
+  Tag,
 } from "lucide-react";
 import type { Resource } from "@shared/schema";
 import { resources } from "@/data/resources";
@@ -81,31 +81,34 @@ export default function ResourceList({ onResourceSelect }: ResourceListProps) {
                           className="absolute inset-0 w-full h-full object-cover"
                           onError={(e) => {
                             const target = e.target as HTMLImageElement;
-                            target.src = 'https://placehold.co/600x400/png?text=Image+Not+Found';
+                            target.src = '/assets/images/placeholders/no-image.svg';
                           }}
                         />
                       </div>
                     )}
-                    <h3 className="font-semibold truncate">{resource.title}</h3>
-                    <p className="text-sm text-muted-foreground truncate">
-                      {resource.titleEn}
-                    </p>
+                    <h3 className="font-semibold truncate text-lg text-foreground">{resource.title}</h3>
+                    {resource.titleEn && (
+                      <p className="text-sm text-muted-foreground truncate">
+                        {resource.titleEn}
+                      </p>
+                    )}
                     {resource.description && (
                       <p className="text-sm mt-2 line-clamp-2 text-muted-foreground">
                         {resource.description}
                       </p>
                     )}
-                    <div className="flex items-center gap-4 mt-3 text-xs text-muted-foreground">
-                      {resource.format && (
+                    <div className="flex flex-wrap items-center gap-4 mt-3 text-xs text-muted-foreground">
+                      <div className="flex items-center gap-1">
+                        <Calendar className="h-3 w-3" />
+                        {new Date(resource.createdAt).toLocaleDateString('vi-VN')}
+                      </div>
+                      {resource.tags && resource.tags.length > 0 && (
                         <div className="flex items-center gap-1">
-                          <FileText className="h-3 w-3" />
-                          {resource.format.toUpperCase()}
-                        </div>
-                      )}
-                      {resource.createdAt && (
-                        <div className="flex items-center gap-1">
-                          <Calendar className="h-3 w-3" />
-                          {new Date(resource.createdAt).toLocaleDateString('vi-VN')}
+                          <Tag className="h-3 w-3" />
+                          <span className="truncate">
+                            {resource.tags.slice(0, 3).join(', ')}
+                            {resource.tags.length > 3 && '...'}
+                          </span>
                         </div>
                       )}
                     </div>
