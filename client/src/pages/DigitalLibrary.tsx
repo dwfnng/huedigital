@@ -4,15 +4,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import {
-  FileText,
-  Image,
-  Video,
-  Music,
-  Search,
-  History,
-  BookOpen,
-  Coffee,
-  Heart
+  FileText, Image, Video, Music, Search,
+  History, BookOpen, Coffee, Heart
 } from "lucide-react";
 import { ResourceDialog } from "@/components/ResourceDialog";
 import { Card } from "@/components/ui/card";
@@ -26,28 +19,28 @@ interface FilterState {
 
 const categories = [
   {
-    id: "heritage_site",
-    label: "Di tích lịch sử",
+    id: "heritage",
+    label: "Di sản văn hóa",
     icon: <History />,
-    description: "Di tích lịch sử và văn hóa Huế"
+    description: "Di tích lịch sử, kiến trúc và văn hóa phi vật thể"
   },
   {
-    id: "performing_arts",
-    label: "Nghệ thuật biểu diễn",
+    id: "arts",
+    label: "Nghệ thuật",
     icon: <Music />,
-    description: "Ca Huế, Bài chòi và nghệ thuật truyền thống"
+    description: "Ca Huế, Bài chòi, nhã nhạc cung đình và nghệ thuật truyền thống"
   },
   {
-    id: "culture",
-    label: "Văn hóa",
+    id: "lifestyle",
+    label: "Đời sống",
+    icon: <Heart />,
+    description: "Ẩm thực, trang phục, nghề thủ công truyền thống"
+  },
+  {
+    id: "documents",
+    label: "Tư liệu",
     icon: <BookOpen />,
-    description: "Văn hóa phi vật thể và đời sống"
-  },
-  {
-    id: "culinary",
-    label: "Ẩm thực",
-    icon: <Coffee />,
-    description: "Ẩm thực cung đình và dân gian"
+    description: "Sách, hình ảnh, video về lịch sử và văn hóa Huế"
   }
 ];
 
@@ -132,109 +125,80 @@ export default function DigitalLibrary() {
         ))}
       </div>
 
-      <Tabs defaultValue="all" className="w-full">
-        <TabsList className="mb-4">
-          <TabsTrigger value="all" onClick={() => setFilters(prev => ({ ...prev, type: undefined }))}>
-            Tất cả
-          </TabsTrigger>
-          <TabsTrigger value="document" onClick={() => setFilters(prev => ({ ...prev, type: "document" }))}>
-            <FileText className="mr-2 h-4 w-4" />
-            Tài liệu
-          </TabsTrigger>
-          <TabsTrigger value="image" onClick={() => setFilters(prev => ({ ...prev, type: "image" }))}>
-            <Image className="mr-2 h-4 w-4" />
-            Hình ảnh
-          </TabsTrigger>
-          <TabsTrigger value="video" onClick={() => setFilters(prev => ({ ...prev, type: "video" }))}>
-            <Video className="mr-2 h-4 w-4" />
-            Video
-          </TabsTrigger>
-          <TabsTrigger value="audio" onClick={() => setFilters(prev => ({ ...prev, type: "audio" }))}>
-            <Music className="mr-2 h-4 w-4" />
-            Âm thanh
-          </TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="all">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredResources.map((resource) => (
-              <motion.div
-                key={resource.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
-              >
-                <Card
-                  className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer h-full"
-                  onClick={() => handleResourceClick(resource)}
-                >
-                  <div className="aspect-video relative">
-                    <img
-                      src={`/attached_assets/${resource.thumbnailUrl}`}
-                      alt={resource.title}
-                      className="w-full h-full object-cover"
-                      onError={(e) => {
-                        e.currentTarget.src = `/placeholders/${resource.type}-placeholder.jpg`;
-                      }}
-                    />
-                    {resource.type === "video" && (
-                      <div className="absolute inset-0 flex items-center justify-center bg-black/30">
-                        <Video className="h-12 w-12 text-white" />
-                      </div>
-                    )}
-                    {resource.type === "audio" && (
-                      <div className="absolute inset-0 flex items-center justify-center bg-black/30">
-                        <Music className="h-12 w-12 text-white" />
-                      </div>
-                    )}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {filteredResources.map((resource) => (
+          <motion.div
+            key={resource.id}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <Card
+              className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer h-full"
+              onClick={() => handleResourceClick(resource)}
+            >
+              <div className="aspect-video relative">
+                <img
+                  src={resource.thumbnailUrl || `/placeholders/${resource.type}-placeholder.jpg`}
+                  alt={resource.title}
+                  className="w-full h-full object-cover"
+                />
+                {resource.type === "video" && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/30">
+                    <Video className="h-12 w-12 text-white" />
                   </div>
-                  <div className="p-4">
-                    <h3 className="font-semibold text-lg line-clamp-2">{resource.title}</h3>
-                    {resource.description && (
-                      <p className="text-sm mt-2 line-clamp-2 text-muted-foreground">
-                        {resource.description}
-                      </p>
-                    )}
-                    <div className="flex flex-wrap gap-2 mt-3">
-                      {resource.keywords?.slice(0, 3).map((keyword, index) => (
-                        <span
-                          key={index}
-                          className="px-2 py-1 bg-accent text-accent-foreground rounded-full text-xs"
-                        >
-                          {keyword}
-                        </span>
-                      ))}
-                    </div>
-                    <div className="flex items-center gap-4 mt-3 text-xs text-muted-foreground">
-                      <div className="flex items-center gap-1">
-                        {categories.find(c => c.id === resource.category)?.label || resource.category}
-                      </div>
-                      {resource.period && (
-                        <div className="flex items-center gap-1">
-                          <History className="h-3 w-3" />
-                          {resource.period}
-                        </div>
-                      )}
-                    </div>
+                )}
+                {resource.type === "audio" && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/30">
+                    <Music className="h-12 w-12 text-white" />
                   </div>
-                </Card>
-              </motion.div>
-            ))}
-
-            {filteredResources.length === 0 && (
-              <div className="col-span-full text-center py-12">
-                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-muted flex items-center justify-center">
-                  <Search className="h-8 w-8 text-muted-foreground" />
-                </div>
-                <h3 className="font-semibold">Không tìm thấy tài liệu</h3>
-                <p className="text-sm text-muted-foreground mt-1">
-                  Thử tìm kiếm với từ khóa khác hoặc điều chỉnh bộ lọc
-                </p>
+                )}
               </div>
-            )}
+              <div className="p-4">
+                <h3 className="font-semibold text-lg line-clamp-2">{resource.title}</h3>
+                {resource.description && (
+                  <p className="text-sm mt-2 line-clamp-2 text-muted-foreground">
+                    {resource.description}
+                  </p>
+                )}
+                <div className="flex flex-wrap gap-2 mt-3">
+                  {resource.keywords?.slice(0, 3).map((keyword, index) => (
+                    <span
+                      key={index}
+                      className="px-2 py-1 bg-accent text-accent-foreground rounded-full text-xs"
+                    >
+                      {keyword}
+                    </span>
+                  ))}
+                </div>
+                <div className="flex items-center gap-4 mt-3 text-xs text-muted-foreground">
+                  <div className="flex items-center gap-1">
+                    {categories.find(c => c.id === resource.category)?.label || resource.category}
+                  </div>
+                  {resource.period && (
+                    <div className="flex items-center gap-1">
+                      <History className="h-3 w-3" />
+                      {resource.period}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </Card>
+          </motion.div>
+        ))}
+
+        {filteredResources.length === 0 && (
+          <div className="col-span-full text-center py-12">
+            <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-muted flex items-center justify-center">
+              <Search className="h-8 w-8 text-muted-foreground" />
+            </div>
+            <h3 className="font-semibold">Không tìm thấy tài liệu</h3>
+            <p className="text-sm text-muted-foreground mt-1">
+              Thử tìm kiếm với từ khóa khác hoặc điều chỉnh bộ lọc
+            </p>
           </div>
-        </TabsContent>
-        </Tabs>
+        )}
+      </div>
 
       <ResourceDialog
         resource={selectedResource}
