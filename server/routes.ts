@@ -13,6 +13,27 @@ export async function registerRoutes(app: Express) {
   app.use(contributionsRouter);
   app.use(liveDataRouter);
 
+  // Digital Library Routes
+  app.get("/api/digital-library", async (_req, res) => {
+    try {
+      const resources = await storage.getAllDigitalLibraryResources();
+      res.json(resources);
+    } catch (error) {
+      console.error("Error fetching digital library resources:", error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  });
+
+  app.get("/api/digital-library/categories", async (_req, res) => {
+    try {
+      const categories = await storage.getAllDigitalLibraryCategories();
+      res.json(categories);
+    } catch (error) {
+      console.error("Error fetching digital library categories:", error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  });
+
   app.get("/api/locations", async (_req, res) => {
     const locations = await storage.getAllLocations();
     res.json(locations);

@@ -29,6 +29,50 @@ export interface InsertProduct {
   stock: string;
 }
 
+export interface DigitalLibraryResource {
+  id: number;
+  title: string;
+  titleEn: string;
+  description: string;
+  descriptionEn: string;
+  type: string;
+  category: string;
+  contentUrl: string;
+  thumbnailUrl: string;
+  author: string;
+  source: string;
+  yearCreated: string;
+  location: string;
+  dynasty: string;
+  period: string;
+  keywords: string[];
+  languages: string[];
+  metadata: {};
+  pageCount?: string;
+  fileFormat?: string;
+  fileSize?: string;
+  viewCount: number;
+  downloadCount: number;
+  featured: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  duration?: number;
+  quality?: string;
+}
+
+
+export interface DigitalLibraryCategory {
+  id: number;
+  name: string;
+  nameEn: string;
+  description: string;
+  descriptionEn: string;
+  parentId: number | null;
+  iconUrl: string | null;
+  type: string;
+  sortOrder: string;
+}
+
 export interface IStorage {
   // Users
   createUser(user: InsertUser): Promise<User>;
@@ -94,6 +138,10 @@ export interface IStorage {
   createFavoriteRoute(route: InsertFavoriteRoute): Promise<FavoriteRoute>;
   deleteFavoriteRoute(id: number): Promise<void>;
 
+  // Digital Library methods
+  getAllDigitalLibraryResources(): Promise<DigitalLibraryResource[]>;
+  getAllDigitalLibraryCategories(): Promise<DigitalLibraryCategory[]>;
+
   // Session store
   sessionStore: session.Store;
 }
@@ -110,6 +158,8 @@ export class MemStorage implements IStorage {
   private categories: Category[] = [];
   private favoriteRoutes: FavoriteRoute[] = [];
   private products: Product[] = [];
+  private digitalLibraryResources: DigitalLibraryResource[] = [];
+  private digitalLibraryCategories: DigitalLibraryCategory[] = [];
   private nextId = 1;
   public sessionStore: session.Store;
 
@@ -522,47 +572,92 @@ export class MemStorage implements IStorage {
       }
     ];
 
-    // Initialize categories without createdAt
-    this.categories = [
+    // Initialize Digital Library Categories
+    this.digitalLibraryCategories = [
       {
         id: this.getNextId(),
-        name: "Di sản",
-        nameEn: "Heritage",
-        description: "Các di sản văn hóa Huế",
-        descriptionEn: "Hue cultural heritage",
-        parentId: 0,
-        iconUrl: null
+        name: "Di tích lịch sử",
+        nameEn: "Historical Sites",
+        description: "Các di tích lịch sử và văn hóa Huế",
+        descriptionEn: "Historical and cultural sites of Hue",
+        parentId: null,
+        iconUrl: null,
+        type: "heritage",
+        sortOrder: "0"
       },
       {
         id: this.getNextId(),
-        name: "Văn hóa",
-        nameEn: "Culture",
-        description: "Văn hóa và phong tục Huế",
-        descriptionEn: "Hue culture and customs",
-        parentId: 0,
-        iconUrl: null
-      },
-      {
-        id: this.getNextId(),
-        name: "Nghệ thuật",
-        nameEn: "Art",
-        description: "Nghệ thuật truyền thống Huế",
-        descriptionEn: "Hue traditional arts",
-        parentId: 0,
-        iconUrl: null
+        name: "Âm nhạc cung đình",
+        nameEn: "Royal Court Music",
+        description: "Âm nhạc truyền thống và nhã nhạc cung đình Huế",
+        descriptionEn: "Traditional and royal court music of Hue",
+        parentId: null,
+        iconUrl: null,
+        type: "performing_arts",
+        sortOrder: "1"
       }
     ];
 
-    // Add a default user for testing
-    this.users = [
+    // Initialize Digital Library Resources
+    this.digitalLibraryResources = [
       {
-        id: 1,
-        username: "admin",
-        password: "admin123",
-        email: "admin@example.com",
-        role: "admin",
-        points: "0",
-        createdAt: new Date()
+        id: this.getNextId(),
+        title: "Chùa Thiên Mụ – Biểu tượng linh thiêng của cố đô Huế",
+        titleEn: "Thien Mu Pagoda - Sacred Symbol of Ancient Hue Capital",
+        description: "Ngôi chùa cổ nhất Huế, được xây dựng năm 1601. Tháp Phước Duyên 7 tầng cao 21m là biểu tượng của Huế. Chùa còn lưu giữ nhiều cổ vật quý như chuông đồng đúc năm 1710 và bia đá khắc thơ của các vua triều Nguyễn.",
+        descriptionEn: "The oldest pagoda in Hue, built in 1601. The 21-meter, 7-story Phuoc Duyen tower is Hue's iconic symbol. The pagoda preserves many precious artifacts including a bronze bell cast in 1710 and stone steles with poems by Nguyen Dynasty emperors.",
+        type: "document",
+        category: "heritage_site",
+        contentUrl: "/attached_assets/CHÙA THIÊN MỤ – BIỂU TƯỢNG LINH THIÊNG CỦA CỐ ĐÔ HUẾ.docx",
+        thumbnailUrl: "/attached_assets/thien-mu.jpg",
+        author: "Trung tâm Bảo tồn Di tích Cố đô Huế",
+        source: "Trung tâm Bảo tồn Di tích Cố đô Huế",
+        yearCreated: "2024",
+        location: "Huế",
+        dynasty: "Nguyễn",
+        period: "17-20th Century",
+        keywords: ["pagoda", "buddhism", "heritage", "architecture"],
+        languages: ["vi", "en"],
+        metadata: {},
+        pageCount: "15",
+        fileFormat: "docx",
+        fileSize: "2048",
+        viewCount: 0,
+        downloadCount: 0,
+        featured: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        id: this.getNextId(),
+        title: "Ca Huế - Tinh hoa âm nhạc xứ Kinh kỳ",
+        titleEn: "Hue Classical Music - The Essence of Imperial City Music",
+        description: "Ca Huế là một thể loại âm nhạc truyền thống độc đáo của xứ Huế, kết hợp giữa các làn điệu dân ca và nhã nhạc cung đình. Nghệ thuật này phản ánh đời sống tinh thần phong phú và tâm hồn tao nhã của người dân Huế.",
+        descriptionEn: "Hue Classical Music is a unique traditional music genre of Hue, combining folk melodies and royal court music. This art form reflects the rich spiritual life and refined soul of Hue people.",
+        type: "audio",
+        category: "performing_arts",
+        contentUrl: "/attached_assets/Ca Huế – Tinh Hoa Âm Nhạc Xứ Kinh Kỳ.docx",
+        thumbnailUrl: "/attached_assets/ca-hue.jpg",
+        author: "Viện Âm nhạc Huế",
+        source: "Nghiên cứu Văn hóa Huế",
+        yearCreated: "2024",
+        location: "Huế",
+        dynasty: "Nguyễn",
+        period: "19-20th Century",
+        keywords: ["music", "tradition", "culture"],
+        languages: ["vi", "en"],
+        metadata: {
+          instruments: ["đàn tranh", "đàn nguyệt", "đàn tỳ bà", "sáo trúc"],
+          performers: "Traditional musicians and vocalists",
+          occasion: "Traditional festivals and ceremonies"
+        },
+        duration: 3600,
+        quality: "High",
+        viewCount: 0,
+        downloadCount: 0,
+        featured: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
       }
     ];
   }
@@ -803,6 +898,15 @@ export class MemStorage implements IStorage {
     if (routeIndex !== -1) {
       this.favoriteRoutes[routeIndex].isActive = false;
     }
+  }
+
+  // Digital Library implementations
+  async getAllDigitalLibraryResources(): Promise<DigitalLibraryResource[]> {
+    return this.digitalLibraryResources;
+  }
+
+  async getAllDigitalLibraryCategories(): Promise<DigitalLibraryCategory[]> {
+    return this.digitalLibraryCategories;
   }
 }
 
