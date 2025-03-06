@@ -127,6 +127,30 @@ export async function registerRoutes(app: Express) {
     }
   });
 
+  // New endpoint: Get location with associated resources
+  app.get("/api/locations/:id/full", async (req, res) => {
+    try {
+      const locationId = Number(req.params.id);
+      const location = await storage.getLocationById(locationId);
+
+      if (!location) {
+        res.status(404).json({ message: "Location not found" });
+        return;
+      }
+
+      // Get associated resources
+      const resources = await storage.getResourcesByLocationId(locationId);
+
+      res.json({
+        location,
+        resources
+      });
+    } catch (error) {
+      console.error("Error fetching location details:", error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }

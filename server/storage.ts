@@ -74,6 +74,7 @@ export interface IStorage {
   getResourceById(id: number): Promise<Resource | undefined>;
   getResourcesByType(type: string): Promise<Resource[]>;
   getResourcesByCategory(category: string): Promise<Resource[]>;
+  getResourcesByLocationId(locationId: number): Promise<Resource[]>;
   searchResources(query: string): Promise<Resource[]>;
   createResource(resource: InsertResource): Promise<Resource>;
 
@@ -743,6 +744,10 @@ export class MemStorage implements IStorage {
 
   async getResourcesByCategory(category: string): Promise<Resource[]> {
     return this.resources.filter(r => r.category === category);
+  }
+
+  async getResourcesByLocationId(locationId: number): Promise<Resource[]> {
+    return this.resources.filter(r => r.relatedLocationId === locationId);
   }
 
   async searchResources(query: string): Promise<Resource[]> {
