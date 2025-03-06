@@ -23,7 +23,7 @@ export interface IStorage {
   getAllDiscussions(): Promise<Discussion[]>;
   incrementDiscussionViews(id: number): Promise<void>;
 
-  // Comments  
+  // Comments
   createComment(comment: InsertComment): Promise<Comment>;
   getCommentsByDiscussionId(discussionId: number): Promise<Comment[]>;
 
@@ -58,7 +58,7 @@ export interface IStorage {
   searchResources(query: string): Promise<Resource[]>;
   createResource(resource: InsertResource): Promise<Resource>;
 
-  // Categories 
+  // Categories
   getAllCategories(): Promise<Category[]>;
   getCategoryById(id: number): Promise<Category | undefined>;
   createCategory(category: InsertCategory): Promise<Category>;
@@ -95,7 +95,7 @@ export class MemStorage implements IStorage {
   }
 
   private initializeData() {
-    // Initialize basic locations
+    // Initialize with core locations for testing
     this.locations = [
       {
         id: this.getNextId(),
@@ -135,66 +135,6 @@ export class MemStorage implements IStorage {
       },
       {
         id: this.getNextId(),
-        name: "Kỳ Đài",
-        nameEn: "Ky Dai Flagpole",
-        description: "Kỳ Đài Huế là công trình kiến trúc nằm trong quần thể di tích Cố đô Huế, được xây dựng năm 1807 dưới thời vua Gia Long.",
-        descriptionEn: "Ky Dai Flagpole is an architectural work within the Hue Ancient Capital complex, built in 1807 under Emperor Gia Long.",
-        type: "monument",
-        latitude: "16.4715",
-        longitude: "107.5828",
-        imageUrl: "/attached_assets/ky-dai.jpg",
-        isActive: true
-      },
-      {
-        id: this.getNextId(),
-        name: "Trường Quốc Tử Giám",
-        nameEn: "National Academy",
-        description: "Trường đại học đầu tiên của triều Nguyễn, được xây dựng năm 1821 dưới thời vua Minh Mạng.",
-        descriptionEn: "The first university of the Nguyen Dynasty, built in 1821 under Emperor Minh Mang.",
-        type: "education",
-        latitude: "16.4680",
-        longitude: "107.5790",
-        imageUrl: "/attached_assets/quoc-tu-giam.jpg",
-        isActive: true
-      },
-      {
-        id: this.getNextId(),
-        name: "Lăng Gia Long",
-        nameEn: "Gia Long Tomb",
-        description: "Lăng mộ của vua Gia Long và Hoàng hậu Thừa Thiên Cao, được xây dựng từ 1814-1820.",
-        descriptionEn: "The tomb of Emperor Gia Long and Empress Thua Thien Cao, built from 1814-1820.",
-        type: "tomb",
-        latitude: "16.4198",
-        longitude: "107.5438",
-        imageUrl: "/attached_assets/lang-gia-long.jpg",
-        isActive: true
-      },
-      {
-        id: this.getNextId(),
-        name: "Lăng Minh Mạng",
-        nameEn: "Minh Mang Tomb",
-        description: "Công trình kiến trúc hoàn hảo nhất trong các lăng tẩm triều Nguyễn, xây dựng từ 1840-1843.",
-        descriptionEn: "The most architecturally perfect among Nguyen Dynasty mausoleums, built from 1840-1843.",
-        type: "tomb",
-        latitude: "16.4470",
-        longitude: "107.5530",
-        imageUrl: "/attached_assets/lang-minh-mang.jpg",
-        isActive: true
-      },
-      {
-        id: this.getNextId(),
-        name: "Sông Hương & Cầu Tràng Tiền",
-        nameEn: "Perfume River & Trang Tien Bridge",
-        description: "Biểu tượng của vẻ đẹp thơ mộng xứ Huế, với cây cầu lịch sử xây dựng năm 1899.",
-        descriptionEn: "Symbol of Hue's poetic beauty, with the historic bridge built in 1899.",
-        type: "landscape",
-        latitude: "16.4690",
-        longitude: "107.5880",
-        imageUrl: "/attached_assets/song-huong.jpg",
-        isActive: true
-      },
-      {
-        id: this.getNextId(),
         name: "Núi Ngự Bình",
         nameEn: "Ngu Binh Mountain",
         description: "Núi cao 103m, được ví như bức bình phong của kinh thành Huế.",
@@ -203,138 +143,6 @@ export class MemStorage implements IStorage {
         latitude: "16.4472",
         longitude: "107.5651",
         imageUrl: "/attached_assets/ngu-binh.jpg",
-        isActive: true
-      },
-      {
-        id: this.getNextId(),
-        name: "Đồi Vọng Cảnh",
-        nameEn: "Vong Canh Hill",
-        description: "Điểm cao đắc địa để ngắm toàn cảnh sông Hương và cố đô Huế.",
-        descriptionEn: "A strategic viewpoint overlooking the Perfume River and ancient Hue.",
-        type: "landscape",
-        latitude: "16.4178",
-        longitude: "107.5514",
-        imageUrl: "/attached_assets/vong-canh.jpg",
-        isActive: true
-      },
-      {
-        id: this.getNextId(),
-        name: "Thiền viện Trúc Lâm Bạch Mã",
-        nameEn: "Truc Lam Bach Ma Zen Monastery",
-        description: "Trung tâm tu học Phật giáo lớn tại Huế, tọa lạc trên núi Bạch Mã.",
-        descriptionEn: "Major Buddhist meditation center in Hue, located on Bach Ma Mountain.",
-        type: "temple",
-        latitude: "16.1851",
-        longitude: "107.8501",
-        imageUrl: "/attached_assets/truc-lam.jpg",
-        isActive: true
-      },
-      {
-        id: this.getNextId(),
-        name: "Cửu Đỉnh",
-        nameEn: "Nine Dynasty Urns",
-        description: "Chín đỉnh đồng được đúc dưới thời Minh Mạng (1836-1839), tượng trưng cho sự vĩnh cửu của triều Nguyễn.",
-        descriptionEn: "Nine bronze urns cast during Minh Mang's reign (1836-1839), symbolizing the perpetuity of Nguyen Dynasty.",
-        type: "heritage_site",
-        latitude: "16.4697",
-        longitude: "107.5795",
-        imageUrl: "/attached_assets/cuu-dinh.jpg",
-        isActive: true
-      },
-      {
-        id: this.getNextId(),
-        name: "Điện Long An",
-        nameEn: "Long An Palace",
-        description: "Điện Long An được xây dựng năm 1845 dưới thời vua Thiệu Trị, nay là Bảo tàng Mỹ thuật Cung đình Huế.",
-        descriptionEn: "Long An Palace built in 1845 under Emperor Thieu Tri, now houses the Museum of Royal Fine Arts.",
-        type: "palace",
-        latitude: "16.4695",
-        longitude: "107.5793",
-        imageUrl: "/attached_assets/dien-long-an.jpg",
-        isActive: true
-      },
-      {
-        id: this.getNextId(),
-        name: "Điện Thái Hòa",
-        nameEn: "Thai Hoa Palace",
-        description: "Điện Thái Hòa là nơi tổ chức các đại lễ và thiết triều quan trọng của vương triều Nguyễn.",
-        descriptionEn: "Thai Hoa Palace was where the Nguyen Dynasty held important ceremonies and court meetings.",
-        type: "palace",
-        latitude: "16.4700",
-        longitude: "107.5792",
-        imageUrl: "/attached_assets/dien-thai-hoa.jpg",
-        isActive: true
-      },
-      {
-        id: this.getNextId(),
-        name: "Chợ Đông Ba",
-        nameEn: "Dong Ba Market",
-        description: "Khu chợ truyền thống lớn nhất và lâu đời nhất Huế, nơi tập trung các mặt hàng đặc sản địa phương.",
-        descriptionEn: "The largest and oldest traditional market in Hue, featuring local specialties.",
-        type: "market",
-        latitude: "16.4717",
-        longitude: "107.5828",
-        imageUrl: "/attached_assets/cho-dong-ba.jpg",
-        isActive: true
-      },
-      {
-        id: this.getNextId(),
-        name: "Làng Hương Thủy Xuân",
-        nameEn: "Thuy Xuan Incense Village",
-        description: "Làng nghề truyền thống nổi tiếng với nghề làm hương thơm, thu hút nhiều du khách tham quan.",
-        descriptionEn: "Traditional craft village famous for incense making, attracting many visitors.",
-        type: "craft_village",
-        latitude: "16.4167",
-        longitude: "107.5500",
-        imageUrl: "/attached_assets/lang-huong.jpg",
-        isActive: true
-      },
-      {
-        id: this.getNextId(),
-        name: "Làng Nón Bài Thơ",
-        nameEn: "Bai Tho Conical Hat Village",
-        description: "Làng nghề làm nón lá truyền thống, nổi tiếng với kỹ thuật đan nón và thêu thơ trên lá nón.",
-        descriptionEn: "Traditional conical hat making village, famous for weaving techniques and poetry embroidery.",
-        type: "craft_village",
-        latitude: "16.4583",
-        longitude: "107.5917",
-        imageUrl: "/attached_assets/lang-non.jpg",
-        isActive: true
-      },
-      {
-        id: this.getNextId(),
-        name: "Làng Gốm Phước Tích",
-        nameEn: "Phuoc Tich Pottery Village",
-        description: "Làng gốm cổ với lịch sử hơn 500 năm, vẫn bảo tồn nhiều giá trị văn hóa và kỹ thuật làm gốm truyền thống.",
-        descriptionEn: "Ancient pottery village with over 500 years of history, preserving cultural values and traditional techniques.",
-        type: "craft_village",
-        latitude: "16.5500",
-        longitude: "107.6167",
-        imageUrl: "/attached_assets/lang-gom.jpg",
-        isActive: true
-      },
-      {
-        id: this.getNextId(),
-        name: "Lăng Tự Đức",
-        nameEn: "Tu Duc Tomb",
-        description: "Lăng mộ của vua Tự Đức, một quần thể kiến trúc đẹp và thơ mộng với nhiều công trình độc đáo.",
-        descriptionEn: "Tomb of Emperor Tu Duc, a beautiful and poetic architectural complex with unique structures.",
-        type: "tomb",
-        latitude: "16.4700",
-        longitude: "107.5500",
-        imageUrl: "/attached_assets/lang-tu-duc.jpg",
-        isActive: true
-      },
-      {
-        id: this.getNextId(),
-        name: "Lăng Khải Định",
-        nameEn: "Khai Dinh Tomb",
-        description: "Lăng mộ độc đáo với kiến trúc kết hợp Đông - Tây, được xây dựng từ 1920-1931.",
-        descriptionEn: "Unique tomb with East-West architectural fusion, built from 1920-1931.",
-        type: "tomb",
-        latitude: "16.4200",
-        longitude: "107.5800",
-        imageUrl: "/attached_assets/lang-khai-dinh.jpg",
         isActive: true
       }
     ];
