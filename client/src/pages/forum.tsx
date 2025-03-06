@@ -14,14 +14,21 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { MessageSquare, Award, Plus, Search, BookOpen, School, Heart, Shield, Trash2 } from 'lucide-react';
+import { MessageSquare, Award, Plus, Search, BookOpen, School, Heart, Shield, Trash2, Share2 } from 'lucide-react';
 
 interface Category {
   id: string;
-  name: string; 
+  name: string;
   icon: React.ElementType;
   description: string;
 }
@@ -46,12 +53,6 @@ interface Comment {
   createdAt: string;
 }
 
-interface User {
-  id: number;
-  name: string;
-  isAdmin: boolean;
-}
-
 const categories: Category[] = [
   {
     id: 'heritage',
@@ -61,7 +62,7 @@ const categories: Category[] = [
   },
   {
     id: 'research',
-    name: 'Nghiên cứu học thuật', 
+    name: 'Nghiên cứu học thuật',
     icon: School,
     description: 'Chia sẻ nghiên cứu về lịch sử, văn hóa Huế'
   },
@@ -83,6 +84,7 @@ export default function ForumPage() {
   const [selectedCategory, setSelectedCategory] = useState("heritage");
   const [searchTerm, setSearchTerm] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [selectedDiscussion, setSelectedDiscussion] = useState<Discussion | null>(null);
   const [newComment, setNewComment] = useState("");
   const { toast } = useToast();
@@ -135,11 +137,12 @@ export default function ForumPage() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/discussions'] });
+      setSelectedDiscussion(null);
+      setIsDetailOpen(false);
       toast({
         title: "Thành công",
         description: "Đã xóa bài viết.",
       });
-      setSelectedDiscussion(null);
     }
   });
 
@@ -163,23 +166,6 @@ export default function ForumPage() {
     }
   });
 
-  const deleteCommentMutation = useMutation({
-    mutationFn: async (commentId: number) => {
-      const response = await fetch(`/api/comments/${commentId}`, {
-        method: 'DELETE'
-      });
-      if (!response.ok) throw new Error('Failed to delete comment');
-      return response.json();
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/comments'] });
-      toast({
-        title: "Thành công",
-        description: "Đã xóa bình luận.",
-      });
-    }
-  });
-
   const filteredDiscussions = discussions.filter(discussion =>
     discussion.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -190,7 +176,7 @@ export default function ForumPage() {
     createDiscussionMutation.mutate({
       title: formData.get('title') as string,
       content: formData.get('content') as string,
-      category: selectedCategory
+      category: formData.get('category') as string
     });
   };
 
@@ -201,6 +187,24 @@ export default function ForumPage() {
       content: newComment,
       discussionId: selectedDiscussion.id
     });
+  };
+
+  const handleShare = async (discussion: Discussion) => {
+    try {
+      await navigator.clipboard.writeText(
+        `${window.location.origin}/forum/${discussion.id}`
+      );
+      toast({
+        title: "Đã sao chép",
+        description: "Đường dẫn đã được sao chép vào clipboard.",
+      });
+    } catch (error) {
+      toast({
+        title: "Lỗi",
+        description: "Không thể sao chép đường dẫn.",
+        variant: "destructive",
+      });
+    }
   };
 
   const getAvatarUrl = (author: string) => {
@@ -225,19 +229,13 @@ export default function ForumPage() {
     }
   };
 
-  const handleDeleteComment = async (commentId: number) => {
-    if (window.confirm('Bạn có chắc chắn muốn xóa bình luận này không?')) {
-      deleteCommentMutation.mutate(commentId);
-    }
-  };
-
   return (
     <div className="container mx-auto p-4 min-h-screen bg-background">
       <div className="max-w-7xl mx-auto">
         <div className="flex items-center justify-between mb-8">
           <div className="space-y-2">
             <h1 className="text-4xl font-bold text-primary slide-in">Diễn đàn cộng đồng</h1>
-            <p className="text-lg text-muted-foreground slide-in" style={{ animationDelay: '0.1s' }}>
+            <p className="text-lg text-muted-foreground slide-in">
               Trao đổi, thảo luận về di sản văn hóa Huế
             </p>
           </div>
@@ -259,6 +257,21 @@ export default function ForumPage() {
                 <div className="space-y-2">
                   <Label htmlFor="title">Tiêu đề</Label>
                   <Input id="title" name="title" required placeholder="Nhập tiêu đề bài viết..." />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="category">Thể loại</Label>
+                  <Select name="category" defaultValue="heritage" required>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Chọn thể loại" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {categories.map(category => (
+                        <SelectItem key={category.id} value={category.id}>
+                          {category.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="content">Nội dung</Label>
@@ -310,10 +323,11 @@ export default function ForumPage() {
                       {filteredDiscussions.map(discussion => (
                         <Card
                           key={discussion.id}
-                          className={`cursor-pointer hover:shadow-md transition-shadow ${
-                            selectedDiscussion?.id === discussion.id ? 'border-primary' : ''
-                          }`}
-                          onClick={() => setSelectedDiscussion(discussion)}
+                          className="cursor-pointer hover:shadow-md transition-shadow"
+                          onClick={() => {
+                            setSelectedDiscussion(discussion);
+                            setIsDetailOpen(true);
+                          }}
                         >
                           <CardContent className="p-4">
                             <div className="flex items-start justify-between">
@@ -331,19 +345,6 @@ export default function ForumPage() {
                                   </div>
                                 </div>
                               </div>
-                              {currentUser.isAdmin && (
-                                <Button
-                                  variant="ghost"
-                                  size="icon"
-                                  className="text-destructive hover:text-destructive/80"
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    handleDeleteDiscussion(discussion.id);
-                                  }}
-                                >
-                                  <Trash2 className="h-4 w-4" />
-                                </Button>
-                              )}
                             </div>
                           </CardContent>
                         </Card>
@@ -353,57 +354,6 @@ export default function ForumPage() {
                 </TabsContent>
               ))}
             </Tabs>
-
-            {selectedDiscussion && (
-              <Card className="mt-6">
-                <CardHeader>
-                  <CardTitle>Bình luận</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {comments.map(comment => (
-                      <div key={comment.id} className="flex justify-between items-start p-3 rounded-lg hover:bg-muted/50">
-                        <div className="flex gap-3">
-                          <Avatar>
-                            <AvatarImage src={getAvatarUrl(comment.author)} />
-                            <AvatarFallback>{getAvatarFallback(comment.author)}</AvatarFallback>
-                          </Avatar>
-                          <div>
-                            <div className="flex items-center gap-2">
-                              <span className="font-medium">{comment.author}</span>
-                              <span className="text-sm text-muted-foreground">
-                                {new Date(comment.createdAt).toLocaleDateString('vi-VN')}
-                              </span>
-                            </div>
-                            <p className="mt-1">{comment.content}</p>
-                          </div>
-                        </div>
-                        {currentUser.isAdmin && (
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="text-destructive hover:text-destructive/80"
-                            onClick={() => handleDeleteComment(comment.id)}
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
-                        )}
-                      </div>
-                    ))}
-                    <form onSubmit={handleCreateComment} className="mt-4">
-                      <div className="flex gap-2">
-                        <Input
-                          value={newComment}
-                          onChange={(e) => setNewComment(e.target.value)}
-                          placeholder="Viết bình luận..."
-                        />
-                        <Button type="submit">Gửi</Button>
-                      </div>
-                    </form>
-                  </div>
-                </CardContent>
-              </Card>
-            )}
           </div>
 
           <div className="space-y-6">
@@ -455,6 +405,102 @@ export default function ForumPage() {
             </Card>
           </div>
         </div>
+
+        {/* Chi tiết bài viết */}
+        <Dialog open={isDetailOpen} onOpenChange={setIsDetailOpen}>
+          <DialogContent className="max-w-3xl">
+            {selectedDiscussion && (
+              <div className="space-y-6">
+                <div className="flex items-start justify-between">
+                  <div className="flex items-start gap-4">
+                    <Avatar>
+                      <AvatarImage src={getAvatarUrl(selectedDiscussion.author)} />
+                      <AvatarFallback>{getAvatarFallback(selectedDiscussion.author)}</AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <h2 className="text-xl font-semibold">{selectedDiscussion.title}</h2>
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <span>{selectedDiscussion.author}</span>
+                        <span>•</span>
+                        <span>{new Date(selectedDiscussion.createdAt).toLocaleDateString('vi-VN')}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex gap-2">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleShare(selectedDiscussion);
+                      }}
+                    >
+                      <Share2 className="h-4 w-4" />
+                    </Button>
+                    {currentUser.isAdmin && (
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="text-destructive hover:text-destructive/80"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDeleteDiscussion(selectedDiscussion.id);
+                        }}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    )}
+                  </div>
+                </div>
+
+                <div className="py-4 border-y">
+                  <p className="text-base leading-relaxed whitespace-pre-line">
+                    {selectedDiscussion.content}
+                  </p>
+                </div>
+
+                <div className="space-y-4">
+                  <h3 className="font-semibold flex items-center gap-2">
+                    <MessageSquare className="h-4 w-4" />
+                    Bình luận ({comments.length})
+                  </h3>
+
+                  <form onSubmit={handleCreateComment} className="space-y-4">
+                    <Textarea
+                      value={newComment}
+                      onChange={(e) => setNewComment(e.target.value)}
+                      placeholder="Viết bình luận..."
+                      className="min-h-[100px]"
+                    />
+                    <div className="flex justify-end">
+                      <Button type="submit">Gửi bình luận</Button>
+                    </div>
+                  </form>
+
+                  <div className="space-y-4">
+                    {comments.map(comment => (
+                      <div key={comment.id} className="flex gap-3 p-3 rounded-lg hover:bg-muted/50">
+                        <Avatar>
+                          <AvatarImage src={getAvatarUrl(comment.author)} />
+                          <AvatarFallback>{getAvatarFallback(comment.author)}</AvatarFallback>
+                        </Avatar>
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2">
+                            <span className="font-medium">{comment.author}</span>
+                            <span className="text-sm text-muted-foreground">
+                              {new Date(comment.createdAt).toLocaleDateString('vi-VN')}
+                            </span>
+                          </div>
+                          <p className="mt-1">{comment.content}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );
