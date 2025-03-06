@@ -3,9 +3,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { motion, AnimatePresence } from "framer-motion";
-import { Crown, MapPin, Building2, Wind, Scroll, Star, ChevronRight, Book, Swords, FileText, Anchor, Shield, Users, Coins } from "lucide-react";
+import { Crown, MapPin, Building2, Wind, Scroll, Star, ChevronRight, Book, Swords, FileText, Anchor, Shield, Users, Coins, MessageCircle } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
+import { useToast } from "@/hooks/use-toast";
 
 interface Choice {
   id: string;
@@ -225,6 +226,7 @@ const RolePlayGame = () => {
   const [selectedChoice, setSelectedChoice] = useState<Choice | null>(null);
   const [confirmedChoice, setConfirmedChoice] = useState<Choice | null>(null);
   const [readyForNext, setReadyForNext] = useState(false);
+  const { toast } = useToast();
 
   const handleChoice = async (choice: Choice) => {
     if (!confirmedChoice) {
@@ -285,172 +287,193 @@ const RolePlayGame = () => {
   };
 
   return (
-    <Card className="w-full max-w-4xl mx-auto bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <CardContent className="p-6">
-        <div className="text-center mb-6">
-          <div className="inline-block p-3 bg-primary/10 rounded-full mb-3">
-            <Crown className="h-6 w-6 text-primary" />
+    <div className="container mx-auto px-4">
+      <Card className="w-full max-w-4xl mx-auto bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <CardContent className="p-4 md:p-6">
+          <div className="text-center mb-6">
+            <div className="inline-block p-3 bg-primary/10 rounded-full mb-3">
+              <Crown className="h-6 w-6 text-primary" />
+            </div>
+            <h2 className="text-xl md:text-2xl font-semibold mb-2">Nhập vai vua Gia Long</h2>
+            <p className="text-sm text-muted-foreground max-w-2xl mx-auto">
+              Đưa ra những quyết định quan trọng trong việc chọn vị trí và xây dựng kinh đô mới
+            </p>
           </div>
-          <h2 className="text-xl font-semibold mb-2">Nhập vai vua Gia Long</h2>
-          <p className="text-sm text-muted-foreground max-w-2xl mx-auto">
-            Đưa ra những quyết định quan trọng trong việc chọn vị trí và xây dựng kinh đô mới
-          </p>
-        </div>
 
-        <AnimatePresence mode="wait">
-          {!showResult ? (
-            <motion.div
-              key={currentStep}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              className="relative"
-            >
-              <div className="mb-6">
-                <div className="flex justify-between items-center mb-3">
-                  <h3 className="text-lg font-medium">{gameSteps[currentStep].title}</h3>
-                  <span className="px-3 py-1 bg-primary/10 rounded-full text-sm">
-                    Bước {currentStep + 1}/{gameSteps.length}
-                  </span>
-                </div>
+          <AnimatePresence mode="wait">
+            {!showResult ? (
+              <motion.div
+                key={currentStep}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                className="relative"
+              >
+                <div className="mb-6">
+                  <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-2 mb-3">
+                    <h3 className="text-lg font-medium">{gameSteps[currentStep].title}</h3>
+                    <span className="px-3 py-1 bg-primary/10 rounded-full text-sm">
+                      Bước {currentStep + 1}/{gameSteps.length}
+                    </span>
+                  </div>
 
-                {gameSteps[currentStep].historicalContext && (
-                  <div className="p-4 bg-accent/10 rounded-lg mb-4">
-                    <p className="text-sm italic">
-                      {gameSteps[currentStep].historicalContext}
+                  {gameSteps[currentStep].historicalContext && (
+                    <div className="p-4 bg-accent/10 rounded-lg mb-4">
+                      <p className="text-sm italic">
+                        {gameSteps[currentStep].historicalContext}
+                      </p>
+                    </div>
+                  )}
+
+                  <div className="p-4 bg-card rounded-lg border mb-6">
+                    <p className="text-sm leading-relaxed whitespace-pre-line">
+                      {gameSteps[currentStep].description}
                     </p>
                   </div>
+                </div>
+
+                <ScrollArea className="h-[350px] md:h-[400px] rounded-lg border p-4">
+                  <div className="space-y-3">
+                    {gameSteps[currentStep].choices.map((choice) => (
+                      <motion.div
+                        key={choice.id}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                      >
+                        <Button
+                          variant={confirmedChoice?.id === choice.id ? "secondary" : "outline"}
+                          className={cn(
+                            "w-full justify-start gap-3 h-auto p-4 text-left transition-all",
+                            confirmedChoice?.id === choice.id && "border-primary bg-primary/10",
+                            !confirmedChoice && "hover:border-primary/50"
+                          )}
+                          onClick={() => !confirmedChoice && handleChoice(choice)}
+                          disabled={confirmedChoice !== null && confirmedChoice.id !== choice.id}
+                        >
+                          <div className="flex items-start gap-3 w-full min-w-0">
+                            <div className="p-2 bg-primary/10 rounded-lg shrink-0">
+                              {choice.icon}
+                            </div>
+                            <div className="flex-1 min-w-0 break-words">
+                              <p className="font-medium mb-1">{choice.text}</p>
+                              {confirmedChoice?.id === choice.id && (
+                                <motion.div
+                                  initial={{ opacity: 0, height: 0 }}
+                                  animate={{ opacity: 1, height: "auto" }}
+                                  className="mt-3 space-y-3"
+                                >
+                                  <div className="p-3 bg-green-500/10 dark:bg-green-500/20 rounded-lg">
+                                    <p className="text-sm break-words">{choice.result}</p>
+                                  </div>
+                                  {choice.historicalInfo && (
+                                    <div className="p-3 bg-blue-500/10 dark:bg-blue-500/20 rounded-lg">
+                                      <h4 className="text-sm font-medium mb-1">Bối cảnh lịch sử:</h4>
+                                      <p className="text-sm break-words">{choice.historicalInfo}</p>
+                                    </div>
+                                  )}
+                                  {choice.consequence && (
+                                    <div className="p-3 bg-yellow-500/10 dark:bg-yellow-500/20 rounded-lg">
+                                      <h4 className="text-sm font-medium mb-1">Hệ quả lịch sử:</h4>
+                                      <p className="text-sm break-words">{choice.consequence}</p>
+                                    </div>
+                                  )}
+                                  {choice.learnMore && (
+                                    <div className="mt-4 p-4 bg-accent/10 rounded-lg">
+                                      <h4 className="text-sm font-medium mb-2 flex items-center gap-2">
+                                        <FileText className="h-4 w-4" />
+                                        Tìm hiểu thêm: {choice.learnMore.title}
+                                      </h4>
+                                      <p className="text-sm break-words whitespace-pre-line">
+                                        {choice.learnMore.content}
+                                      </p>
+                                    </div>
+                                  )}
+
+                                  {/* Forum Integration */}
+                                  <div className="mt-4 p-4 bg-primary/5 rounded-lg">
+                                    <Button
+                                      variant="outline"
+                                      size="sm"
+                                      className="w-full justify-center gap-2"
+                                      onClick={() => {
+                                        toast({
+                                          title: "Diễn đàn thảo luận",
+                                          description: "Tính năng diễn đàn sẽ sớm được ra mắt!",
+                                          duration: 3000,
+                                        });
+                                      }}
+                                    >
+                                      <MessageCircle className="h-4 w-4" />
+                                      <span>Thảo luận về lựa chọn này</span>
+                                    </Button>
+                                  </div>
+                                </motion.div>
+                              )}
+                            </div>
+                          </div>
+                        </Button>
+                      </motion.div>
+                    ))}
+                  </div>
+                </ScrollArea>
+
+                {confirmedChoice && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="mt-4 flex justify-end"
+                  >
+                    <Button
+                      onClick={handleNext}
+                      className="gap-2"
+                      size="lg"
+                      disabled={readyForNext}
+                    >
+                      {currentStep === gameSteps.length - 1 ? 'Xem kết quả' : 'Bước tiếp theo'}
+                      <ChevronRight className="h-4 w-4" />
+                    </Button>
+                  </motion.div>
                 )}
 
-                <div className="p-4 bg-card rounded-lg border mb-6">
-                  <p className="text-sm leading-relaxed">
-                    {gameSteps[currentStep].description}
-                  </p>
-                </div>
-              </div>
-
-              <ScrollArea className="h-[400px] rounded-lg border p-4">
-                <div className="space-y-3">
-                  {gameSteps[currentStep].choices.map((choice) => (
-                    <motion.div
-                      key={choice.id}
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                    >
-                      <Button
-                        variant={confirmedChoice?.id === choice.id ? "secondary" : "outline"}
-                        className={cn(
-                          "w-full justify-start gap-3 h-auto p-4 text-left transition-all",
-                          confirmedChoice?.id === choice.id && "border-primary bg-primary/10",
-                          !confirmedChoice && "hover:border-primary/50"
-                        )}
-                        onClick={() => !confirmedChoice && handleChoice(choice)}
-                        disabled={confirmedChoice !== null && confirmedChoice.id !== choice.id}
-                      >
-                        <div className="flex items-start gap-3 w-full">
-                          <div className="p-2 bg-primary/10 rounded-lg shrink-0">
-                            {choice.icon}
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <p className="font-medium mb-1">{choice.text}</p>
-                            {confirmedChoice?.id === choice.id && (
-                              <motion.div
-                                initial={{ opacity: 0, height: 0 }}
-                                animate={{ opacity: 1, height: "auto" }}
-                                className="mt-3 space-y-3"
-                              >
-                                <div className="p-3 bg-green-500/10 dark:bg-green-500/20 rounded-lg">
-                                  <p className="text-sm">{choice.result}</p>
-                                </div>
-                                {choice.historicalInfo && (
-                                  <div className="p-3 bg-blue-500/10 dark:bg-blue-500/20 rounded-lg">
-                                    <h4 className="text-sm font-medium mb-1">Bối cảnh lịch sử:</h4>
-                                    <p className="text-sm">{choice.historicalInfo}</p>
-                                  </div>
-                                )}
-                                {choice.consequence && (
-                                  <div className="p-3 bg-yellow-500/10 dark:bg-yellow-500/20 rounded-lg">
-                                    <h4 className="text-sm font-medium mb-1">Hệ quả lịch sử:</h4>
-                                    <p className="text-sm">{choice.consequence}</p>
-                                  </div>
-                                )}
-                                {choice.learnMore && (
-                                  <div className="mt-4 p-4 bg-accent/10 rounded-lg">
-                                    <h4 className="text-sm font-medium mb-2 flex items-center gap-2">
-                                      <FileText className="h-4 w-4" />
-                                      Tìm hiểu thêm: {choice.learnMore.title}
-                                    </h4>
-                                    <p className="text-sm whitespace-pre-line">
-                                      {choice.learnMore.content}
-                                    </p>
-                                  </div>
-                                )}
-                              </motion.div>
-                            )}
-                          </div>
-                        </div>
-                      </Button>
-                    </motion.div>
-                  ))}
-                </div>
-              </ScrollArea>
-
-              {confirmedChoice && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="mt-4 flex justify-end"
-                >
-                  <Button
-                    onClick={handleNext}
-                    className="gap-2"
-                    size="lg"
-                    disabled={readyForNext}
-                  >
-                    {currentStep === gameSteps.length - 1 ? 'Xem kết quả' : 'Bước tiếp theo'}
-                    <ChevronRight className="h-4 w-4" />
-                  </Button>
-                </motion.div>
-              )}
-
-              <Progress
-                value={(currentStep / (gameSteps.length - 1)) * 100}
-                className="h-2 mt-6"
-              />
-            </motion.div>
-          ) : (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="text-center py-6"
-            >
-              <div className="mb-6">
-                <div className="inline-flex items-center justify-center p-4 bg-primary/10 rounded-full mb-4">
-                  {getGameResult().icon}
-                </div>
-                <h3 className="text-2xl font-bold mb-2">{getGameResult().title}</h3>
-                <p className="text-muted-foreground mb-4 max-w-2xl mx-auto">
-                  {getGameResult().description}
-                </p>
-                <div className="inline-block px-4 py-2 bg-card rounded-lg border">
-                  <p className="text-sm font-medium">
-                    Điểm số của bệ hạ: {score}/{gameSteps.length * 10}
-                  </p>
-                </div>
-              </div>
-
-              <Button
-                onClick={resetGame}
-                size="lg"
-                className="min-w-[200px]"
+                <Progress
+                  value={(currentStep / (gameSteps.length - 1)) * 100}
+                  className="h-2 mt-6"
+                />
+              </motion.div>
+            ) : (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="text-center py-6"
               >
-                Chơi lại
-              </Button>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </CardContent>
-    </Card>
+                <div className="mb-6">
+                  <div className="inline-flex items-center justify-center p-4 bg-primary/10 rounded-full mb-4">
+                    {getGameResult().icon}
+                  </div>
+                  <h3 className="text-xl md:text-2xl font-bold mb-2">{getGameResult().title}</h3>
+                  <p className="text-muted-foreground mb-4 max-w-2xl mx-auto px-4">
+                    {getGameResult().description}
+                  </p>
+                  <div className="inline-block px-4 py-2 bg-card rounded-lg border">
+                    <p className="text-sm font-medium">
+                      Điểm số của bệ hạ: {score}/{gameSteps.length * 10}
+                    </p>
+                  </div>
+                </div>
+
+                <Button
+                  onClick={resetGame}
+                  size="lg"
+                  className="min-w-[200px]"
+                >
+                  Chơi lại
+                </Button>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </CardContent>
+      </Card>
+    </div>
   );
 };
 
