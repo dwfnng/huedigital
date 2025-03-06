@@ -5,7 +5,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import {
   FileText, Image, Video, Music, Search,
-  History, BookOpen, Coffee, Heart
+  History, BookOpen, Coffee, Heart, MapPin,
+  Hammer, Palette
 } from "lucide-react";
 import { ResourceDialog } from "@/components/ResourceDialog";
 import { Card } from "@/components/ui/card";
@@ -20,27 +21,27 @@ interface FilterState {
 const categories = [
   {
     id: "heritage",
-    label: "Di sản văn hóa",
+    label: "Di tích lịch sử",
     icon: <History />,
-    description: "Di tích lịch sử, kiến trúc và văn hóa phi vật thể"
+    description: "Di tích lịch sử và công trình kiến trúc tiêu biểu"
   },
   {
-    id: "arts",
-    label: "Nghệ thuật",
-    icon: <Music />,
-    description: "Ca Huế, Bài chòi, nhã nhạc cung đình và nghệ thuật truyền thống"
+    id: "natural",
+    label: "Danh thắng thiên nhiên",
+    icon: <MapPin />,
+    description: "Các địa danh và cảnh quan thiên nhiên đặc sắc"
   },
   {
-    id: "lifestyle",
-    label: "Đời sống",
-    icon: <Heart />,
-    description: "Ẩm thực, trang phục, nghề thủ công truyền thống"
+    id: "craft",
+    label: "Làng nghề truyền thống",
+    icon: <Hammer />,
+    description: "Các làng nghề thủ công truyền thống"
   },
   {
-    id: "documents",
-    label: "Tư liệu",
-    icon: <BookOpen />,
-    description: "Sách, hình ảnh, video về lịch sử và văn hóa Huế"
+    id: "culture",
+    label: "Văn hóa nghệ thuật",
+    icon: <Palette />,
+    description: "Nghệ thuật truyền thống và di sản văn hóa phi vật thể"
   }
 ];
 
@@ -139,7 +140,7 @@ export default function DigitalLibrary() {
             >
               <div className="aspect-video relative">
                 <img
-                  src={resource.thumbnailUrl || `/placeholders/${resource.type}-placeholder.jpg`}
+                  src={resource.thumbnailUrl || `/media/images/${resource.type}-placeholder.jpg`}
                   alt={resource.title}
                   className="w-full h-full object-cover"
                 />
