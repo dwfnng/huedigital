@@ -92,3 +92,54 @@ router.delete("/api/contributions/:id", async (req, res) => {
 });
 
 export default router;
+import express from "express";
+import { storage } from "../storage";
+import { insertContributionSchema } from "@shared/schema";
+
+const router = express.Router();
+
+// Get all approved contributions
+router.get("/api/contributions", async (_req, res) => {
+  try {
+    const contributions = await storage.getApprovedContributions();
+    res.json(contributions);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching contributions" });
+  }
+});
+
+// Submit a new contribution
+router.post("/api/contributions", async (req, res) => {
+  try {
+    const parseResult = insertContributionSchema.safeParse(req.body);
+    if (!parseResult.success) {
+      return res.status(400).json({ message: "Invalid contribution data" });
+    }
+    
+    const contribution = await storage.createContribution({
+      ...parseResult.data,
+      status: "pending",
+      userId: req.user?.id || null,
+    });
+    
+    res.status(201).json(contribution);
+  } catch (error) {
+    res.status(500).json({ message: "Error creating contribution" });
+  }
+});
+
+// Get contributions for the current user
+router.get("/api/my-contributions", async (req, res) => {
+  if (!req.isAuthenticated()) {
+    return res.status(401).json({ message: "Not authenticated" });
+  }
+  
+  try {
+    const contributions = await storage.getUserContributions(req.user!.id);
+    res.json(contributions);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching user contributions" });
+  }
+});
+
+export default router;

@@ -53,6 +53,8 @@ export interface IStorage {
   getContributionsByLocationId(locationId: number): Promise<Contribution[]>;
   getPendingContributions(): Promise<Contribution[]>;
   updateContributionStatus(id: number, status: string): Promise<Contribution>;
+  getAllContributions(): Promise<Contribution[]>; // Added
+  getApprovedContributions(): Promise<Contribution[]>; //Added
 
   // Reviews
   createReview(review: InsertReview): Promise<Review>;
@@ -646,7 +648,7 @@ export class MemStorage implements IStorage {
 
   // Contributions
   async createContribution(contribution: InsertContribution): Promise<Contribution> {
-    const newContribution = { ...contribution, id: this.getNextId() } as Contribution;
+    const newContribution = { ...contribution, id: this.getNextId(), createdAt: new Date(), status: 'pending' } as Contribution;
     this.contributions.push(newContribution);
     return newContribution;
   }
@@ -668,6 +670,14 @@ export class MemStorage implements IStorage {
     if (!contribution) throw new Error('Contribution not found');
     contribution.status = status;
     return contribution;
+  }
+
+  async getAllContributions(): Promise<Contribution[]> {
+    return this.contributions;
+  }
+
+  async getApprovedContributions(): Promise<Contribution[]> {
+    return this.contributions.filter(c => c.status === 'approved');
   }
 
   // Reviews
