@@ -47,7 +47,9 @@ export interface DigitalLibraryResource {
   period: string;
   keywords: string[];
   languages: string[];
-  metadata: {};
+  metadata: Record<string, any>;
+  latitude?: string;
+  longitude?: string;
   pageCount?: string;
   fileFormat?: string;
   fileSize?: string;
@@ -105,7 +107,7 @@ export interface IStorage {
 
   // Point Transactions
   createPointTransaction(userId: number, points: string, type: string, referenceId: number): Promise<void>;
-  getPointTransactionsByUserId(userId: number): Promise<any[]>;
+  getPointTransactionsByUserId(userId: number): Promise<Record<string, any>[]>;
 
   // Locations
   getAllLocations(): Promise<Location[]>;
@@ -120,12 +122,12 @@ export interface IStorage {
   getResourcesByCategory(category: string): Promise<Resource[]>;
   getResourcesByLocationId(locationId: number): Promise<Resource[]>;
   searchResources(query: string): Promise<Resource[]>;
-  createResource(resource: InsertResource): Promise<Resource>;
+  createResource(resource: InsertResource & { createdAt: Date }): Promise<Resource>;
 
-  // Categories
+  // Categories 
   getAllCategories(): Promise<Category[]>;
   getCategoryById(id: number): Promise<Category | undefined>;
-  createCategory(category: InsertCategory): Promise<Category>;
+  createCategory(category: InsertCategory & { description: string | null, descriptionEn: string | null }): Promise<Category>;
 
   // Products
   getAllProducts(): Promise<Product[]>;
@@ -135,7 +137,7 @@ export interface IStorage {
   // Favorite Routes
   getFavoriteRoutes(userId: number): Promise<FavoriteRoute[]>;
   getFavoriteRouteById(id: number): Promise<FavoriteRoute | undefined>;
-  createFavoriteRoute(route: InsertFavoriteRoute): Promise<FavoriteRoute>;
+  createFavoriteRoute(route: InsertFavoriteRoute & { createdAt: Date, isActive: boolean }): Promise<FavoriteRoute>;
   deleteFavoriteRoute(id: number): Promise<void>;
 
   // Digital Library methods
@@ -146,13 +148,21 @@ export interface IStorage {
   sessionStore: session.Store;
 }
 
+export interface PointTransaction {
+  userId: number;
+  points: string;
+  type: string;
+  referenceId: number;
+  createdAt: Date;
+}
+
 export class MemStorage implements IStorage {
   private users: User[] = [];
   private discussions: Discussion[] = [];
   private comments: Comment[] = [];
   private contributions: Contribution[] = [];
   private reviews: Review[] = [];
-  private pointTransactions: any[] = [];
+  private pointTransactions: Record<string, any>[] = [];
   private locations: Location[] = [];
   private resources: Resource[] = [];
   private categories: Category[] = [];
@@ -163,6 +173,294 @@ export class MemStorage implements IStorage {
   private nextId = 1;
   public sessionStore: session.Store;
 
+  // Users
+  public async createUser(user: InsertUser): Promise<User> {
+    const newUser = { 
+      id: this.getNextId(), 
+      ...user,
+      points: "0",
+      createdAt: new Date()
+    };
+    this.users.push(newUser);
+    return newUser;
+  }
+
+  public async getUserById(id: number): Promise<User | undefined> {
+    return this.users.find(u => u.id === id);
+  }
+
+  public async getUserByUsername(username: string): Promise<User | undefined> {
+    return this.users.find(u => u.username === username);
+  }
+
+  public async updateUserPoints(userId: number, points: string): Promise<User> {
+    const user = await this.getUserById(userId);
+    if (!user) throw new Error('User not found');
+    user.points = points;
+    return user;
+  }
+
+  // Discussions
+  public async createDiscussion(discussion: InsertDiscussion): Promise<Discussion> {
+    const newDiscussion = { 
+      id: this.getNextId(), 
+      ...discussion,
+      createdAt: new Date(),
+      views: "0"
+    };
+    this.discussions.push(newDiscussion);
+    return newDiscussion;
+  }
+
+  public async getDiscussionById(id: number): Promise<Discussion | undefined> {
+    return this.discussions.find(d => d.id === id);
+  }
+
+  public async getDiscussionsByCategory(category: string): Promise<Discussion[]> {
+    return this.discussions.filter(d => d.category === category);
+  }
+
+  public async getAllDiscussions(): Promise<Discussion[]> {
+    return this.discussions;
+  }
+
+  public async incrementDiscussionViews(id: number): Promise<void> {
+    const discussion = await this.getDiscussionById(id);
+    if (discussion) {
+      discussion.views = String(parseInt(discussion.views) + 1);
+    }
+  }
+
+  // Comments
+  public async createComment(comment: InsertComment): Promise<Comment> {
+    const newComment = { 
+      id: this.getNextId(),
+      userId: comment.userId || 0, 
+      discussionId: comment.discussionId || 0,
+      content: comment.content,
+      createdAt: new Date()
+    };
+    this.comments.push(newComment);
+    return newComment;
+  }
+
+  public async getCommentsByDiscussionId(discussionId: number): Promise<Comment[]> {
+    return this.comments.filter(c => c.discussionId === discussionId);
+  }
+
+  // Contributions
+  public async createContribution(contribution: InsertContribution): Promise<Contribution> {
+    const newContribution = { 
+      id: this.getNextId(),
+      userId: contribution.userId || 0,
+      locationId: contribution.locationId || 0,
+      type: contribution.type,
+      title: contribution.title,
+      description: contribution.description,
+      url: contribution.url,
+      createdAt: new Date(),
+      status: "pending"
+    };
+    this.contributions.push(newContribution);
+    return newContribution;
+  }
+
+  public async getContributionsByUserId(userId: number): Promise<Contribution[]> {
+    return this.contributions.filter(c => c.userId === userId);
+  }
+
+  public async getContributionsByLocationId(locationId: number): Promise<Contribution[]> {
+    return this.contributions.filter(c => c.locationId === locationId);
+  }
+
+  public async getPendingContributions(): Promise<Contribution[]> {
+    return this.contributions.filter(c => c.status === 'pending');
+  }
+
+  public async updateContributionStatus(id: number, status: string): Promise<Contribution> {
+    const contribution = this.contributions.find(c => c.id === id);
+    if (!contribution) throw new Error('Contribution not found');
+    contribution.status = status;
+    return contribution;
+  }
+
+  // Reviews
+  public async createReview(review: InsertReview): Promise<Review> {
+    const newReview = { 
+      id: this.getNextId(),
+      userId: review.userId || 0,
+      locationId: review.locationId || 0,
+      content: review.content,
+      rating: review.rating,
+      createdAt: new Date()
+    };
+    this.reviews.push(newReview);
+    return newReview;
+  }
+
+  public async getReviewsByLocationId(locationId: number): Promise<Review[]> {
+    return this.reviews.filter(r => r.locationId === locationId);
+  }
+
+  public async getReviewsByUserId(userId: number): Promise<Review[]> {
+    return this.reviews.filter(r => r.userId === userId);
+  }
+
+  // Point Transactions
+  public async createPointTransaction(userId: number, points: string, type: string, referenceId: number): Promise<void> {
+    this.pointTransactions.push({ userId, points, type, referenceId, createdAt: new Date() });
+  }
+
+  public async getPointTransactionsByUserId(userId: number): Promise<Record<string, any>[]> {
+    return this.pointTransactions.filter(t => t.userId === userId);
+  }
+
+  // Locations
+  public async getAllLocations(): Promise<Location[]> {
+    return this.locations;
+  }
+
+  public async getLocationById(id: number): Promise<Location | undefined> {
+    return this.locations.find(l => l.id === id);
+  }
+
+  public async searchLocations(query: string): Promise<Location[]> {
+    const lowerQuery = query.toLowerCase();
+    return this.locations.filter(l => 
+      l.name.toLowerCase().includes(lowerQuery) || 
+      l.nameEn.toLowerCase().includes(lowerQuery) ||
+      l.description.toLowerCase().includes(lowerQuery) ||
+      l.descriptionEn.toLowerCase().includes(lowerQuery)
+    );
+  }
+
+  public async createLocation(location: InsertLocation): Promise<Location> {
+    const newLocation = { 
+      id: this.getNextId(),
+      ...location,
+      isActive: true 
+    };
+    this.locations.push(newLocation);
+    return newLocation;
+  }
+
+  // Resources
+  public async getAllResources(): Promise<Resource[]> {
+    return this.resources;
+  }
+
+  public async getResourceById(id: number): Promise<Resource | undefined> {
+    return this.resources.find(r => r.id === id);
+  }
+
+  public async getResourcesByType(type: string): Promise<Resource[]> {
+    return this.resources.filter(r => r.type === type);
+  }
+
+  public async getResourcesByCategory(category: string): Promise<Resource[]> {
+    return this.resources.filter(r => r.category === category);
+  }
+
+  public async getResourcesByLocationId(locationId: number): Promise<Resource[]> {
+    return this.resources.filter(r => r.relatedLocationId === locationId);
+  }
+
+  public async searchResources(query: string): Promise<Resource[]> {
+    const lowerQuery = query.toLowerCase();
+    return this.resources.filter(r => 
+      r.title.toLowerCase().includes(lowerQuery) || 
+      (r.titleEn?.toLowerCase() || '').includes(lowerQuery) ||
+      (r.description?.toLowerCase() || '').includes(lowerQuery) ||
+      (r.descriptionEn?.toLowerCase() || '').includes(lowerQuery)
+    );
+  }
+
+  public async createResource(resource: InsertResource): Promise<Resource> {
+    const newResource = { 
+      id: this.getNextId(), 
+      ...resource,
+      createdAt: new Date() 
+    };
+    this.resources.push(newResource);
+    return newResource;
+  }
+
+  // Categories
+  public async getAllCategories(): Promise<Category[]> {
+    return this.categories;
+  }
+
+  public async getCategoryById(id: number): Promise<Category | undefined> {
+    return this.categories.find(c => c.id === id);
+  }
+
+  public async createCategory(category: InsertCategory): Promise<Category> {
+    const newCategory = { 
+      id: this.getNextId(),
+      ...category,
+      description: category.description || null,
+      descriptionEn: category.descriptionEn || null,
+      parentId: category.parentId || null,
+      iconUrl: category.iconUrl || null
+    };
+    this.categories.push(newCategory);
+    return newCategory;
+  }
+
+  // Products
+  public async getAllProducts(): Promise<Product[]> {
+    return this.products;
+  }
+
+  public async getProductById(id: number): Promise<Product | undefined> {
+    return this.products.find(p => p.id === id);
+  }
+
+  public async createProduct(product: InsertProduct): Promise<Product> {
+    const newProduct = { id: this.getNextId(), ...product };
+    this.products.push(newProduct);
+    return newProduct;
+  }
+
+  // Favorite Routes
+  public async getFavoriteRoutes(userId: number): Promise<FavoriteRoute[]> {
+    return this.favoriteRoutes.filter(r => r.userId === userId);
+  }
+
+  public async getFavoriteRouteById(id: number): Promise<FavoriteRoute | undefined> {
+    return this.favoriteRoutes.find(r => r.id === id);
+  }
+
+  public async createFavoriteRoute(route: InsertFavoriteRoute): Promise<FavoriteRoute> {
+    const newRoute = { 
+      id: this.getNextId(),
+      ...route,
+      description: route.description || null,
+      createdAt: new Date(),
+      isActive: true
+    };
+    this.favoriteRoutes.push(newRoute);
+    return newRoute;
+  }
+
+  public async deleteFavoriteRoute(id: number): Promise<void> {
+    const index = this.favoriteRoutes.findIndex(r => r.id === id);
+    if (index > -1) this.favoriteRoutes.splice(index, 1);
+  }
+
+  // Digital Library methods
+  public async getAllDigitalLibraryResources(): Promise<DigitalLibraryResource[]> {
+    return this.digitalLibraryResources;
+  }
+  
+  public async getAllDigitalLibraryCategories(): Promise<DigitalLibraryCategory[]> {
+    return this.digitalLibraryCategories;
+  }
+
+  private getNextId(): number {
+    return this.nextId++;
+  }
+
   constructor() {
     this.sessionStore = new MemoryStore({
       checkPeriod: 86400000 // Clear expired entries every 24h
@@ -171,20 +469,166 @@ export class MemStorage implements IStorage {
   }
 
   private initializeData() {
-    // Initialize locations with proper structure
+    // Initialize locations first 
     this.locations = [
       {
         id: this.getNextId(),
         name: "Đại Nội Huế",
         nameEn: "Hue Imperial City",
-        description: "Quần thể di tích cung đình rộng hơn 500 hecta, nơi hoàng đế triều Nguyễn sinh sống và làm việc. Được xây dựng từ năm 1805 dưới thời vua Gia Long, hoàn thiện năm 1832 dưới thời vua Minh Mạng. Bao gồm Hoàng thành và Tử cấm thành với hơn 100 công trình kiến trúc đặc sắc.",
-        descriptionEn: "A 500-hectare complex where Nguyen Dynasty emperors lived and worked. Built from 1805 under Emperor Gia Long, completed in 1832 under Emperor Minh Mang. Features the Citadel and Imperial City with over 100 remarkable architectural works.",
+        description: "Quần thể di tích cung đình rộng hơn 500 hecta, nơi hoàng đế triều Nguyễn sinh sống và làm việc.",
+        descriptionEn: "A 500-hectare complex where Nguyen Dynasty emperors lived and worked.",
+        type: "heritage_site",
+        latitude: "16.4698",
+        longitude: "107.5796", 
+        imageUrl: "/attached_assets/image_1741283084416.png",
+        isActive: true
+      },
+      {
+        id: this.getNextId(),
+        name: "Chùa Thiên Mụ",
+        nameEn: "Thien Mu Pagoda", 
+        description: "Ngôi chùa cổ nhất Huế, được xây dựng năm 1601.",
+        descriptionEn: "The oldest pagoda in Hue, built in 1601.",
+        type: "temple",
+        latitude: "16.4539",
+        longitude: "107.5537",
+        imageUrl: "/attached_assets/image_1741283181295.png",
+        isActive: true
+      },
+      {
+        id: this.getNextId(),
+        name: "Điện Hòn Chén",
+        nameEn: "Hon Chen Palace",
+        description: "Điện Hòn Chén là quần thể kiến trúc tôn giáo độc đáo bên bờ sông Hương.",
+        descriptionEn: "Hon Chen Palace is a unique religious architectural complex by the Perfume River.",
+        type: "temple",
+        latitude: "16.4180",
+        longitude: "107.5350",
+        imageUrl: "/attached_assets/image_1741283078951.png",
+        isActive: true
+      }
+    ];
+
+    // Initialize digital library resources
+    this.digitalLibraryResources = [
+    this.locations = [
+      {
+        id: this.getNextId(),
+        name: "Đại Nội Huế",
+        nameEn: "Hue Imperial City",
+        description: "Quần thể di tích cung đình rộng hơn 500 hecta, nơi hoàng đế triều Nguyễn sinh sống và làm việc.",
+        descriptionEn: "A 500-hectare complex where Nguyen Dynasty emperors lived and worked.",
+        type: "heritage_site",
+        latitude: "16.4698",
+        longitude: "107.5796", 
+        imageUrl: "/attached_assets/image_1741283084416.png",
+        isActive: true
+      },
+      {
+        id: this.getNextId(),
+        name: "Chùa Thiên Mụ",
+        nameEn: "Thien Mu Pagoda", 
+        description: "Ngôi chùa cổ nhất Huế, được xây dựng năm 1601.",
+        descriptionEn: "The oldest pagoda in Hue, built in 1601.",
+        type: "temple",
+        latitude: "16.4539",
+        longitude: "107.5537",
+        imageUrl: "/attached_assets/image_1741283181295.png",
+        isActive: true
+      },
+      {
+        id: this.getNextId(),
+        name: "Điện Hòn Chén",
+        nameEn: "Hon Chen Palace",
+        description: "Điện Hòn Chén là quần thể kiến trúc tôn giáo độc đáo bên bờ sông Hương.",
+        descriptionEn: "Hon Chen Palace is a unique religious architectural complex by the Perfume River.",
+        type: "temple",
+        latitude: "16.4180",
+        longitude: "107.5350",
+        imageUrl: "/attached_assets/image_1741283078951.png",
+        isActive: true
+      }
+    ];
+
+    // Initialize digital library resources
+    this.digitalLibraryResources = [
+      {
+        id: this.getNextId(),
+        title: "Hoàng thành Huế - Kiệt tác kiến trúc cung đình nhà Nguyễn",
+        titleEn: "Hue Imperial City - Masterpiece of Nguyen Dynasty Palace Architecture",
+        description: "Hoàng thành Huế là quần thể di tích cung đình rộng hơn 500 hecta, nơi hoàng đế triều Nguyễn sinh sống và làm việc.",
+        descriptionEn: "A 500-hectare complex where Nguyen Dynasty emperors lived and worked.",
+        type: "document",
+        category: "historical_sites",
+        contentUrl: "/attached_assets/HOÀNG THÀNH HUẾ – KIỆT TÁC KIẾN TRÚC CUNG ĐÌNH NHÀ NGUYỄN.docx",
+        thumbnailUrl: "/attached_assets/image_1741283084416.png",
+        author: "Heritage Research Team",
+        source: "Hue Monuments Conservation Center",
+        yearCreated: "2023",
+        location: "Hue",
+        dynasty: "Nguyen",
+        period: "1802-1945",
+        keywords: ["palace", "architecture", "imperial", "Nguyen Dynasty"],
+        languages: ["vi", "en"],
+        metadata: {},
+        viewCount: 0,
+        downloadCount: 0, 
+        featured: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        id: this.getNextId(),
+        title: "Chùa Thiên Mụ - Biểu tượng linh thiêng của cố đô Huế",
+        titleEn: "Thien Mu Pagoda - Sacred Symbol of Ancient Hue Capital",
+        description: "Ngôi chùa cổ nhất Huế, được xây dựng năm 1601.",
+        descriptionEn: "The oldest pagoda in Hue, built in 1601.",
+        type: "document",
+        category: "historical_sites", 
+        contentUrl: "/attached_assets/CHÙA THIÊN MỤ – BIỂU TƯỢNG LINH THIÊNG CỦA CỐ ĐÔ HUẾ.docx",
+        thumbnailUrl: "/attached_assets/image_1741283181295.png",
+        author: "Buddhist Culture Research Team",
+        source: "Hue Buddhist Association",
+        yearCreated: "2023",
+        location: "Hue",
+        dynasty: "Nguyen",
+        period: "1601-present",
+        keywords: ["pagoda", "buddhist", "temple", "heritage"],
+        languages: ["vi", "en"],
+        metadata: {},
+        viewCount: 0,
+        downloadCount: 0,
+        featured: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }
+    ];
+    this.locations = [
+      {
+        id: this.getNextId(),
+        name: "Đại Nội Huế",
+        nameEn: "Hue Imperial City",
+        description: "Complex of imperial monuments spanning over 500 hectares.",
+        descriptionEn: "A 500-hectare complex of royal monuments.", 
         type: "heritage_site",
         latitude: "16.4698",
         longitude: "107.5796",
-        imageUrl: "/attached_assets/pexels-vinhb-29790971.jpg",
+        imageUrl: "/attached_assets/hoang-thanh.jpg",
         isActive: true
       },
+      {
+        id: this.getNextId(),
+        name: "Chùa Thiên Mụ",
+        nameEn: "Thien Mu Pagoda",
+        description: "Chùa cổ thờ Phật, được xây dựng năm 1601.",
+        descriptionEn: "Ancient Buddhist temple built in 1601.", 
+        type: "temple",
+        latitude: "16.4539",
+        longitude: "107.5537",
+        imageUrl: "/attached_assets/thien-mu.jpg",
+        isActive: true
+      },
+
       {
         id: this.getNextId(),
         name: "Kỳ Đài",
@@ -219,6 +663,90 @@ export class MemStorage implements IStorage {
         latitude: "16.4695",
         longitude: "107.5793",
         imageUrl: "/attached_assets/long-an.jpg",
+        isActive: true
+      },
+      {
+        id: this.getNextId(),
+        name: "Sông Hương & Cầu Tràng Tiền",
+        nameEn: "Perfume River & Trang Tien Bridge",
+        description: "Sông Hương là biểu tượng của vẻ đẹp thơ mộng xứ Huế, uốn lượn như dải lụa xanh giữa lòng thành phố. Cầu Tràng Tiền sáu vòm được xây dựng năm 1899, là công trình kiến trúc độc đáo kết hợp phong cách Đông - Tây.",
+        descriptionEn: "The Perfume River is a symbol of Hue's poetic beauty, winding like a silk ribbon through the city. The six-arch Trang Tien Bridge, built in 1899, is a unique architectural work blending Eastern and Western styles.",
+        type: "landscape",
+        latitude: "16.4690",
+        longitude: "107.5880",
+        imageUrl: "/attached_assets/song-huong.jpg",
+        isActive: true
+      },
+      {
+        id: this.getNextId(),
+        name: "Núi Ngự Bình",
+        nameEn: "Ngu Binh Mountain",
+        description: "Núi Ngự Bình cao 103m, được ví như bức bình phong của kinh thành Huế. Theo quan niệm phong thủy, ngọn núi này cùng với dòng Sông Hương tạo nên địa thế đẹp cho Kinh thành.",
+        descriptionEn: "Standing 103m tall, Ngu Binh Mountain is likened to a screen protecting Hue Citadel. In feng shui principles, this mountain together with the Perfume River creates an auspicious setting for the Imperial City.",
+        type: "landscape",
+        latitude: "16.4472",
+        longitude: "107.5651",
+        imageUrl: "/attached_assets/ngu-binh.jpg",
+        isActive: true
+      },
+      {
+        id: this.getNextId(),
+        name: "Đồi Vọng Cảnh",
+        nameEn: "Vong Canh Hill",
+        description: "Đồi Vọng Cảnh là điểm cao đắc địa để ngắm toàn cảnh sông Hương và cố đô Huế. Nơi đây từng là địa điểm các vua triều Nguyễn chọn làm nơi thưởng ngoạn cảnh đẹp.",
+        descriptionEn: "Vong Canh Hill offers a strategic viewpoint overlooking the Perfume River and ancient Hue. It was a favorite spot for Nguyen Dynasty emperors to admire the scenery.",
+        type: "landscape",
+        latitude: "16.4178",
+        longitude: "107.5514",
+        imageUrl: "/attached_assets/vong-canh.jpg",
+        isActive: true
+      },
+      {
+        id: this.getNextId(),
+        name: "Đàn Nam Giao",
+        nameEn: "Nam Giao Esplanade",
+        description: "Đàn Nam Giao là công trình kiến trúc tôn giáo quy mô lớn, nơi vua triều Nguyễn thực hiện tế lễ Giao hàng năm. Quần thể gồm ba cấp đàn hình vuông, tròn và bát giác tượng trưng cho Thiên - Địa - Nhân.",
+        descriptionEn: "Nam Giao Esplanade is a large religious architectural complex where Nguyen emperors performed annual Heaven and Earth worship ceremonies. The three-tiered altar includes square, round, and octagonal levels symbolizing Heaven, Earth, and Human.",
+        type: "ritual",
+        latitude: "16.4510",
+        longitude: "107.5670",
+        imageUrl: "/attached_assets/dan-nam-giao.jpg",
+        isActive: true
+      },
+      {
+        id: this.getNextId(),
+        name: "Thiền viện Trúc Lâm Bạch Mã",
+        nameEn: "Truc Lam Bach Ma Zen Monastery",
+        description: "Thiền viện Trúc Lâm Bạch Mã là trung tâm tu học Phật giáo lớn tại Huế, tọa lạc trên núi Bạch Mã. Công trình thể hiện sự kết hợp hài hòa giữa kiến trúc Phật giáo và cảnh quan thiên nhiên.",
+        descriptionEn: "Truc Lam Bach Ma Zen Monastery is a major Buddhist meditation center in Hue, located on Bach Ma Mountain. The complex demonstrates a harmonious blend of Buddhist architecture and natural landscape.",
+        type: "temple",
+        latitude: "16.1851",
+        longitude: "107.8501",
+        imageUrl: "/attached_assets/truc-lam.jpg",
+        isActive: true
+      },
+      {
+        id: this.getNextId(),
+        name: "Làng Hương Thủy Xuân",
+        nameEn: "Thuy Xuan Incense Village",
+        description: "Làng nghề làm hương Thủy Xuân nổi tiếng với nghề làm nhang truyền thống. Du khách có thể tham quan quy trình làm hương thủ công và tìm hiểu về văn hóa tâm linh địa phương.",
+        descriptionEn: "Thuy Xuan Incense Village is famous for its traditional incense making craft. Visitors can observe the handmade incense production process and learn about local spiritual culture.",
+        type: "craft_village",
+        latitude: "16.4167",
+        longitude: "107.5500",
+        imageUrl: "/attached_assets/thuy-xuan.jpg",
+        isActive: true
+      },
+      {
+        id: this.getNextId(),
+        name: "Chợ Đông Ba",
+        nameEn: "Dong Ba Market",
+        description: "Chợ Đông Ba là khu chợ truyền thống lớn nhất Huế, nơi tập trung các mặt hàng đặc sản và thủ công mỹ nghệ địa phương. Khu chợ có lịch sử hơn 100 năm, là điểm tham quan không thể bỏ qua khi đến Huế.",
+        descriptionEn: "Dong Ba Market is Hue's largest traditional market, featuring local specialties and handicrafts. With over 100 years of history, it's a must-visit destination in Hue.",
+        type: "market",
+        latitude: "16.4717",
+        longitude: "107.5828",
+        imageUrl: "/attached_assets/dong-ba.jpg",
         isActive: true
       },
       {
@@ -388,6 +916,90 @@ export class MemStorage implements IStorage {
         longitude: "107.5537",
         imageUrl: "/attached_assets/thien-mu.jpg",
         isActive: true
+      },
+      {
+        id: this.getNextId(),
+        name: "Phá Tam Giang",
+        nameEn: "Tam Giang Lagoon",
+        description: "Phá Tam Giang là đầm phá nước lợ lớn nhất Đông Nam Á, dài 68km với diện tích 22.000ha. Nơi đây nổi tiếng với nghề đánh bắt thủy sản truyền thống và cảnh quan thiên nhiên tuyệt đẹp.",
+        descriptionEn: "Tam Giang Lagoon is Southeast Asia's largest brackish water lagoon, stretching 68km with an area of 22,000ha. Famous for traditional fishing and beautiful natural landscapes.",
+        type: "landscape",
+        latitude: "16.5833",
+        longitude: "107.4500",
+        imageUrl: "/attached_assets/tam-giang.jpg",
+        isActive: true
+      },
+      {
+        id: this.getNextId(),
+        name: "Bãi biển Lăng Cô",
+        nameEn: "Lang Co Beach",
+        description: "Bãi biển Lăng Cô được mệnh danh là một trong những vịnh đẹp nhất thế giới, nằm ở phía Bắc đèo Hải Vân. Bãi biển dài 13km với cát trắng mịn, nước trong xanh và khung cảnh núi non hùng vĩ.",
+        descriptionEn: "Lang Co Beach is known as one of the world's most beautiful bays, located north of Hai Van Pass. The 13km beach features fine white sand, crystal-clear water, and majestic mountain scenery.",
+        type: "landscape",
+        latitude: "16.2300",
+        longitude: "108.0800",
+        imageUrl: "/attached_assets/lang-co.jpg",
+        isActive: true
+      },
+      {
+        id: this.getNextId(),
+        name: "Núi Bạch Mã",
+        nameEn: "Bach Ma Mountain",
+        description: "Núi Bạch Mã cao 1450m, là một phần của Vườn Quốc gia Bạch Mã. Nơi đây nổi tiếng với đa dạng sinh học phong phú, các thác nước và di tích kiến trúc thời Pháp thuộc.",
+        descriptionEn: "Bach Ma Mountain rises 1450m, part of Bach Ma National Park. Famous for rich biodiversity, waterfalls, and French colonial architectural remnants.",
+        type: "landscape",
+        latitude: "16.1833",
+        longitude: "107.8500",
+        imageUrl: "/attached_assets/bach-ma.jpg",
+        isActive: true
+      },
+      {
+        id: this.getNextId(),
+        name: "Nhà thờ Phủ Cam",
+        nameEn: "Phu Cam Cathedral",
+        description: "Nhà thờ Phủ Cam được xây dựng năm 1963 theo kiến trúc hiện đại, là một trong những nhà thờ Công giáo lớn nhất miền Trung. Công trình nổi bật với tháp chuông cao 42m và thiết kế độc đáo.",
+        descriptionEn: "Phu Cam Cathedral was built in 1963 in modern architectural style, one of Central Vietnam's largest Catholic churches. Notable for its 42m bell tower and unique design.",
+        type: "religious",
+        latitude: "16.4583",
+        longitude: "107.5917",
+        imageUrl: "/attached_assets/phu-cam.jpg",
+        isActive: true
+      },
+      {
+        id: this.getNextId(),
+        name: "Làng hoa giấy Thanh Tiên",
+        nameEn: "Thanh Tien Paper Flower Village",
+        description: "Làng Thanh Tiên nổi tiếng với nghề làm hoa giấy truyền thống hơn 300 năm tuổi. Các sản phẩm hoa giấy tinh xảo được sử dụng trong trang trí và nghi lễ truyền thống.",
+        descriptionEn: "Thanh Tien Village is famous for its 300-year-old traditional paper flower craft. The delicate paper flowers are used in decoration and traditional ceremonies.",
+        type: "craft_village",
+        latitude: "16.4833",
+        longitude: "107.5667",
+        imageUrl: "/attached_assets/thanh-tien.jpg",
+        isActive: true
+      },
+      {
+        id: this.getNextId(),
+        name: "Làng gốm Phước Tích",
+        nameEn: "Phuoc Tich Pottery Village",
+        description: "Làng gốm Phước Tích có lịch sử hơn 500 năm, nổi tiếng với nghề làm gốm truyền thống. Làng vẫn giữ được nhiều nhà cổ và lò gốm truyền thống, là điểm đến hấp dẫn du khách.",
+        descriptionEn: "Phuoc Tich Pottery Village has a 500-year history of traditional pottery making. The village preserves many ancient houses and traditional kilns, attracting tourists.",
+        type: "craft_village",
+        latitude: "16.5500",
+        longitude: "107.6167",
+        imageUrl: "/attached_assets/phuoc-tich.jpg",
+        isActive: true
+      },
+      {
+        id: this.getNextId(),
+        name: "Chùa Từ Hiếu",
+        nameEn: "Tu Hieu Pagoda",
+        description: "Chùa Từ Hiếu được xây dựng năm 1843, nổi tiếng với kiến trúc truyền thống và khuôn viên yên tĩnh. Chùa còn là nơi tu học của nhiều thiền sư nổi tiếng và là trung tâm Phật giáo quan trọng của Huế.",
+        descriptionEn: "Tu Hieu Pagoda was built in 1843, famous for its traditional architecture and peaceful grounds. The pagoda has been home to many renowned Zen masters and is an important Buddhist center in Hue.",
+        type: "temple",
+        latitude: "16.4417",
+        longitude: "107.5583",
+        imageUrl: "/attached_assets/tu-hieu.jpg",
+        isActive: true
       }
     ];
 
@@ -403,7 +1015,11 @@ export class MemStorage implements IStorage {
         category: "architecture",
         contentUrl: "https://vietnam.vnanet.vn/vietnamese/kien-truc-co-do-hue-tinh-hoa-nghe-thuat-xay-dung-co-truyen-viet-nam-59451.html",
         thumbnailUrl: "/attached_assets/kien-truc.jpg",
-        metadata: {},
+        metadata: {
+          format: "images",
+          dimensions: "4000x3000",
+          year: "2024"
+        },
         culturalPeriod: "Nguyen Dynasty",
         historicalContext: "19th Century",
         relatedLocationId: 1,
@@ -506,6 +1122,7 @@ export class MemStorage implements IStorage {
         category: "architecture",
         contentUrl: "https://baotanglichsu.vn/vi/Articles/3087/14967/kien-truc-di-tich-hue.html",
         thumbnailUrl: "/attached_assets/architecture.jpg",
+```javascript
         metadata: {
           format: "pdf",
           pages: "150",
@@ -595,6 +1212,39 @@ export class MemStorage implements IStorage {
         iconUrl: null,
         type: "performing_arts",
         sortOrder: "1"
+      },
+      {
+        id: this.getNextId(),
+        name: "Cảnh quan thiên nhiên",
+        nameEn: "Natural Landscapes",
+        description: "Cảnh quan thiên nhiên của Huế",
+        descriptionEn: "Natural landscapes of Hue",
+        parentId: null,
+        iconUrl: null,
+        type: "landscape",
+        sortOrder: "2"
+      },
+      {
+        id: this.getNextId(),
+        name: "Làng nghề truyền thống",
+        nameEn: "Traditional Craft Villages",
+        description: "Các làng nghề truyền thống của Huế",
+        descriptionEn: "Traditional craft villages of Hue",
+        parentId: null,
+        iconUrl: null,
+        type: "craft_village",
+        sortOrder: "3"
+      },
+      {
+        id: this.getNextId(),
+        name: "Di sản phi vật thể",
+        nameEn: "Intangible Heritage",
+        description: "Di sản văn hóa phi vật thể của Huế",
+        descriptionEn: "Intangible cultural heritage of Hue",
+        parentId: null,
+        iconUrl: null,
+        type: "intangible_heritage",
+        sortOrder: "4"
       }
     ];
 
@@ -602,12 +1252,57 @@ export class MemStorage implements IStorage {
     this.digitalLibraryResources = [
       {
         id: this.getNextId(),
-        title: "Chùa Thiên Mụ – Biểu tượng linh thiêng của cố đô Huế",
+        title: "Hoàng thành Huế - Kiệt tác kiến trúc cung đình nhà Nguyễn",
+        titleEn: "Hue Imperial City - Masterpiece of Nguyen Dynasty Palace Architecture",
+        description: "Hoàng thành Huế là quần thể di tích cung đình rộng hơn 500 hecta, nơi hoàng đế triều Nguyễn sinh sống và làm việc. Được xây dựng từ năm 1805 dưới thời vua Gia Long, hoàn thiện năm 1832 dưới thời vua Minh Mạng. Bao gồm Hoàng thành và Tử cấm thành với hơn 100 công trình kiến trúc đặc sắc.",
+        descriptionEn: "A 500-hectare complex where Nguyen Dynasty emperors lived and worked. Built from 1805 under Emperor Gia Long, completed in 1832 under Emperor Minh Mang. Features the Citadel and Imperial City with over 100 remarkable architectural works.",
+        type: "document",
+        category: "historical_sites",
+        contentUrl: "/attached_assets/hoang-thanh-hue.docx",
+        thumbnailUrl: "/attached_assets/hoang-thanh.jpg",
+        author: "Trung tâm Bảo tồn Di tích Cố đô Huế",
+        source: "Trung tâm Bảo tồn Di tích Cố đô Huế",
+        yearCreated: "2024",
+        location: "Huế",
+        dynasty: "Nguyễn",
+        period: "19th Century",
+        latitude: "16.4698",
+        longitude: "107.5796",
+        keywords: ["palace", "architecture", "heritage", "nguyen-dynasty"],
+        languages: ["vi", "en"],
+        metadata: {
+          format: "docx",
+          pages: "25",
+          language: "Vietnamese, English",
+          year: "2024",
+          author: "Trung tâm Bảo tồn Di tích Cố đô Huế"
+        },
+        pageCount: "25",
+        fileFormat: "docx", 
+        fileSize: "2048",
+        viewCount: 0,
+        downloadCount: 0,
+        featured: true,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        quality: "high",
+        duration: null,
+        dimensions: null,
+        transcription: null,
+        modelFormat: null,
+        textureUrls: [],
+        previewUrls: [],
+        license: "CC BY-NC-SA",
+        interactiveData: null
+      },
+      {
+        id: this.getNextId(),
+        title: "Chùa Thiên Mụ - Biểu tượng linh thiêng của cố đô Huế",
         titleEn: "Thien Mu Pagoda - Sacred Symbol of Ancient Hue Capital",
-        description: "Ngôi chùa cổ nhất Huế, được xây dựng năm 1601. Tháp Phước Duyên 7 tầng cao 21m là biểu tượng của Huế. Chùa còn lưu giữ nhiều cổ vật quý như chuông đồng đúc năm 1710 và bia đá khắc thơ của các vua triều Nguyễn.",
+        description: `Ngôi chùa cổ nhất Huế, được xây dựng năm 1601. Tháp Phước Duyên 7 tầng cao 21m là biểu tượng của Huế. Chùa còn lưu giữ nhiều cổ vật quý như chuông đồng đúc năm 1710 và bia đá khắc thơ của các vua triều Nguyễn.`,
         descriptionEn: "The oldest pagoda in Hue, built in 1601. The 21-meter, 7-story Phuoc Duyen tower is Hue's iconic symbol. The pagoda preserves many precious artifacts including a bronze bell cast in 1710 and stone steles with poems by Nguyen Dynasty emperors.",
         type: "document",
-        category: "heritage_site",
+        category: "historical_sites",
         contentUrl: "/attached_assets/CHÙA THIÊN MỤ – BIỂU TƯỢNG LINH THIÊNG CỦA CỐ ĐÔ HUẾ.docx",
         thumbnailUrl: "/attached_assets/thien-mu.jpg",
         author: "Trung tâm Bảo tồn Di tích Cố đô Huế",
@@ -615,11 +1310,13 @@ export class MemStorage implements IStorage {
         yearCreated: "2024",
         location: "Huế",
         dynasty: "Nguyễn",
-        period: "17-20th Century",
+        period: "17th Century",
+        latitude: "16.4539",
+        longitude: "107.5537",
         keywords: ["pagoda", "buddhism", "heritage", "architecture"],
         languages: ["vi", "en"],
         metadata: {},
-        pageCount: "15",
+        pageCount: "20",
         fileFormat: "docx",
         fileSize: "2048",
         viewCount: 0,
@@ -630,84 +1327,53 @@ export class MemStorage implements IStorage {
       },
       {
         id: this.getNextId(),
-        title: "Ca Huế - Tinh hoa âm nhạc xứ Kinh kỳ",
-        titleEnEn: "Hue Classical Music - The Essence of Imperial City Music",
-        description: "Ca Huế là một thể loại âm nhạc truyền thống độc đáo của xứ Huế, kết hợp giữa các làn điệu dân ca và nhã nhạc cung đình. Nghệ thuật này phản ánh đời sống tinh thần phong phú và tâm hồn tao nhã của người dân Huế.",
-        descriptionEn: "Hue Classical Music is a unique traditional music genre of Hue, combining folk melodies and royal court music. This art form reflects the rich spiritual life and refined soul of Hue people.",
-        type: "audio",
-        category: "performing_arts",
-        contentUrl: "/attached_assets/Ca Huế – Tinh Hoa Âm Nhạc Xứ Kinh Kỳ.docx",
-        thumbnailUrl: "/attached_assets/ca-hue.jpg",
-        author: "Viện Âm nhạc Huế",
-        source: "Nghiên cứu Văn hóa Huế",
-        yearCreated: "2024",
-        location: "Huế",
-        dynasty: "Nguyễn",
-        period: "19-20th Century",
-        keywords: ["music", "tradition", "culture"],
-        languages: ["vi", "en"],
-        metadata: {
-          instruments: ["đàn tranh", "đàn nguyệt", "đàn tỳ bà", "sáo trúc"],
-          performers: "Traditional musicians and vocalists",
-          occasion: "Traditional festivals and ceremonies"
-        },
-        duration: "3600",
-        quality: "High",
-        viewCount: 0,
-        downloadCount: 0,
-        featured: true,
-        createdAt: new Date(),
-        updatedAt: new Date()
-      },
-      {
-        id: this.getNextId(),
-        title: "Giọng Huế - Âm Điệu Tinh Tế của Xứ Kinh Kỳ",
-        titleEn: "Hue Accent - The Subtle Melody of the Imperial City",
-        description: "Giọng Huế được biết đến với âm điệu trầm bổng đặc trưng, là sự kết hợp hài hòa giữa ngôn ngữ và âm nhạc. Bài viết nghiên cứu về đặc điểm ngữ âm, từ vựng và văn hóa ẩn chứa trong cách nói của người Huế.",
-        descriptionEn: "The Hue accent is known for its distinctive tonal patterns, harmoniously blending language and music. This research explores the phonetic features, vocabulary, and cultural elements embedded in the Hue people's way of speaking.",
-        type: "document",
-        category: "performing_arts",
-        contentUrl: "/documents/giong-hue.pdf",
-        thumbnailUrl: "/assets/giong-hue.jpg",
-        author: "TS. Nguyễn Thị Hà",
-        source: "Viện Nghiên cứu Văn hóa Huế",
-        yearCreated: "2024",
-        location: "Huế",
-        dynasty: "Nguyễn",
-        period: "Contemporary",
-        keywords: ["language", "culture", "tradition", "communication"],
-        languages: ["vi", "en"],
-        metadata: {
-          format: "PDF",
-          pages: "25",
-          references: "15 academic sources"
-        },
-        pageCount: "25",
-        fileFormat: "pdf",
-        fileSize: "2048",
-        viewCount: 0,
-        downloadCount: 0,
-        featured: true,
-        createdAt: new Date(),
-        updatedAt: new Date()
-      },
-      {
-        id: this.getNextId(),
-        title: "Điện Hòn Chén - Nơi Giao Thoa Văn Hóa Việt-Chăm",
+        title: "Điện Hòn Chén - Nơi giao thoa văn hóa Việt-Chăm",
         titleEn: "Hon Chen Temple - Vietnamese-Cham Cultural Intersection",
-        description: "Điện Hòn Chén là quần thể kiến trúc tôn giáo độc đáo bên bờ sông Hương, thờ Thiên Y A Na - nữ thần của người Chăm. Công trình thể hiện sự giao thoa văn hóa đặc sắc giữa người Việt và Chăm.",
+        description: `Điện Hòn Chén là quần thể kiến trúc tôn giáo độc đáo bên bờ sông Hương, thờ Thiên Y A Na - nữ thần của người Chăm. Công trình thể hiện sự giao thoa văn hóa đặc sắc giữa người Việt và Chăm.`,
         descriptionEn: "Hon Chen Temple is a unique religious architectural complex on the Perfume River, dedicated to Thien Y A Na - a Cham goddess. The structure represents a remarkable cultural intersection between Vietnamese and Cham peoples.",
         type: "document",
         category: "historical_sites",
-        contentUrl: "/documents/dien-hon-chen.pdf",
-        thumbnailUrl: "/assets/hon-chen.jpg",
+        contentUrl: "/attached_assets/ĐIỆN HÒN CHÉN – THÁNH TÍCH LINH THIÊNG BÊN SÔNG HƯƠNG.docx",
+        thumbnailUrl: "/attached_assets/hon-chen.jpg",
         author: "PGS.TS. Phan Thanh Hải",
         source: "Trung tâm Bảo tồn Di tích Cố đô Huế",
         yearCreated: "2024",
         location: "Huế",
         dynasty: "Nguyễn",
         period: "19th Century",
-        keywords: ["temple", "religion", "architecture", "cultural-fusion"],
+        latitude: "16.4180",
+        longitude: "107.5350",
+        keywords: ["temple", "religion", "culture", "cham"],
+        languages: ["vi", "en"],
+        metadata: {},
+        pageCount: "15",
+        fileFormat: "docx",
+        fileSize: "1536",
+        viewCount: 0,
+        downloadCount: 0,
+        featured: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        id: this.getNextId(),
+        title: "Sông Hương & Cầu Tràng Tiền - Biểu tượng của xứ Huế thơ mộng",
+        titleEn: "Perfume River & Trang Tien Bridge - Symbols of Poetic Hue",
+        description: "Sông Hương và Cầu Tràng Tiền là biểu tượng của vẻ đẹp thơ mộng xứ Huế. Dòng sông uốn lượn như dải lụa xanh, cầu Tràng Tiền sáu vòm là công trình kiến trúc độc đáo đầu thế kỷ 20.",
+        descriptionEn: "The Perfume River and Trang Tien Bridge symbolize Hue's poetic beauty. The river winds like a silk ribbon, while the six-arch Trang Tien Bridge is a unique architectural work from the early 20th century.",
+        type: "document",
+        category: "landscapes",
+        contentUrl: "/documents/song-huong.pdf",
+        thumbnailUrl: "/attached_assets/song-huong.jpg",
+        author: "TS. Nguyễn Văn Nam",
+        source: "Viện Nghiên cứu Văn hóa Huế",
+        yearCreated: "2024",
+        location: "Huế",
+        dynasty: "Contemporary",
+        period: "20th Century-Present",
+        latitude: "16.4690",
+        longitude: "107.5880",
+        keywords: ["river", "bridge", "landscape", "architecture"],
         languages: ["vi", "en"],
         metadata: {},
         pageCount: "30",
@@ -721,25 +1387,27 @@ export class MemStorage implements IStorage {
       },
       {
         id: this.getNextId(),
-        title: "Nghề Dệt Zèng - Di Sản Văn Hóa Phi Vật Thể",
-        titleEn: "Zeng Weaving - Intangible Cultural Heritage",
-        description: "Nghề dệt Zèng (thổ cẩm) là một trong những nghề thủ công truyền thống đặc sắc của người dân Huế. Bài viết giới thiệu về kỹ thuật, họa tiết và ý nghĩa văn hóa của nghề dệt Zèng.",
-        descriptionEn: "Zeng weaving is one of Hue's distinctive traditional crafts. This article introduces the techniques, patterns, and cultural significance of Zeng weaving.",
+        title: "Làng nghề nón lá Huế - Di sản văn hóa xứ Cố đô",
+        titleEn: "Hue Conical Hat Craft Village - Cultural Heritage of the Ancient Capital",
+        description: "Làng nghề nón lá Huế là nơi lưu giữ và phát triển nghề thủ công truyền thống làm nón lá. Mỗi chiếc nón lá là sự kết hợp tinh tế của kỹ thuật và nghệ thuật, mang đậm bản sắc văn hóa Huế.",
+        descriptionEn: "Hue's conical hat craft village preserves and develops the traditional craft of making leaf hats. Each hat is a delicate combination of technique and art, deeply reflecting Hue's cultural identity.",
         type: "document",
-        category: "traditional_crafts",
-        contentUrl: "/documents/nghe-det-zeng.pdf",
-        thumbnailUrl: "/assets/det-zeng.jpg",
-        author: "ThS. Trần Thị Minh",
-        source: "Bảo tàng Văn hóa Huế",
+        category: "craft_villages",
+        contentUrl: "/attached_assets/Nghề Nón Lá Huế - Di Sản Văn Hóa Xứ Cố Đô.docx",
+        thumbnailUrl: "/attached_assets/non-la.jpg",
+        author: "ThS. Lê Thị Hương",
+        source: "Bảo tàng Dân tộc học",
         yearCreated: "2024",
         location: "Huế",
-        dynasty: "Contemporary",
+        dynasty: "Traditional",
         period: "Traditional-Contemporary",
-        keywords: ["craft", "weaving", "tradition", "culture"],
+        latitude: "16.4580",
+        longitude: "107.5750",
+        keywords: ["craft", "tradition", "culture", "heritage"],
         languages: ["vi", "en"],
         metadata: {},
-        pageCount: "20",
-        fileFormat: "pdf",
+        pageCount: "25",
+        fileFormat: "docx",
         fileSize: "2560",
         viewCount: 0,
         downloadCount: 0,
@@ -749,54 +1417,29 @@ export class MemStorage implements IStorage {
       },
       {
         id: this.getNextId(),
-        title: "Ẩm Thực Cung Đình Huế - Tinh Hoa Ẩm Thực Việt",
-        titleEn: "Hue Royal Cuisine - The Essence of Vietnamese Gastronomy",
-        description: "Ẩm thực cung đình Huế là sự kết tinh của văn hóa ẩm thực Việt Nam, với những món ăn tinh tế được chế biến công phu. Tài liệu giới thiệu về lịch sử, nghệ thuật chế biến và thưởng thức ẩm thực cung đình Huế.",
-        descriptionEn: "Hue royal cuisine represents the pinnacle of Vietnamese culinary culture, featuring sophisticated dishes prepared with elaborate techniques. This document introduces the history, culinary arts, and appreciation of Hue royal cuisine.",
-        type: "document",
-        category: "culinary",
-        contentUrl: "/documents/am-thuc-cung-dinh.pdf",
-        thumbnailUrl: "/assets/am-thuc.jpg",
-        author: "TS. Hồ Đắc Thiện Anh",
-        source: "Viện Nghiên cứu Ẩm thực Huế",
+        title: "Ca Huế - Tinh hoa âm nhạc xứ Kinh kỳ",
+        titleEn: "Hue Classical Music - The Essence of Imperial City Music",
+        description: "Ca Huế là một thể loại âm nhạc truyền thống độc đáo của xứ Huế, kết hợp giữa các làn điệu dân ca và nhã nhạc cung đình. Nghệ thuật này phản ánh đời sống tinh thần phong phú và tâm hồn tao nhã của người dân Huế.",
+        descriptionEn: "Hue Classical Music is a unique traditional music genre of Hue, combining folk melodies and royal court music. This art form reflects the rich spiritual life and refined soul of Hue people.",
+        type: "audio",
+        category: "intangible_heritage",
+        contentUrl: "/attached_assets/Ca Huế – Tinh Hoa Âm Nhạc Xứ Kinh Kỳ.docx",
+        thumbnailUrl: "/attached_assets/ca-hue.jpg",
+        author: "Viện Âm nhạc Huế",
+        source: "Nghiên cứu Văn hóa Huế",
         yearCreated: "2024",
         location: "Huế",
         dynasty: "Nguyễn",
-        period: "19th Century-Contemporary",
-        keywords: ["cuisine", "culture", "royal", "tradition"],
+        period: "19-20th Century",
+        keywords: ["music", "tradition", "culture", "heritage"],
         languages: ["vi", "en"],
-        metadata: {},
-        pageCount: "40",
-        fileFormat: "pdf",
-        fileSize: "4096",
-        viewCount: 0,
-        downloadCount: 0,
-        featured: true,
-        createdAt: new Date(),
-        updatedAt: new Date()
-      },
-      {
-        id: this.getNextId(),
-        title: "Bài Chòi - Nghệ Thuật Dân Gian Độc Đáo",
-        titleEn: "Bai Choi - Unique Folk Performance Art",
-        description: "Bài chòi là loại hình nghệ thuật dân gian độc đáo kết hợp giữa trò chơi dân gian và âm nhạc. Tài liệu nghiên cứu về lịch sử, quy tắc và giá trị văn hóa của bài chòi trong đời sống người dân Huế.",
-        descriptionEn: "Bai Choi is a unique folk art combining traditional games and music. This research explores the history, rules, and cultural value of Bai Choi in Hue people's lives.",
-        type: "document",
-        category: "performing_arts",
-        contentUrl: "/documents/bai-choi.pdf",
-        thumbnailUrl: "/assets/bai-choi.jpg",
-        author: "PGS.TS. Lê Thị Thanh Xuân",
-        source: "Trung tâm Bảo tồn Văn hóa Dân gian",
-        yearCreated: "2024",
-        location: "Huế",
-        dynasty: "Traditional",
-        period: "Traditional-Contemporary",
-        keywords: ["folk-art", "game", "music", "tradition"],
-        languages: ["vi", "en"],
-        metadata: {},
-        pageCount: "35",
-        fileFormat: "pdf",
-        fileSize: "3584",
+        metadata: {
+          instruments: ["đàn tranh", "đàn nguyệt", "đàn tỳ bà", "sáo trúc"],
+          performers: "Traditional musicians and vocalists",
+          occasion: "Traditional festivals and ceremonies"
+        },
+        duration: "3600",
+        quality: "High",
         viewCount: 0,
         downloadCount: 0,
         featured: true,
@@ -823,11 +1466,44 @@ export class MemStorage implements IStorage {
         name: "Âm nhạc cung đình",
         nameEn: "Royal Court Music",
         description: "Âm nhạc truyền thống và nhã nhạc cung đình Huế",
-        descriptionEn: "Traditional and royal court music of Hue",
+        descriptionEn: "Traditional and royalcourt music of Hue",
         parentId: null,
         iconUrl: null,
         type: "performing_arts",
         sortOrder: "1"
+      },
+      {
+        id: this.getNextId(),
+        name: "Cảnh quan thiên nhiên",
+        nameEn: "Natural Landscapes",
+        description: "Cảnh quan thiên nhiên của Huế",
+        descriptionEn: "Natural landscapes of Hue",
+        parentId: null,
+        iconUrl: null,
+        type: "landscape",
+        sortOrder: "2"
+      },
+      {
+        id: this.getNextId(),
+        name: "Làng nghề truyền thống",
+        nameEn: "Traditional Craft Villages",
+        description: "Các làng nghề truyền thống của Huế",
+        descriptionEn: "Traditional craft villages of Hue",
+        parentId: null,
+        iconUrl: null,
+        type: "craft_village",
+        sortOrder: "3"
+      },
+      {
+        id: this.getNextId(),
+        name: "Di sản phi vật thể",
+        nameEn: "Intangible Heritage",
+        description: "Di sản văn hóa phi vật thể của Huế",
+        descriptionEn: "Intangible cultural heritage of Hue",
+        parentId: null,
+        iconUrl: null,
+        type: "intangible_heritage",
+        sortOrder: "4"
       }
     ];
 
@@ -985,7 +1661,7 @@ export class MemStorage implements IStorage {
         title: "Ẩm Thực Cung Đình Huế - Tinh Hoa Ẩm Thực Việt",
         titleEn: "Hue Royal Cuisine - The Essence of Vietnamese Gastronomy",
         description: "Ẩm thực cung đình Huế là sự kết tinh của văn hóa ẩm thực Việt Nam, với những món ăn tinh tế được chế biến công phu. Tài liệu giới thiệu về lịch sử, nghệ thuật chế biến và thưởng thức ẩm thực cung đình Huế.",
-        descriptionEn: "Hue royal cuisine represents the pinnacle of Vietnamese culinary culture, featuring sophisticated dishes prepared with elaborate techniques. This document introduces the history, culinary arts, and appreciation of Hue royal cuisine.",
+        descriptionEn: "Hue royal cuisine represents the pinnacle of Vietnamese culinary culture, featuring sophisticated dishes prepared with elaborate techniques. This document introduces the history,culinary arts, and appreciation of Hue royal cuisine.",
         type: "document",
         category: "culinary",
         contentUrl: "/documents/am-thuc-cung-dinh.pdf",
@@ -1038,6 +1714,7 @@ export class MemStorage implements IStorage {
       }
     ];
 
+
     // Initialize Digital Library Categories
     this.digitalLibraryCategories = [
       {
@@ -1056,11 +1733,44 @@ export class MemStorage implements IStorage {
         name: "Âm nhạc cung đình",
         nameEn: "Royal Court Music",
         description: "Âm nhạc truyền thống và nhã nhạc cung đình Huế",
-        descriptionEn: "Traditional and royal court music of Hue",
+        descriptionEn: "Traditional and royalcourt music of Hue",
         parentId: null,
         iconUrl: null,
         type: "performing_arts",
         sortOrder: "1"
+      },
+      {
+        id: this.getNextId(),
+        name: "Cảnh quan thiên nhiên",
+        nameEn: "Natural Landscapes",
+        description: "Cảnh quan thiên nhiên của Huế",
+        descriptionEn: "Natural landscapes of Hue",
+        parentId: null,
+        iconUrl: null,
+        type: "landscape",
+        sortOrder: "2"
+      },
+      {
+        id: this.getNextId(),
+        name: "Làng nghề truyền thống",
+        nameEn: "Traditional Craft Villages",
+        description: "Các làng nghề truyền thống của Huế",
+        descriptionEn: "Traditional craft villages of Hue",
+        parentId: null,
+        iconUrl: null,
+        type: "craft_village",
+        sortOrder: "3"
+      },
+      {
+        id: this.getNextId(),
+        name: "Di sản phi vật thể",
+        nameEn: "Intangible Heritage",
+        description: "Di sản văn hóa phi vật thể của Huế",
+        descriptionEn: "Intangible cultural heritage of Hue",
+        parentId: null,
+        iconUrl: null,
+        type: "intangible_heritage",
+        sortOrder: "4"
       }
     ];
 
@@ -1218,7 +1928,7 @@ export class MemStorage implements IStorage {
         title: "Ẩm Thực Cung Đình Huế - Tinh Hoa Ẩm Thực Việt",
         titleEn: "Hue Royal Cuisine - The Essence of Vietnamese Gastronomy",
         description: "Ẩm thực cung đình Huế là sự kết tinh của văn hóa ẩm thực Việt Nam, với những món ăn tinh tế được chế biến công phu. Tài liệu giới thiệu về lịch sử, nghệ thuật chế biến và thưởng thức ẩm thực cung đình Huế.",
-        descriptionEn: "Hue royal cuisine represents the pinnacle of Vietnamese culinary culture, featuring sophisticated dishes prepared with elaborate techniques. This document introduces the history, culinary arts, and appreciation of Hue royal cuisine.",
+        descriptionEn: "Hue royal cuisine represents the pinnacle of Vietnamese culinary culture, featuring sophisticated dishes prepared with elaborate techniques. This document introduces the history,culinary arts, and appreciation of Hue royal cuisine.",
         type: "document",
         category: "culinary",
         contentUrl: "/documents/am-thuc-cung-dinh.pdf",
@@ -1294,6 +2004,39 @@ export class MemStorage implements IStorage {
         iconUrl: null,
         type: "performing_arts",
         sortOrder: "1"
+      },
+      {
+        id: this.getNextId(),
+        name: "Cảnh quan thiên nhiên",
+        nameEn: "Natural Landscapes",
+        description: "Cảnh quan thiên nhiên của Huế",
+        descriptionEn: "Natural landscapes of Hue",
+        parentId: null,
+        iconUrl: null,
+        type: "landscape",
+        sortOrder: "2"
+      },
+      {
+        id: this.getNextId(),
+        name: "Làng nghề truyền thống",
+        nameEn: "Traditional Craft Villages",
+        description: "Các làng nghề truyền thống của Huế",
+        descriptionEn: "Traditional craft villages of Hue",
+        parentId: null,
+        iconUrl: null,
+        type: "craft_village",
+        sortOrder: "3"
+      },
+      {
+        id: this.getNextId(),
+        name: "Di sản phi vật thể",
+        nameEn: "Intangible Heritage",
+        description: "Di sản văn hóa phi vật thể của Huế",
+        descriptionEn: "Intangible cultural heritage of Hue",
+        parentId: null,
+        iconUrl: null,
+        type: "intangible_heritage",
+        sortOrder: "4"
       }
     ];
 
@@ -1451,7 +2194,7 @@ export class MemStorage implements IStorage {
         title: "Ẩm Thực Cung Đình Huế - Tinh Hoa Ẩm Thực Việt",
         titleEn: "Hue Royal Cuisine - The Essence of Vietnamese Gastronomy",
         description: "Ẩm thực cung đình Huế là sự kết tinh của văn hóa ẩm thực Việt Nam, với những món ăn tinh tế được chế biến công phu. Tài liệu giới thiệu về lịch sử, nghệ thuật chế biến và thưởng thức ẩm thực cung đình Huế.",
-        descriptionEn: "Hue royal cuisine represents the pinnacle of Vietnamese culinary culture, featuring sophisticated dishes prepared with elaborate techniques. This document introduces the history, culinary arts, and appreciation of Hue royal cuisine.",
+        descriptionEn: "Hue royal cuisine represents the pinnacle of Vietnamese culinary culture, featuring sophisticated dishes prepared with elaborate techniques. This document introduces the history,culinary arts, and appreciation of Hue royal cuisine.",
         type: "document",
         category: "culinary",
         contentUrl: "/documents/am-thuc-cung-dinh.pdf",
@@ -1503,7 +2246,6 @@ export class MemStorage implements IStorage {
         updatedAt: new Date()
       }
     ];
-
   }
 
   private getNextId(): number {
