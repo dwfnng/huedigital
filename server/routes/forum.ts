@@ -52,4 +52,64 @@ router.get("/api/discussions/category/:category", async (req, res) => {
   }
 });
 
+// Lấy bình luận cho một bài viết
+router.get("/api/comments/:discussionId", async (req, res) => {
+  try {
+    const { discussionId } = req.params;
+    const comments = await storage.getCommentsByDiscussionId(Number(discussionId));
+    res.json(comments);
+  } catch (error) {
+    console.error("Error getting comments:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+// Tạo bình luận mới
+router.post("/api/comments", async (req, res) => {
+  try {
+    const comment = await storage.createComment(req.body);
+    // Tạo point transaction cho người dùng
+    await storage.createPointTransaction(
+      comment.userId,
+      "5", // 5 points cho mỗi bình luận
+      "comment",
+      comment.id
+    );
+    // Cập nhật điểm của người dùng
+    const user = await storage.getUserById(comment.userId);
+    if (user) {
+      const newPoints = (Number(user.points) + 5).toString();
+      await storage.updateUserPoints(user.id, newPoints);
+    }
+    res.status(201).json(comment);
+  } catch (error) {
+    console.error("Error creating comment:", error);
+    res.status(400).json({ message: "Invalid comment data" });
+  }
+});
+
+// Xóa bài viết (chỉ admin)
+router.delete("/api/discussions/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    await storage.deleteDiscussion(Number(id));
+    res.status(200).json({ message: "Discussion deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting discussion:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+// Xóa bình luận (chỉ admin)
+router.delete("/api/comments/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    await storage.deleteComment(Number(id));
+    res.status(200).json({ message: "Comment deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting comment:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
 export default router;

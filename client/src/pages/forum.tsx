@@ -21,7 +21,7 @@ import { MessageSquare, Award, Plus, Search, BookOpen, School, Heart, Shield, Tr
 
 interface Category {
   id: string;
-  name: string;
+  name: string; 
   icon: React.ElementType;
   description: string;
 }
@@ -61,7 +61,7 @@ const categories: Category[] = [
   },
   {
     id: 'research',
-    name: 'Nghiên cứu học thuật',
+    name: 'Nghiên cứu học thuật', 
     icon: School,
     description: 'Chia sẻ nghiên cứu về lịch sử, văn hóa Huế'
   },
