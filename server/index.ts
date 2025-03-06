@@ -1,8 +1,11 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
+import { testDatabaseConnection } from "./db";
 
 const app = express();
+
+// Basic middleware setup
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -10,27 +13,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use((req, res, next) => {
   const start = Date.now();
   const path = req.path;
-  let capturedJsonResponse: Record<string, any> | undefined = undefined;
-
-  const originalResJson = res.json;
-  res.json = function (bodyJson, ...args) {
-    capturedJsonResponse = bodyJson;
-    return originalResJson.apply(res, [bodyJson, ...args]);
-  };
 
   res.on("finish", () => {
     const duration = Date.now() - start;
     if (path.startsWith("/api")) {
-      let logLine = `${req.method} ${path} ${res.statusCode} in ${duration}ms`;
-      if (capturedJsonResponse) {
-        logLine += ` :: ${JSON.stringify(capturedJsonResponse)}`;
-      }
-
-      if (logLine.length > 80) {
-        logLine = logLine.slice(0, 79) + "…";
-      }
-
-      log(logLine);
+      log(`${req.method} ${path} ${res.statusCode} in ${duration}ms`, "express");
     }
   });
 
@@ -44,6 +31,22 @@ async function startServer(retryCount = 0) {
   try {
     log("Starting server initialization...");
     log(`Environment: ${process.env.NODE_ENV}, FAST_START: ${process.env.FAST_START}`);
+
+    // Test database connection with retries
+    log("Testing database connection...");
+    let isConnected = false;
+    for (let i = 0; i < 3; i++) {
+      isConnected = await testDatabaseConnection();
+      if (isConnected) break;
+      if (i < 2) {
+        log(`Database connection attempt ${i + 1} failed, retrying in 1 second...`);
+        await new Promise(resolve => setTimeout(resolve, 1000));
+      }
+    }
+
+    if (!isConnected) {
+      throw new Error("Failed to connect to database after 3 attempts");
+    }
 
     // Kill any existing process on port 5000
     try {
@@ -86,27 +89,22 @@ async function startServer(retryCount = 0) {
 
     for (const tryPort of portRange) {
       try {
-        log(`Attempting to start server on port ${tryPort}...`);
-
-        await new Promise((resolve, reject) => {
+        await new Promise<void>((resolve, reject) => {
           const startupTimeout = setTimeout(() => {
-            reject(new Error("Server startup timed out after 10 seconds"));
+            reject(new Error(`Server startup timed out after 10 seconds on port ${tryPort}`));
           }, 10000);
 
-          server.listen({
-            port: tryPort,
-            host: "0.0.0.0",
-          }, () => {
+          server.listen(tryPort, "0.0.0.0", () => {
             clearTimeout(startupTimeout);
             port = tryPort;
             started = true;
             log(`Server started successfully on port ${port}`);
-            resolve(true);
+            resolve();
           }).on('error', (err: NodeJS.ErrnoException) => {
             clearTimeout(startupTimeout);
             if (err.code === 'EADDRINUSE') {
               log(`Port ${tryPort} is already in use, trying next port...`);
-              resolve(false);
+              resolve();
             } else {
               reject(err);
             }
