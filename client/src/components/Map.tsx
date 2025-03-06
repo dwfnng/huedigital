@@ -191,21 +191,43 @@ export default function Map({ onMarkerClick }: MapProps) {
     setIsRoutingMode(false);
   };
 
-  // Cập nhật hàm handleImageError với xử lý lỗi tốt hơn
+  // Cập nhật hàm handleImageError với xử lý lỗi tốt hơn và logging
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     const img = e.currentTarget;
-    // Sử dụng ảnh placeholder từ một CDN đáng tin cậy
-    const fallbackUrl = 'https://images.unsplash.com/photo-1582558929569-37f119eec7c9?w=400&auto=format&fit=crop&q=80';
+    const originalSrc = img.src;
 
-    // Chỉ cập nhật nếu chưa sử dụng ảnh fallback
-    if (!img.src.includes('unsplash.com')) {
-      console.log('Image failed to load:', img.src);
+    // Mảng các ảnh fallback đáng tin cậy
+    const fallbackImages = [
+      'https://images.pexels.com/photos/5227440/pexels-photo-5227440.jpeg', // Đại Nội
+      'https://images.pexels.com/photos/5227442/pexels-photo-5227442.jpeg', // Chùa
+      'https://images.pexels.com/photos/5227444/pexels-photo-5227444.jpeg'  // Lăng
+    ];
+
+    console.log('Image failed to load:', originalSrc);
+
+    // Tìm ảnh fallback phù hợp dựa trên tên địa điểm
+    const locationName = img.alt.toLowerCase();
+    let fallbackUrl = '';
+
+    if (locationName.includes('đại nội')) {
+      fallbackUrl = fallbackImages[0];
+    } else if (locationName.includes('thiên mụ')) {
+      fallbackUrl = fallbackImages[1];
+    } else if (locationName.includes('tự đức')) {
+      fallbackUrl = fallbackImages[2];
+    } else {
+      // Fallback mặc định nếu không tìm thấy ảnh phù hợp
+      fallbackUrl = 'https://images.pexels.com/photos/2161449/pexels-photo-2161449.jpeg';
+    }
+
+    if (!img.src.includes('pexels.com')) {
       img.src = fallbackUrl;
-      img.alt = 'Hình ảnh di tích Huế';
-
-      // Thêm hiệu ứng chuyển đổi mượt mà
+      img.alt = `Hình ảnh di tích ${img.alt}`;
       img.style.transition = 'opacity 0.3s ease-in-out';
       img.style.opacity = '0.9';
+
+      // Log để debug
+      console.log('Using fallback image:', fallbackUrl);
     }
   };
 
