@@ -1,20 +1,15 @@
-import { pgPool, db } from "./db";
 import {
   type Location, type User, type Discussion, type Comment, type Contribution, type Review,
   type InsertLocation, type InsertUser, type InsertDiscussion, type InsertComment,
   type InsertContribution, type InsertReview, type Resource, type Category, type InsertResource, type InsertCategory,
-  type FavoriteRoute, type InsertFavoriteRoute, type Product, type InsertProduct
+  type FavoriteRoute, type InsertFavoriteRoute
 } from "@shared/schema";
 import session from "express-session";
-import createMemoryStore from "memorystore";
+import { sqliteDb, db } from "./db";
+import BetterSqlite3Store from "better-sqlite3-session-store";
 import { eq, desc, asc } from "drizzle-orm";
-import connectPg from "connect-pg-simple";
 
-const PostgresStore = connectPg(session);
-const MemoryStore = createMemoryStore(session);
-
-// Import schema tables
-import { users, discussions, comments, contributions, reviews, pointTransactions, locations, resources, categories, favoriteRoutes, products } from '@shared/schema';
+const SqliteStore = BetterSqlite3Store(session);
 
 export interface IStorage {
   // Users
@@ -73,11 +68,6 @@ export interface IStorage {
   getCategoryById(id: number): Promise<Category | undefined>;
   createCategory(category: InsertCategory): Promise<Category>;
 
-  // Products
-  getAllProducts(): Promise<Product[]>;
-  getProductById(id: number): Promise<Product | undefined>;
-  createProduct(product: InsertProduct): Promise<Product>;
-
   // Favorite Routes
   getFavoriteRoutes(userId: number): Promise<FavoriteRoute[]>;
   getFavoriteRouteById(id: number): Promise<FavoriteRoute | undefined>;
@@ -92,12 +82,13 @@ export class DatabaseStorage implements IStorage {
   public sessionStore: session.Store;
 
   constructor() {
-    // Use PostgreSQL session store in production, fallback to memory store in development
-    this.sessionStore = process.env.NODE_ENV === 'production'
-      ? new PostgresStore({ pool: pgPool, createTableIfMissing: true })
-      : new MemoryStore({
-          checkPeriod: 86400000 // Clear expired entries every 24h
-        });
+    this.sessionStore = new SqliteStore({
+      client: sqliteDb,
+      expired: {
+        clear: true,
+        intervalMs: 900000 //ms = 15min
+      }
+    });
   }
 
   // Discussions
@@ -126,15 +117,15 @@ export class DatabaseStorage implements IStorage {
     return await db.select().from(discussions).orderBy(desc(discussions.createdAt));
   }
 
-  async deleteDiscussion(id: number): Promise<void> {
-    await db.delete(discussions).where(eq(discussions.id, id));
-    await db.delete(comments).where(eq(comments.discussionId, id));
-  }
-
   async incrementDiscussionViews(id: number): Promise<void> {
     await db.update(discussions)
       .set({ views: discussions.views + 1 })
       .where(eq(discussions.id, id));
+  }
+
+  async deleteDiscussion(id: number): Promise<void> {
+    await db.delete(discussions).where(eq(discussions.id, id));
+    await db.delete(comments).where(eq(comments.discussionId, id));
   }
 
   // Comments
@@ -186,13 +177,16 @@ export class DatabaseStorage implements IStorage {
     return result[0];
   }
 
-
   // Contributions
   async createContribution(contribution: InsertContribution): Promise<Contribution> {
     const result = await db.insert(contributions).values({
-      ...contribution,
-      createdAt: new Date(),
-      status: 'pending'
+      userId: contribution.userId,
+      locationId: contribution.locationId,
+      title: contribution.title,
+      description: contribution.description,
+      type: contribution.type,
+      status: 'pending',
+      createdAt: new Date()
     }).returning();
     return result[0];
   }
@@ -225,7 +219,11 @@ export class DatabaseStorage implements IStorage {
   // Reviews
   async createReview(review: InsertReview): Promise<Review> {
     const result = await db.insert(reviews).values({
-      ...review,
+      userId: review.userId,
+      locationId: review.locationId,
+      rating: review.rating,
+      comment: review.comment,
+      createdAt: new Date()
     }).returning();
     return result[0];
   }
@@ -237,6 +235,7 @@ export class DatabaseStorage implements IStorage {
   async getReviewsByUserId(userId: number): Promise<Review[]> {
     return await db.select().from(reviews).where(eq(reviews.userId, userId));
   }
+
 
   // Point Transactions
   async createPointTransaction(userId: number, points: string, type: string, referenceId: number): Promise<void> {
@@ -266,14 +265,26 @@ export class DatabaseStorage implements IStorage {
   async searchLocations(query: string): Promise<Location[]> {
     const lowerQuery = query.toLowerCase();
     return await db.select().from(locations).where(
-      (l) => l.name.toLowerCase().like(`%${lowerQuery}%`)
-    )
+      (locations.name).lower().like(`%${lowerQuery}%`)
+      .or(locations.nameEn.lower().like(`%${lowerQuery}%`))
+    );
   }
 
   async createLocation(location: InsertLocation): Promise<Location> {
-    const result = await db.insert(locations).values(location).returning();
+    const result = await db.insert(locations).values({
+      name: location.name,
+      nameEn: location.nameEn,
+      address: location.address,
+      latitude: location.latitude,
+      longitude: location.longitude,
+      description: location.description,
+      category: location.category,
+      images: location.images,
+      createdAt: new Date()
+    }).returning();
     return result[0];
   }
+
 
   // Resources
   async getAllResources(): Promise<Resource[]> {
@@ -296,12 +307,18 @@ export class DatabaseStorage implements IStorage {
   async searchResources(query: string): Promise<Resource[]> {
     const lowerQuery = query.toLowerCase();
     return await db.select().from(resources).where(
-      (r) => r.title.toLowerCase().like(`%${lowerQuery}%`)
+      (resources.title).lower().like(`%${lowerQuery}%`)
     );
   }
 
   async createResource(resource: InsertResource): Promise<Resource> {
-    const result = await db.insert(resources).values(resource).returning();
+    const result = await db.insert(resources).values({
+      title: resource.title,
+      type: resource.type,
+      category: resource.category,
+      url: resource.url,
+      createdAt: new Date()
+    }).returning();
     return result[0];
   }
 
@@ -316,24 +333,12 @@ export class DatabaseStorage implements IStorage {
   }
 
   async createCategory(category: InsertCategory): Promise<Category> {
-    const result = await db.insert(categories).values(category).returning();
+    const result = await db.insert(categories).values({
+      name: category.name,
+      createdAt: new Date()
+    }).returning();
     return result[0];
   }
-
-  // Products
-    async getAllProducts(): Promise<Product[]> {
-      return await db.select().from(products);
-    }
-  
-    async getProductById(id: number): Promise<Product | undefined> {
-      const result = await db.select().from(products).where(eq(products.id, id));
-      return result[0];
-    }
-  
-    async createProduct(product: InsertProduct): Promise<Product> {
-      const result = await db.insert(products).values(product).returning();
-      return result[0];
-    }
 
   // Favorite Routes
   async getFavoriteRoutes(userId: number): Promise<FavoriteRoute[]> {
@@ -347,9 +352,11 @@ export class DatabaseStorage implements IStorage {
 
   async createFavoriteRoute(route: InsertFavoriteRoute): Promise<FavoriteRoute> {
     const result = await db.insert(favoriteRoutes).values({
-      ...route,
-      createdAt: new Date(),
-      isActive: true
+      userId: route.userId,
+      locations: route.locations,
+      title: route.title,
+      isActive: true,
+      createdAt: new Date()
     }).returning();
     return result[0];
   }

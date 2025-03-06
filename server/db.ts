@@ -1,37 +1,25 @@
-import { drizzle } from "drizzle-orm/node-postgres";
-import pkg from 'pg';
-const { Pool } = pkg;
+import { drizzle } from "drizzle-orm/better-sqlite3";
+import Database from "better-sqlite3";
+import { log } from "./vite";
 
-// Create a PostgreSQL connection pool with optimized settings
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  max: 20, // Maximum number of clients in the pool
-  idleTimeoutMillis: 30000, // Close idle clients after 30 seconds
-  connectionTimeoutMillis: 5000, // Return an error after 5 seconds if connection could not be established
-});
-
-// Add error handling for the pool
-pool.on('error', (err) => {
-  console.error('Unexpected error on idle client', err);
-});
+// Create SQLite database connection
+const sqlite = new Database("sqlite.db", { verbose: log });
 
 // Create a DrizzleClient instance
-export const db = drizzle(pool);
+export const db = drizzle(sqlite);
 
-// Export the pool for use with session store
-export const pgPool = pool;
+// Export the sqlite instance for use with session store
+export const sqliteDb = sqlite;
 
 // Helper function to test database connection
 export async function testDatabaseConnection() {
-  let client;
   try {
-    client = await pool.connect();
-    console.log('Successfully connected to database');
+    // Simple test query
+    sqlite.prepare("SELECT 1").get();
+    log("Successfully connected to SQLite database");
     return true;
   } catch (err) {
-    console.error('Error connecting to the database:', err);
+    console.error("Error connecting to SQLite database:", err);
     return false;
-  } finally {
-    if (client) client.release();
   }
 }
