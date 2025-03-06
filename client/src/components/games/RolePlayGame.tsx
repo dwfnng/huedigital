@@ -2,10 +2,10 @@ import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { motion, AnimatePresence } from "framer-motion";
-import { Crown, MapPin, Building2, Wind, Scroll, Star, ChevronRight, Book, Swords, FileText, Anchor } from "lucide-react";
+import { Crown, MapPin, Building2, Wind, Scroll, Star, ChevronRight, Book, Swords, FileText, Anchor, Shield, Users, Coins } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
+import { cn } from "@/lib/utils";
 
 interface Choice {
   id: string;
@@ -15,6 +15,7 @@ interface Choice {
   icon: JSX.Element;
   historicalInfo?: string;
   consequence?: string;
+  requiresPreviousChoice?: string;
   learnMore?: {
     title: string;
     content: string;
@@ -59,6 +60,15 @@ const gameSteps: GameStep[] = [
           Với hệ thống sông Hương và núi Ngự Bình, đây là nơi có địa thế đẹp, hợp phong thủy theo quan niệm thời bấy giờ.`,
           image: "/assets/images/phu-xuan.jpg"
         }
+      },
+      {
+        id: "thanh-hoa",
+        text: "Vùng đất Thanh Hóa",
+        result: "Thanh Hóa tuy có truyền thống lịch sử lâu đời và từng là căn cứ của nhiều triều đại, nhưng vị trí này không thuận lợi cho việc kiểm soát toàn bộ lãnh thổ.",
+        score: 4,
+        icon: <Shield className="h-5 w-5" />,
+        historicalInfo: "Thanh Hóa là vùng đất có truyền thống văn hóa lâu đời, từng là quê hương của triều Hậu Lê.",
+        consequence: "Việc đặt kinh đô ở Thanh Hóa có thể gây khó khăn trong việc kiểm soát các vùng đất phía Nam.",
       },
       {
         id: "hanoi",
@@ -114,31 +124,94 @@ const gameSteps: GameStep[] = [
           content: `Kiến trúc Vauban là phong cách xây dựng công sự phòng thủ tiên tiến của Pháp, được áp dụng trong xây dựng Kinh thành Huế.`,
           image: "/assets/images/vauban.jpg"
         }
+      },
+      {
+        id: "traditional_defense",
+        text: "Xây dựng theo phương thức truyền thống",
+        result: "Phương án an toàn nhưng có thể không đủ hiệu quả trước các kỹ thuật chiến tranh hiện đại.",
+        score: 5,
+        icon: <Shield className="h-5 w-5" />,
+        historicalInfo: "Phương thức phòng thủ truyền thống đã được sử dụng qua nhiều thế kỷ trong lịch sử Việt Nam.",
+        consequence: "Hệ thống phòng thủ có thể không đủ mạnh để đối phó với vũ khí hiện đại của phương Tây.",
+      },
+      {
+        id: "western_defense",
+        text: "Áp dụng hoàn toàn công nghệ phương Tây",
+        result: "Mặc dù hiện đại nhưng chi phí cao và có thể không phù hợp với điều kiện địa lý và khí hậu của Việt Nam.",
+        score: 7,
+        icon: <Building2 className="h-5 w-5" />,
+        historicalInfo: "Công nghệ phòng thủ phương Tây đang phát triển mạnh mẽ với nhiều ưu điểm vượt trội.",
+        consequence: "Việc áp dụng hoàn toàn công nghệ phương Tây có thể gặp khó khăn trong việc bảo trì và vận hành.",
       }
     ]
   },
   {
-    id: "culture",
-    title: "Phát triển văn hóa",
-    description: `Kinh đô mới cần có những định hướng phát triển văn hóa. 
-
-    Bệ hạ chọn phương án nào?`,
-    historicalContext: `Văn hóa không chỉ là nền tảng tinh thần mà còn là sức mạnh mềm của một vương triều.`,
+    id: "administration",
+    title: "Tổ chức bộ máy hành chính",
+    description: "Bệ hạ cần quyết định cách tổ chức và vận hành bộ máy hành chính của triều đình.",
+    historicalContext: "Một bộ máy hành chính hiệu quả là nền tảng cho sự phát triển ổn định của vương triều.",
     choices: [
       {
+        id: "reform",
+        text: "Cải cách toàn diện theo hướng hiện đại",
+        result: "Một quyết định táo bạo nhưng cần thiết, giúp nâng cao hiệu quả quản lý nhà nước.",
+        score: 8,
+        icon: <Users className="h-5 w-5" />,
+        historicalInfo: "Các cải cách hành chính đã được thực hiện ở nhiều quốc gia châu Á thời kỳ này.",
+        consequence: "Việc cải cách có thể gặp phải sự phản đối từ các quan lại bảo thủ.",
+      },
+      {
         id: "traditional",
-        text: "Bảo tồn và phát triển văn hóa truyền thống",
-        result: `Xuất sắc! 
-
-        Việc giữ gìn bản sắc văn hóa dân tộc sẽ tạo nền tảng vững chắc cho sự phát triển của triều đại.`,
+        text: "Duy trì mô hình truyền thống",
+        result: "An toàn nhưng có thể không đáp ứng được nhu cầu phát triển của đất nước.",
+        score: 5,
+        icon: <Scroll className="h-5 w-5" />,
+        historicalInfo: "Mô hình hành chính truyền thống đã tồn tại qua nhiều triều đại.",
+        consequence: "Bộ máy hành chính có thể trở nên cồng kềnh và kém hiệu quả.",
+      },
+      {
+        id: "hybrid",
+        text: "Kết hợp truyền thống và hiện đại",
+        result: "Lựa chọn khôn ngoan! Giữ được những giá trị tốt đẹp của truyền thống trong khi vẫn có thể đổi mới.",
         score: 10,
-        icon: <Book className="h-5 w-5" />,
-        historicalInfo: `Triều Nguyễn đã có những đóng góp to lớn trong việc bảo tồn và phát triển văn hóa Việt Nam.`,
-        learnMore: {
-          title: "Văn hóa cung đình Huế",
-          content: `Văn hóa cung đình Huế là sự kết hợp hài hòa giữa truyền thống và những tinh hoa văn hóa mới.`,
-          image: "/assets/images/culture.jpg"
-        }
+        icon: <Crown className="h-5 w-5" />,
+        historicalInfo: "Nhiều quốc gia đã thành công với mô hình kết hợp này.",
+        consequence: "Tạo nền tảng vững chắc cho sự phát triển lâu dài của triều đại.",
+      }
+    ]
+  },
+  {
+    id: "economy",
+    title: "Chính sách kinh tế",
+    description: "Bệ hạ cần lựa chọn định hướng phát triển kinh tế cho vương triều.",
+    historicalContext: "Kinh tế phát triển là nền tảng cho sự thịnh vượng của đất nước.",
+    choices: [
+      {
+        id: "trade",
+        text: "Đẩy mạnh thương mại quốc tế",
+        result: "Mở rộng giao thương sẽ mang lại nguồn thu lớn nhưng cũng tiềm ẩn nhiều rủi ro.",
+        score: 8,
+        icon: <Coins className="h-5 w-5" />,
+        historicalInfo: "Việt Nam đã có truyền thống buôn bán với nhiều quốc gia trong khu vực.",
+        consequence: "Tăng cường giao lưu văn hóa nhưng cũng phải đối mặt với áp lực từ các cường quốc.",
+      },
+      {
+        id: "agriculture",
+        text: "Tập trung phát triển nông nghiệp",
+        result: "An toàn và phù hợp với điều kiện tự nhiên của đất nước.",
+        score: 7,
+        icon: <Wind className="h-5 w-5" />,
+        historicalInfo: "Nông nghiệp luôn là nền tảng kinh tế của Việt Nam.",
+        consequence: "Đảm bảo an ninh lương thực nhưng có thể bị tụt hậu về công nghệ.",
+      },
+      {
+        id: "balanced",
+        text: "Phát triển cân bằng các ngành",
+        result: "Xuất sắc! Chiến lược này sẽ tạo nền tảng vững chắc cho sự phát triển toàn diện.",
+        score: 10,
+        icon: <Star className="h-5 w-5" />,
+        historicalInfo: "Các quốc gia phát triển đều có nền kinh tế đa dạng.",
+        consequence: "Tạo sự phát triển bền vững và giảm thiểu rủi ro.",
       }
     ]
   }
@@ -151,28 +224,15 @@ const RolePlayGame = () => {
   const [showResult, setShowResult] = useState(false);
   const [selectedChoice, setSelectedChoice] = useState<Choice | null>(null);
   const [confirmedChoice, setConfirmedChoice] = useState<Choice | null>(null);
-  const [showNextButton, setShowNextButton] = useState(false);
   const [readyForNext, setReadyForNext] = useState(false);
 
-  const handleChoice = (choice: Choice) => {
+  const handleChoice = async (choice: Choice) => {
     if (!confirmedChoice) {
       setSelectedChoice(choice);
+      setConfirmedChoice(choice);
+      setScore(score + choice.score);
+      setSelectedChoices([...selectedChoices, choice.id]);
     }
-  };
-
-  const confirmChoice = () => {
-    if (selectedChoice) {
-      setConfirmedChoice(selectedChoice);
-      setScore(score + selectedChoice.score);
-      setSelectedChoices([...selectedChoices, selectedChoice.id]);
-      setShowNextButton(true);
-    }
-  };
-
-  const changeChoice = () => {
-    setSelectedChoice(null);
-    setConfirmedChoice(null);
-    setShowNextButton(false);
   };
 
   const handleNext = () => {
@@ -182,7 +242,6 @@ const RolePlayGame = () => {
         setCurrentStep(currentStep + 1);
         setSelectedChoice(null);
         setConfirmedChoice(null);
-        setShowNextButton(false);
         setReadyForNext(false);
       } else {
         setShowResult(true);
@@ -191,23 +250,26 @@ const RolePlayGame = () => {
   };
 
   const getGameResult = () => {
-    if (score >= 18) {
+    const maxScore = gameSteps.length * 10;
+    const percentage = (score / maxScore) * 100;
+
+    if (percentage >= 80) {
       return {
         title: "Minh quân anh minh!",
-        description: "Bệ hạ đã có những quyết định sáng suốt trong việc chọn vị trí và quy hoạch kinh đô. Những lựa chọn này sẽ tạo nền móng vững chắc cho sự phát triển lâu dài của triều Nguyễn.",
-        icon: <Star className="h-6 w-6 text-yellow-500" />
+        description: "Bệ hạ đã có những quyết định sáng suốt trong việc xây dựng và phát triển vương triều. Những lựa chọn này sẽ tạo nền móng vững chắc cho sự phát triển lâu dài của triều Nguyễn.",
+        icon: <Crown className="h-8 w-8 text-yellow-500" />
       };
-    } else if (score >= 12) {
+    } else if (percentage >= 60) {
       return {
-        title: "Quyết định tạm được",
-        description: "Các quyết định của bệ hạ có những điểm hợp lý, nhưng vẫn còn những điểm cần cải thiện để đảm bảo sự thịnh vượng lâu dài của vương triều.",
-        icon: <Scroll className="h-6 w-6 text-blue-500" />
+        title: "Hoàng đế tài năng",
+        description: "Các quyết định của bệ hạ thể hiện sự cân nhắc kỹ lưỡng. Tuy có một số điểm cần cải thiện, nhưng nhìn chung vương triều sẽ phát triển ổn định.",
+        icon: <Star className="h-8 w-8 text-blue-500" />
       };
     } else {
       return {
         title: "Cần cân nhắc kỹ hơn",
-        description: "Những quyết định này có thể gây khó khăn cho việc phát triển kinh đô. Bệ hạ nên xem xét lại các yếu tố về địa lý, phong thủy và chiến lược để có quyết định tốt hơn.",
-        icon: <Crown className="h-6 w-6 text-red-500" />
+        description: "Một số quyết định có thể gây khó khăn cho sự phát triển của vương triều. Bệ hạ nên xem xét kỹ hơn các yếu tố về địa lý, chiến lược và văn hóa.",
+        icon: <Scroll className="h-8 w-8 text-red-500" />
       };
     }
   };
@@ -219,19 +281,18 @@ const RolePlayGame = () => {
     setShowResult(false);
     setSelectedChoice(null);
     setConfirmedChoice(null);
-    setShowNextButton(false);
     setReadyForNext(false);
   };
 
   return (
-    <Card className="w-full max-w-4xl mx-auto bg-background/95 backdrop-blur-md">
-      <CardContent className="p-2 md:p-6">
-        <div className="text-center mb-4 md:mb-6">
-          <div className="inline-block p-2 md:p-3 bg-primary/10 rounded-full mb-2 md:mb-3">
-            <Crown className="h-5 w-5 md:h-6 md:w-6 text-primary" />
+    <Card className="w-full max-w-4xl mx-auto bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <CardContent className="p-6">
+        <div className="text-center mb-6">
+          <div className="inline-block p-3 bg-primary/10 rounded-full mb-3">
+            <Crown className="h-6 w-6 text-primary" />
           </div>
-          <h2 className="text-lg md:text-xl font-semibold mb-2">Nhập vai vua Gia Long</h2>
-          <p className="text-sm md:text-base text-muted-foreground max-w-2xl mx-auto">
+          <h2 className="text-xl font-semibold mb-2">Nhập vai vua Gia Long</h2>
+          <p className="text-sm text-muted-foreground max-w-2xl mx-auto">
             Đưa ra những quyết định quan trọng trong việc chọn vị trí và xây dựng kinh đô mới
           </p>
         </div>
@@ -240,91 +301,88 @@ const RolePlayGame = () => {
           {!showResult ? (
             <motion.div
               key={currentStep}
-              initial="hidden"
-              animate="visible"
-              exit="hidden"
-              variants={{
-                hidden: { opacity: 0, y: 20 },
-                visible: { opacity: 1, y: 0, transition: { duration: 0.3 } }
-              }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
               className="relative"
             >
-              <div className="mb-4">
-                <div className="flex justify-between items-center mb-2">
-                  <h3 className="text-base md:text-lg font-medium">{gameSteps[currentStep].title}</h3>
-                  <span className="text-sm text-muted-foreground">
+              <div className="mb-6">
+                <div className="flex justify-between items-center mb-3">
+                  <h3 className="text-lg font-medium">{gameSteps[currentStep].title}</h3>
+                  <span className="px-3 py-1 bg-primary/10 rounded-full text-sm">
                     Bước {currentStep + 1}/{gameSteps.length}
                   </span>
                 </div>
 
                 {gameSteps[currentStep].historicalContext && (
-                  <div className="p-3 md:p-4 bg-primary/5 rounded-lg mb-4">
-                    <p className="game-text">
+                  <div className="p-4 bg-accent/10 rounded-lg mb-4">
+                    <p className="text-sm italic">
                       {gameSteps[currentStep].historicalContext}
                     </p>
                   </div>
                 )}
 
-                <div className="p-3 md:p-4 bg-accent/20 rounded-lg mb-4 md:mb-6">
-                  <p className="game-description">{gameSteps[currentStep].description}</p>
+                <div className="p-4 bg-card rounded-lg border mb-6">
+                  <p className="text-sm leading-relaxed">
+                    {gameSteps[currentStep].description}
+                  </p>
                 </div>
               </div>
 
-              <ScrollArea className="h-[350px] md:h-[500px] rounded-md border p-2 md:p-4">
-                <div className="space-y-2 md:space-y-3">
+              <ScrollArea className="h-[400px] rounded-lg border p-4">
+                <div className="space-y-3">
                   {gameSteps[currentStep].choices.map((choice) => (
                     <motion.div
                       key={choice.id}
-                      variants={{
-                        hidden: { opacity: 0, y: 20 },
-                        visible: { opacity: 1, y: 0 }
-                      }}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
                     >
                       <Button
-                        variant={selectedChoice?.id === choice.id ? "secondary" : "outline"}
-                        className={`w-full justify-start gap-2 md:gap-3 h-auto p-3 md:p-4 text-left ${
-                          confirmedChoice?.id === choice.id ? 'border-primary bg-primary/10' : ''
-                        } touch-manipulation`}
+                        variant={confirmedChoice?.id === choice.id ? "secondary" : "outline"}
+                        className={cn(
+                          "w-full justify-start gap-3 h-auto p-4 text-left transition-all",
+                          confirmedChoice?.id === choice.id && "border-primary bg-primary/10",
+                          !confirmedChoice && "hover:border-primary/50"
+                        )}
                         onClick={() => !confirmedChoice && handleChoice(choice)}
                         disabled={confirmedChoice !== null && confirmedChoice.id !== choice.id}
                       >
-                        <div className="flex items-start gap-2 md:gap-3 w-full overflow-hidden">
+                        <div className="flex items-start gap-3 w-full">
                           <div className="p-2 bg-primary/10 rounded-lg shrink-0">
                             {choice.icon}
                           </div>
                           <div className="flex-1 min-w-0">
-                            <p className="text-sm md:text-base font-medium mb-1 break-words">{choice.text}</p>
-                            {(confirmedChoice?.id === choice.id || selectedChoice?.id === choice.id) && (
+                            <p className="font-medium mb-1">{choice.text}</p>
+                            {confirmedChoice?.id === choice.id && (
                               <motion.div
                                 initial={{ opacity: 0, height: 0 }}
                                 animate={{ opacity: 1, height: "auto" }}
-                                className="mt-2 md:mt-3 space-y-2 overflow-x-auto"
+                                className="mt-3 space-y-3"
                               >
-                                {confirmedChoice?.id === choice.id && (
-                                  <div className="p-2 md:p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
-                                    <p className="game-result">{choice.result}</p>
-                                  </div>
-                                )}
+                                <div className="p-3 bg-green-500/10 dark:bg-green-500/20 rounded-lg">
+                                  <p className="text-sm">{choice.result}</p>
+                                </div>
                                 {choice.historicalInfo && (
-                                  <div className="p-2 md:p-3 bg-muted/30 rounded-lg">
-                                    <p className="game-historical-info">
-                                      {choice.historicalInfo}
-                                    </p>
+                                  <div className="p-3 bg-blue-500/10 dark:bg-blue-500/20 rounded-lg">
+                                    <h4 className="text-sm font-medium mb-1">Bối cảnh lịch sử:</h4>
+                                    <p className="text-sm">{choice.historicalInfo}</p>
                                   </div>
                                 )}
-                                {choice.consequence && confirmedChoice?.id === choice.id && (
-                                  <div className="p-2 md:p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                                {choice.consequence && (
+                                  <div className="p-3 bg-yellow-500/10 dark:bg-yellow-500/20 rounded-lg">
                                     <h4 className="text-sm font-medium mb-1">Hệ quả lịch sử:</h4>
-                                    <p className="text-xs md:text-sm break-words">{choice.consequence}</p>
+                                    <p className="text-sm">{choice.consequence}</p>
                                   </div>
                                 )}
-                                {choice.learnMore && confirmedChoice?.id === choice.id && (
-                                  <div className="mt-3 md:mt-4 p-3 md:p-4 bg-primary/5 rounded-lg">
+                                {choice.learnMore && (
+                                  <div className="mt-4 p-4 bg-accent/10 rounded-lg">
                                     <h4 className="text-sm font-medium mb-2 flex items-center gap-2">
                                       <FileText className="h-4 w-4" />
                                       Tìm hiểu thêm: {choice.learnMore.title}
                                     </h4>
-                                    <p className="text-xs md:text-sm break-words">{choice.learnMore.content}</p>
+                                    <p className="text-sm whitespace-pre-line">
+                                      {choice.learnMore.content}
+                                    </p>
                                   </div>
                                 )}
                               </motion.div>
@@ -337,29 +395,7 @@ const RolePlayGame = () => {
                 </div>
               </ScrollArea>
 
-              {selectedChoice && !confirmedChoice && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="mt-4 flex justify-end gap-2"
-                >
-                  <Button
-                    variant="outline"
-                    onClick={changeChoice}
-                    className="text-sm md:text-base py-2 md:py-3"
-                  >
-                    Đổi lựa chọn
-                  </Button>
-                  <Button
-                    onClick={confirmChoice}
-                    className="text-sm md:text-base py-2 md:py-3"
-                  >
-                    Xác nhận lựa chọn
-                  </Button>
-                </motion.div>
-              )}
-
-              {showNextButton && (
+              {confirmedChoice && (
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -367,37 +403,37 @@ const RolePlayGame = () => {
                 >
                   <Button
                     onClick={handleNext}
-                    className="gap-2 text-sm md:text-base py-2 md:py-3"
+                    className="gap-2"
+                    size="lg"
                     disabled={readyForNext}
                   >
-                    {currentStep === gameSteps.length - 1 ? 'Kết thúc' : 'Tiếp theo'}
+                    {currentStep === gameSteps.length - 1 ? 'Xem kết quả' : 'Bước tiếp theo'}
                     <ChevronRight className="h-4 w-4" />
                   </Button>
                 </motion.div>
               )}
 
-              <Progress value={(currentStep / gameSteps.length) * 100} className="h-2 mt-4" />
+              <Progress
+                value={(currentStep / (gameSteps.length - 1)) * 100}
+                className="h-2 mt-6"
+              />
             </motion.div>
           ) : (
             <motion.div
-              initial="hidden"
-              animate="visible"
-              variants={{
-                hidden: { opacity: 0, y: 20 },
-                visible: { opacity: 1, y: 0, transition: { duration: 0.3 } }
-              }}
-              className="text-center py-4 md:py-6"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="text-center py-6"
             >
-              <div className="mb-4 md:mb-6">
-                <div className="inline-block p-3 bg-primary/10 rounded-full mb-3">
+              <div className="mb-6">
+                <div className="inline-flex items-center justify-center p-4 bg-primary/10 rounded-full mb-4">
                   {getGameResult().icon}
                 </div>
-                <h3 className="text-lg md:text-xl font-semibold mb-2">{getGameResult().title}</h3>
-                <p className="text-sm md:text-base text-muted-foreground max-w-2xl mx-auto">
+                <h3 className="text-2xl font-bold mb-2">{getGameResult().title}</h3>
+                <p className="text-muted-foreground mb-4 max-w-2xl mx-auto">
                   {getGameResult().description}
                 </p>
-                <div className="mt-4 p-3 bg-muted/30 rounded-lg inline-block">
-                  <p className="text-sm md:text-base">
+                <div className="inline-block px-4 py-2 bg-card rounded-lg border">
+                  <p className="text-sm font-medium">
                     Điểm số của bệ hạ: {score}/{gameSteps.length * 10}
                   </p>
                 </div>
@@ -406,7 +442,7 @@ const RolePlayGame = () => {
               <Button
                 onClick={resetGame}
                 size="lg"
-                className="text-sm md:text-base py-2 md:py-3"
+                className="min-w-[200px]"
               >
                 Chơi lại
               </Button>
