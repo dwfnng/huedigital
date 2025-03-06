@@ -9,7 +9,10 @@ import {
   GraduationCap,
   Box,
   Calendar,
-  Clock
+  Clock,
+  FileAudio,
+  File3D,
+  Info
 } from "lucide-react";
 import type { Resource } from "@shared/schema";
 
@@ -27,13 +30,11 @@ const getResourceIcon = (type: string) => {
     case "video":
       return <Video className="h-6 w-6" />;
     case "audio":
-      return <Music className="h-6 w-6" />;
-    case "research":
-      return <GraduationCap className="h-6 w-6" />;
+      return <FileAudio className="h-6 w-6" />;
     case "3d_model":
       return <Box className="h-6 w-6" />;
     default:
-      return <FileText className="h-6 w-6" />;
+      return <Info className="h-6 w-6" />;
   }
 };
 
@@ -53,6 +54,10 @@ const item = {
 };
 
 export default function ResourceList({ resources, onResourceSelect }: ResourceListProps) {
+  const getFallbackImageUrl = (type: string) => {
+    return `/placeholders/${type}-placeholder.jpg`;
+  };
+
   return (
     <ScrollArea className="h-[calc(100vh-16rem)]">
       <motion.div
@@ -73,42 +78,43 @@ export default function ResourceList({ resources, onResourceSelect }: ResourceLi
                     {getResourceIcon(resource.type)}
                   </div>
                   <div className="flex-1 min-w-0">
-                    {resource.thumbnailUrl && (
-                      <div className="mb-3">
+                    {(resource.thumbnailUrl || resource.type === 'image') && (
+                      <div className="mb-3 relative">
                         <img
-                          src={resource.thumbnailUrl || 'https://placehold.co/600x400/png?text=No+Image'}
+                          src={resource.thumbnailUrl || getFallbackImageUrl(resource.type)}
                           alt={resource.title}
                           className="w-full h-32 object-cover rounded-lg"
                           onError={(e) => {
                             const target = e.target as HTMLImageElement;
-                            const fallbackUrl = 'https://placehold.co/600x400/png?text=Image+Not+Found';
-                            if (target.src !== fallbackUrl) {
-                              target.src = fallbackUrl;
-                            }
+                            target.src = getFallbackImageUrl(resource.type);
                           }}
                         />
                       </div>
                     )}
                     <h3 className="font-semibold truncate">{resource.title}</h3>
-                    <p className="text-sm text-muted-foreground truncate">
-                      {resource.titleEn}
-                    </p>
+                    {resource.titleEn && (
+                      <p className="text-sm text-muted-foreground truncate">
+                        {resource.titleEn}
+                      </p>
+                    )}
                     {resource.description && (
                       <p className="text-sm mt-2 line-clamp-2 text-muted-foreground">
                         {resource.description}
                       </p>
                     )}
                     <div className="flex items-center gap-4 mt-3 text-xs text-muted-foreground">
-                      {resource.metadata?.format && (
+                      {resource.type && (
                         <div className="flex items-center gap-1">
                           <FileText className="h-3 w-3" />
-                          {resource.metadata.format.toUpperCase()}
+                          {resource.type.toUpperCase()}
                         </div>
                       )}
                       {resource.metadata?.duration && (
                         <div className="flex items-center gap-1">
                           <Clock className="h-3 w-3" />
-                          {resource.metadata.duration}
+                          {typeof resource.metadata.duration === 'string' 
+                            ? resource.metadata.duration 
+                            : new Date(resource.metadata.duration).toLocaleTimeString()}
                         </div>
                       )}
                       {resource.createdAt && (
