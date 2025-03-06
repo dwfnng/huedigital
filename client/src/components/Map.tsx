@@ -191,11 +191,19 @@ export default function Map({ onMarkerClick }: MapProps) {
     setIsRoutingMode(false);
   };
 
-  // Update handleImageError with better fallback
+  // Update handleImageError with better handling and placeholder
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    const fallbackUrl = 'https://placehold.co/600x400/png?text=Image+Not+Found';
-    if (e.currentTarget.src !== fallbackUrl) {
-      e.currentTarget.src = fallbackUrl;
+    const img = e.currentTarget;
+    const fallbackUrl = 'https://placehold.co/400x300/f1f5f9/64748b?text=Di+tich+Hue';
+
+    // Only update if not already using fallback
+    if (!img.src.includes('placehold.co')) {
+      img.src = fallbackUrl;
+      img.alt = 'Hình ảnh tạm thời';
+
+      // Add a subtle transition
+      img.style.transition = 'opacity 0.3s ease-in-out';
+      img.style.opacity = '0.9';
     }
   };
 
@@ -325,12 +333,15 @@ export default function Map({ onMarkerClick }: MapProps) {
                   onClick={() => handleLocationSelect(location)}
                 >
                   <div className="flex items-start gap-3">
-                    <div className="w-16 h-16 rounded-lg overflow-hidden bg-muted">
+                    <div className="w-16 h-16 rounded-lg overflow-hidden bg-muted relative">
+                      {/* Add loading skeleton */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-gray-200 to-gray-300 animate-pulse" />
                       <img
                         src={location.imageUrl}
                         alt={location.name}
                         onError={handleImageError}
-                        className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
+                        className="w-full h-full object-cover hover:scale-110 transition-transform duration-300 relative z-10"
+                        loading="lazy" // Add lazy loading
                       />
                     </div>
                     <div className="flex-1 min-w-0">

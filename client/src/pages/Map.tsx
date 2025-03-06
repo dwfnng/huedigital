@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search, MapPin, Navigation, Info, Camera } from 'lucide-react';
 import type { Location } from "@shared/schema";
@@ -18,8 +17,17 @@ export default function MapPage() {
     });
   };
 
+  // Improved image error handling
   const handleImageLoadError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    e.currentTarget.src = '/images/placeholder-location.jpg';
+    const img = e.currentTarget;
+    const fallbackUrl = 'https://placehold.co/600x400/f1f5f9/64748b?text=Di+tich+Hue';
+
+    if (!img.src.includes('placehold.co')) {
+      img.src = fallbackUrl;
+      img.alt = 'Hình ảnh tạm thời';
+      img.style.transition = 'opacity 0.3s ease-in-out';
+      img.style.opacity = '0.9';
+    }
   };
 
   return (
@@ -45,11 +53,14 @@ export default function MapPage() {
             {selectedLocation ? (
               <div className="space-y-4">
                 <div className="w-full aspect-video relative rounded-lg overflow-hidden bg-muted">
+                  {/* Add loading skeleton */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-gray-200 to-gray-300 animate-pulse" />
                   <img 
                     src={selectedLocation.imageUrl} 
                     alt={selectedLocation.name}
                     onError={handleImageLoadError}
-                    className="absolute inset-0 w-full h-full object-cover transition-transform hover:scale-105"
+                    className="relative z-10 w-full h-full object-cover transition-transform hover:scale-105"
+                    loading="lazy"
                   />
                   <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/50" />
                   <div className="absolute bottom-0 left-0 p-4 text-white">
