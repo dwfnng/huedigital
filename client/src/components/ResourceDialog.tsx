@@ -25,12 +25,74 @@ const getResourceIcon = (type: string) => {
   }
 };
 
+const MediaContent = ({ resource }: { resource: any }) => {
+  if (!resource) return null;
+
+  switch (resource.type) {
+    case "video":
+      return (
+        <video
+          src={resource.contentUrl}
+          controls
+          className="w-full rounded-lg"
+          poster={resource.thumbnailUrl}
+        >
+          Your browser does not support video playback.
+        </video>
+      );
+    case "audio":
+      return (
+        <div className="bg-muted p-4 rounded-lg">
+          <audio
+            src={resource.contentUrl}
+            controls
+            className="w-full"
+          >
+            Your browser does not support audio playback.
+          </audio>
+          {resource.thumbnailUrl && (
+            <img
+              src={resource.thumbnailUrl}
+              alt={resource.title}
+              className="mt-4 rounded-lg w-full"
+            />
+          )}
+        </div>
+      );
+    case "document":
+      if (resource.fileFormat === "pdf") {
+        return (
+          <iframe
+            src={resource.contentUrl}
+            className="w-full h-[60vh] border rounded-lg"
+            title={resource.title}
+          />
+        );
+      }
+      return (
+        <div className="bg-muted p-4 rounded-lg">
+          <p className="text-sm text-muted-foreground">
+            Click to download: <a href={resource.contentUrl} className="text-primary hover:underline" download>{resource.title}</a>
+          </p>
+        </div>
+      );
+    default:
+      return (
+        <img
+          src={resource.contentUrl}
+          alt={resource.title}
+          className="w-full rounded-lg"
+        />
+      );
+  }
+};
+
 export function ResourceDialog({ resource, open, onOpenChange }: ResourceDialogProps) {
   if (!resource) return null;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-3xl h-[80vh]">
+      <DialogContent className="max-w-3xl h-[90vh]">
         <DialogHeader>
           <div className="flex items-center gap-2">
             {getResourceIcon(resource.type)}
@@ -43,20 +105,9 @@ export function ResourceDialog({ resource, open, onOpenChange }: ResourceDialogP
           )}
         </DialogHeader>
         <ScrollArea className="h-full pr-4">
-          <div className="space-y-4">
-            {/* Metadata */}
-            <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
-              <div className="flex items-center gap-1">
-                <FileType className="h-4 w-4" />
-                {resource.type.toUpperCase()}
-              </div>
-              {resource.period && (
-                <div className="flex items-center gap-1">
-                  <History className="h-4 w-4" />
-                  {resource.period}
-                </div>
-              )}
-            </div>
+          <div className="space-y-6">
+            {/* Content */}
+            <MediaContent resource={resource} />
 
             {/* Description */}
             <div className="space-y-2">
@@ -67,39 +118,15 @@ export function ResourceDialog({ resource, open, onOpenChange }: ResourceDialogP
               )}
             </div>
 
-            {/* Content */}
-            <div className="mt-4">
-              {resource.type === "document" && (
-                <iframe 
-                  src={resource.contentUrl} 
-                  className="w-full h-[60vh] border rounded-lg"
-                />
-              )}
-              {resource.type === "video" && (
-                <video 
-                  src={resource.contentUrl} 
-                  controls
-                  className="w-full rounded-lg"
-                />
-              )}
-              {resource.type === "audio" && (
-                <audio 
-                  src={resource.contentUrl} 
-                  controls
-                  className="w-full"
-                />
-              )}
-            </div>
-
-            {/* Additional Information */}
+            {/* Metadata */}
             {resource.metadata && Object.keys(resource.metadata).length > 0 && (
               <div className="space-y-2">
                 <h3 className="font-semibold">Thông tin bổ sung</h3>
                 <dl className="grid grid-cols-2 gap-2 text-sm">
                   {Object.entries(resource.metadata).map(([key, value]) => (
                     <div key={key}>
-                      <dt className="font-medium">{key}</dt>
-                      <dd className="text-muted-foreground">{value}</dd>
+                      <dt className="font-medium capitalize">{key.replace(/_/g, ' ')}</dt>
+                      <dd className="text-muted-foreground">{String(value)}</dd>
                     </div>
                   ))}
                 </dl>
@@ -107,7 +134,7 @@ export function ResourceDialog({ resource, open, onOpenChange }: ResourceDialogP
             )}
 
             {/* Keywords */}
-            {resource.keywords && resource.keywords.length > 0 && (
+            {resource.keywords?.length > 0 && (
               <div className="space-y-2">
                 <h3 className="font-semibold">Từ khóa</h3>
                 <div className="flex flex-wrap gap-2">
@@ -122,6 +149,34 @@ export function ResourceDialog({ resource, open, onOpenChange }: ResourceDialogP
                 </div>
               </div>
             )}
+
+            {/* Additional Info */}
+            <div className="grid grid-cols-2 gap-4 text-sm">
+              {resource.author && (
+                <div>
+                  <dt className="font-medium">Tác giả</dt>
+                  <dd className="text-muted-foreground">{resource.author}</dd>
+                </div>
+              )}
+              {resource.source && (
+                <div>
+                  <dt className="font-medium">Nguồn</dt>
+                  <dd className="text-muted-foreground">{resource.source}</dd>
+                </div>
+              )}
+              {resource.period && (
+                <div>
+                  <dt className="font-medium">Thời kỳ</dt>
+                  <dd className="text-muted-foreground">{resource.period}</dd>
+                </div>
+              )}
+              {resource.dynasty && (
+                <div>
+                  <dt className="font-medium">Triều đại</dt>
+                  <dd className="text-muted-foreground">{resource.dynasty}</dd>
+                </div>
+              )}
+            </div>
           </div>
         </ScrollArea>
       </DialogContent>
