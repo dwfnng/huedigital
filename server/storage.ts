@@ -173,6 +173,154 @@ export class MemStorage implements IStorage {
   private initializeData() {
     // Initialize locations with proper structure
     this.locations = [
+      // Giữ lại các địa điểm hiện có
+      ...this.locations,
+
+      // Thêm các địa điểm mới
+      {
+        id: this.getNextId(),
+        name: "Điện Thái Hòa",
+        nameEn: "Thai Hoa Palace",
+        description: "Điện Thái Hòa là công trình quan trọng nhất trong Hoàng thành Huế, nơi diễn ra các đại lễ và thiết triều của vua. Điện được xây năm 1805, thiết kế theo phong cách cung đình truyền thống với 80 cột gỗ quý sơn son thếp vàng.",
+        descriptionEn: "Thai Hoa Palace is the most important building in Hue Citadel, where emperors held grand ceremonies and court meetings. Built in 1805, it features traditional palace architecture with 80 precious lacquered and gilded wooden columns.",
+        type: "heritage_site",
+        latitude: "16.4700",
+        longitude: "107.5792",
+        imageUrl: "/media/images/thai-hoa.jpg",
+        isActive: true
+      },
+      {
+        id: this.getNextId(),
+        name: "Lăng Đồng Khánh",
+        nameEn: "Dong Khanh Tomb",
+        description: "Lăng Đồng Khánh được xây dựng từ năm 1888 đến 1923, là nơi an nghỉ của vua Đồng Khánh. Công trình mang đậm phong cách kiến trúc kết hợp Đông - Tây độc đáo.",
+        descriptionEn: "Dong Khanh Tomb was built from 1888 to 1923, serving as the resting place of Emperor Dong Khanh. The architecture uniquely combines Eastern and Western styles.",
+        type: "tomb",
+        latitude: "16.4520",
+        longitude: "107.5740",
+        imageUrl: "/media/images/lang-dong-khanh.jpg",
+        isActive: true
+      },
+      {
+        id: this.getNextId(),
+        name: "Lăng Dục Đức",
+        nameEn: "Duc Duc Tomb",
+        description: "Lăng Dục Đức được xây dựng năm 1883 là nơi an nghỉ của vua Dục Đức. Kiến trúc đơn giản nhưng vẫn giữ được nét đặc trưng của lăng tẩm triều Nguyễn.",
+        descriptionEn: "Built in 1883, Duc Duc Tomb is the resting place of Emperor Duc Duc. Though simple in design, it maintains characteristic features of Nguyen Dynasty tombs.",
+        type: "tomb",
+        latitude: "16.4430",
+        longitude: "107.5650",
+        imageUrl: "/media/images/lang-duc-duc.jpg",
+        isActive: true
+      },
+      {
+        id: this.getNextId(),
+        name: "Trấn Bình Đài",
+        nameEn: "Tran Binh Platform",
+        description: "Trấn Bình Đài là công trình phòng thủ quân sự được xây dựng dưới thời vua Minh Mạng, có vai trò quan trọng trong việc bảo vệ kinh thành từ phía biển.",
+        descriptionEn: "Tran Binh Platform is a military defensive structure built under Emperor Minh Mang, playing a crucial role in protecting the citadel from the sea.",
+        type: "heritage_site",
+        latitude: "16.4660",
+        longitude: "107.5920",
+        imageUrl: "/media/images/tran-binh-dai.jpg",
+        isActive: true
+      },
+      {
+        id: this.getNextId(),
+        name: "Tàng Thư Lâu",
+        nameEn: "Royal Library",
+        description: "Tàng Thư Lâu là thư viện hoàng gia, nơi lưu trữ sách vở và tài liệu quý của triều Nguyễn. Công trình thể hiện sự coi trọng việc giáo dục và văn hóa của triều đại.",
+        descriptionEn: "The Royal Library stored precious books and documents of the Nguyen Dynasty, reflecting the dynasty's emphasis on education and culture.",
+        type: "heritage_site",
+        latitude: "16.4695",
+        longitude: "107.5789",
+        imageUrl: "/media/images/tang-thu-lau.jpg",
+        isActive: true
+      },
+      {
+        id: this.getNextId(),
+        name: "Phu Văn Lâu",
+        nameEn: "Phu Van Tower",
+        description: "Phu Văn Lâu là nơi công bố các chiếu chỉ và thông báo quan trọng của triều đình. Kiến trúc hai tầng độc đáo tọa lạc gần cầu Trường Tiền.",
+        descriptionEn: "Phu Van Tower was where royal edicts and important announcements were proclaimed. The unique two-story structure is located near Truong Tien Bridge.",
+        type: "heritage_site",
+        latitude: "16.4710",
+        longitude: "107.5830",
+        imageUrl: "/media/images/phu-van-lau.jpg",
+        isActive: true
+      },
+      {
+        id: this.getNextId(),
+        name: "Văn Miếu Huế",
+        nameEn: "Temple of Literature",
+        description: "Văn Miếu Huế được xây dựng năm 1808 dưới thời vua Gia Long, thờ Khổng Tử và các bậc hiền triết. Nơi đây là biểu tượng của nền giáo dục Nho học thời Nguyễn.",
+        descriptionEn: "Built in 1808 under Emperor Gia Long, the Temple of Literature is dedicated to Confucius and other sages, symbolizing Confucian education during the Nguyen Dynasty.",
+        type: "temple",
+        latitude: "16.4630",
+        longitude: "107.5780",
+        imageUrl: "/media/images/van-mieu.jpg",
+        isActive: true
+      },
+      {
+        id: this.getNextId(),
+        name: "Võ Miếu",
+        nameEn: "Temple of Military",
+        description: "Võ Miếu được xây dựng năm 1835 dưới thời vua Minh Mạng, thờ các vị danh tướng có công với đất nước. Công trình thể hiện sự tôn vinh võ nghệ trong triều Nguyễn.",
+        descriptionEn: "Built in 1835 under Emperor Minh Mang, the Temple of Military honors great military commanders. It reflects the Nguyen Dynasty's respect for martial arts.",
+        type: "temple",
+        latitude: "16.4640",
+        longitude: "107.5770",
+        imageUrl: "/media/images/vo-mieu.jpg",
+        isActive: true
+      },
+      {
+        id: this.getNextId(),
+        name: "Hổ Quyền",
+        nameEn: "Ho Quyen Arena",
+        description: "Hổ Quyền là đấu trường cổ nơi diễn ra các trận đấu giữa voi và hổ, được xây dựng năm 1830 dưới thời vua Minh Mạng. Công trình có kiến trúc độc đáo dạng hình tròn.",
+        descriptionEn: "Built in 1830 under Emperor Minh Mang, Ho Quyen Arena hosted elephant-tiger fights. The structure features unique circular architecture.",
+        type: "heritage_site",
+        latitude: "16.4520",
+        longitude: "107.5730",
+        imageUrl: "/media/images/ho-quyen.jpg",
+        isActive: true
+      },
+      {
+        id: this.getNextId(),
+        name: "Cầu Ngói Thanh Toàn",
+        nameEn: "Thanh Toan Tile-roofed Bridge",
+        description: "Cầu Ngói Thanh Toàn được xây dựng từ thế kỷ 18, là một trong những cây cầu ngói cổ nhất Việt Nam. Cầu không chỉ là công trình giao thông mà còn là điểm nhấn văn hóa độc đáo.",
+        descriptionEn: "Built in the 18th century, Thanh Toan Bridge is one of Vietnam's oldest tile-roofed bridges. It serves both as transportation infrastructure and a unique cultural landmark.",
+        type: "heritage_site",
+        latitude: "16.5150",
+        longitude: "107.6280",
+        imageUrl: "/media/images/cau-ngoi-thanh-toan.jpg",
+        isActive: true
+      },
+      {
+        id: this.getNextId(),
+        name: "Làng Cổ Phước Tích",
+        nameEn: "Phuoc Tich Ancient Village",
+        description: "Làng cổ Phước Tích là một trong những làng nghề gốm truyền thống lâu đời nhất xứ Huế, với nhiều ngôi nhà rường cổ kính và lò gốm truyền thống.",
+        descriptionEn: "Phuoc Tich Ancient Village is one of Hue's oldest traditional pottery villages, featuring many ancient garden houses and traditional kilns.",
+        type: "craft_village",
+        latitude: "16.5680",
+        longitude: "107.6850",
+        imageUrl: "/media/images/lang-phuoc-tich.jpg",
+        isActive: true
+      },
+      {
+        id: this.getNextId(),
+        name: "Thiền Viện Trúc Lâm Bạch Mã",
+        nameEn: "Truc Lam Bach Ma Zen Monastery",
+        description: "Thiền viện Trúc Lâm Bạch Mã là trung tâm tu học Phật giáo lớn tại Huế, tọa lạc trên núi Bạch Mã với không gian thanh tịnh và view panorama tuyệt đẹp.",
+        descriptionEn: "Truc Lam Bach Ma Zen Monastery is a major Buddhist meditation center in Hue, located on Bach Ma Mountain offering serene environment and panoramic views.",
+        type: "temple",
+        latitude: "16.1970",
+        longitude: "107.8500",
+        imageUrl: "/media/images/thien-vien-truc-lam.jpg",
+        isActive: true
+      },
       {
         id: this.getNextId(),
         name: "Đại Nội Huế",
