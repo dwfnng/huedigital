@@ -352,8 +352,8 @@ export const contributionTable = pgTable("contributions", {
 });
 
 // Added types for contribution table
-export type Contribution = typeof contributionTable.$inferSelect;
-export const insertContributionSchema = createInsertSchema(contributionTable).omit({
+export type ContributionTable = typeof contributionTable.$inferSelect;
+export const insertContributionTableSchema = createInsertSchema(contributionTable).omit({
   id: true,
   createdAt: true,
   updatedAt: true,
