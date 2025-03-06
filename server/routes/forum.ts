@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { storage } from "../storage";
-import { insertDiscussionSchema } from "@shared/schema";
+import { insertDiscussionSchema, insertCommentSchema } from "@shared/schema";
 
 const router = Router();
 
@@ -11,6 +11,21 @@ router.get("/api/discussions", async (req, res) => {
     res.json(discussions);
   } catch (error) {
     console.error("Error getting discussions:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+// Lấy bài viết theo id
+router.get("/api/discussions/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const discussion = await storage.getDiscussionById(Number(id));
+    if (!discussion) {
+      return res.status(404).json({ message: "Discussion not found" });
+    }
+    res.json(discussion);
+  } catch (error) {
+    console.error("Error getting discussion:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 });
@@ -67,21 +82,31 @@ router.get("/api/comments/:discussionId", async (req, res) => {
 // Tạo bình luận mới
 router.post("/api/comments", async (req, res) => {
   try {
-    const comment = await storage.createComment(req.body);
-    // Tạo point transaction cho người dùng
+    const data = insertCommentSchema.parse(req.body);
+    const comment = await storage.createComment(data);
+
+    // Cập nhật điểm cho người dùng khi bình luận
     await storage.createPointTransaction(
       comment.userId,
       "5", // 5 points cho mỗi bình luận
       "comment",
       comment.id
     );
+
     // Cập nhật điểm của người dùng
     const user = await storage.getUserById(comment.userId);
     if (user) {
       const newPoints = (Number(user.points) + 5).toString();
       await storage.updateUserPoints(user.id, newPoints);
     }
-    res.status(201).json(comment);
+
+    // Lấy danh sách comments mới nhất của bài viết
+    const updatedComments = await storage.getCommentsByDiscussionId(comment.discussionId);
+
+    res.status(201).json({
+      newComment: comment,
+      allComments: updatedComments
+    });
   } catch (error) {
     console.error("Error creating comment:", error);
     res.status(400).json({ message: "Invalid comment data" });
