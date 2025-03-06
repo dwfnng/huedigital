@@ -3,10 +3,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { motion, AnimatePresence } from "framer-motion";
-import { Crown, MapPin, Building2, Wind, Scroll, Star, ChevronRight, Book, Swords, FileText, Anchor, Shield, Users, Coins, MessageCircle } from "lucide-react";
+import { Crown, MapPin, Building2, Wind, Scroll, Star, ChevronRight, Book, Swords, FileText, Anchor, Shield, Users, Coins } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
-import { useToast } from "@/hooks/use-toast";
 
 interface Choice {
   id: string;
@@ -226,7 +225,6 @@ const RolePlayGame = () => {
   const [selectedChoice, setSelectedChoice] = useState<Choice | null>(null);
   const [confirmedChoice, setConfirmedChoice] = useState<Choice | null>(null);
   const [readyForNext, setReadyForNext] = useState(false);
-  const { toast } = useToast();
 
   const handleChoice = async (choice: Choice) => {
     if (!confirmedChoice) {
@@ -295,7 +293,7 @@ const RolePlayGame = () => {
               <Crown className="h-6 w-6 text-primary" />
             </div>
             <h2 className="text-xl md:text-2xl font-semibold mb-2">Nhập vai vua Gia Long</h2>
-            <p className="text-sm text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-sm text-muted-foreground max-w-2xl mx-auto px-4 break-words">
               Đưa ra những quyết định quan trọng trong việc chọn vị trí và xây dựng kinh đô mới
             </p>
           </div>
@@ -311,28 +309,28 @@ const RolePlayGame = () => {
               >
                 <div className="mb-6">
                   <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-2 mb-3">
-                    <h3 className="text-lg font-medium">{gameSteps[currentStep].title}</h3>
-                    <span className="px-3 py-1 bg-primary/10 rounded-full text-sm">
+                    <h3 className="text-lg font-medium truncate">{gameSteps[currentStep].title}</h3>
+                    <span className="px-3 py-1 bg-primary/10 rounded-full text-sm whitespace-nowrap">
                       Bước {currentStep + 1}/{gameSteps.length}
                     </span>
                   </div>
 
                   {gameSteps[currentStep].historicalContext && (
                     <div className="p-4 bg-accent/10 rounded-lg mb-4">
-                      <p className="text-sm italic">
+                      <p className="text-sm italic break-words">
                         {gameSteps[currentStep].historicalContext}
                       </p>
                     </div>
                   )}
 
                   <div className="p-4 bg-card rounded-lg border mb-6">
-                    <p className="text-sm leading-relaxed whitespace-pre-line">
+                    <p className="text-sm leading-relaxed break-words whitespace-pre-line">
                       {gameSteps[currentStep].description}
                     </p>
                   </div>
                 </div>
 
-                <ScrollArea className="h-[350px] md:h-[400px] rounded-lg border p-4">
+                <ScrollArea className="h-[400px] md:h-[450px] rounded-lg border p-4 overflow-hidden">
                   <div className="space-y-3">
                     {gameSteps[currentStep].choices.map((choice) => (
                       <motion.div
@@ -343,7 +341,7 @@ const RolePlayGame = () => {
                         <Button
                           variant={confirmedChoice?.id === choice.id ? "secondary" : "outline"}
                           className={cn(
-                            "w-full justify-start gap-3 h-auto p-4 text-left transition-all",
+                            "w-full justify-start gap-3 h-auto p-4 text-left transition-all overflow-hidden",
                             confirmedChoice?.id === choice.id && "border-primary bg-primary/10",
                             !confirmedChoice && "hover:border-primary/50"
                           )}
@@ -354,8 +352,8 @@ const RolePlayGame = () => {
                             <div className="p-2 bg-primary/10 rounded-lg shrink-0">
                               {choice.icon}
                             </div>
-                            <div className="flex-1 min-w-0 break-words">
-                              <p className="font-medium mb-1">{choice.text}</p>
+                            <div className="flex-1 min-w-0">
+                              <p className="font-medium mb-1 break-words">{choice.text}</p>
                               {confirmedChoice?.id === choice.id && (
                                 <motion.div
                                   initial={{ opacity: 0, height: 0 }}
@@ -388,25 +386,6 @@ const RolePlayGame = () => {
                                       </p>
                                     </div>
                                   )}
-
-                                  {/* Forum Integration */}
-                                  <div className="mt-4 p-4 bg-primary/5 rounded-lg">
-                                    <Button
-                                      variant="outline"
-                                      size="sm"
-                                      className="w-full justify-center gap-2"
-                                      onClick={() => {
-                                        toast({
-                                          title: "Diễn đàn thảo luận",
-                                          description: "Tính năng diễn đàn sẽ sớm được ra mắt!",
-                                          duration: 3000,
-                                        });
-                                      }}
-                                    >
-                                      <MessageCircle className="h-4 w-4" />
-                                      <span>Thảo luận về lựa chọn này</span>
-                                    </Button>
-                                  </div>
                                 </motion.div>
                               )}
                             </div>
@@ -451,7 +430,7 @@ const RolePlayGame = () => {
                     {getGameResult().icon}
                   </div>
                   <h3 className="text-xl md:text-2xl font-bold mb-2">{getGameResult().title}</h3>
-                  <p className="text-muted-foreground mb-4 max-w-2xl mx-auto px-4">
+                  <p className="text-muted-foreground mb-4 max-w-2xl mx-auto px-4 break-words">
                     {getGameResult().description}
                   </p>
                   <div className="inline-block px-4 py-2 bg-card rounded-lg border">
