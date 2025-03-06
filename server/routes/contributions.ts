@@ -28,15 +28,44 @@ router.get("/api/contributions", async (req, res) => {
   }
 });
 
-// Tạo đóng góp mới - gửi vào hàng đợi phê duyệt
+// Tạo đóng góp mới - tự động phê duyệt
 router.post("/api/contributions", async (req, res) => {
   try {
     const data = insertContributionSchema.parse({
       ...req.body,
-      status: "pending" // Set status as pending for admin review
+      status: "approved" // Auto-approve all contributions
     });
 
     const contribution = await storage.createContribution(data);
+
+    // Tự động tính điểm thưởng dựa trên loại đóng góp
+    let points = "0";
+    switch (contribution.type) {
+      case "image":
+        points = "15";
+        break;
+      case "video":
+        points = "20";
+        break;
+      case "document":
+        points = "25";
+        break;
+    }
+
+    // Cập nhật điểm người dùng
+    await storage.createPointTransaction(
+      contribution.userId,
+      points,
+      "contribution",
+      contribution.id
+    );
+
+    const user = await storage.getUserById(contribution.userId);
+    if (user) {
+      const newPoints = (Number(user.points) + Number(points)).toString();
+      await storage.updateUserPoints(user.id, newPoints);
+    }
+
     res.status(201).json(contribution);
   } catch (error) {
     console.error("Error creating contribution:", error);
