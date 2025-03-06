@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Input } from "@/components/ui/input";
-import { Search, FileText, Video, Music } from "lucide-react";
+import { Search, FileText, CalendarDays, User } from "lucide-react";
 import { ResourceDialog } from "@/components/ResourceDialog";
 import { Card } from "@/components/ui/card";
 import { motion } from "framer-motion";
+import { Separator } from "@/components/ui/separator";
 
 interface FilterState {
   searchQuery: string;
@@ -40,7 +41,7 @@ export default function DigitalLibrary() {
   };
 
   return (
-    <div className="container mx-auto py-6 space-y-8">
+    <div className="container mx-auto py-8 space-y-8">
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold">Kho học liệu số</h1>
@@ -59,7 +60,7 @@ export default function DigitalLibrary() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {filteredResources.map((resource) => (
           <motion.div
             key={resource.id}
@@ -68,50 +69,53 @@ export default function DigitalLibrary() {
             transition={{ duration: 0.3 }}
           >
             <Card
-              className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer h-full"
+              className="p-6 hover:bg-accent/5 transition-colors cursor-pointer h-full"
               onClick={() => handleResourceClick(resource)}
             >
-              <div className="aspect-video relative">
-                <img
-                  src={resource.thumbnailUrl || `/media/images/${resource.type}-placeholder.jpg`}
-                  alt={resource.title}
-                  className="w-full h-full object-cover"
-                />
-                {resource.type === "video" && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-black/30">
-                    <Video className="h-12 w-12 text-white" />
+              <div className="flex items-start gap-4">
+                <div className="p-3 rounded-lg bg-primary/10 text-primary">
+                  <FileText className="h-5 w-5" />
+                </div>
+                <div className="flex-1 space-y-4">
+                  <div>
+                    <h3 className="font-semibold text-lg">{resource.title}</h3>
+                    {resource.titleEn && (
+                      <p className="text-sm text-muted-foreground mt-1">
+                        {resource.titleEn}
+                      </p>
+                    )}
                   </div>
-                )}
-                {resource.type === "audio" && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-black/30">
-                    <Music className="h-12 w-12 text-white" />
-                  </div>
-                )}
-              </div>
-              <div className="p-4">
-                <h3 className="font-semibold text-lg line-clamp-2">{resource.title}</h3>
-                {resource.description && (
-                  <p className="text-sm mt-2 line-clamp-3 text-muted-foreground">
+
+                  <p className="text-sm line-clamp-3 text-muted-foreground">
                     {resource.description}
                   </p>
-                )}
-                {resource.keywords && (
-                  <div className="flex flex-wrap gap-2 mt-3">
-                    {resource.keywords.slice(0, 3).map((keyword, index) => (
-                      <span
-                        key={index}
-                        className="px-2 py-1 bg-accent text-accent-foreground rounded-full text-xs"
-                      >
-                        {keyword}
-                      </span>
-                    ))}
+
+                  <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
+                    {resource.author && (
+                      <div className="flex items-center gap-1.5">
+                        <User className="h-4 w-4" />
+                        {resource.author}
+                      </div>
+                    )}
+                    {resource.yearCreated && (
+                      <div className="flex items-center gap-1.5">
+                        <CalendarDays className="h-4 w-4" />
+                        {resource.yearCreated}
+                      </div>
+                    )}
                   </div>
-                )}
-                <div className="flex items-center gap-2 mt-3 text-xs text-muted-foreground">
-                  <FileText className="h-3 w-3" />
-                  {resource.type.toUpperCase()}
-                  {resource.author && (
-                    <span className="ml-2">• {resource.author}</span>
+
+                  {resource.keywords && (
+                    <div className="flex flex-wrap gap-1.5">
+                      {resource.keywords.slice(0, 3).map((keyword: string, index: number) => (
+                        <span
+                          key={index}
+                          className="px-2 py-0.5 bg-secondary text-secondary-foreground rounded-full text-xs"
+                        >
+                          {keyword}
+                        </span>
+                      ))}
+                    </div>
                   )}
                 </div>
               </div>
