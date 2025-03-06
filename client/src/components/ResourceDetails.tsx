@@ -52,6 +52,11 @@ function ResourceMetadataSection({ title, content }: { title: string, content: R
 }
 
 const MediaViewer = ({ resource }: { resource: Resource }) => {
+  const handleError = (e: any) => {
+    console.error("Failed to load media:", e);
+    // Implement more sophisticated error handling here, e.g., display a custom error message.
+  };
+
   switch (resource.type) {
     case "image":
       return (
@@ -61,13 +66,7 @@ const MediaViewer = ({ resource }: { resource: Resource }) => {
             alt={resource.title}
             className="w-full h-auto object-contain"
             loading="lazy"
-            onError={(e) => {
-              const target = e.target as HTMLImageElement;
-              const fallbackUrl = 'https://placehold.co/600x400/png?text=Image+Not+Found';
-              if (target.src !== fallbackUrl) {
-                target.src = fallbackUrl;
-              }
-            }}
+            onError={handleError}
           />
           {resource.metadata?.dimensions && (
             <div className="absolute bottom-2 right-2 bg-black/50 text-white px-2 py-1 text-xs rounded-full">
@@ -85,6 +84,7 @@ const MediaViewer = ({ resource }: { resource: Resource }) => {
             controls
             className="w-full"
             poster={resource.thumbnailUrl}
+            onError={handleError}
           >
             <track
               kind="captions"
@@ -108,6 +108,7 @@ const MediaViewer = ({ resource }: { resource: Resource }) => {
               src={resource.thumbnailUrl}
               alt={resource.title}
               className="w-full rounded-lg"
+              onError={handleError}
             />
           )}
           <div className="bg-muted/30 p-4 rounded-lg">
@@ -115,6 +116,7 @@ const MediaViewer = ({ resource }: { resource: Resource }) => {
               src={resource.contentUrl}
               controls
               className="w-full"
+              onError={handleError}
             />
             {resource.metadata?.transcription && (
               <div className="mt-4 p-4 bg-muted rounded-lg text-sm">

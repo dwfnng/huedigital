@@ -5,6 +5,8 @@ import { setupVite, serveStatic, log } from "./vite";
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(express.static("public"));
+app.use("/attached_assets", express.static("attached_assets"));
 
 // Add detailed startup logging middleware
 app.use((req, res, next) => {
