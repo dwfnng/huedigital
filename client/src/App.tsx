@@ -11,7 +11,7 @@ import Chat from "@/pages/chat";
 import MapPage from "@/pages/map";
 import GamePage from "@/pages/game";
 import ForumPage from "@/pages/forum";
-import LibraryPage from "@/pages/library";
+import DigitalLibrary from "@/pages/DigitalLibrary"; 
 import TicketPage from "@/pages/ticket";
 import ContributePage from "@/pages/contribute";
 import LiveDataPage from "@/pages/live-data";
@@ -141,7 +141,7 @@ function Router() {
       <Route path="/map" component={MapPage} />
       <Route path="/game" component={GamePage} />
       <Route path="/forum" component={ForumPage} />
-      <Route path="/library" component={LibraryPage} />
+      <Route path="/library" component={DigitalLibrary} /> 
       <Route path="/ticket" component={TicketPage} />
       <Route path="/contribute" component={ContributePage} />
       <Route path="/live-data" component={LiveDataPage} />
