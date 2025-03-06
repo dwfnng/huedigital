@@ -16,6 +16,7 @@ import {
   Hammer,
   History
 } from "lucide-react";
+import { ResourceDialog } from "@/components/ResourceDialog";
 import { Card } from "@/components/ui/card";
 import { motion } from "framer-motion";
 
@@ -63,6 +64,9 @@ export default function DigitalLibrary() {
     searchQuery: ""
   });
 
+  const [selectedResource, setSelectedResource] = useState<any>(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
+
   const { data: resources = [] } = useQuery({
     queryKey: ["/api/digital-library"],
   });
@@ -79,6 +83,11 @@ export default function DigitalLibrary() {
     }
     return true;
   });
+
+  const handleResourceClick = (resource: any) => {
+    setSelectedResource(resource);
+    setDialogOpen(true);
+  };
 
   return (
     <div className="container mx-auto py-6 space-y-8">
@@ -169,7 +178,10 @@ export default function DigitalLibrary() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3 }}
               >
-                <Card className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer">
+                <Card 
+                  className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
+                  onClick={() => handleResourceClick(resource)}
+                >
                   <div className="aspect-video relative">
                     <img
                       src={resource.thumbnailUrl || `/placeholders/${resource.type}-placeholder.jpg`}
@@ -234,6 +246,12 @@ export default function DigitalLibrary() {
           </div>
         </TabsContent>
       </Tabs>
+
+      <ResourceDialog 
+        resource={selectedResource}
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+      />
     </div>
   );
 }
