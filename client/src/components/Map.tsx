@@ -198,23 +198,49 @@ export default function Map({ onMarkerClick }: MapProps) {
 
     console.log('Image failed to load:', originalSrc);
 
-    // Thêm thuộc tính crossOrigin
-    if (!img.hasAttribute('crossOrigin')) {
-      img.setAttribute('crossOrigin', 'anonymous');
+    // Thử dùng proxy để tải hình ảnh
+    const proxyUrl = 'https://corsproxy.io/?';
+
+    if (!img.src.includes('corsproxy.io')) {
+      // Thử tải lại với CORS proxy
+      img.src = `${proxyUrl}${encodeURIComponent(originalSrc)}`;
+
+      // Thêm loading skeleton
+      const container = img.parentElement;
+      if (container) {
+        container.classList.add('animate-pulse');
+      }
+
+      // Thêm sự kiện load để xử lý khi hình ảnh tải thành công
+      img.onload = () => {
+        if (container) {
+          container.classList.remove('animate-pulse');
+        }
+        img.style.opacity = '1';
+      };
+
+      // Thêm fallback khi proxy cũng không hoạt động
+      img.onerror = () => {
+        // Fallback images dựa trên loại địa điểm
+        const fallbackImages = {
+          palace: 'https://images.pexels.com/photos/5227440/pexels-photo-5227440.jpeg',
+          temple: 'https://images.pexels.com/photos/5227442/pexels-photo-5227442.jpeg',
+          tomb: 'https://images.pexels.com/photos/5227444/pexels-photo-5227444.jpeg',
+          default: 'https://images.pexels.com/photos/2161449/pexels-photo-2161449.jpeg'
+        };
+
+        const type = location?.type || 'default';
+        img.src = fallbackImages[type as keyof typeof fallbackImages] || fallbackImages.default;
+
+        if (container) {
+          container.classList.remove('animate-pulse');
+        }
+      };
     }
-
-    // Tối ưu hiệu suất tải hình ảnh
-    img.loading = 'lazy';
-
-    // Thử tải lại hình ảnh với crossOrigin
-    img.src = originalSrc;
 
     // Thêm hiệu ứng loading và transition
     img.style.transition = 'opacity 0.3s ease-in-out';
-    img.style.opacity = '0.9';
-
-    // Log để debug
-    console.log('Retrying with crossOrigin:', originalSrc);
+    img.style.opacity = '0.7';
   };
 
   return (
@@ -344,15 +370,24 @@ export default function Map({ onMarkerClick }: MapProps) {
                 >
                   <div className="flex items-start gap-3">
                     <div className="w-16 h-16 rounded-lg overflow-hidden bg-muted relative">
-                      {/* Add loading skeleton */}
+                      {/* Loading skeleton */}
                       <div className="absolute inset-0 bg-gradient-to-r from-gray-200 to-gray-300 animate-pulse" />
+
+                      {/* Image with error handling */}
                       <img
                         src={location.imageUrl}
                         alt={location.name}
                         onError={handleImageError}
                         className="w-full h-full object-cover hover:scale-110 transition-transform duration-300 relative z-10"
                         loading="lazy"
-                        crossOrigin="anonymous"
+                        style={{
+                          opacity: 0,
+                          transition: 'opacity 0.3s ease-in-out'
+                        }}
+                        onLoad={(e) => {
+                          const img = e.currentTarget;
+                          img.style.opacity = '1';
+                        }}
                       />
                     </div>
                     <div className="flex-1 min-w-0">
