@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -14,22 +14,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { MessageSquare, Award, Plus, Search, BookOpen, School, Heart, Shield, Trash2, Share2 } from 'lucide-react';
-import { useLocation } from 'wouter';
+import { MessageSquare, Award, Plus, Search, BookOpen, School, Heart, Shield, Trash2 } from 'lucide-react';
 
 interface Category {
   id: string;
-  name: string;
+  name: string; 
   icon: React.ElementType;
   description: string;
 }
@@ -38,18 +30,26 @@ interface Discussion {
   id: number;
   title: string;
   content: string;
-  userId: number;
+  author: string;
   category: string;
   views: number;
+  comments: number;
+  points: number;
   createdAt: string;
 }
 
 interface Comment {
   id: number;
   content: string;
-  userId: number;
+  author: string;
   discussionId: number;
   createdAt: string;
+}
+
+interface User {
+  id: number;
+  name: string;
+  isAdmin: boolean;
 }
 
 const categories: Category[] = [
@@ -61,7 +61,7 @@ const categories: Category[] = [
   },
   {
     id: 'research',
-    name: 'Nghiên cứu học thuật',
+    name: 'Nghiên cứu học thuật', 
     icon: School,
     description: 'Chia sẻ nghiên cứu về lịch sử, văn hóa Huế'
   },
@@ -83,47 +83,25 @@ export default function ForumPage() {
   const [selectedCategory, setSelectedCategory] = useState("heritage");
   const [searchTerm, setSearchTerm] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [selectedDiscussion, setSelectedDiscussion] = useState<Discussion | null>(null);
   const [newComment, setNewComment] = useState("");
   const { toast } = useToast();
   const queryClient = useQueryClient();
-  const [location, setLocation] = useLocation();
-
-  // Read URL parameters on component mount
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const discussionId = params.get('id');
-    if (discussionId) {
-      const id = parseInt(discussionId, 10);
-      if (!isNaN(id)) {
-        // Fetch discussion by ID and open detail view
-        queryClient.fetchQuery({
-          queryKey: ['/api/discussions', id],
-          queryFn: () => fetch(`/api/discussions/${id}`).then(res => res.json())
-        }).then(discussion => {
-          setSelectedDiscussion(discussion);
-          setIsDetailOpen(true);
-        });
-      }
-    }
-  }, []);
 
   // Mock admin user for demo - replace with actual auth later
-  const currentUser = {
+  const currentUser: User = {
     id: 1,
     name: "Admin",
     isAdmin: true
   };
 
-  const { data: discussions = [], isLoading: isLoadingDiscussions } = useQuery<Discussion[]>({
+  const { data: discussions = [] } = useQuery<Discussion[]>({
     queryKey: ['/api/discussions', selectedCategory],
-    queryFn: () => fetch(`/api/discussions?category=${selectedCategory}`).then(res => res.json())
+    enabled: true
   });
 
-  const { data: comments = [], isLoading: isLoadingComments } = useQuery<Comment[]>({
+  const { data: comments = [] } = useQuery<Comment[]>({
     queryKey: ['/api/comments', selectedDiscussion?.id],
-    queryFn: () => selectedDiscussion ? fetch(`/api/comments/${selectedDiscussion.id}`).then(res => res.json()) : Promise.resolve([]),
     enabled: !!selectedDiscussion
   });
 
@@ -132,7 +110,7 @@ export default function ForumPage() {
       const response = await fetch('/api/discussions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...newDiscussion, userId: currentUser.id })
+        body: JSON.stringify(newDiscussion)
       });
       if (!response.ok) throw new Error('Failed to create discussion');
       return response.json();
@@ -147,28 +125,6 @@ export default function ForumPage() {
     }
   });
 
-  const createCommentMutation = useMutation({
-    mutationFn: async (comment: { content: string; discussionId: number }) => {
-      const response = await fetch('/api/comments', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...comment, userId: currentUser.id })
-      });
-      if (!response.ok) throw new Error('Failed to create comment');
-      return response.json();
-    },
-    onSuccess: (data) => {
-      queryClient.setQueryData(['/api/comments', selectedDiscussion?.id], (oldData: Comment[]) => {
-        return [...(oldData || []), data.newComment];
-      });
-      setNewComment("");
-      toast({
-        title: "Thành công",
-        description: "Bình luận đã được thêm.",
-      });
-    }
-  });
-
   const deleteDiscussionMutation = useMutation({
     mutationFn: async (discussionId: number) => {
       const response = await fetch(`/api/discussions/${discussionId}`, {
@@ -179,11 +135,47 @@ export default function ForumPage() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/discussions'] });
-      setSelectedDiscussion(null);
-      setIsDetailOpen(false);
       toast({
         title: "Thành công",
         description: "Đã xóa bài viết.",
+      });
+      setSelectedDiscussion(null);
+    }
+  });
+
+  const createCommentMutation = useMutation({
+    mutationFn: async (comment: { content: string; discussionId: number }) => {
+      const response = await fetch('/api/comments', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(comment)
+      });
+      if (!response.ok) throw new Error('Failed to create comment');
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/comments'] });
+      setNewComment("");
+      toast({
+        title: "Thành công",
+        description: "Bình luận đã được thêm.",
+      });
+    }
+  });
+
+  const deleteCommentMutation = useMutation({
+    mutationFn: async (commentId: number) => {
+      const response = await fetch(`/api/comments/${commentId}`, {
+        method: 'DELETE'
+      });
+      if (!response.ok) throw new Error('Failed to delete comment');
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/comments'] });
+      toast({
+        title: "Thành công",
+        description: "Đã xóa bình luận.",
       });
     }
   });
@@ -198,7 +190,7 @@ export default function ForumPage() {
     createDiscussionMutation.mutate({
       title: formData.get('title') as string,
       content: formData.get('content') as string,
-      category: formData.get('category') as string
+      category: selectedCategory
     });
   };
 
@@ -209,23 +201,6 @@ export default function ForumPage() {
       content: newComment,
       discussionId: selectedDiscussion.id
     });
-  };
-
-  const handleShare = async (discussion: Discussion) => {
-    try {
-      const shareUrl = `${window.location.origin}${window.location.pathname}?id=${discussion.id}`;
-      await navigator.clipboard.writeText(shareUrl);
-      toast({
-        title: "Đã sao chép",
-        description: "Đường dẫn đã được sao chép vào clipboard.",
-      });
-    } catch (error) {
-      toast({
-        title: "Lỗi",
-        description: "Không thể sao chép đường dẫn.",
-        variant: "destructive",
-      });
-    }
   };
 
   const getAvatarUrl = (author: string) => {
@@ -250,27 +225,25 @@ export default function ForumPage() {
     }
   };
 
-  if (isLoadingDiscussions) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
-      </div>
-    );
-  }
+  const handleDeleteComment = async (commentId: number) => {
+    if (window.confirm('Bạn có chắc chắn muốn xóa bình luận này không?')) {
+      deleteCommentMutation.mutate(commentId);
+    }
+  };
 
   return (
-    <div className="container mx-auto px-4">
+    <div className="container mx-auto p-4 min-h-screen bg-background">
       <div className="max-w-7xl mx-auto">
         <div className="flex items-center justify-between mb-8">
           <div className="space-y-2">
             <h1 className="text-4xl font-bold text-primary slide-in">Diễn đàn cộng đồng</h1>
-            <p className="text-lg text-muted-foreground slide-in">
+            <p className="text-lg text-muted-foreground slide-in" style={{ animationDelay: '0.1s' }}>
               Trao đổi, thảo luận về di sản văn hóa Huế
             </p>
           </div>
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
-              <Button className="gap-2">
+              <Button className="gap-2 hover-lift">
                 <Plus className="h-4 w-4" />
                 Tạo bài viết mới
               </Button>
@@ -286,21 +259,6 @@ export default function ForumPage() {
                 <div className="space-y-2">
                   <Label htmlFor="title">Tiêu đề</Label>
                   <Input id="title" name="title" required placeholder="Nhập tiêu đề bài viết..." />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="category">Thể loại</Label>
-                  <Select name="category" defaultValue="heritage" required>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Chọn thể loại" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {categories.map(category => (
-                        <SelectItem key={category.id} value={category.id}>
-                          {category.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="content">Nội dung</Label>
@@ -337,7 +295,7 @@ export default function ForumPage() {
             </div>
 
             <Tabs defaultValue={selectedCategory} onValueChange={setSelectedCategory}>
-              <TabsList className="grid grid-cols-4">
+              <TabsList className="grid grid-cols-4 mb-6">
                 {categories.map(category => (
                   <TabsTrigger key={category.id} value={category.id}>
                     {category.name}
@@ -352,33 +310,40 @@ export default function ForumPage() {
                       {filteredDiscussions.map(discussion => (
                         <Card
                           key={discussion.id}
-                          className="cursor-pointer hover:shadow-md transition-shadow"
-                          onClick={() => {
-                            setSelectedDiscussion(discussion);
-                            setIsDetailOpen(true);
-                            // Update URL with discussion ID
-                            const newUrl = `${window.location.pathname}?id=${discussion.id}`;
-                            window.history.pushState({}, '', newUrl);
-                          }}
+                          className={`cursor-pointer hover:shadow-md transition-shadow ${
+                            selectedDiscussion?.id === discussion.id ? 'border-primary' : ''
+                          }`}
+                          onClick={() => setSelectedDiscussion(discussion)}
                         >
                           <CardContent className="p-4">
                             <div className="flex items-start justify-between">
                               <div className="flex items-start gap-4">
                                 <Avatar>
-                                  <AvatarImage src={getAvatarUrl(currentUser.name)} />
-                                  <AvatarFallback>{getAvatarFallback(currentUser.name)}</AvatarFallback>
+                                  <AvatarImage src={getAvatarUrl(discussion.author)} />
+                                  <AvatarFallback>{getAvatarFallback(discussion.author)}</AvatarFallback>
                                 </Avatar>
-                                <div>
+                                <div className="flex-1">
                                   <h3 className="font-semibold text-lg mb-1">{discussion.title}</h3>
                                   <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                                    <span>{currentUser.name}</span>
+                                    <span>{discussion.author}</span>
                                     <span>•</span>
                                     <span>{new Date(discussion.createdAt).toLocaleDateString('vi-VN')}</span>
-                                    <span>•</span>
-                                    <span>{categories.find(c => c.id === discussion.category)?.name}</span>
                                   </div>
                                 </div>
                               </div>
+                              {currentUser.isAdmin && (
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  className="text-destructive hover:text-destructive/80"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleDeleteDiscussion(discussion.id);
+                                  }}
+                                >
+                                  <Trash2 className="h-4 w-4" />
+                                </Button>
+                              )}
                             </div>
                           </CardContent>
                         </Card>
@@ -388,6 +353,57 @@ export default function ForumPage() {
                 </TabsContent>
               ))}
             </Tabs>
+
+            {selectedDiscussion && (
+              <Card className="mt-6">
+                <CardHeader>
+                  <CardTitle>Bình luận</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {comments.map(comment => (
+                      <div key={comment.id} className="flex justify-between items-start p-3 rounded-lg hover:bg-muted/50">
+                        <div className="flex gap-3">
+                          <Avatar>
+                            <AvatarImage src={getAvatarUrl(comment.author)} />
+                            <AvatarFallback>{getAvatarFallback(comment.author)}</AvatarFallback>
+                          </Avatar>
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <span className="font-medium">{comment.author}</span>
+                              <span className="text-sm text-muted-foreground">
+                                {new Date(comment.createdAt).toLocaleDateString('vi-VN')}
+                              </span>
+                            </div>
+                            <p className="mt-1">{comment.content}</p>
+                          </div>
+                        </div>
+                        {currentUser.isAdmin && (
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="text-destructive hover:text-destructive/80"
+                            onClick={() => handleDeleteComment(comment.id)}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        )}
+                      </div>
+                    ))}
+                    <form onSubmit={handleCreateComment} className="mt-4">
+                      <div className="flex gap-2">
+                        <Input
+                          value={newComment}
+                          onChange={(e) => setNewComment(e.target.value)}
+                          placeholder="Viết bình luận..."
+                        />
+                        <Button type="submit">Gửi</Button>
+                      </div>
+                    </form>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
           </div>
 
           <div className="space-y-6">
@@ -398,7 +414,7 @@ export default function ForumPage() {
               <CardContent>
                 <div className="space-y-4">
                   {categories.map(category => (
-                    <div key={category.id} className="flex items-start gap-3">
+                    <div key={category.id} className="flex items-start gap-3 interactive-element">
                       <category.icon className="h-5 w-5 text-primary mt-0.5" />
                       <div>
                         <h4 className="font-medium">{category.name}</h4>
@@ -430,116 +446,15 @@ export default function ForumPage() {
                     <span>Bình luận hữu ích</span>
                     <span className="font-medium">+5 điểm</span>
                   </div>
+                  <div className="flex justify-between text-sm p-2 hover:bg-primary/5 rounded-lg transition-colors">
+                    <span>Được đánh giá cao</span>
+                    <span className="font-medium">+15 điểm</span>
+                  </div>
                 </div>
               </CardContent>
             </Card>
           </div>
         </div>
-
-        {/* Chi tiết bài viết */}
-        <Dialog open={isDetailOpen} onOpenChange={(open) => {
-          setIsDetailOpen(open);
-          if (!open) {
-            setSelectedDiscussion(null);
-            // Remove discussion ID from URL when closing dialog
-            window.history.pushState({}, '', window.location.pathname);
-          }
-        }}>
-          <DialogContent className="max-w-3xl">
-            {selectedDiscussion && (
-              <div className="space-y-6">
-                <div className="flex items-start justify-between">
-                  <div className="flex items-start gap-4">
-                    <Avatar>
-                      <AvatarImage src={getAvatarUrl(currentUser.name)} />
-                      <AvatarFallback>{getAvatarFallback(currentUser.name)}</AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <h2 className="text-xl font-semibold">{selectedDiscussion.title}</h2>
-                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <span>{currentUser.name}</span>
-                        <span>•</span>
-                        <span>{new Date(selectedDiscussion.createdAt).toLocaleDateString('vi-VN')}</span>
-                        <span>•</span>
-                        <span>{categories.find(c => c.id === selectedDiscussion.category)?.name}</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex gap-2">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleShare(selectedDiscussion);
-                      }}
-                    >
-                      <Share2 className="h-4 w-4" />
-                    </Button>
-                    {currentUser.isAdmin && (
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="text-destructive hover:text-destructive/80"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleDeleteDiscussion(selectedDiscussion.id);
-                        }}
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    )}
-                  </div>
-                </div>
-
-                <div className="py-4 border-y">
-                  <p className="text-base leading-relaxed whitespace-pre-line">
-                    {selectedDiscussion.content}
-                  </p>
-                </div>
-
-                <div className="space-y-4">
-                  <h3 className="font-semibold flex items-center gap-2">
-                    <MessageSquare className="h-4 w-4" />
-                    Bình luận ({comments.length})
-                  </h3>
-
-                  <form onSubmit={handleCreateComment} className="space-y-4">
-                    <Textarea
-                      value={newComment}
-                      onChange={(e) => setNewComment(e.target.value)}
-                      placeholder="Viết bình luận..."
-                      className="min-h-[100px]"
-                    />
-                    <div className="flex justify-end">
-                      <Button type="submit">Gửi bình luận</Button>
-                    </div>
-                  </form>
-
-                  <div className="space-y-4">
-                    {comments.map(comment => (
-                      <div key={comment.id} className="flex gap-3 p-3 rounded-lg hover:bg-muted/50">
-                        <Avatar>
-                          <AvatarImage src={getAvatarUrl(currentUser.name)} />
-                          <AvatarFallback>{getAvatarFallback(currentUser.name)}</AvatarFallback>
-                        </Avatar>
-                        <div className="flex-1">
-                          <div className="flex items-center gap-2">
-                            <span className="font-medium">{currentUser.name}</span>
-                            <span className="text-sm text-muted-foreground">
-                              {new Date(comment.createdAt).toLocaleDateString('vi-VN')}
-                            </span>
-                          </div>
-                          <p className="mt-1">{comment.content}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            )}
-          </DialogContent>
-        </Dialog>
       </div>
     </div>
   );

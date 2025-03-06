@@ -1,4 +1,4 @@
-import { pgTable, text, serial, timestamp, jsonb, numeric, boolean, integer } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, timestamp, jsonb, numeric, boolean } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -305,19 +305,19 @@ export type PointTransactionType =
 
 export type ResourceType = 
   | "image" 
-  | "video" 
-  | "audio" 
-  | "3d_model" 
-  | "document" 
-  | "manuscript" 
-  | "artifact" 
-  | "ritual_description" 
-  | "folk_song" 
-  | "traditional_music" 
-  | "dance_performance" 
-  | "craft_technique" 
-  | "oral_history" 
-  | "architecture" 
+  | "video"
+  | "audio"
+  | "3d_model"
+  | "document"
+  | "manuscript"
+  | "artifact"
+  | "ritual_description"
+  | "folk_song"
+  | "traditional_music"
+  | "dance_performance"
+  | "craft_technique"
+  | "oral_history"
+  | "architecture"
   | "historical_map";
 
 export type ResourceCategory =
@@ -337,27 +337,3 @@ export type ResourceCategory =
   | "cultural_landscapes";
 
 export type ChatRole = "user" | "assistant";
-
-// Added Contribution Schema (improved based on context)
-export const contributionTable = pgTable("contributions", {
-  id: serial("id").primaryKey(),
-  title: text("title").notNull(),
-  content: text("content").notNull(), // Added content field
-  type: text("type").notNull(),
-  status: text("status").notNull().default("pending"),
-  userId: integer("user_id").notNull().references(() => users.id), // References users table
-  adminComment: text("admin_comment"),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at").defaultNow().notNull(),
-});
-
-// Added types for contribution table
-export type ContributionTable = typeof contributionTable.$inferSelect;
-export const insertContributionTableSchema = createInsertSchema(contributionTable).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-  userId: true, //omit userId in insert schema
-  status: true, //omit status in insert schema
-  adminComment: true //omit adminComment in insert schema
-});
