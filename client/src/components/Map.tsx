@@ -203,33 +203,18 @@ export default function Map({ onMarkerClick }: MapProps) {
       img.setAttribute('crossOrigin', 'anonymous');
     }
 
-    // Fallback images based on location type
-    const fallbackImages = {
-      palace: '/attached_assets/thai-hoa.jpg',
-      tomb: '/attached_assets/lang-tu-duc.jpg',
-      temple: '/attached_assets/thien-mu.jpg',
-      monument: '/attached_assets/ky-dai.jpg',
-      education: '/attached_assets/quoc-tu-giam.jpg',
-      landscape: '/attached_assets/tinh-tam.jpg',
-      artifact: '/attached_assets/cuu-vi-than-cong.jpg',
-      communal_house: '/attached_assets/dinh-phu-xuan.jpg',
-      government: '/attached_assets/vien-co-mat.jpg',
-      ritual: '/attached_assets/dan-nam-giao.jpg',
-      default: '/attached_assets/pexels-vietnam-photographer-27418892.jpg'
-    };
+    // Tối ưu hiệu suất tải hình ảnh
+    img.loading = 'lazy';
 
-    // Get appropriate fallback image based on location type
-    const type = location?.type || 'default';
-    const fallbackUrl = fallbackImages[type as keyof typeof fallbackImages] || fallbackImages.default;
+    // Thử tải lại hình ảnh với crossOrigin
+    img.src = originalSrc;
 
-    if (!img.src.includes('/attached_assets/')) {
-      img.src = fallbackUrl;
-      img.alt = `Hình ảnh ${location?.name || 'Di tích Huế'}`;
+    // Thêm hiệu ứng loading và transition
+    img.style.transition = 'opacity 0.3s ease-in-out';
+    img.style.opacity = '0.9';
 
-      // Add smooth transition
-      img.style.transition = 'opacity 0.3s ease-in-out';
-      img.style.opacity = '0.9';
-    }
+    // Log để debug
+    console.log('Retrying with crossOrigin:', originalSrc);
   };
 
   return (
