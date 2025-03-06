@@ -17,14 +17,16 @@ export default function MapPage() {
     });
   };
 
-  // Improved image error handling
+  // Cập nhật hàm handleImageLoadError với xử lý lỗi tốt hơn
   const handleImageLoadError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     const img = e.currentTarget;
-    const fallbackUrl = 'https://placehold.co/600x400/f1f5f9/64748b?text=Di+tich+Hue';
+    // Sử dụng ảnh placeholder từ một CDN đáng tin cậy
+    const fallbackUrl = 'https://images.unsplash.com/photo-1582558929569-37f119eec7c9?w=800&auto=format&fit=crop&q=80';
 
-    if (!img.src.includes('placehold.co')) {
+    if (!img.src.includes('unsplash.com')) {
+      console.log('Image failed to load:', img.src);
       img.src = fallbackUrl;
-      img.alt = 'Hình ảnh tạm thời';
+      img.alt = 'Hình ảnh di tích Huế';
       img.style.transition = 'opacity 0.3s ease-in-out';
       img.style.opacity = '0.9';
     }
@@ -61,6 +63,7 @@ export default function MapPage() {
                     onError={handleImageLoadError}
                     className="relative z-10 w-full h-full object-cover transition-transform hover:scale-105"
                     loading="lazy"
+                    crossOrigin="anonymous" // Thêm CORS attribute
                   />
                   <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/50" />
                   <div className="absolute bottom-0 left-0 p-4 text-white">

@@ -191,17 +191,19 @@ export default function Map({ onMarkerClick }: MapProps) {
     setIsRoutingMode(false);
   };
 
-  // Update handleImageError with better handling and placeholder
+  // Cập nhật hàm handleImageError với xử lý lỗi tốt hơn
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     const img = e.currentTarget;
-    const fallbackUrl = 'https://placehold.co/400x300/f1f5f9/64748b?text=Di+tich+Hue';
+    // Sử dụng ảnh placeholder từ một CDN đáng tin cậy
+    const fallbackUrl = 'https://images.unsplash.com/photo-1582558929569-37f119eec7c9?w=400&auto=format&fit=crop&q=80';
 
-    // Only update if not already using fallback
-    if (!img.src.includes('placehold.co')) {
+    // Chỉ cập nhật nếu chưa sử dụng ảnh fallback
+    if (!img.src.includes('unsplash.com')) {
+      console.log('Image failed to load:', img.src);
       img.src = fallbackUrl;
-      img.alt = 'Hình ảnh tạm thời';
+      img.alt = 'Hình ảnh di tích Huế';
 
-      // Add a subtle transition
+      // Thêm hiệu ứng chuyển đổi mượt mà
       img.style.transition = 'opacity 0.3s ease-in-out';
       img.style.opacity = '0.9';
     }
@@ -342,6 +344,7 @@ export default function Map({ onMarkerClick }: MapProps) {
                         onError={handleImageError}
                         className="w-full h-full object-cover hover:scale-110 transition-transform duration-300 relative z-10"
                         loading="lazy" // Add lazy loading
+                        crossOrigin="anonymous" // Thêm CORS attribute
                       />
                     </div>
                     <div className="flex-1 min-w-0">
