@@ -196,28 +196,31 @@ export default function Map({ onMarkerClick }: MapProps) {
     const img = e.currentTarget;
     const originalSrc = img.src;
 
-    // Mảng các ảnh fallback đáng tin cậy
-    const fallbackImages = [
-      'https://images.pexels.com/photos/5227440/pexels-photo-5227440.jpeg', // Đại Nội
-      'https://images.pexels.com/photos/5227442/pexels-photo-5227442.jpeg', // Chùa
-      'https://images.pexels.com/photos/5227444/pexels-photo-5227444.jpeg'  // Lăng
-    ];
-
     console.log('Image failed to load:', originalSrc);
 
-    // Tìm ảnh fallback phù hợp dựa trên tên địa điểm
-    const locationName = img.alt.toLowerCase();
-    let fallbackUrl = '';
+    // Thêm thuộc tính crossOrigin
+    if (!img.hasAttribute('crossOrigin')) {
+      img.setAttribute('crossOrigin', 'anonymous');
+    }
 
-    if (locationName.includes('đại nội')) {
-      fallbackUrl = fallbackImages[0];
-    } else if (locationName.includes('thiên mụ')) {
-      fallbackUrl = fallbackImages[1];
-    } else if (locationName.includes('tự đức')) {
-      fallbackUrl = fallbackImages[2];
-    } else {
-      // Fallback mặc định nếu không tìm thấy ảnh phù hợp
-      fallbackUrl = 'https://images.pexels.com/photos/2161449/pexels-photo-2161449.jpeg';
+    // Mảng các ảnh fallback đáng tin cậy theo loại địa điểm
+    const fallbackImages = {
+      palace: 'https://images.pexels.com/photos/5227440/pexels-photo-5227440.jpeg',
+      temple: 'https://images.pexels.com/photos/5227442/pexels-photo-5227442.jpeg',
+      tomb: 'https://images.pexels.com/photos/5227444/pexels-photo-5227444.jpeg',
+      default: 'https://images.pexels.com/photos/2161449/pexels-photo-2161449.jpeg'
+    };
+
+    // Tìm ảnh fallback phù hợp dựa trên loại địa điểm
+    const locationName = img.alt.toLowerCase();
+    let fallbackUrl = fallbackImages.default;
+
+    if (locationName.includes('điện') || locationName.includes('palace')) {
+      fallbackUrl = fallbackImages.palace;
+    } else if (locationName.includes('chùa') || locationName.includes('temple')) {
+      fallbackUrl = fallbackImages.temple;
+    } else if (locationName.includes('lăng') || locationName.includes('tomb')) {
+      fallbackUrl = fallbackImages.tomb;
     }
 
     if (!img.src.includes('pexels.com')) {
