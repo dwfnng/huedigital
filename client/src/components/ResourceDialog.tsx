@@ -6,7 +6,8 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { FileText, Video, Music, History, FileType } from "lucide-react";
+import { FileText, Video, Music, Download, History, Calendar, User } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface ResourceDialogProps {
   resource: any;
@@ -60,26 +61,29 @@ const MediaContent = ({ resource }: { resource: any }) => {
         </div>
       );
     case "document":
-      if (resource.fileFormat === "pdf") {
-        return (
-          <iframe
-            src={resource.contentUrl}
-            className="w-full h-[60vh] border rounded-lg"
-            title={resource.title}
-          />
-        );
-      }
       return (
-        <div className="bg-muted p-4 rounded-lg">
-          <p className="text-sm text-muted-foreground">
-            Click to download: <a href={resource.contentUrl} className="text-primary hover:underline" download>{resource.title}</a>
+        <div className="bg-muted p-6 rounded-lg text-center">
+          <FileText className="h-12 w-12 mx-auto mb-4 text-primary" />
+          <h3 className="font-medium mb-2">{resource.title}</h3>
+          <p className="text-sm text-muted-foreground mb-4">
+            {resource.fileFormat?.toUpperCase()} - {resource.fileSize}
           </p>
+          <Button 
+            asChild
+            variant="outline"
+            className="gap-2"
+          >
+            <a href={resource.contentUrl} download>
+              <Download className="h-4 w-4" />
+              Tải xuống tài liệu
+            </a>
+          </Button>
         </div>
       );
     default:
       return (
         <img
-          src={resource.contentUrl}
+          src={resource.contentUrl || resource.thumbnailUrl}
           alt={resource.title}
           className="w-full rounded-lg"
         />
@@ -118,20 +122,36 @@ export function ResourceDialog({ resource, open, onOpenChange }: ResourceDialogP
               )}
             </div>
 
-            {/* Metadata */}
-            {resource.metadata && Object.keys(resource.metadata).length > 0 && (
-              <div className="space-y-2">
-                <h3 className="font-semibold">Thông tin bổ sung</h3>
-                <dl className="grid grid-cols-2 gap-2 text-sm">
-                  {Object.entries(resource.metadata).map(([key, value]) => (
-                    <div key={key}>
-                      <dt className="font-medium capitalize">{key.replace(/_/g, ' ')}</dt>
-                      <dd className="text-muted-foreground">{String(value)}</dd>
-                    </div>
-                  ))}
-                </dl>
-              </div>
-            )}
+            {/* Metadata Grid */}
+            <div className="grid grid-cols-2 gap-4 text-sm">
+              {resource.author && (
+                <div className="flex items-center gap-2">
+                  <User className="h-4 w-4 text-muted-foreground" />
+                  <div>
+                    <dt className="font-medium">Tác giả</dt>
+                    <dd className="text-muted-foreground">{resource.author}</dd>
+                  </div>
+                </div>
+              )}
+              {resource.period && (
+                <div className="flex items-center gap-2">
+                  <History className="h-4 w-4 text-muted-foreground" />
+                  <div>
+                    <dt className="font-medium">Thời kỳ</dt>
+                    <dd className="text-muted-foreground">{resource.period}</dd>
+                  </div>
+                </div>
+              )}
+              {resource.yearCreated && (
+                <div className="flex items-center gap-2">
+                  <Calendar className="h-4 w-4 text-muted-foreground" />
+                  <div>
+                    <dt className="font-medium">Năm</dt>
+                    <dd className="text-muted-foreground">{resource.yearCreated}</dd>
+                  </div>
+                </div>
+              )}
+            </div>
 
             {/* Keywords */}
             {resource.keywords?.length > 0 && (
@@ -150,33 +170,20 @@ export function ResourceDialog({ resource, open, onOpenChange }: ResourceDialogP
               </div>
             )}
 
-            {/* Additional Info */}
-            <div className="grid grid-cols-2 gap-4 text-sm">
-              {resource.author && (
-                <div>
-                  <dt className="font-medium">Tác giả</dt>
-                  <dd className="text-muted-foreground">{resource.author}</dd>
-                </div>
-              )}
-              {resource.source && (
-                <div>
-                  <dt className="font-medium">Nguồn</dt>
-                  <dd className="text-muted-foreground">{resource.source}</dd>
-                </div>
-              )}
-              {resource.period && (
-                <div>
-                  <dt className="font-medium">Thời kỳ</dt>
-                  <dd className="text-muted-foreground">{resource.period}</dd>
-                </div>
-              )}
-              {resource.dynasty && (
-                <div>
-                  <dt className="font-medium">Triều đại</dt>
-                  <dd className="text-muted-foreground">{resource.dynasty}</dd>
-                </div>
-              )}
-            </div>
+            {/* Additional Metadata */}
+            {resource.metadata && Object.keys(resource.metadata).length > 0 && (
+              <div className="space-y-2">
+                <h3 className="font-semibold">Thông tin bổ sung</h3>
+                <dl className="grid grid-cols-2 gap-2 text-sm">
+                  {Object.entries(resource.metadata).map(([key, value]) => (
+                    <div key={key}>
+                      <dt className="font-medium capitalize">{key.replace(/_/g, ' ')}</dt>
+                      <dd className="text-muted-foreground">{String(value)}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </div>
+            )}
           </div>
         </ScrollArea>
       </DialogContent>
