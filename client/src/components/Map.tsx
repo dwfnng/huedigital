@@ -191,10 +191,10 @@ export default function Map({ onMarkerClick }: MapProps) {
     setIsRoutingMode(false);
   };
 
-  // Cập nhật hàm handleImageError với xử lý lỗi tốt hơn và logging
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     const img = e.currentTarget;
     const originalSrc = img.src;
+    const location = locations.find(loc => loc.imageUrl === originalSrc);
 
     console.log('Image failed to load:', originalSrc);
 
@@ -203,34 +203,32 @@ export default function Map({ onMarkerClick }: MapProps) {
       img.setAttribute('crossOrigin', 'anonymous');
     }
 
-    // Mảng các ảnh fallback đáng tin cậy theo loại địa điểm
+    // Fallback images based on location type
     const fallbackImages = {
-      palace: 'https://images.pexels.com/photos/5227440/pexels-photo-5227440.jpeg',
-      temple: 'https://images.pexels.com/photos/5227442/pexels-photo-5227442.jpeg',
-      tomb: 'https://images.pexels.com/photos/5227444/pexels-photo-5227444.jpeg',
-      default: 'https://images.pexels.com/photos/2161449/pexels-photo-2161449.jpeg'
+      palace: '/attached_assets/thai-hoa.jpg',
+      tomb: '/attached_assets/lang-tu-duc.jpg',
+      temple: '/attached_assets/thien-mu.jpg',
+      monument: '/attached_assets/ky-dai.jpg',
+      education: '/attached_assets/quoc-tu-giam.jpg',
+      landscape: '/attached_assets/tinh-tam.jpg',
+      artifact: '/attached_assets/cuu-vi-than-cong.jpg',
+      communal_house: '/attached_assets/dinh-phu-xuan.jpg',
+      government: '/attached_assets/vien-co-mat.jpg',
+      ritual: '/attached_assets/dan-nam-giao.jpg',
+      default: '/attached_assets/pexels-vietnam-photographer-27418892.jpg'
     };
 
-    // Tìm ảnh fallback phù hợp dựa trên loại địa điểm
-    const locationName = img.alt.toLowerCase();
-    let fallbackUrl = fallbackImages.default;
+    // Get appropriate fallback image based on location type
+    const type = location?.type || 'default';
+    const fallbackUrl = fallbackImages[type as keyof typeof fallbackImages] || fallbackImages.default;
 
-    if (locationName.includes('điện') || locationName.includes('palace')) {
-      fallbackUrl = fallbackImages.palace;
-    } else if (locationName.includes('chùa') || locationName.includes('temple')) {
-      fallbackUrl = fallbackImages.temple;
-    } else if (locationName.includes('lăng') || locationName.includes('tomb')) {
-      fallbackUrl = fallbackImages.tomb;
-    }
-
-    if (!img.src.includes('pexels.com')) {
+    if (!img.src.includes('/attached_assets/')) {
       img.src = fallbackUrl;
-      img.alt = `Hình ảnh di tích ${img.alt}`;
+      img.alt = `Hình ảnh ${location?.name || 'Di tích Huế'}`;
+
+      // Add smooth transition
       img.style.transition = 'opacity 0.3s ease-in-out';
       img.style.opacity = '0.9';
-
-      // Log để debug
-      console.log('Using fallback image:', fallbackUrl);
     }
   };
 
@@ -368,8 +366,8 @@ export default function Map({ onMarkerClick }: MapProps) {
                         alt={location.name}
                         onError={handleImageError}
                         className="w-full h-full object-cover hover:scale-110 transition-transform duration-300 relative z-10"
-                        loading="lazy" // Add lazy loading
-                        crossOrigin="anonymous" // Thêm CORS attribute
+                        loading="lazy"
+                        crossOrigin="anonymous"
                       />
                     </div>
                     <div className="flex-1 min-w-0">
