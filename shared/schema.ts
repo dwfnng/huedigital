@@ -105,18 +105,17 @@ export const resources = pgTable("resources", {
   authorInfo: text("author_info"),
   sourceInfo: text("source_info"),
   languages: text("languages").array(),
-  // New fields for enhanced multimedia support
-  format: text("format"), // e.g., "mp4", "mp3", "glb"
-  duration: text("duration"), // For video/audio
+  format: text("format"), 
+  duration: text("duration"), 
   fileSize: text("file_size"),
-  dimensions: text("dimensions"), // For images/videos
-  transcription: text("transcription"), // For audio/video content
-  modelFormat: text("model_format"), // For 3D models: "glb", "gltf", etc.
-  textureUrls: text("texture_urls").array(), // For 3D models
-  previewUrls: text("preview_urls").array(), // Multiple preview images
-  license: text("license"), // Usage rights information
-  quality: text("quality"), // e.g., "HD", "4K", "Standard"
-  interactiveData: jsonb("interactive_data"), // For interactive 3D content
+  dimensions: text("dimensions"), 
+  transcription: text("transcription"), 
+  modelFormat: text("model_format"), 
+  textureUrls: text("texture_urls").array(), 
+  previewUrls: text("preview_urls").array(), 
+  license: text("license"), 
+  quality: text("quality"), 
+  interactiveData: jsonb("interactive_data"), 
 });
 
 export const messages = pgTable("messages", {
@@ -134,7 +133,7 @@ export const favoriteRoutes = pgTable("favorite_routes", {
   startLocationId: serial("start_location_id").notNull(),
   endLocationId: serial("end_location_id").notNull(),
   description: text("description"),
-  routeData: jsonb("route_data").notNull(), // Store route coordinates and waypoints
+  routeData: jsonb("route_data").notNull(), 
   createdAt: timestamp("created_at").defaultNow().notNull(),
   isActive: boolean("is_active").default(true).notNull(),
 });
@@ -235,7 +234,83 @@ export const insertMessageSchema = createInsertSchema(messages).omit({
   createdAt: true,
 });
 
-// Types
+// Resource Categories for Digital Library
+export const digitalLibraryCategories = pgTable("digital_library_categories", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  nameEn: text("name_en").notNull(),
+  description: text("description"),
+  descriptionEn: text("description_en"),
+  parentId: serial("parent_id"),
+  iconUrl: text("icon_url"),
+  type: text("type").notNull(), 
+  sortOrder: numeric("sort_order").default("0"),
+});
+
+// Digital Library Resources
+export const digitalLibraryResources = pgTable("digital_library_resources", {
+  id: serial("id").primaryKey(),
+  title: text("title").notNull(),
+  titleEn: text("title_en"),
+  description: text("description"),
+  descriptionEn: text("description_en"),
+  type: text("type").notNull(), 
+  category: text("category").notNull(),
+  contentUrl: text("content_url").notNull(),
+  thumbnailUrl: text("thumbnail_url"),
+  author: text("author"),
+  source: text("source"),
+  yearCreated: text("year_created"),
+  location: text("location"), 
+  dynasty: text("dynasty"),
+  period: text("period"),
+  keywords: text("keywords").array(),
+  languages: text("languages").array(),
+
+  // Specialized metadata
+  metadata: jsonb("metadata").default({}).notNull(),
+
+  // For documents
+  pageCount: numeric("page_count"),
+  fileFormat: text("file_format"), 
+  fileSize: numeric("file_size"),
+
+  // For images
+  resolution: text("resolution"),
+  dimensions: text("dimensions"),
+
+  // For audio/video
+  duration: numeric("duration"),
+  quality: text("quality"),
+
+  // For 3D models
+  modelFormat: text("model_format"),
+  textureUrls: text("texture_urls").array(),
+
+  // Common fields
+  viewCount: numeric("view_count").default("0"),
+  downloadCount: numeric("download_count").default("0"),
+  featured: boolean("featured").default(false),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+// Create insert schemas
+export const insertDigitalLibraryCategorySchema = createInsertSchema(digitalLibraryCategories).omit({
+  id: true,
+  sortOrder: true
+});
+
+export const insertDigitalLibraryResourceSchema = createInsertSchema(digitalLibraryResources).omit({
+  id: true,
+  viewCount: true,
+  downloadCount: true,
+  featured: true,
+  createdAt: true,
+  updatedAt: true
+});
+
+// Export types
 export type Location = typeof locations.$inferSelect;
 export type InsertLocation = z.infer<typeof insertLocationSchema>;
 export type User = typeof users.$inferSelect;
@@ -257,6 +332,10 @@ export type InsertMessage = z.infer<typeof insertMessageSchema>;
 // Type definitions for favorite routes
 export type FavoriteRoute = typeof favoriteRoutes.$inferSelect;
 export type InsertFavoriteRoute = z.infer<typeof insertFavoriteRouteSchema>;
+export type DigitalLibraryCategory = typeof digitalLibraryCategories.$inferSelect;
+export type InsertDigitalLibraryCategory = z.infer<typeof insertDigitalLibraryCategorySchema>;
+export type DigitalLibraryResource = typeof digitalLibraryResources.$inferSelect;
+export type InsertDigitalLibraryResource = z.infer<typeof insertDigitalLibraryResourceSchema>;
 
 // Enums
 export type LocationType = 
@@ -337,3 +416,20 @@ export type ResourceCategory =
   | "cultural_landscapes";
 
 export type ChatRole = "user" | "assistant";
+
+// Resource type enums
+export type DigitalResourceType = 
+  | "document" 
+  | "book" 
+  | "manuscript" 
+  | "image" 
+  | "architectural_drawing" 
+  | "video" 
+  | "audio" 
+  | "3d_model" 
+  | "research_paper" 
+  | "dataset" 
+  | "map" 
+  | "artifact" 
+  | "ritual_description" 
+  | "oral_history";

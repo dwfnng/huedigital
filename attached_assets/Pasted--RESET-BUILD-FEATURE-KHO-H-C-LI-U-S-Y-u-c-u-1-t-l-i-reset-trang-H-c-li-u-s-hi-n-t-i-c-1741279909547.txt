@@ -1,0 +1,46 @@
+[RESET & BUILD FEATURE: KHO HỌC LIỆU SỐ]
+
+Yêu cầu:
+1. Đặt lại (reset) trang “Học liệu số” hiện tại của website bảo tồn văn hóa Cố đô Huế.
+2. Xây dựng lại tính năng “Kho Học Liệu Số” với các thành phần và chức năng chi tiết như sau:
+
+   a. **Thư viện tài liệu số:**  
+      - Hệ thống quản lý và lưu trữ các tài liệu số dạng file PDF, DOC, hình ảnh, …  
+      - Cho phép tìm kiếm và phân loại theo chủ đề, năm, tác giả, v.v.
+
+   b. **Hệ thống tài liệu số hóa:**  
+      - Bao gồm số hóa các loại tài liệu: Sách, Văn bản, Bút tích, Chỉ dụ, Sắc phong…  
+      - Cho phép người dùng xem trực tuyến, tải về và có thể liên kết đến các nguồn tham khảo gốc.
+
+   c. **Bộ sưu tập hình ảnh, bản vẽ kiến trúc, mô hình 3D di tích:**  
+      - Tạo mục chuyên dụng lưu trữ và trình bày hình ảnh, bản vẽ, và mô hình 3D của các di tích lịch sử ở Huế.  
+      - Tích hợp chức năng phóng to, xoay 3D và chú giải chi tiết cho từng di tích.
+
+   d. **Hệ thống tư liệu video, phim tài liệu, phim lịch sử về Cố đô Huế:**  
+      - Lưu trữ và phân loại các video, phim tài liệu về lịch sử và văn hóa của Huế.  
+      - Hỗ trợ chức năng streaming trực tiếp và tải về với chất lượng đa dạng.
+
+   e. **Tư liệu âm thanh:**  
+      - Bao gồm Nhạc cung đình, giọng đọc Sắc phong, lời kể lịch sử và các âm thanh văn hóa đặc trưng.  
+      - Hỗ trợ danh sách phát (playlist), tải về và chia sẻ.
+
+   f. **Dữ liệu mở phục vụ nghiên cứu và giáo dục:**  
+      - Tích hợp một phần dữ liệu mở (open data) cho các nhà nghiên cứu, học giả sử dụng.  
+      - Cung cấp API hoặc file tải về để dễ dàng xử lý và phân tích.
+
+   g. **Chuyên mục nghiên cứu & học thuật:**  
+      - Chứa các bài luận văn, công trình nghiên cứu, bài viết học thuật về Huế.  
+      - Hỗ trợ chức năng đăng tải, bình luận và đánh giá của cộng đồng.
+
+3. **Tích hợp thông tin về các di tích lịch sử của Huế cần được nghiên cứu thêm:**  
+   - Bao gồm các địa điểm: Kỳ đài, Trường Quốc Tử Giám, Điện Long An, Điện Thái Hòa, Bảo tàng Mỹ thuật Cung đình Huế, Đình Phú Xuân, Hồ Tịnh Tâm, Viện Cơ mật Tam Hòa, Cửu Vị Thần Công, Hoàng thành Huế, Lăng Gia Long, Lăng Minh Mạng, Lăng Thiệu Trị, Lăng Khải Định, Lăng Tự Đức, Lăng Đồng Khánh, Lăng Dục Đức, Trấn Bình Đài, Tàng Thư Lâu, Phu Văn Lâu, Tòa Thương Bạc, Văn Miếu, Võ Miếu, Đàn Nam Giao, Hồ Quyển, Điện Voi Ré, Điện Hòn Chén, Chùa Thiên Mụ, Nghênh Lương Đình, Cung An Định, …  
+   - Nghiên cứu, thu thập và tích hợp dữ liệu, hình ảnh, video, audio cùng các thông tin lịch sử liên quan cho từng địa điểm.
+   - Mỗi di tích cần có trang thông tin riêng với metadata chi tiết (lịch sử, kiến trúc, giá trị văn hóa, …).
+
+4. **Yêu cầu kỹ thuật chung:**  
+   - Giao diện cần thân thiện, dễ sử dụng và đáp ứng trên đa nền tảng (responsive design).  
+   - Tích hợp chức năng tìm kiếm và phân loại tài liệu theo từ khóa, chủ đề và loại hình tài liệu.
+   - Sử dụng công nghệ phù hợp để quản lý dữ liệu (có thể tích hợp với cơ sở dữ liệu như Firebase, MongoDB, …) và đảm bảo tốc độ tải trang nhanh.
+   - Cung cấp chức năng quản trị nội dung cho admin để dễ dàng cập nhật và kiểm duyệt dữ liệu.
+
+Xin làm theo các yêu cầu trên, đặt lại trang học liệu số, xây dựng lại toàn bộ hệ thống theo cấu trúc “Kho Học Liệu Số” như đã mô tả.
