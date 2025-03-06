@@ -10,9 +10,12 @@ import {
   Music,
   Box,
   Search,
-  Filter
+  Book,
+  Palette,
+  Coffee,
+  Hammer,
+  History
 } from "lucide-react";
-import type { DigitalLibraryResource } from "@shared/schema";
 import { Card } from "@/components/ui/card";
 import { motion } from "framer-motion";
 
@@ -22,45 +25,70 @@ interface FilterState {
   searchQuery: string;
 }
 
+const categories = [
+  { 
+    id: "heritage_site", 
+    label: "Di tích lịch sử", 
+    icon: <History />,
+    description: "Các di tích và công trình lịch sử quan trọng của Huế"
+  },
+  { 
+    id: "performing_arts", 
+    label: "Nghệ thuật biểu diễn", 
+    icon: <Music />,
+    description: "Ca Huế và các loại hình nghệ thuật truyền thống"
+  },
+  { 
+    id: "culture", 
+    label: "Văn hóa", 
+    icon: <Book />,
+    description: "Các giá trị văn hóa phi vật thể của Huế"
+  },
+  { 
+    id: "culinary_arts", 
+    label: "Ẩm thực", 
+    icon: <Coffee />,
+    description: "Ẩm thực cung đình và dân gian Huế"
+  },
+  { 
+    id: "traditional_crafts", 
+    label: "Nghề thủ công", 
+    icon: <Hammer />,
+    description: "Các nghề thủ công truyền thống"
+  }
+];
+
 export default function DigitalLibrary() {
   const [filters, setFilters] = useState<FilterState>({
     searchQuery: ""
   });
 
-  const { data: resources = [] } = useQuery<DigitalLibraryResource[]>({
+  const { data: resources = [] } = useQuery({
     queryKey: ["/api/digital-library"],
   });
 
   const filteredResources = resources.filter(resource => {
-    if (filters.type && resource.type !== filters.type) return false;
     if (filters.category && resource.category !== filters.category) return false;
+    if (filters.type && resource.type !== filters.type) return false;
     if (filters.searchQuery) {
       const searchLower = filters.searchQuery.toLowerCase();
       return (
         resource.title.toLowerCase().includes(searchLower) ||
-        resource.description?.toLowerCase().includes(searchLower) ||
-        resource.titleEn?.toLowerCase().includes(searchLower) ||
-        resource.descriptionEn?.toLowerCase().includes(searchLower)
+        resource.description?.toLowerCase().includes(searchLower)
       );
     }
     return true;
   });
 
-  const categories = [
-    { id: "heritage", label: "Di tích lịch sử", icon: <FileText /> },
-    { id: "art", label: "Nghệ thuật", icon: <Image /> },
-    { id: "music", label: "Âm nhạc", icon: <Music /> },
-    { id: "architecture", label: "Kiến trúc", icon: <Box /> }
-  ];
-
   return (
-    <div className="container mx-auto py-6 space-y-6">
+    <div className="container mx-auto py-6 space-y-8">
+      {/* Header Section */}
       <div className="flex flex-col gap-4">
         <div className="flex justify-between items-center">
           <div>
             <h1 className="text-3xl font-bold">Kho học liệu số</h1>
             <p className="text-muted-foreground mt-1">
-              Khám phá kho tàng tư liệu lịch sử và văn hóa Huế
+              Khám phá kho tàng di sản văn hóa Huế qua tư liệu số
             </p>
           </div>
           <div className="flex gap-4">
@@ -76,20 +104,29 @@ export default function DigitalLibrary() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* Categories Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
           {categories.map((category) => (
             <Card 
               key={category.id}
-              className="p-6 hover:bg-accent transition-colors cursor-pointer"
-              onClick={() => setFilters(prev => ({ ...prev, category: category.id }))}
+              className={`p-4 hover:bg-accent transition-colors cursor-pointer ${
+                filters.category === category.id ? 'bg-accent' : ''
+              }`}
+              onClick={() => setFilters(prev => ({ 
+                ...prev, 
+                category: prev.category === category.id ? undefined : category.id 
+              }))}
             >
-              <div className="flex items-center gap-4">
-                <div className="p-3 rounded-lg bg-primary/10 text-primary">
+              <div className="flex flex-col gap-2">
+                <div className="p-2 rounded-lg bg-primary/10 text-primary w-fit">
                   {category.icon}
                 </div>
                 <div>
                   <h3 className="font-semibold">{category.label}</h3>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-xs text-muted-foreground line-clamp-2">
+                    {category.description}
+                  </p>
+                  <p className="text-sm mt-2 text-muted-foreground">
                     {filteredResources.filter(r => r.category === category.id).length} tài liệu
                   </p>
                 </div>
@@ -99,6 +136,7 @@ export default function DigitalLibrary() {
         </div>
       </div>
 
+      {/* Content Tabs */}
       <Tabs defaultValue="all" className="w-full">
         <TabsList>
           <TabsTrigger value="all" onClick={() => setFilters(prev => ({ ...prev, type: undefined }))}>
@@ -119,10 +157,6 @@ export default function DigitalLibrary() {
           <TabsTrigger value="audio" onClick={() => setFilters(prev => ({ ...prev, type: "audio" }))}>
             <Music className="mr-2 h-4 w-4" />
             Âm thanh
-          </TabsTrigger>
-          <TabsTrigger value="3d_model" onClick={() => setFilters(prev => ({ ...prev, type: "3d_model" }))}>
-            <Box className="mr-2 h-4 w-4" />
-            Mô hình 3D
           </TabsTrigger>
         </TabsList>
 
@@ -154,23 +188,29 @@ export default function DigitalLibrary() {
                     )}
                   </div>
                   <div className="p-4">
-                    <h3 className="font-semibold truncate">{resource.title}</h3>
-                    {resource.titleEn && (
-                      <p className="text-sm text-muted-foreground truncate">
-                        {resource.titleEn}
-                      </p>
-                    )}
+                    <h3 className="font-semibold text-lg">{resource.title}</h3>
                     {resource.description && (
-                      <p className="text-sm mt-2 line-clamp-2 text-muted-foreground">
+                      <p className="text-sm mt-2 line-clamp-3 text-muted-foreground">
                         {resource.description}
                       </p>
                     )}
-                    <div className="flex items-center gap-4 mt-3 text-xs text-muted-foreground">
+                    <div className="flex flex-wrap gap-2 mt-4">
+                      {resource.keywords?.map((keyword, index) => (
+                        <span 
+                          key={index}
+                          className="px-2 py-1 bg-accent text-accent-foreground rounded-full text-xs"
+                        >
+                          {keyword}
+                        </span>
+                      ))}
+                    </div>
+                    <div className="flex items-center gap-4 mt-4 text-xs text-muted-foreground">
                       <div className="flex items-center gap-1">
-                        {resource.category}
+                        {categories.find(c => c.id === resource.category)?.label || resource.category}
                       </div>
                       {resource.period && (
                         <div className="flex items-center gap-1">
+                          <History className="h-3 w-3" />
                           {resource.period}
                         </div>
                       )}
