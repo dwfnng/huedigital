@@ -6,12 +6,10 @@ import {
   Image,
   Video,
   Music,
-  GraduationCap,
   Box,
   Calendar,
   Clock,
   FileAudio,
-  File3D,
   Info
 } from "lucide-react";
 import type { Resource } from "@shared/schema";
@@ -38,6 +36,21 @@ const getResourceIcon = (type: string) => {
   }
 };
 
+const getPlaceholderImage = (type: string) => {
+  switch (type) {
+    case "image":
+      return "/placeholders/image-placeholder.jpg";
+    case "video":
+      return "/placeholders/video-placeholder.jpg";
+    case "audio":
+      return "/placeholders/audio-placeholder.jpg";
+    case "3d_model":
+      return "/placeholders/3d-model-placeholder.jpg";
+    default:
+      return "/placeholders/document-placeholder.jpg";
+  }
+};
+
 const container = {
   hidden: { opacity: 0 },
   show: {
@@ -54,10 +67,6 @@ const item = {
 };
 
 export default function ResourceList({ resources, onResourceSelect }: ResourceListProps) {
-  const getFallbackImageUrl = (type: string) => {
-    return `/placeholders/${type}-placeholder.jpg`;
-  };
-
   return (
     <ScrollArea className="h-[calc(100vh-16rem)]">
       <motion.div
@@ -78,23 +87,31 @@ export default function ResourceList({ resources, onResourceSelect }: ResourceLi
                     {getResourceIcon(resource.type)}
                   </div>
                   <div className="flex-1 min-w-0">
-                    {(resource.thumbnailUrl || resource.type === 'image') && (
-                      <div className="mb-3 relative">
-                        <img
-                          src={resource.thumbnailUrl || getFallbackImageUrl(resource.type)}
-                          alt={resource.title}
-                          className="w-full h-32 object-cover rounded-lg"
-                          onError={(e) => {
-                            const target = e.target as HTMLImageElement;
-                            target.src = getFallbackImageUrl(resource.type);
-                          }}
-                        />
-                      </div>
-                    )}
+                    <div className="mb-3 relative aspect-video rounded-lg overflow-hidden bg-muted">
+                      <img
+                        src={resource.thumbnail_url || getPlaceholderImage(resource.type)}
+                        alt={resource.title}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.src = getPlaceholderImage(resource.type);
+                        }}
+                      />
+                      {resource.type === "video" && (
+                        <div className="absolute inset-0 flex items-center justify-center bg-black/30">
+                          <Video className="h-12 w-12 text-white" />
+                        </div>
+                      )}
+                      {resource.type === "audio" && (
+                        <div className="absolute inset-0 flex items-center justify-center bg-black/30">
+                          <Music className="h-12 w-12 text-white" />
+                        </div>
+                      )}
+                    </div>
                     <h3 className="font-semibold truncate">{resource.title}</h3>
-                    {resource.titleEn && (
+                    {resource.title_en && (
                       <p className="text-sm text-muted-foreground truncate">
-                        {resource.titleEn}
+                        {resource.title_en}
                       </p>
                     )}
                     {resource.description && (
@@ -103,24 +120,20 @@ export default function ResourceList({ resources, onResourceSelect }: ResourceLi
                       </p>
                     )}
                     <div className="flex items-center gap-4 mt-3 text-xs text-muted-foreground">
-                      {resource.type && (
-                        <div className="flex items-center gap-1">
-                          <FileText className="h-3 w-3" />
-                          {resource.type.toUpperCase()}
-                        </div>
-                      )}
+                      <div className="flex items-center gap-1">
+                        <Info className="h-3 w-3" />
+                        {resource.category.toUpperCase()}
+                      </div>
                       {resource.metadata?.duration && (
                         <div className="flex items-center gap-1">
                           <Clock className="h-3 w-3" />
-                          {typeof resource.metadata.duration === 'string' 
-                            ? resource.metadata.duration 
-                            : new Date(resource.metadata.duration).toLocaleTimeString()}
+                          {resource.metadata.duration}
                         </div>
                       )}
-                      {resource.createdAt && (
+                      {resource.created_at && (
                         <div className="flex items-center gap-1">
                           <Calendar className="h-3 w-3" />
-                          {new Date(resource.createdAt).toLocaleDateString('vi-VN')}
+                          {new Date(resource.created_at).toLocaleDateString()}
                         </div>
                       )}
                     </div>
@@ -130,6 +143,13 @@ export default function ResourceList({ resources, onResourceSelect }: ResourceLi
             </Card>
           </motion.div>
         ))}
+
+        {resources.length === 0 && (
+          <div className="text-center py-12">
+            <Info className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
+            <p className="text-muted-foreground">Không tìm thấy tài liệu</p>
+          </div>
+        )}
       </motion.div>
     </ScrollArea>
   );
