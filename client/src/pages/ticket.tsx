@@ -206,7 +206,7 @@ export default function TicketPage() {
               <SouvenirCard
                 name="Mứt Huế truyền thống"
                 price="150.000đ"
-                image="/images/souvenirs/mut-hue.jpg"
+                image="/c"
                 description="Bộ sưu tập các loại mứt đặc sản Huế, đóng gói sang trọng"
               />
               <SouvenirCard
