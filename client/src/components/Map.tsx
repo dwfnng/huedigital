@@ -25,17 +25,14 @@ import L from 'leaflet';
 import 'leaflet-routing-machine';
 import { apiRequest } from "@/lib/queryClient";
 
-// Validate if a location has valid data and image
+// Validate if a location has valid data
 const isValidLocation = (location: Location): boolean => {
   return (
-    location &&
-    typeof location === 'object' &&
     location.name?.trim() !== '' && 
     location.type?.trim() !== '' &&
     !isNaN(parseFloat(location.latitude)) &&
     !isNaN(parseFloat(location.longitude)) &&
-    location.imageUrl?.trim() !== '' &&
-    location.type !== 'Document' // Exclude Document type locations
+    location.imageUrl?.trim() !== ''
   );
 };
 
@@ -61,11 +58,6 @@ function useFilteredLocations(locations: Location[], searchQuery: string) {
     );
   });
 }
-
-// Validate coordinates
-const isValidCoordinate = (lat: number, lng: number): boolean => {
-  return !isNaN(lat) && !isNaN(lng) && lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180;
-};
 
 function useRoutingControl(map: L.Map | null, start?: [number, number], end?: [number, number]) {
   const [routingControl, setRoutingControl] = useState<L.Routing.Control | null>(null);
@@ -143,6 +135,11 @@ function FlyToMarker({ position }: { position: [number, number] }) {
   return null;
 }
 
+// Validate coordinates
+const isValidCoordinate = (lat: number, lng: number): boolean => {
+  return !isNaN(lat) && !isNaN(lng) && lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180;
+};
+
 export default function Map({ onMarkerClick }: { onMarkerClick?: (location: Location) => void }) {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
@@ -213,7 +210,7 @@ export default function Map({ onMarkerClick }: { onMarkerClick?: (location: Loca
   });
 
   const saveRouteMutation = useMutation({
-    mutationFn: async (route: any) => {
+    mutationFn: async (route: any) => { // Updated type to any for flexibility
       const response = await apiRequest("/api/favorite-routes", {
         method: "POST",
         body: JSON.stringify(route),
@@ -239,6 +236,7 @@ export default function Map({ onMarkerClick }: { onMarkerClick?: (location: Loca
     },
   });
 
+
   const handleSaveRoute = () => {
     if (!startLocation || !endLocation) return;
 
@@ -260,6 +258,16 @@ export default function Map({ onMarkerClick }: { onMarkerClick?: (location: Loca
     setStartLocation(undefined);
     setEndLocation(undefined);
     setIsRoutingMode(false);
+  };
+
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    const img = e.currentTarget;
+    const container = img.parentElement;
+
+    // Hide the image container if image fails to load
+    if (container) {
+      container.style.display = 'none';
+    }
   };
 
   return (
@@ -388,7 +396,6 @@ export default function Map({ onMarkerClick }: { onMarkerClick?: (location: Loca
                 <CornerDownLeft className="h-4 w-4" />
               </Button>
             </div>
-
             {isRoutingMode && (
               <div className="mt-2 text-sm">
                 <p className="text-muted-foreground">
@@ -426,7 +433,7 @@ export default function Map({ onMarkerClick }: { onMarkerClick?: (location: Loca
           </div>
           <ScrollArea className="h-[calc(100%-5rem)] custom-scrollbar">
             <div className="divide-y">
-              {filteredLocations.map((location) => (
+              {filteredLocations.map((location, index) => (
                 <div
                   key={location.id}
                   className={`p-3 cursor-pointer transition-all hover:bg-primary/5 ${
@@ -435,19 +442,14 @@ export default function Map({ onMarkerClick }: { onMarkerClick?: (location: Loca
                   onClick={() => handleLocationSelect(location)}
                 >
                   <div className="flex items-start gap-3">
-                    {location.imageUrl && location.imageUrl.startsWith('http') && (
+                    {location.imageUrl && (
                       <div className="w-16 h-16 rounded-lg overflow-hidden bg-muted relative">
                         <img
                           src={location.imageUrl}
                           alt={location.name}
+                          onError={handleImageError}
                           className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
                           loading="lazy"
-                          onError={(e) => {
-                            const container = e.currentTarget.parentElement;
-                            if (container) {
-                              container.style.display = 'none';
-                            }
-                          }}
                         />
                       </div>
                     )}
@@ -498,10 +500,6 @@ export default function Map({ onMarkerClick }: { onMarkerClick?: (location: Loca
                 const lat = parseFloat(location.latitude);
                 const lng = parseFloat(location.longitude);
 
-                if (!isValidCoordinate(lat, lng)) {
-                  return null;
-                }
-
                 return (
                   <Marker
                     key={location.id}
@@ -520,7 +518,6 @@ export default function Map({ onMarkerClick }: { onMarkerClick?: (location: Loca
                 );
               })}
             </LayerGroup>
-
             {selectedLocation && !isRoutingMode && isValidCoordinate(parseFloat(selectedLocation.latitude), parseFloat(selectedLocation.longitude)) && (
               <FlyToMarker
                 position={[
@@ -529,7 +526,6 @@ export default function Map({ onMarkerClick }: { onMarkerClick?: (location: Loca
                 ]}
               />
             )}
-
             {startLocation && endLocation && (
               <RoutingMachine start={startLocation} end={endLocation} />
             )}
