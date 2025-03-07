@@ -5,6 +5,15 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { Search, Navigation, CornerDownLeft, Star } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import type { Location } from "@shared/schema";
@@ -14,6 +23,7 @@ import 'leaflet/dist/leaflet.css';
 import 'leaflet-routing-machine/dist/leaflet-routing-machine.css';
 import L from 'leaflet';
 import 'leaflet-routing-machine';
+import { apiRequest } from "@/lib/queryClient";
 
 // Validate if a location has valid data
 const isValidLocation = (location: Location): boolean => {
