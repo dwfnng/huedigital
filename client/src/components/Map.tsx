@@ -319,12 +319,35 @@ export default function Map({ onMarkerClick }: MapProps) {
                 title="Vị trí của bạn"
                 onClick={() => {
                   if (navigator.geolocation) {
+                    // Show loading toast
+                    toast({
+                      title: "Đang xác định vị trí",
+                      description: "Vui lòng đợi trong giây lát...",
+                    });
+
+                    // Configure high accuracy options
+                    const options = {
+                      enableHighAccuracy: true,
+                      timeout: 10000,
+                      maximumAge: 0
+                    };
+
                     navigator.geolocation.getCurrentPosition(
                       (position) => {
                         const pos: [number, number] = [
                           position.coords.latitude,
                           position.coords.longitude,
                         ];
+
+                        if (!isValidCoordinate(pos[0], pos[1])) {
+                          toast({
+                            title: "Lỗi",
+                            description: "Không thể xác định chính xác vị trí của bạn.",
+                            variant: "destructive"
+                          });
+                          return;
+                        }
+
                         if (isRoutingMode && !startLocation) {
                           setStartLocation(pos);
                           toast({
@@ -337,21 +360,45 @@ export default function Map({ onMarkerClick }: MapProps) {
                             name: 'Vị trí của bạn',
                             nameEn: 'Your location',
                             type: 'current_location',
-                            description: '',
-                            descriptionEn: '',
+                            description: `Độ chính xác: ${Math.round(position.coords.accuracy)}m`,
+                            descriptionEn: `Accuracy: ${Math.round(position.coords.accuracy)}m`,
                             latitude: pos[0].toString(),
                             longitude: pos[1].toString(),
-                            imageUrl: ''
-                          } as Location);
+                            imageUrl: '',
+                            isActive: true
+                          });
+
+                          // Center map on current location with appropriate zoom based on accuracy
+                          const map = document.querySelector('.leaflet-container')?._leaflet_map;
+                          if (map) {
+                            const zoomLevel = position.coords.accuracy < 100 ? 17 : 15;
+                            map.flyTo(pos, zoomLevel);
+                          }
                         }
                       },
-                      () => {
+                      (error) => {
+                        console.error('Geolocation error:', error);
+                        let errorMessage = "Không thể xác định vị trí của bạn.";
+
+                        switch(error.code) {
+                          case error.PERMISSION_DENIED:
+                            errorMessage = "Vui lòng cho phép truy cập vị trí để sử dụng tính năng này.";
+                            break;
+                          case error.POSITION_UNAVAILABLE:
+                            errorMessage = "Không thể xác định vị trí. Vui lòng thử lại sau.";
+                            break;
+                          case error.TIMEOUT:
+                            errorMessage = "Hết thời gian chờ xác định vị trí. Vui lòng thử lại.";
+                            break;
+                        }
+
                         toast({
                           title: "Lỗi",
-                          description: "Không thể xác định vị trí của bạn.",
+                          description: errorMessage,
                           variant: "destructive"
                         });
-                      }
+                      },
+                      options
                     );
                   }
                 }}
