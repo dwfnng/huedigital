@@ -19,6 +19,13 @@ const item = {
   show: { opacity: 1, y: 0 }
 };
 
+interface LocationStats {
+  id: string;
+  name: string;
+  visitorCount: number;
+  trafficLevel: string;
+}
+
 interface WeatherData {
   temp: number;
   humidity: number;
@@ -48,6 +55,17 @@ interface Event {
   description: string;
 }
 
+const defaultEvents: Event[] = [
+  {
+    id: 'mega-booming-2025',
+    title: 'Đại nhạc hội "Huế – Mega Booming"',
+    startDate: '2025-04-05',
+    endDate: '2025-04-06',
+    location: 'Quảng trường Ngọ Môn – Đại Nội Huế',
+    description: 'Đại nhạc hội với sự tham gia của nhiều ca sĩ trẻ: Isaac, Anh Tú, Quân A.P, HurryKng, Wean, ManBo, Lyly, Xuân Định K.Y, Bạch Trà và MC Trần Thịnh, Phạm Anh Khoa, Ngọc Khuê cùng dàn nhạc truyền thống Huế. Đặc biệt có sự góp mặt của nghệ sĩ Nhật Bản – Akari Nakatani và ca sĩ Hàn Quốc Blue D cùng DJ Huy Ngô và Shumo AG.'
+  }
+];
+
 export default function LiveDataPage() {
   const { data: weather, isError: weatherError } = useQuery<WeatherData>({
     queryKey: ["/api/weather"],
@@ -64,21 +82,12 @@ export default function LiveDataPage() {
     refetchInterval: 60000
   });
 
-  const { data: events = [
-    {
-      id: 'mega-booming-2025',
-      title: 'Đại nhạc hội "Huế – Mega Booming"',
-      startDate: '2025-04-05',
-      endDate: '2025-04-06',
-      location: 'Quảng trường Ngọ Môn – Đại Nội Huế',
-      description: 'Đại nhạc hội với sự tham gia của nhiều ca sĩ trẻ: Isaac, Anh Tú, Quân A.P, HurryKng, Wean, ManBo, Lyly, Xuân Định K.Y, Bạch Trà và MC Trần Thịnh, Phạm Anh Khoa, Ngọc Khuê cùng dàn nhạc truyền thống Huế. Đặc biệt có sự góp mặt của nghệ sĩ Nhật Bản – Akari Nakatani và ca sĩ Hàn Quốc Blue D cùng DJ Huy Ngô và Shumo AG.'
-    }
-  ] } = useQuery<Event[]>({
+  const { data: events = defaultEvents } = useQuery<Event[]>({
     queryKey: ["/api/events"],
     refetchInterval: 300000
   });
 
-  const { data: locationStats } = useQuery({
+  const { data: locationStats = [] } = useQuery<LocationStats[]>({
     queryKey: ["/api/locations/stats"],
     refetchInterval: 60000
   });

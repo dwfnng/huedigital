@@ -1,22 +1,3 @@
-declare module 'leaflet' {
-  namespace Routing {
-    interface RoutingControlOptions {
-      waypoints: L.LatLng[];
-      routeWhileDragging?: boolean;
-      showAlternatives?: boolean;
-      lineOptions?: any;
-      altLineOptions?: any;
-    }
-
-    class Control extends L.Control {
-      constructor(options: RoutingControlOptions);
-      setWaypoints(waypoints: L.LatLng[]): this;
-    }
-
-    function control(options: RoutingControlOptions): Control;
-  }
-}
-
 import { useEffect, useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { LayersControl, LayerGroup } from 'react-leaflet';
@@ -57,28 +38,42 @@ function useRoutingControl(map: L.Map | null, start?: [number, number], end?: [n
   useEffect(() => {
     if (!map || !start || !end) return;
 
-    const control = L.Routing.control({
-      waypoints: [
-        L.latLng(start[0], start[1]),
-        L.latLng(end[0], end[1])
-      ],
-      routeWhileDragging: true,
-      showAlternatives: true,
-      lineOptions: {
-        styles: [{ color: '#6366f1', weight: 4 }],
-        extendToWaypoints: true,
-        missingRouteTolerance: 0
-      },
-      altLineOptions: {
-        styles: [{ color: '#94a3b8', weight: 3, opacity: 0.7 }]
-      }
-    }).addTo(map);
+    // Remove existing routing control if any
+    if (routingControl) {
+      map.removeControl(routingControl);
+    }
 
-    setRoutingControl(control);
+    try {
+      const control = L.Routing.control({
+        waypoints: [
+          L.latLng(start[0], start[1]),
+          L.latLng(end[0], end[1])
+        ],
+        routeWhileDragging: true,
+        showAlternatives: true,
+        lineOptions: {
+          styles: [{ color: '#6366f1', weight: 4 }],
+          extendToWaypoints: true,
+          missingRouteTolerance: 0
+        },
+        altLineOptions: {
+          styles: [{ color: '#94a3b8', weight: 3, opacity: 0.7 }]
+        }
+      }).addTo(map);
+
+      setRoutingControl(control);
+    } catch (error) {
+      console.error('Error creating routing control:', error);
+      toast({
+        title: "Lỗi",
+        description: "Không thể tạo tuyến đường. Vui lòng thử lại.",
+        variant: "destructive"
+      });
+    }
 
     return () => {
-      if (control) {
-        map.removeControl(control);
+      if (routingControl) {
+        map.removeControl(routingControl);
       }
     };
   }, [map, start, end]);
@@ -86,7 +81,7 @@ function useRoutingControl(map: L.Map | null, start?: [number, number], end?: [n
   return routingControl;
 }
 
-// RoutingMachine component now just handles the routing visualization
+// RoutingMachine component
 function RoutingMachine({ start, end }: { start?: [number, number]; end?: [number, number] }) {
   const map = useMap();
   useRoutingControl(map, start, end);
@@ -96,7 +91,9 @@ function RoutingMachine({ start, end }: { start?: [number, number]; end?: [numbe
 function FlyToMarker({ position }: { position: [number, number] }) {
   const map = useMap();
   useEffect(() => {
-    map.flyTo(position, 17);
+    if (position && !isNaN(position[0]) && !isNaN(position[1])) {
+      map.flyTo(position, 17);
+    }
   }, [map, position]);
   return null;
 }
@@ -116,6 +113,44 @@ export default function Map({ onMarkerClick }: MapProps) {
   const { data: locations = [] } = useQuery<Location[]>({
     queryKey: ["/api/locations"],
   });
+
+  const handleLocationSelect = (location: Location) => {
+    const latitude = parseFloat(location.latitude);
+    const longitude = parseFloat(location.longitude);
+
+    if (isNaN(latitude) || isNaN(longitude)) {
+      console.error('Invalid coordinates:', location);
+      toast({
+        title: "Lỗi",
+        description: "Tọa độ địa điểm không hợp lệ",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    const position: [number, number] = [latitude, longitude];
+
+    if (isRoutingMode) {
+      if (!startLocation) {
+        setStartLocation(position);
+        toast({
+          title: "Điểm đi",
+          description: `Đã chọn ${location.name} làm điểm bắt đầu`,
+        });
+      } else {
+        setEndLocation(position);
+        toast({
+          title: "Điểm đến",
+          description: `Đã chọn ${location.name} làm điểm kết thúc`,
+        });
+      }
+    } else {
+      setSelectedLocation(location);
+      if (onMarkerClick) {
+        onMarkerClick(location);
+      }
+    }
+  };
 
   const { data: favoriteRoutes = [] } = useQuery({
     queryKey: ["/api/favorite-routes"],
@@ -163,30 +198,6 @@ export default function Map({ onMarkerClick }: MapProps) {
     }
   }, [searchQuery, locations]);
 
-  const handleLocationSelect = (location: Location) => {
-    const position: [number, number] = [parseFloat(location.latitude), parseFloat(location.longitude)];
-
-    if (isRoutingMode) {
-      if (!startLocation) {
-        setStartLocation(position);
-        toast({
-          title: "Điểm đi",
-          description: `Đã chọn ${location.name} làm điểm bắt đầu`,
-        });
-      } else {
-        setEndLocation(position);
-        toast({
-          title: "Điểm đến",
-          description: `Đã chọn ${location.name} làm điểm kết thúc`,
-        });
-      }
-    } else {
-      setSelectedLocation(location);
-      if (onMarkerClick) {
-        onMarkerClick(location);
-      }
-    }
-  };
 
   const handleSaveRoute = () => {
     if (!startLocation || !endLocation) return;
