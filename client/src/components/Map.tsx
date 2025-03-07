@@ -5,38 +5,50 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { Search, Navigation, CornerDownLeft, Star } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
-import type { Location, InsertFavoriteRoute } from "@shared/schema";
+import type { Location } from "@shared/schema";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import { DEFAULT_CENTER, DEFAULT_ZOOM, MAP_STYLES, createMarkerIcon } from "@/lib/mapUtils";
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-routing-machine/dist/leaflet-routing-machine.css';
 import L from 'leaflet';
 import 'leaflet-routing-machine';
-import { apiRequest } from "@/lib/queryClient";
 
-// Fix for default marker icons
-delete (L.Icon.Default.prototype as any)._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
-  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png',
-  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png'
-});
-
-interface MapProps {
-  onMarkerClick?: (location: Location) => void;
-}
-
-// Validate coordinates
-const isValidCoordinate = (lat: number, lng: number): boolean => {
-  return !isNaN(lat) && !isNaN(lng) && lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180;
+// Validate if a location has valid data
+const isValidLocation = (location: Location): boolean => {
+  return (
+    location.name?.trim() !== '' && 
+    location.type?.trim() !== '' &&
+    !isNaN(parseFloat(location.latitude)) &&
+    !isNaN(parseFloat(location.longitude)) &&
+    location.imageUrl?.trim() !== ''
+  );
 };
 
-// Custom hook for routing control
+// Custom hook for location filtering
+function useFilteredLocations(locations: Location[], searchQuery: string) {
+  return locations.filter(location => {
+    // First filter out invalid locations
+    if (!isValidLocation(location)) {
+      return false;
+    }
+
+    // Then apply search filter if query exists
+    if (searchQuery.trim() === "") {
+      return true;
+    }
+
+    const query = searchQuery.toLowerCase();
+    return (
+      location.name.toLowerCase().includes(query) ||
+      location.nameEn.toLowerCase().includes(query) ||
+      location.description.toLowerCase().includes(query) ||
+      location.descriptionEn.toLowerCase().includes(query)
+    );
+  });
+}
+
 function useRoutingControl(map: L.Map | null, start?: [number, number], end?: [number, number]) {
   const [routingControl, setRoutingControl] = useState<L.Routing.Control | null>(null);
 
@@ -113,10 +125,14 @@ function FlyToMarker({ position }: { position: [number, number] }) {
   return null;
 }
 
-export default function Map({ onMarkerClick }: MapProps) {
+// Validate coordinates
+const isValidCoordinate = (lat: number, lng: number): boolean => {
+  return !isNaN(lat) && !isNaN(lng) && lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180;
+};
+
+export default function Map({ onMarkerClick }: { onMarkerClick?: (location: Location) => void }) {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
-  const [filteredLocations, setFilteredLocations] = useState<Location[]>([]);
   const [startLocation, setStartLocation] = useState<[number, number] | undefined>();
   const [endLocation, setEndLocation] = useState<[number, number] | undefined>();
   const [isRoutingMode, setIsRoutingMode] = useState(false);
@@ -128,6 +144,9 @@ export default function Map({ onMarkerClick }: MapProps) {
   const { data: locations = [] } = useQuery<Location[]>({
     queryKey: ["/api/locations"],
   });
+
+  // Use the custom hook for filtered locations
+  const filteredLocations = useFilteredLocations(locations, searchQuery);
 
   const handleLocationSelect = (location: Location) => {
     try {
@@ -181,7 +200,7 @@ export default function Map({ onMarkerClick }: MapProps) {
   });
 
   const saveRouteMutation = useMutation({
-    mutationFn: async (route: InsertFavoriteRoute) => {
+    mutationFn: async (route: any) => { // Updated type to any for flexibility
       const response = await apiRequest("/api/favorite-routes", {
         method: "POST",
         body: JSON.stringify(route),
@@ -206,21 +225,6 @@ export default function Map({ onMarkerClick }: MapProps) {
       });
     },
   });
-
-  useEffect(() => {
-    if (searchQuery.trim() === "") {
-      setFilteredLocations(locations);
-    } else {
-      const query = searchQuery.toLowerCase();
-      const filtered = locations.filter(location =>
-        location.name.toLowerCase().includes(query) ||
-        location.nameEn.toLowerCase().includes(query) ||
-        location.description.toLowerCase().includes(query) ||
-        location.descriptionEn.toLowerCase().includes(query)
-      );
-      setFilteredLocations(filtered);
-    }
-  }, [searchQuery, locations]);
 
 
   const handleSaveRoute = () => {
@@ -248,54 +252,12 @@ export default function Map({ onMarkerClick }: MapProps) {
 
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     const img = e.currentTarget;
-    const originalSrc = img.src;
-    const location = locations.find(loc => loc.imageUrl === originalSrc);
+    const container = img.parentElement;
 
-    console.log('Image failed to load:', originalSrc);
-
-    // Thử dùng proxy để tải hình ảnh
-    const proxyUrl = 'https://corsproxy.io/?';
-
-    if (!img.src.includes('corsproxy.io')) {
-      // Thử tải lại với CORS proxy
-      img.src = `${proxyUrl}${encodeURIComponent(originalSrc)}`;
-
-      // Thêm loading skeleton
-      const container = img.parentElement;
-      if (container) {
-        container.classList.add('animate-pulse');
-      }
-
-      // Thêm sự kiện load để xử lý khi hình ảnh tải thành công
-      img.onload = () => {
-        if (container) {
-          container.classList.remove('animate-pulse');
-        }
-        img.style.opacity = '1';
-      };
-
-      // Thêm fallback khi proxy cũng không hoạt động
-      img.onerror = () => {
-        // Fallback images dựa trên loại địa điểm
-        const fallbackImages = {
-          palace: 'https://images.pexels.com/photos/5227440/pexels-photo-5227440.jpeg',
-          temple: 'https://images.pexels.com/photos/5227442/pexels-photo-5227442.jpeg',
-          tomb: 'https://images.pexels.com/photos/5227444/pexels-photo-5227444.jpeg',
-          default: 'https://images.pexels.com/photos/2161449/pexels-photo-2161449.jpeg'
-        };
-
-        const type = location?.type || 'default';
-        img.src = fallbackImages[type as keyof typeof fallbackImages] || fallbackImages.default;
-
-        if (container) {
-          container.classList.remove('animate-pulse');
-        }
-      };
+    // Hide the image container if image fails to load
+    if (container) {
+      container.style.display = 'none';
     }
-
-    // Thêm hiệu ứng loading và transition
-    img.style.transition = 'opacity 0.3s ease-in-out';
-    img.style.opacity = '0.7';
   };
 
   return (
@@ -467,31 +429,20 @@ export default function Map({ onMarkerClick }: MapProps) {
                   className={`p-3 cursor-pointer transition-all hover:bg-primary/5 ${
                     selectedLocation?.id === location.id ? 'bg-primary/10' : ''
                   }`}
-                  style={{ animationDelay: `${index * 0.05}s` }}
                   onClick={() => handleLocationSelect(location)}
                 >
                   <div className="flex items-start gap-3">
-                    <div className="w-16 h-16 rounded-lg overflow-hidden bg-muted relative">
-                      {/* Loading skeleton */}
-                      <div className="absolute inset-0 bg-gradient-to-r from-gray-200 to-gray-300 animate-pulse" />
-
-                      {/* Image with error handling */}
-                      <img
-                        src={location.imageUrl}
-                        alt={location.name}
-                        onError={handleImageError}
-                        className="w-full h-full object-cover hover:scale-110 transition-transform duration-300 relative z-10"
-                        loading="lazy"
-                        style={{
-                          opacity: 0,
-                          transition: 'opacity 0.3s ease-in-out'
-                        }}
-                        onLoad={(e) => {
-                          const img = e.currentTarget;
-                          img.style.opacity = '1';
-                        }}
-                      />
-                    </div>
+                    {location.imageUrl && (
+                      <div className="w-16 h-16 rounded-lg overflow-hidden bg-muted relative">
+                        <img
+                          src={location.imageUrl}
+                          alt={location.name}
+                          onError={handleImageError}
+                          className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
+                          loading="lazy"
+                        />
+                      </div>
+                    )}
                     <div className="flex-1 min-w-0">
                       <h3 className="font-medium truncate">{location.name}</h3>
                       <p className="text-sm text-muted-foreground truncate">
@@ -535,14 +486,9 @@ export default function Map({ onMarkerClick }: MapProps) {
             </LayersControl>
 
             <LayerGroup>
-              {locations.map(location => {
+              {filteredLocations.map(location => {
                 const lat = parseFloat(location.latitude);
                 const lng = parseFloat(location.longitude);
-
-                if (!isValidCoordinate(lat, lng)) {
-                  console.warn(`Invalid coordinates for location ${location.id}:`, { lat, lng });
-                  return null;
-                }
 
                 return (
                   <Marker
@@ -562,7 +508,6 @@ export default function Map({ onMarkerClick }: MapProps) {
                 );
               })}
             </LayerGroup>
-
             {selectedLocation && !isRoutingMode && isValidCoordinate(parseFloat(selectedLocation.latitude), parseFloat(selectedLocation.longitude)) && (
               <FlyToMarker
                 position={[

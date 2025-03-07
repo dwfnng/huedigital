@@ -79,7 +79,7 @@ export default function LiveDataPage() {
 
   const { data: traffic } = useQuery<TrafficData>({
     queryKey: ["/api/traffic"],
-    refetchInterval: 60000
+    refetchInterval: 30000 // Refresh every 30 seconds
   });
 
   const { data: events = defaultEvents } = useQuery<Event[]>({
@@ -89,11 +89,11 @@ export default function LiveDataPage() {
 
   const { data: locationStats = [] } = useQuery<LocationStats[]>({
     queryKey: ["/api/locations/stats"],
-    refetchInterval: 60000
+    refetchInterval: 30000 // Refresh every 30 seconds
   });
 
   const getTrafficStatusIcon = (status: string) => {
-    switch (status) {
+    switch (status.toLowerCase()) {
       case 'high': return <span className="flex items-center text-red-500">● Đông đúc</span>;
       case 'medium': return <span className="flex items-center text-yellow-500">● Bình thường</span>;
       case 'low': return <span className="flex items-center text-green-500">● Thông thoáng</span>;
@@ -187,7 +187,11 @@ export default function LiveDataPage() {
                     </p>
                   </div>
                 ) : (
-                  <p className="text-muted-foreground">Đang cập nhật...</p>
+                  <div className="animate-pulse space-y-4">
+                    <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+                    <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+                    <div className="h-4 bg-gray-200 rounded w-2/3"></div>
+                  </div>
                 )}
               </CardContent>
             </Card>
@@ -233,20 +237,32 @@ export default function LiveDataPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
-                  {locationStats ? (
-                    locationStats.map((location) => (
+                {locationStats.length > 0 ? (
+                  <div className="space-y-4">
+                    {locationStats.map((location) => (
                       <div key={location.id} className="flex justify-between items-center">
-                        <span>{location.name}</span>
+                        <div>
+                          <span className="font-medium">{location.name}</span>
+                          <div className="text-sm text-muted-foreground">
+                            {getTrafficStatusIcon(location.trafficLevel)}
+                          </div>
+                        </div>
                         <span className="font-semibold">
-                          {location.visitorCount} khách
+                          {location.visitorCount.toLocaleString('vi-VN')} khách
                         </span>
                       </div>
-                    ))
-                  ) : (
-                    <p className="text-muted-foreground">Đang cập nhật...</p>
-                  )}
-                </div>
+                    ))}
+                    <p className="text-xs text-muted-foreground mt-4">
+                      Cập nhật tự động mỗi 30 giây
+                    </p>
+                  </div>
+                ) : (
+                  <div className="animate-pulse space-y-4">
+                    <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+                    <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+                    <div className="h-4 bg-gray-200 rounded w-2/3"></div>
+                  </div>
+                )}
               </CardContent>
             </Card>
           </motion.div>
