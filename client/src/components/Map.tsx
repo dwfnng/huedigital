@@ -8,7 +8,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Search, Navigation, CornerDownLeft, Star, Map as MapIcon } from "lucide-react";
+import { Search, Navigation, CornerDownLeft, Star } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import type { Location, InsertFavoriteRoute } from "@shared/schema";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
@@ -31,12 +31,28 @@ interface MapProps {
   onMarkerClick?: (location: Location) => void;
 }
 
+// Validate coordinates
+const isValidCoordinate = (lat: number, lng: number): boolean => {
+  return !isNaN(lat) && !isNaN(lng) && lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180;
+};
+
 // Custom hook for routing control
 function useRoutingControl(map: L.Map | null, start?: [number, number], end?: [number, number]) {
   const [routingControl, setRoutingControl] = useState<L.Routing.Control | null>(null);
 
   useEffect(() => {
     if (!map || !start || !end) return;
+
+    // Validate coordinates before creating routing
+    if (!isValidCoordinate(start[0], start[1]) || !isValidCoordinate(end[0], end[1])) {
+      console.error('Invalid coordinates:', { start, end });
+      toast({
+        title: "Lỗi",
+        description: "Tọa độ không hợp lệ cho chỉ đường",
+        variant: "destructive"
+      });
+      return;
+    }
 
     // Remove existing routing control if any
     if (routingControl) {
@@ -81,7 +97,6 @@ function useRoutingControl(map: L.Map | null, start?: [number, number], end?: [n
   return routingControl;
 }
 
-// RoutingMachine component
 function RoutingMachine({ start, end }: { start?: [number, number]; end?: [number, number] }) {
   const map = useMap();
   useRoutingControl(map, start, end);
@@ -91,7 +106,7 @@ function RoutingMachine({ start, end }: { start?: [number, number]; end?: [numbe
 function FlyToMarker({ position }: { position: [number, number] }) {
   const map = useMap();
   useEffect(() => {
-    if (position && !isNaN(position[0]) && !isNaN(position[1])) {
+    if (position && isValidCoordinate(position[0], position[1])) {
       map.flyTo(position, 17);
     }
   }, [map, position]);
@@ -115,40 +130,49 @@ export default function Map({ onMarkerClick }: MapProps) {
   });
 
   const handleLocationSelect = (location: Location) => {
-    const latitude = parseFloat(location.latitude);
-    const longitude = parseFloat(location.longitude);
+    try {
+      const latitude = parseFloat(location.latitude);
+      const longitude = parseFloat(location.longitude);
 
-    if (isNaN(latitude) || isNaN(longitude)) {
-      console.error('Invalid coordinates:', location);
+      if (!isValidCoordinate(latitude, longitude)) {
+        console.error('Invalid coordinates:', location);
+        toast({
+          title: "Lỗi",
+          description: "Tọa độ địa điểm không hợp lệ",
+          variant: "destructive"
+        });
+        return;
+      }
+
+      const position: [number, number] = [latitude, longitude];
+
+      if (isRoutingMode) {
+        if (!startLocation) {
+          setStartLocation(position);
+          toast({
+            title: "Điểm đi",
+            description: `Đã chọn ${location.name} làm điểm bắt đầu`,
+          });
+        } else {
+          setEndLocation(position);
+          toast({
+            title: "Điểm đến",
+            description: `Đã chọn ${location.name} làm điểm kết thúc`,
+          });
+        }
+      } else {
+        setSelectedLocation(location);
+        if (onMarkerClick) {
+          onMarkerClick(location);
+        }
+      }
+    } catch (error) {
+      console.error('Error handling location selection:', error);
       toast({
         title: "Lỗi",
-        description: "Tọa độ địa điểm không hợp lệ",
+        description: "Không thể chọn địa điểm. Vui lòng thử lại.",
         variant: "destructive"
       });
-      return;
-    }
-
-    const position: [number, number] = [latitude, longitude];
-
-    if (isRoutingMode) {
-      if (!startLocation) {
-        setStartLocation(position);
-        toast({
-          title: "Điểm đi",
-          description: `Đã chọn ${location.name} làm điểm bắt đầu`,
-        });
-      } else {
-        setEndLocation(position);
-        toast({
-          title: "Điểm đến",
-          description: `Đã chọn ${location.name} làm điểm kết thúc`,
-        });
-      }
-    } else {
-      setSelectedLocation(location);
-      if (onMarkerClick) {
-        onMarkerClick(location);
-      }
     }
   };
 
@@ -464,25 +488,35 @@ export default function Map({ onMarkerClick }: MapProps) {
             </LayersControl>
 
             <LayerGroup>
-              {locations.map(location => (
-                <Marker
-                  key={location.id}
-                  position={[parseFloat(location.latitude), parseFloat(location.longitude)]}
-                  icon={createMarkerIcon(location)}
-                  eventHandlers={{
-                    click: () => handleLocationSelect(location)
-                  }}
-                >
-                  <Popup className="custom-popup">
-                    <div className="text-sm">
-                      <h3 className="font-medium text-center">{location.name}</h3>
-                    </div>
-                  </Popup>
-                </Marker>
-              ))}
+              {locations.map(location => {
+                const lat = parseFloat(location.latitude);
+                const lng = parseFloat(location.longitude);
+
+                if (!isValidCoordinate(lat, lng)) {
+                  console.warn(`Invalid coordinates for location ${location.id}:`, { lat, lng });
+                  return null;
+                }
+
+                return (
+                  <Marker
+                    key={location.id}
+                    position={[lat, lng]}
+                    icon={createMarkerIcon(location)}
+                    eventHandlers={{
+                      click: () => handleLocationSelect(location)
+                    }}
+                  >
+                    <Popup className="custom-popup">
+                      <div className="text-sm">
+                        <h3 className="font-medium text-center">{location.name}</h3>
+                      </div>
+                    </Popup>
+                  </Marker>
+                );
+              })}
             </LayerGroup>
 
-            {selectedLocation && !isRoutingMode && (
+            {selectedLocation && !isRoutingMode && isValidCoordinate(parseFloat(selectedLocation.latitude), parseFloat(selectedLocation.longitude)) && (
               <FlyToMarker
                 position={[
                   parseFloat(selectedLocation.latitude),
