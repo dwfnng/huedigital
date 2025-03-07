@@ -1,3 +1,22 @@
+declare module 'leaflet' {
+  namespace Routing {
+    interface RoutingControlOptions {
+      waypoints: L.LatLng[];
+      routeWhileDragging?: boolean;
+      showAlternatives?: boolean;
+      lineOptions?: any;
+      altLineOptions?: any;
+    }
+
+    class Control extends L.Control {
+      constructor(options: RoutingControlOptions);
+      setWaypoints(waypoints: L.LatLng[]): this;
+    }
+
+    function control(options: RoutingControlOptions): Control;
+  }
+}
+
 import { useEffect, useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { LayersControl, LayerGroup } from 'react-leaflet';
@@ -21,7 +40,6 @@ import { apiRequest } from "@/lib/queryClient";
 
 // Fix for default marker icons
 delete (L.Icon.Default.prototype as any)._getIconUrl;
-// Fix marker icon paths
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
   iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png',
@@ -104,11 +122,13 @@ export default function Map({ onMarkerClick }: MapProps) {
   });
 
   const saveRouteMutation = useMutation({
-    mutationFn: (route: InsertFavoriteRoute) =>
-      apiRequest("/api/favorite-routes", {
+    mutationFn: async (route: InsertFavoriteRoute) => {
+      const response = await apiRequest("/api/favorite-routes", {
         method: "POST",
-        body: route,
-      }),
+        body: JSON.stringify(route),
+      });
+      return response;
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/favorite-routes"] });
       toast({
@@ -287,7 +307,7 @@ export default function Map({ onMarkerClick }: MapProps) {
                             latitude: pos[0].toString(),
                             longitude: pos[1].toString(),
                             imageUrl: ''
-                          });
+                          } as Location);
                         }
                       },
                       () => {

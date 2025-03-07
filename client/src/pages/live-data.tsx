@@ -64,7 +64,16 @@ export default function LiveDataPage() {
     refetchInterval: 60000
   });
 
-  const { data: events } = useQuery<Event[]>({
+  const { data: events = [
+    {
+      id: 'mega-booming-2025',
+      title: 'Đại nhạc hội "Huế – Mega Booming"',
+      startDate: '2025-04-05',
+      endDate: '2025-04-06',
+      location: 'Quảng trường Ngọ Môn – Đại Nội Huế',
+      description: 'Đại nhạc hội với sự tham gia của nhiều ca sĩ trẻ: Isaac, Anh Tú, Quân A.P, HurryKng, Wean, ManBo, Lyly, Xuân Định K.Y, Bạch Trà và MC Trần Thịnh, Phạm Anh Khoa, Ngọc Khuê cùng dàn nhạc truyền thống Huế. Đặc biệt có sự góp mặt của nghệ sĩ Nhật Bản – Akari Nakatani và ca sĩ Hàn Quốc Blue D cùng DJ Huy Ngô và Shumo AG.'
+    }
+  ] } = useQuery<Event[]>({
     queryKey: ["/api/events"],
     refetchInterval: 300000
   });
