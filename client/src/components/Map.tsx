@@ -28,7 +28,7 @@ import { apiRequest } from "@/lib/queryClient";
 // Validate if a location has valid data
 const isValidLocation = (location: Location): boolean => {
   return (
-    location.name?.trim() !== '' && 
+    location.name?.trim() !== '' &&
     location.type?.trim() !== '' &&
     !isNaN(parseFloat(location.latitude)) &&
     !isNaN(parseFloat(location.longitude)) &&
@@ -138,6 +138,23 @@ function FlyToMarker({ position }: { position: [number, number] }) {
 // Validate coordinates
 const isValidCoordinate = (lat: number, lng: number): boolean => {
   return !isNaN(lat) && !isNaN(lng) && lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180;
+};
+
+const getCurrentPosition = (): Promise<GeolocationPosition> => {
+  return new Promise((resolve, reject) => {
+    if (!navigator.geolocation) {
+      reject(new Error("Trình duyệt không hỗ trợ định vị"));
+      return;
+    }
+
+    const options = {
+      enableHighAccuracy: true,
+      timeout: 10000,
+      maximumAge: 0
+    };
+
+    navigator.geolocation.getCurrentPosition(resolve, reject, options);
+  });
 };
 
 export default function Map({ onMarkerClick }: { onMarkerClick?: (location: Location) => void }) {
@@ -270,6 +287,75 @@ export default function Map({ onMarkerClick }: { onMarkerClick?: (location: Loca
     }
   };
 
+  const handleLocationClick = async () => {
+    try {
+      toast({
+        title: "Đang xác định vị trí",
+        description: "Vui lòng đợi trong giây lát...",
+      });
+
+      const position = await getCurrentPosition();
+      const { latitude, longitude, accuracy } = position.coords;
+
+      if (!isValidCoordinate(latitude, longitude)) {
+        throw new Error("Tọa độ không hợp lệ");
+      }
+
+      const pos: [number, number] = [latitude, longitude];
+
+      if (isRoutingMode && !startLocation) {
+        setStartLocation(pos);
+        toast({
+          title: "Điểm đi",
+          description: "Đã chọn vị trí hiện tại làm điểm bắt đầu",
+        });
+      } else {
+        setSelectedLocation({
+          id: 'current-location',
+          name: 'Vị trí của bạn',
+          nameEn: 'Your location',
+          type: 'current_location',
+          description: `Độ chính xác: ${Math.round(accuracy)}m`,
+          descriptionEn: `Accuracy: ${Math.round(accuracy)}m`,
+          latitude: latitude.toString(),
+          longitude: longitude.toString(),
+          imageUrl: '',
+          isActive: true
+        });
+
+        // Center map with appropriate zoom based on accuracy
+        const map = document.querySelector('.leaflet-container')?._leaflet_map;
+        if (map) {
+          const zoomLevel = accuracy < 100 ? 17 : 15;
+          map.flyTo(pos, zoomLevel);
+        }
+      }
+    } catch (error) {
+      console.error('Geolocation error:', error);
+      let errorMessage = "Không thể xác định vị trí của bạn.";
+
+      if (error instanceof GeolocationPositionError) {
+        switch(error.code) {
+          case error.PERMISSION_DENIED:
+            errorMessage = "Vui lòng cho phép truy cập vị trí để sử dụng tính năng này.";
+            break;
+          case error.POSITION_UNAVAILABLE:
+            errorMessage = "Không thể xác định vị trí. Vui lòng thử lại sau.";
+            break;
+          case error.TIMEOUT:
+            errorMessage = "Hết thời gian chờ xác định vị trí. Vui lòng thử lại.";
+            break;
+        }
+      }
+
+      toast({
+        title: "Lỗi",
+        description: errorMessage,
+        variant: "destructive"
+      });
+    }
+  };
+
   return (
     <div className="grid md:grid-cols-3 gap-4 h-full">
       <Card className="md:col-span-1 h-full overflow-hidden glass">
@@ -289,91 +375,7 @@ export default function Map({ onMarkerClick }: { onMarkerClick?: (location: Loca
                 variant="outline"
                 size="icon"
                 title="Vị trí của bạn"
-                onClick={() => {
-                  if (navigator.geolocation) {
-                    // Show loading toast
-                    toast({
-                      title: "Đang xác định vị trí",
-                      description: "Vui lòng đợi trong giây lát...",
-                    });
-
-                    // Configure high accuracy options
-                    const options = {
-                      enableHighAccuracy: true,
-                      timeout: 10000,
-                      maximumAge: 0
-                    };
-
-                    navigator.geolocation.getCurrentPosition(
-                      (position) => {
-                        const pos: [number, number] = [
-                          position.coords.latitude,
-                          position.coords.longitude,
-                        ];
-
-                        if (!isValidCoordinate(pos[0], pos[1])) {
-                          toast({
-                            title: "Lỗi",
-                            description: "Không thể xác định chính xác vị trí của bạn.",
-                            variant: "destructive"
-                          });
-                          return;
-                        }
-
-                        if (isRoutingMode && !startLocation) {
-                          setStartLocation(pos);
-                          toast({
-                            title: "Điểm đi",
-                            description: "Đã chọn vị trí hiện tại làm điểm bắt đầu",
-                          });
-                        } else {
-                          setSelectedLocation({
-                            id: 'current-location',
-                            name: 'Vị trí của bạn',
-                            nameEn: 'Your location',
-                            type: 'current_location',
-                            description: `Độ chính xác: ${Math.round(position.coords.accuracy)}m`,
-                            descriptionEn: `Accuracy: ${Math.round(position.coords.accuracy)}m`,
-                            latitude: pos[0].toString(),
-                            longitude: pos[1].toString(),
-                            imageUrl: '',
-                            isActive: true
-                          });
-
-                          // Center map on current location with appropriate zoom based on accuracy
-                          const map = document.querySelector('.leaflet-container')?._leaflet_map;
-                          if (map) {
-                            const zoomLevel = position.coords.accuracy < 100 ? 17 : 15;
-                            map.flyTo(pos, zoomLevel);
-                          }
-                        }
-                      },
-                      (error) => {
-                        console.error('Geolocation error:', error);
-                        let errorMessage = "Không thể xác định vị trí của bạn.";
-
-                        switch(error.code) {
-                          case error.PERMISSION_DENIED:
-                            errorMessage = "Vui lòng cho phép truy cập vị trí để sử dụng tính năng này.";
-                            break;
-                          case error.POSITION_UNAVAILABLE:
-                            errorMessage = "Không thể xác định vị trí. Vui lòng thử lại sau.";
-                            break;
-                          case error.TIMEOUT:
-                            errorMessage = "Hết thời gian chờ xác định vị trí. Vui lòng thử lại.";
-                            break;
-                        }
-
-                        toast({
-                          title: "Lỗi",
-                          description: errorMessage,
-                          variant: "destructive"
-                        });
-                      },
-                      options
-                    );
-                  }
-                }}
+                onClick={handleLocationClick}
               >
                 <Navigation className="h-4 w-4" />
               </Button>

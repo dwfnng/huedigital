@@ -103,7 +103,7 @@ export default function LiveDataPage() {
 
   return (
     <div className="container mx-auto p-4">
-      <motion.div 
+      <motion.div
         className="max-w-5xl mx-auto"
         variants={container}
         initial="hidden"
@@ -130,7 +130,7 @@ export default function LiveDataPage() {
                 {weather && !weatherError ? (
                   <div>
                     <div className="flex items-center gap-4">
-                      <img 
+                      <img
                         src={`https://openweathermap.org/img/wn/${weather.icon}@2x.png`}
                         alt={weather.description}
                         className="w-16 h-16"
