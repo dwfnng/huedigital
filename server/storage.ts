@@ -186,7 +186,7 @@ export class MemStorage implements IStorage {
         type: "heritage_site",
         latitude: "16.4700",
         longitude: "107.5792",
-        imageUrl: "/media/images/thai-hoa.jpg",
+        imageUrl: "https://vcdn1-vnexpress.vnecdn.net/2024/11/23/TH1-1732317996.jpg?w=680&h=0&q=100&dpr=2&fit=crop&s=N03QDtbuvRQMRhZdvbUHEA",
         isActive: true
       },
       {
@@ -198,7 +198,7 @@ export class MemStorage implements IStorage {
         type: "tomb",
         latitude: "16.4520",
         longitude: "107.5740",
-        imageUrl: "/media/images/lang-dong-khanh.jpg",
+        imageUrl: "https://encrypted-tbn0.gstatic.com/licensed-image?q=tbn:ANd9GcTka1i7fkSh0r4UKEvk2-tS3QAt__sgEust976lZHKNhm08xPALgwpPaWKeW5389ZEKtZVE_kK3GFwg-jdHizuJJD4HaVUeoa7IcFmnwg",
         isActive: true
       },
       {
@@ -210,7 +210,7 @@ export class MemStorage implements IStorage {
         type: "tomb",
         latitude: "16.4430",
         longitude: "107.5650",
-        imageUrl: "/media/images/lang-duc-duc.jpg",
+        imageUrl: "https://encrypted-tbn1.gstatic.com/licensed-image?q=tbn:ANd9GcSJ9u3v25j7VZyxKX8FmRTeKgf4iznjQ0EUFrBT-W3NyMgH9kLnCLiUkoP47Y8PsbkwbwP0LAoQKZc7CqBCvVjoEkS9Qsykwk3wxpE-4g",
         isActive: true
       },
       {
@@ -222,7 +222,7 @@ export class MemStorage implements IStorage {
         type: "heritage_site",
         latitude: "16.4660",
         longitude: "107.5920",
-        imageUrl: "/media/images/tran-binh-dai.jpg",
+        imageUrl: "https://upload.wikimedia.org/wikipedia/commons/8/8a/Tr%E1%BA%A5n_B%C3%ACnh_%C4%91%C3%A0i.JPG",
         isActive: true
       },
       {
@@ -234,7 +234,7 @@ export class MemStorage implements IStorage {
         type: "heritage_site",
         latitude: "16.4695",
         longitude: "107.5789",
-        imageUrl: "/media/images/tang-thu-lau.jpg",
+        imageUrl: "https://khamphahue.com.vn/Portals/0/Khamphahue_Ho-Hoc-hai_TangThoLau.jpg",
         isActive: true
       },
       {
@@ -246,7 +246,7 @@ export class MemStorage implements IStorage {
         type: "heritage_site",
         latitude: "16.4710",
         longitude: "107.5830",
-        imageUrl: "/media/images/phu-van-lau.jpg",
+        imageUrl: "https://lh5.googleusercontent.com/p/AF1QipN8iUxg-dK-i0XlrCRK80iZBKk75ucVBAkFG02n=w675-h390-n-k-no",
         isActive: true
       },
       {
@@ -258,7 +258,7 @@ export class MemStorage implements IStorage {
         type: "temple",
         latitude: "16.4630",
         longitude: "107.5780",
-        imageUrl: "/media/images/van-mieu.jpg",
+        imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbxovf0kQquyiDZ769sq4YDrBTNZZ-emv5rg&s",
         isActive: true
       },
       {
@@ -270,7 +270,7 @@ export class MemStorage implements IStorage {
         type: "temple",
         latitude: "16.4640",
         longitude: "107.5770",
-        imageUrl: "/media/images/vo-mieu.jpg",
+        imageUrl: "https://codohue.vn/wp-content/uploads/2024/08/van-mieu-hue-codohue.vn_.jpg",
         isActive: true
       },
       {
@@ -282,7 +282,7 @@ export class MemStorage implements IStorage {
         type: "heritage_site",
         latitude: "16.4520",
         longitude: "107.5730",
-        imageUrl: "/media/images/ho-quyen.jpg",
+        imageUrl: "https://statics.vinpearl.com/ho-quyen-thump_1633681558.jpg",
         isActive: true
       },
       {
@@ -294,7 +294,7 @@ export class MemStorage implements IStorage {
         type: "heritage_site",
         latitude: "16.5150",
         longitude: "107.6280",
-        imageUrl: "/media/images/cau-ngoi-thanh-toan.jpg",
+        imageUrl: "https://mia.vn/media/uploads/blog-du-lich/cau-ngoi-thanh-toan-240-nam-gan-lien-cung-xu-hue-15-1638131609.jpg",
         isActive: true
       },
       {
@@ -306,7 +306,7 @@ export class MemStorage implements IStorage {
         type: "craft_village",
         latitude: "16.5680",
         longitude: "107.6850",
-        imageUrl: "/media/images/lang-phuoc-tich.jpg",
+        imageUrl: "https://mia.vn/media/uploads/blog-du-lich/Lang-co-Phuoc-Tich-V%E1%BA%BB-dep-co-kinh-hang-tram-nam-tuoi-cua-xu-Hue-09-1638906275.jpg",
         isActive: true
       },
       {
@@ -318,7 +318,7 @@ export class MemStorage implements IStorage {
         type: "temple",
         latitude: "16.1970",
         longitude: "107.8500",
-        imageUrl: "/media/images/thien-vien-truc-lam.jpg",
+        imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWaNS1sPnnY6W1ZqilWuCGGwFsNwDsZyX32w&s",
         isActive: true
       },
       {
@@ -342,7 +342,7 @@ export class MemStorage implements IStorage {
         type: "heritage_site",
         latitude: "16.4715",
         longitude: "107.5828",
-        imageUrl: "/media/images/ky-dai.jpg",
+        imageUrl: "https://statics.vinpearl.com/ky-dai-thump_1633167442.jpg",
         isActive: true
       },
       {
@@ -354,7 +354,7 @@ export class MemStorage implements IStorage {
         type: "heritage_site",
         latitude: "16.4680",
         longitude: "107.5790",
-        imageUrl: "/media/images/quoc-tu-giam.jpg",
+        imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlbtSK-_daUuiwIXoCPlXXs7QhsfGsDydbAg&s",
         isActive: true
       },
       {
@@ -366,7 +366,7 @@ export class MemStorage implements IStorage {
         type: "museum",
         latitude: "16.4695",
         longitude: "107.5793",
-        imageUrl: "/media/images/long-an.jpg",
+        imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTO3kijQd95bwf4J2a0yQwxPzNjzPVHKAqmgA&s",
         isActive: true
       },
       {
@@ -378,7 +378,7 @@ export class MemStorage implements IStorage {
         type: "natural_site",
         latitude: "16.4680",
         longitude: "107.5790",
-        imageUrl: "/media/images/song-huong.jpg",
+        imageUrl: "https://media.vietravel.com/images/Content/du-lich-song-huong-hue-1.jpg",
         isActive: true
       },
       {
@@ -390,7 +390,7 @@ export class MemStorage implements IStorage {
         type: "natural_site",
         latitude: "16.4510",
         longitude: "107.5670",
-        imageUrl: "/media/images/ngu-binh.jpg",
+        imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSov7SXHqby9CoE00PLgfysflCvit9nd4uTEQ&s",
         isActive: true
       },
       {
@@ -402,7 +402,7 @@ export class MemStorage implements IStorage {
         type: "craft_village",
         latitude: "16.4180",
         longitude: "107.5350",
-        imageUrl: "/media/images/lang-huong.jpg",
+        imageUrl: "https://static.vinwonders.com/production/lang-huong-thuy-xuan-1.jpg",
         isActive: true
       },
       {
@@ -414,19 +414,7 @@ export class MemStorage implements IStorage {
         type: "craft_village",
         latitude: "16.4720",
         longitude: "107.5840",
-        imageUrl: "/media/images/lang-non.jpg",
-        isActive: true
-      },
-      {
-        id: this.getNextId(),
-        name: "Điện Long An",
-        nameEn: "Long An Palace",
-        description: "Điện Long An được xây dựng năm 1845 dưới thời vua Thiệu Trị. Hiện nay là Bảo tàng Mỹ thuật Cung đình Huế, trưng bày nhiều hiện vật quý về nghệ thuật cung đình.",
-        descriptionEn: "Built in 1845 under Emperor Thieu Tri, Long An Palace now houses the Museum of Royal Fine Arts, displaying precious royal art artifacts.",
-        type: "museum",
-        latitude: "16.4695",
-        longitude: "107.5793",
-        imageUrl: "/media/images/long-an.jpg",
+        imageUrl: "https://vietnamtourism.vn//imguploads/tourist/58Langnonphucam02.jpg",
         isActive: true
       },
       {
@@ -438,7 +426,7 @@ export class MemStorage implements IStorage {
         type: "palace",
         latitude: "16.4700",
         longitude: "107.5792",
-        imageUrl: "/media/images/thai-hoa.jpg",
+        imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_33uK-Nsg3WFMxnhy_3bcnQT0ur3Z89ebXg&s",
         isActive: true
       },
       {
@@ -450,7 +438,7 @@ export class MemStorage implements IStorage {
         type: "landscape",
         latitude: "16.4705",
         longitude: "107.5785",
-        imageUrl: "/media/images/tinh-tam.jpg",
+        imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/H%E1%BB%93_T%E1%BB%8Bnh_T%C3%A2m1.jpg/1200px-H%E1%BB%93_T%E1%BB%8Bnh_T%C3%A2m1.jpg",
         isActive: true
       },
       {
@@ -462,7 +450,7 @@ export class MemStorage implements IStorage {
         type: "artifact",
         latitude: "16.4697",
         longitude: "107.5799",
-        imageUrl: "/media/images/cuu-vi-than-cong.jpg",
+        imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQudh0OM6mi0ZOF5T_Fn8VO3Re9VxLF7MH8g&s",
         isActive: true
       },
       {
@@ -474,7 +462,7 @@ export class MemStorage implements IStorage {
         type: "tomb",
         latitude: "16.4198",
         longitude: "107.5438",
-        imageUrl: "/media/images/lang-gia-long.jpg",
+        imageUrl: "https://vcdn1-vnexpress.vnecdn.net/2023/01/07/gl1-1673086170-1673097241.jpg?w=1200&h=0&q=100&dpr=1&fit=crop&s=vuu2Z6cjQ-AJ_SKMZu1jYw",
         isActive: true
       },
       {
@@ -486,7 +474,7 @@ export class MemStorage implements IStorage {
         type: "tomb",
         latitude: "16.4470",
         longitude: "107.5530",
-        imageUrl: "/media/images/lang-minh-mang.jpg",
+        imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQV78paYXVERFtx-uYNz8WpwFjMnJ2DZyrGSg&s",
         isActive: true
       },
       {
@@ -498,7 +486,7 @@ export class MemStorage implements IStorage {
         type: "tomb",
         latitude: "16.4530",
         longitude: "107.5570",
-        imageUrl: "/media/images/lang-thieu-tri.jpg",
+        imageUrl: "https://encrypted-tbn0.gstatic.com/licensed-image?q=tbn:ANd9GcSj1ntfnRI4nGgJQ6wDF7PBXgh9y4JkaJ3zAhSLGrA6aCYfXUwLmVw_3ou0UyRDzVFp71fnF3_vT3DbJvPibVA_xJI_y_wPnGF7upZBbg",
         isActive: true
       },
       {
@@ -510,7 +498,7 @@ export class MemStorage implements IStorage {
         type: "tomb",
         latitude: "16.4200",
         longitude: "107.5780",
-        imageUrl: "/media/images/lang-khai-dinh.jpg",
+        imageUrl: "https://encrypted-tbn0.gstatic.com/licensed-image?q=tbn:ANd9GcSChLHDK5hKIz60G-A3T0Iv2J_5KJV0tZIfCfmvSWJc4YxlXUxORHs-bDNLyM3WSrfRIDGI0_THiBqe-ergwmMHWlgNdsSMqPPmxv_8fw",
         isActive: true
       },
       {
@@ -522,7 +510,7 @@ export class MemStorage implements IStorage {
         type: "tomb",
         latitude: "16.4570",
         longitude: "107.5530",
-        imageUrl: "/media/images/lang-tu-duc.jpg",
+        imageUrl: "https://encrypted-tbn0.gstatic.com/licensed-image?q=tbn:ANd9GcSf8FNpn0j6M087opwUes3o0sZiV9e7bN81U_b-A7kP1_IhdpZCAcaJCVatPhN1MeLtIhPcXE50KcNrAc39AzhhRH1yoJuHzwYZKIyqWQ",
         isActive: true
       },
       {
@@ -534,7 +522,7 @@ export class MemStorage implements IStorage {
         type: "communal_house",
         latitude: "16.4720",
         longitude: "107.5840",
-        imageUrl: "/media/images/dinh-phu-xuan.jpg",
+        imageUrl: "https://images2.thanhnien.vn/528068263637045248/2023/5/23/phu-xuan-2-1684862570091144596732.jpg",
         isActive: true
       },
       {
@@ -546,19 +534,7 @@ export class MemStorage implements IStorage {
         type: "government",
         latitude: "16.4690",
         longitude: "107.5795",
-        imageUrl: "/media/images/vien-co-mat.jpg",
-        isActive: true
-      },
-      {
-        id: this.getNextId(),
-        name: "Văn Miếu",
-        nameEn: "Temple of Literature",
-        description: "Văn Miếu Huế được xây dựng năm 1808 thời vua Gia Long, thờ Khổng Tử và các bậc hiền triết. Nơi đây là biểu tượng của nền giáo dục Nho học và tổ chức các kỳ thi Hương của triều Nguyễn.",
-        descriptionEn: "Hue Temple of Literature was built in 1808 under Emperor Gia Long, dedicated to Confucius and other sages. It symbolizes Confucian education and hosted the regional examinations of the Nguyen Dynasty.",
-        type: "temple",
-        latitude: "16.4630",
-        longitude: "107.5780",
-        imageUrl: "/media/images/van-mieu.jpg",
+        imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVfPFvMKqmzNRUzNt8d1o2hLfxVaugqMKCHw&s",
         isActive: true
       },
       {
@@ -570,7 +546,7 @@ export class MemStorage implements IStorage {
         type: "ritual",
         latitude: "16.4510",
         longitude: "107.5670",
-        imageUrl: "/media/images/dan-nam-giao.jpg",
+        imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJiPOOT9dF0cfzprS4nXMX_1Uurc9ROI3PXQ&s",
         isActive: true
       },
       {
@@ -582,7 +558,7 @@ export class MemStorage implements IStorage {
         type: "temple",
         latitude: "16.4180",
         longitude: "107.5350",
-        imageUrl: "/media/images/dien-hon-chen.jpg",
+        imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8HusbOWALTtfuJ4PJkAxpqYrr0TKbZwcYMw&s",
         isActive: true
       },
       {
@@ -594,7 +570,7 @@ export class MemStorage implements IStorage {
         type: "temple",
         latitude: "16.4539",
         longitude: "107.5537",
-        imageUrl: "/media/images/thien-mu.jpg",
+        imageUrl: "https://res.klook.com/image/upload/fl_lossy.progressive,w_432,h_288,c_fill,q_85/activities/sirwd9qmevlefg7p0t36.jpg",
         isActive: true
       },
       {
@@ -606,7 +582,7 @@ export class MemStorage implements IStorage {
         type: "viewpoint",
         latitude: "16.4341",
         longitude: "107.5514",
-        imageUrl: "/media/images/vong-canh.jpg",
+        imageUrl: "https://encrypted-tbn3.gstatic.com/licensed-image?q=tbn:ANd9GcTUrCbvHSapM1_Z4-LjnLjyD8liPAF3vW0VOZc56sX57TTffj5NWBu8Fk_KAkIibE9nAlTYyPXMvUMSUBjSLVhw5FCqQqUmrsn3UXhY4A",
         isActive: true
       },
       {
@@ -618,7 +594,7 @@ export class MemStorage implements IStorage {
         type: "natural_site",
         latitude: "16.5637",
         longitude: "107.4401",
-        imageUrl: "/media/images/tam-giang.jpg",
+        imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTUjkf4ipJrrqbgF2gx_pTMOUiuaoFR_u2v6A&s",
         isActive: true
       },
       {
@@ -630,7 +606,7 @@ export class MemStorage implements IStorage {
         type: "beach",
         latitude: "16.2314",
         longitude: "108.0921",
-        imageUrl: "/media/images/lang-co.jpg",
+        imageUrl: "https://ik.imagekit.io/tvlk/blog/2023/08/bien-lang-co-4.jpg",
         isActive: true
       },
       {
@@ -642,7 +618,7 @@ export class MemStorage implements IStorage {
         type: "religious",
         latitude: "16.4672",
         longitude: "107.5902",
-        imageUrl: "/media/images/phu-cam.jpg",
+        imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTT80mGosVD6vMBt2bV5JfmIh2vNI0pwbfzSg&s",
         isActive: true
       },
       {
@@ -654,7 +630,7 @@ export class MemStorage implements IStorage {
         type: "market",
         latitude: "16.4712",
         longitude: "107.5827",
-        imageUrl: "/media/images/dong-ba.jpg",
+        imageUrl: "https://dulichdanangcity.vn/blog/wp-content/uploads/2022/10/cho-dong-ba.jpg",
         isActive: true
       },
       {
@@ -666,7 +642,7 @@ export class MemStorage implements IStorage {
         type: "craft_village",
         latitude: "16.5123",
         longitude: "107.5934",
-        imageUrl: "/media/images/thanh-tien.jpg",
+        imageUrl: "https://media.vietnamplus.vn/images/7255a701687d11cb8c6bbc58a6c80785c456f4a9e3b94b08b3c1e2a3c3a48efa123cf82ad57430307e0facce36df6b9e4f9efb0c8972265f49d8f86164867992/1506hoagiay1.jpg",
         isActive: true
       },
       {
@@ -678,7 +654,7 @@ export class MemStorage implements IStorage {
         type: "heritage_site",
         latitude: "16.4682",
         longitude: "107.5863",
-        imageUrl: "/media/images/phu-de.jpg",
+        imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRM07GJLI2y1vRDBzLZbL29EnJ-GcJBniRqhg&s",
         isActive: true
       },
       {
@@ -690,7 +666,7 @@ export class MemStorage implements IStorage {
         type: "retreat",
         latitude: "16.4200",
         longitude: "107.5500",
-        imageUrl: "/media/images/bao-son.jpg",
+        imageUrl: "https://fansipanlegend.sunworld.vn/wp-content/uploads/2024/05/anh-chup-chua-tu-tren-cao.jpg",
         isActive: true
       },
       {
@@ -702,7 +678,7 @@ export class MemStorage implements IStorage {
         type: "temple",
         latitude: "16.4123",
         longitude: "107.5432",
-        imageUrl: "/media/images/huyen-khong.jpg",
+        imageUrl: "https://media-cdn-v2.laodong.vn/Storage/NewsPortal/2023/5/27/1197713/Huyen-Khong-Son-Thuo.jpeg",
         isActive: true
       },
       {
@@ -714,7 +690,7 @@ export class MemStorage implements IStorage {
         type: "abandoned_site",
         latitude: "16.3876",
         longitude: "107.5439",
-        imageUrl: "/media/images/thuy-tien.jpg",
+        imageUrl: "https://www.homepaylater.vn/static/c6b1af1d4036b16e1b6df9382fa2a7b0/298a3/1_tim_hieu_ve_cong_vien_ho_thuy_tien_b4d2e5f367.jpg",
         isActive: true
       },
       {
@@ -726,7 +702,7 @@ export class MemStorage implements IStorage {
         type: "natural_site",
         latitude: "16.1897",
         longitude: "107.8512",
-        imageUrl: "/media/images/nhi-ho.jpg",
+        imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKQUu_5RMMQPkPrYVoFKiCTtH3sPWwBWrSkQ&s",
         isActive: true
       },
       {
@@ -738,7 +714,7 @@ export class MemStorage implements IStorage {
         type: "peak",
         latitude: "16.1950",
         longitude: "107.8550",
-        imageUrl: "/media/images/hon-vuon.jpg",
+        imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSU0SEizp_Xb3EsUWnYser4o3Y4O8Nk_xsH5Q&s",
         isActive: true
       },
       {
@@ -750,7 +726,7 @@ export class MemStorage implements IStorage {
         type: "national_park",
         latitude: "16.1970",
         longitude: "107.8500",
-        imageUrl: "/media/images/bach-ma.jpg",
+        imageUrl: "https://tourdanangcity.vn/wp-content/uploads/2023/03/nui-bach-ma-Copy.jpg.jpg",
         isActive: true
       },
       {
@@ -762,7 +738,7 @@ export class MemStorage implements IStorage {
         type: "temple",
         latitude: "16.4324",
         longitude: "107.5612",
-        imageUrl: "/media/images/tu-hieu.jpg",
+        imageUrl: "https://lh3.googleusercontent.com/proxy/4W3iodLpzexGXc_OFIeBMJfZbkrSo1BZMXIoqrsYXtRD__qbdHPqOzUDRXN0iIJN1biMEDlOlqZ8OeMTvisFD8KrJDUro0LDvkKaeGkCXbtC8TGik5RTGhPDC4Y",
         isActive: true
       },
       {
@@ -774,7 +750,7 @@ export class MemStorage implements IStorage {
         type: "heritage_site",
         latitude: "16.4892",
         longitude: "107.6234",
-        imageUrl: "/media/images/la-chu.jpg",
+        imageUrl: "https://dulichdanangcity.vn/blog/wp-content/uploads/2022/07/lang-la-chu.jpg",
         isActive: true
       },
       {
