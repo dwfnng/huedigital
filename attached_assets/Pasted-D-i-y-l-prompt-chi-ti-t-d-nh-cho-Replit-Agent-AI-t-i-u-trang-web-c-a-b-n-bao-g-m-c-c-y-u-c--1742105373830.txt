@@ -1,0 +1,96 @@
+Dưới đây là prompt chi tiết dành cho Replit Agent AI để tối ưu trang web của bạn, bao gồm các yêu cầu về giao diện, màu sắc, hình nền, cách phân chia bố cục, và sửa lỗi hiển thị. Tôi cũng bổ sung hình ảnh họa tiết và code minh họa.  
+
+---
+
+**Prompt cho Replit Agent AI:**  
+
+### **Mô tả dự án:**  
+Tôi đang phát triển một trang web về **cố đô Huế** với nhiều tính năng như bản đồ số, kho học liệu số, thời tiết theo thời gian thực, đặt vé du lịch, trò chơi nhập vai, trò chuyện AI, v.v.  
+
+Hiện tại, giao diện của trang web chưa hoàn thiện và cần được tối ưu để tăng trải nghiệm người dùng. Các vấn đề bao gồm màu sắc chưa hài hòa, bố cục khó nhìn, hình nền còn trống trải, một số hình ảnh lỗi hoặc chưa phù hợp.  
+
+### **Công việc cần thực hiện:**  
+
+#### **1. Cải thiện trò chơi nhập vai "Vua Gia Long"**
+- Làm gọn lại kịch bản, giảm bớt nội dung dư thừa để người chơi không bị quá tải thông tin.
+- Tăng tính tương tác bằng hiệu ứng hover, animation nhẹ để giúp trải nghiệm mượt mà hơn.
+- Tối ưu giao diện, giúp các thành phần như hộp thoại, nút điều khiển, nhân vật hiển thị rõ ràng hơn.
+
+#### **2. Tối ưu lại giao diện tổng thể của trang web**
+- **Cải thiện cách phân chia bố cục**:  
+  - Ở trang **triển lãm**, phần **header giới thiệu** quá mờ nhạt và chưa tách biệt với nội dung bên dưới. Cần làm rõ hơn sự phân chia giữa:
+    - Header
+    - Nội dung triển lãm
+    - Nút quay lại  
+  - Ở trang **kho học liệu số**, màu nền và màu nội dung chưa phù hợp, gây chói mắt. Cần làm màu tổng thể **trầm hơn một chút** để dễ nhìn hơn.
+
+- **Thêm họa tiết, hình ảnh vào các trang tính năng khác**:  
+  - Hiện tại chỉ có trang chủ được bổ sung họa tiết và hình ảnh, còn **các trang tính năng khác vẫn quá đơn điệu**.  
+  - **Ví dụ:**  
+    - Trang **du lịch**: Hiện tại bố cục chưa đẹp, nội dung quá chìm so với nền.  
+    - Trang **trò chuyện AI**: Nền quá trống, không có họa tiết nào, header quá đơn điệu.  
+  - **Giải pháp**:  
+    - Sử dụng **họa tiết cung đình** hoặc **trống đồng** làm background nhẹ ở các trang tính năng.  
+    - Chỉnh header của từng trang để dễ phân biệt với phần nội dung bên dưới.  
+
+#### **3. Cải thiện trải nghiệm người dùng**
+- Xóa **thông báo hiện bên góc dưới bên phải màn hình** mỗi khi nhấn vào một địa điểm trên **bản đồ số**, vì nó gây rối rắm và che mất nội dung quan trọng.  
+- Khi nhấn nút **Back của trình duyệt**, cần trả về **trang trước đó vừa ấn vào**, thay vì tải lại trang từ đầu.  
+
+---
+
+### **Tài nguyên bổ sung:**
+
+#### **Hình ảnh họa tiết cung đình Huế làm background**  
+*(Có thể sử dụng hình ảnh này làm background nhẹ để tránh trống trải)*  
+📂 **Tệp hình ảnh:** `/mnt/data/A_seamless_background_pattern_inspired_by_Vietname.png`
+
+---
+
+### **Mã minh họa**  
+
+#### **1. Thêm họa tiết nền vào các trang tính năng bằng Tailwind CSS**
+```html
+<div class="bg-[url('/mnt/data/A_seamless_background_pattern_inspired_by_Vietname.png')] bg-cover bg-opacity-10">
+  <div class="container mx-auto p-6">
+    <h1 class="text-3xl font-bold text-center text-yellow-800">Kho Học Liệu Số</h1>
+    <p class="text-center text-gray-700">Khám phá di sản văn hóa Huế qua tư liệu số.</p>
+  </div>
+</div>
+```
+
+#### **2. Cải thiện header để phân biệt với nội dung bên dưới**
+```html
+<header class="bg-yellow-900 text-white py-4 shadow-lg">
+  <div class="container mx-auto flex justify-between items-center">
+    <h1 class="text-2xl font-semibold">Triển lãm Di Sản</h1>
+    <button class="bg-yellow-700 px-4 py-2 rounded hover:bg-yellow-600">Quay lại</button>
+  </div>
+</header>
+```
+
+#### **3. Xóa thông báo rối rắm khi click vào bản đồ số**
+```javascript
+document.querySelectorAll('.map-location').forEach(location => {
+  location.addEventListener('click', (event) => {
+    event.preventDefault(); // Ngăn chặn popup
+  });
+});
+```
+
+#### **4. Giữ lại lịch sử khi nhấn nút Back**
+```javascript
+window.addEventListener("popstate", function (event) {
+  window.location.href = document.referrer; // Trả về trang trước đó
+});
+```
+
+---
+
+### **Mục tiêu cuối cùng**
+✅ Giao diện dễ nhìn hơn, màu sắc hài hòa  
+✅ Các trang tính năng không còn đơn điệu, có họa tiết nền  
+✅ Bố cục rõ ràng, dễ phân biệt các phần  
+✅ Cải thiện trải nghiệm người dùng khi thao tác trên web  
+
+Hãy thực hiện các điều chỉnh trên và tối ưu giao diện để trang web đạt chất lượng cao nhất! 🚀

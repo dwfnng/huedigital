@@ -548,6 +548,7 @@ const ExhibitionDetail = ({ item, onBack }: { item: typeof exhibitionItems[0], o
 export default function ExhibitionPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedItem, setSelectedItem] = useState<typeof exhibitionItems[0] | null>(null);
+  const [selectedTab, setSelectedTab] = useState<'3d-ar' | '3d-360' | '3d-model'>('3d-ar');
 
   // Filter items based on search only
   const filteredItems = exhibitionItems.filter(item => {
@@ -560,49 +561,128 @@ export default function ExhibitionPage() {
   });
 
   return (
-    <div className="container mx-auto px-4 py-6">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-[#B5935A]">Triển lãm 3D/AR</h1>
-        <p className="text-muted-foreground mt-2">
-          Khám phá không gian 3D và thực tế ảo tăng cường của các di tích lịch sử và kiến trúc Huế
-        </p>
-      </div>
-
-      {!selectedItem ? (
-        <>
-          <ExhibitionFilter 
-            onSearch={setSearchTerm}
-            searchTerm={searchTerm}
-          />
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredItems.map(item => (
-              <div key={item.id} onClick={() => setSelectedItem(item)} className="cursor-pointer">
-                <ExhibitionCard item={item} />
+    <div className="min-h-screen relative">
+      {/* Background pattern overlay */}
+      <div className="absolute inset-0 bg-[url('/imperial-pattern.svg')] bg-repeat opacity-10 pointer-events-none"></div>
+      
+      {/* Imperial corner decorations */}
+      <div className="absolute top-0 left-0 w-48 h-48 bg-[url('/corner-decoration.svg')] bg-no-repeat opacity-30 pointer-events-none"></div>
+      <div className="absolute top-0 right-0 w-48 h-48 bg-[url('/corner-decoration.svg')] bg-no-repeat transform scale-x-[-1] opacity-30 pointer-events-none"></div>
+      <div className="absolute bottom-0 left-0 w-48 h-48 bg-[url('/corner-decoration.svg')] bg-no-repeat transform scale-y-[-1] opacity-30 pointer-events-none"></div>
+      <div className="absolute bottom-0 right-0 w-48 h-48 bg-[url('/corner-decoration.svg')] bg-no-repeat transform scale-x-[-1] scale-y-[-1] opacity-30 pointer-events-none"></div>
+      
+      <div className="container mx-auto px-4 py-6 relative z-10">
+        {!selectedItem ? (
+          <div className="bg-[#F5E1A4]/30 dark:bg-zinc-900/50 backdrop-blur-sm py-8 rounded-lg">
+            {/* Imperial-style header */}
+            <div className="bg-[#3A1A1A]/90 backdrop-blur-md text-white p-6 rounded-t-xl border border-[#8D6A3F]/50 shadow-lg">
+              <div className="max-w-3xl mx-auto text-center">
+                <h1 className="text-4xl md:text-5xl font-bold mb-2 text-[#F5E1A4]">
+                  3D/AR EXHIBITION
+                </h1>
+                <p className="text-white/70 mb-2">HOÀNG THÀNH HUẾ - HISTORICAL SITE</p>
+                <div className="w-32 h-0.5 bg-gradient-to-r from-transparent via-[#C49A44] to-transparent mx-auto my-4"></div>
+                <p className="mt-4 text-white/80">
+                  Khám phá không gian 3D và thực tế ảo tăng cường của các di tích lịch sử và kiến trúc Huế
+                </p>
               </div>
-            ))}
-          </div>
-
-          {filteredItems.length === 0 && (
-            <div className="text-center py-12">
-              <p className="text-muted-foreground">Không tìm thấy kết quả phù hợp với bộ lọc hiện tại.</p>
-              <Button 
-                variant="link" 
-                onClick={() => {
-                  setSearchTerm('');
-                }}
-              >
-                Xóa tìm kiếm
-              </Button>
             </div>
-          )}
-        </>
-      ) : (
-        <ExhibitionDetail 
-          item={selectedItem} 
-          onBack={() => setSelectedItem(null)} 
-        />
-      )}
+            
+            {/* Filter section */}
+            <div className="bg-[#F5E1A4]/80 dark:bg-zinc-800/80 backdrop-blur-md py-4 px-6 border-x border-[#8D6A3F]/30">
+              <ExhibitionFilter 
+                onSearch={setSearchTerm}
+                searchTerm={searchTerm}
+              />
+            </div>
+            
+            {/* Exhibition categories */}
+            <div className="bg-[#6B2B2B]/90 backdrop-blur-md text-center p-6 border-x border-b border-[#8D6A3F]/30 rounded-b-xl shadow-lg mb-10">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+                <div 
+                  className="bg-[#3A1A1A]/60 hover:bg-[#3A1A1A]/80 transition-all p-5 rounded-lg border border-[#8D6A3F]/40 hover:border-[#C49A44] hover:shadow-md cursor-pointer group"
+                  onClick={() => setSelectedTab('3d-ar')}
+                >
+                  <div className="text-[#F5E1A4] font-bold text-xl md:text-2xl mb-1 group-hover:text-[#F5E1A4]">3D-AR</div>
+                  <div className="text-xs text-white/60 uppercase tracking-wider mb-3">EXHIBITION</div>
+                  <p className="text-sm text-white/70 line-clamp-3">
+                    Trải nghiệm thực tế ảo tăng cường giúp bạn khám phá di tích ngay tại vị trí của mình
+                  </p>
+                </div>
+                
+                <div 
+                  className="bg-[#3A1A1A]/60 hover:bg-[#3A1A1A]/80 transition-all p-5 rounded-lg border border-[#8D6A3F]/40 hover:border-[#C49A44] hover:shadow-md cursor-pointer group"
+                  onClick={() => setSelectedTab('3d-360')}
+                >
+                  <div className="text-[#F5E1A4] font-bold text-xl md:text-2xl mb-1 group-hover:text-[#F5E1A4]">3D 360°</div>
+                  <div className="text-xs text-white/60 uppercase tracking-wider mb-3">PANORAMIC VIEW</div>
+                  <p className="text-sm text-white/70 line-clamp-3">
+                    Khám phá không gian 360 độ của các di tích, đền đài và cung điện của cố đô Huế
+                  </p>
+                </div>
+                
+                <div 
+                  className="bg-[#3A1A1A]/60 hover:bg-[#3A1A1A]/80 transition-all p-5 rounded-lg border border-[#8D6A3F]/40 hover:border-[#C49A44] hover:shadow-md cursor-pointer group"
+                  onClick={() => setSelectedTab('3d-model')}
+                >
+                  <div className="text-[#F5E1A4] font-bold text-xl md:text-2xl mb-1 group-hover:text-[#F5E1A4]">3D Model</div>
+                  <div className="text-xs text-white/60 uppercase tracking-wider mb-3">EXHIBITION</div>
+                  <p className="text-sm text-white/70 line-clamp-3">
+                    Mô hình 3D chi tiết của các công trình kiến trúc lịch sử, giúp bạn hiểu rõ hơn về cấu trúc
+                  </p>
+                </div>
+              </div>
+              
+              <div className="mt-6">
+                <Button 
+                  variant="outline" 
+                  className="bg-[#C49A44]/10 border-[#C49A44]/30 text-[#F5E1A4] hover:bg-[#C49A44]/20 hover:text-white"
+                  onClick={() => window.history.back()}
+                >
+                  BACK
+                </Button>
+              </div>
+            </div>
+            
+            {/* Items Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredItems.map(item => (
+                <div 
+                  key={item.id} 
+                  onClick={() => setSelectedItem(item)} 
+                  className="cursor-pointer transition-transform hover:-translate-y-1 duration-300"
+                >
+                  <ExhibitionCard item={item} />
+                </div>
+              ))}
+            </div>
+
+            {filteredItems.length === 0 && (
+              <div className="text-center py-12 bg-white/70 dark:bg-zinc-800/70 rounded-lg backdrop-blur-sm">
+                <div className="w-16 h-16 mx-auto rounded-full bg-[#F5E1A4]/20 flex items-center justify-center mb-4">
+                  <Search className="h-8 w-8 text-[#8D6A3F]" />
+                </div>
+                <h3 className="text-xl font-medium text-[#6B2B2B]">Không tìm thấy kết quả</h3>
+                <p className="text-muted-foreground mt-2">Không tìm thấy kết quả phù hợp với bộ lọc hiện tại.</p>
+                <Button 
+                  variant="link" 
+                  className="text-[#8D6A3F] hover:text-[#6B2B2B] mt-2"
+                  onClick={() => {
+                    setSearchTerm('');
+                  }}
+                >
+                  Xóa tìm kiếm
+                </Button>
+              </div>
+            )}
+          </div>
+        ) : (
+          <ExhibitionDetail 
+            item={selectedItem} 
+            onBack={() => setSelectedItem(null)} 
+          />
+        )}
+      </div>
     </div>
   );
 }
