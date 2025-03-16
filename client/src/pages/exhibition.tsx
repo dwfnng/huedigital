@@ -26,7 +26,7 @@ import {
   Search,
   Layers3,
   History,
-  Cube,
+  Box as Cube,
   ImageIcon
 } from "lucide-react";
 

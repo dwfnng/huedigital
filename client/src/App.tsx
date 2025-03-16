@@ -18,7 +18,7 @@ import {
   ChevronUp, Library, Gamepad2, 
   MapPinned, Cloud, Ticket,
   MessageCircle, Upload, BookText,
-  Crown, Utensils
+  Crown, Utensils, Box3d
 } from 'lucide-react';
 
 // Pages
@@ -32,6 +32,7 @@ import TicketPage from "@/pages/ticket";
 import ContributePage from "@/pages/contribute";
 import LiveDataPage from "@/pages/live-data";
 import CulinaryPage from "@/pages/culinary";
+import ExhibitionPage from "@/pages/exhibition";
 import NotFound from "@/pages/not-found";
 import { useState, useEffect } from "react";
 
@@ -263,6 +264,7 @@ function Router() {
       <Route path="/contribute" component={ContributePage} />
       <Route path="/live-data" component={LiveDataPage} />
       <Route path="/culinary" component={CulinaryPage} />
+      <Route path="/exhibition" component={ExhibitionPage} />
       <Route component={NotFound} />
     </Switch>
   );
