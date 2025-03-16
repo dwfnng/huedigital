@@ -32,7 +32,7 @@ import TicketPage from "@/pages/ticket";
 import ContributePage from "@/pages/contribute";
 import LiveDataPage from "@/pages/live-data";
 import CulinaryPage from "@/pages/culinary";
-import ExhibitionPage from "@/pages/exhibition";
+import ExhibitionPage from "@/pages/exhibition-new";
 import NotFound from "@/pages/not-found";
 import { useState, useEffect } from "react";
 

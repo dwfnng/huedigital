@@ -2,7 +2,6 @@ import { useState } from "react";
 import { 
   Card, 
   CardContent, 
-  CardFooter, 
   CardHeader, 
   CardTitle 
 } from "@/components/ui/card";
@@ -14,7 +13,6 @@ import { Separator } from "@/components/ui/separator";
 import { 
   Eye, 
   BookOpen, 
-  Info, 
   RotateCw, 
   Maximize, 
   Camera, 
@@ -27,7 +25,8 @@ import {
   Layers3,
   History,
   Box,
-  ImageIcon
+  ImageIcon,
+  ChevronLeft
 } from "lucide-react";
 
 // Exhibition data with 3D/AR content
@@ -124,99 +123,6 @@ const exhibitionItems = [
         imageUrl: "https://placehold.co/600x400/EEE/31343C?text=%C4%90%E1%BA%A1i+H%E1%BB%93ng+Chung"
       }
     ]
-  },
-  {
-    id: 4,
-    title: "Cung An Định",
-    titleEn: "An Dinh Palace",
-    description: "Cung An Định là cung điện của vua Khải Định và sau đó là nơi ở của vua Bảo Đại - vị vua cuối cùng của triều Nguyễn cùng với Hoàng hậu Nam Phương và các con.",
-    descriptionEn: "An Dinh Palace was the palace of King Khai Dinh and later the residence of King Bao Dai - the last king of the Nguyen Dynasty along with Queen Nam Phuong and their children.",
-    thumbnailUrl: "https://placehold.co/600x400/EEE/31343C?text=Cung+An+%C4%90%E1%BB%8Bnh",
-    panoramaUrl: "https://placehold.co/1200x800/EEE/31343C?text=Panorama+Cung+An+%C4%90%E1%BB%8Bnh",
-    model3dUrl: "https://placehold.co/600x400/EEE/31343C?text=3D+Model+Cung+An+%C4%90%E1%BB%8Bnh",
-    category: "palace",
-    createPeriod: "1917-1918",
-    dynasty: "Nguyễn",
-    location: "Phường Vĩnh Ninh, Thành phố Huế",
-    virtualTourAvailable: true,
-    arAvailable: false,
-    historyInfo: "Cung An Định được xây dựng vào những năm 1917-1918 dưới thời vua Khải Định. Sau khi vua Khải Định băng hà, cung điện trở thành nơi ở của Hoàng tử Vĩnh Thụy (sau này là vua Bảo Đại) cùng với Hoàng hậu Nam Phương và các con.",
-    architectureInfo: "Cung An Định là sự kết hợp hài hòa giữa kiến trúc phương Đông và phương Tây với ba tầng và một tháp cao ở trung tâm. Các chi tiết trang trí trên tường và trần đều thể hiện sự tinh xảo và nghệ thuật cao.",
-    restorationInfo: "Cung An Định đã được trùng tu và bảo tồn nhiều lần, đặc biệt là vào năm 2012 với sự hỗ trợ của chính phủ Pháp để khôi phục lại vẻ đẹp nguyên bản.",
-    artifacts: [
-      {
-        name: "Tranh khảm sành sứ",
-        description: "Những bức tranh khảm sành sứ trên tường thể hiện các cảnh vật thiên nhiên, lịch sử và văn học.",
-        imageUrl: "https://placehold.co/600x400/EEE/31343C?text=Tranh+kh%E1%BA%A3m+s%C3%A0nh+s%E1%BB%A9"
-      },
-      {
-        name: "Bộ sưu tập đồ cổ",
-        description: "Bộ sưu tập các đồ cổ của triều Nguyễn bao gồm đồ gốm, đồ đồng và các tác phẩm nghệ thuật.",
-        imageUrl: "https://placehold.co/600x400/EEE/31343C?text=B%E1%BB%99+s%C6%B0u+t%E1%BA%ADp+%C4%91%E1%BB%93+c%E1%BB%95"
-      }
-    ]
-  },
-  {
-    id: 5,
-    title: "Đại Nội Huế",
-    titleEn: "Hue Imperial City",
-    description: "Đại Nội Huế hay Hoàng thành Huế là một quần thể kiến trúc nằm trong Kinh thành Huế, được xây dựng dưới triều Nguyễn từ năm 1805 đến 1832.",
-    descriptionEn: "Hue Imperial City is an architectural complex located within the Hue Citadel, built under the Nguyen Dynasty from 1805 to 1832.",
-    thumbnailUrl: "https://placehold.co/600x400/EEE/31343C?text=%C4%90%E1%BA%A1i+N%E1%BB%99i+Hu%E1%BA%BF",
-    panoramaUrl: "https://placehold.co/1200x800/EEE/31343C?text=Panorama+%C4%90%E1%BA%A1i+N%E1%BB%99i+Hu%E1%BA%BF",
-    model3dUrl: "https://placehold.co/600x400/EEE/31343C?text=3D+Model+%C4%90%E1%BA%A1i+N%E1%BB%99i+Hu%E1%BA%BF",
-    category: "palace",
-    createPeriod: "1805-1832",
-    dynasty: "Nguyễn",
-    location: "Thành phố Huế",
-    virtualTourAvailable: true,
-    arAvailable: true,
-    historyInfo: "Đại Nội Huế được khởi công xây dựng vào năm 1805 dưới triều vua Gia Long và hoàn thành vào năm 1832 dưới triều vua Minh Mạng. Đây là nơi sinh sống và làm việc của 13 vị vua triều Nguyễn trong giai đoạn từ 1802 đến 1945.",
-    architectureInfo: "Đại Nội Huế được xây dựng theo nguyên tắc phong thủy và thể hiện triết lý âm dương của phương Đông. Quần thể này gồm nhiều công trình kiến trúc như Ngọ Môn, điện Thái Hòa, Tử Cấm Thành, Thế Miếu và nhiều cung điện khác.",
-    restorationInfo: "Đại Nội Huế đã bị tàn phá nặng nề trong chiến tranh, đặc biệt là trong cuộc chiến tranh Việt Nam. Nhiều dự án trùng tu đã được thực hiện kể từ khi UNESCO công nhận nó là Di sản Văn hóa Thế giới vào năm 1993.",
-    artifacts: [
-      {
-        name: "Ngọ Môn",
-        description: "Cổng chính vào Hoàng thành Huế, được xây dựng năm 1833 dưới triều vua Minh Mạng.",
-        imageUrl: "https://placehold.co/600x400/EEE/31343C?text=Ng%E1%BB%8D+M%C3%B4n"
-      },
-      {
-        name: "Cửu Đỉnh",
-        description: "Chín đỉnh đồng lớn đúc dưới triều vua Minh Mạng, tượng trưng cho quyền lực vương triều.",
-        imageUrl: "https://placehold.co/600x400/EEE/31343C?text=C%E1%BB%ADu+%C4%90%E1%BB%89nh"
-      }
-    ]
-  },
-  {
-    id: 6,
-    title: "Cầu Ngói Thanh Toàn",
-    titleEn: "Thanh Toan Bridge",
-    description: "Cầu Ngói Thanh Toàn là một cây cầu cổ được xây dựng từ thế kỷ 18 tại Huế, nằm ở xã Thanh Thủy Chánh, huyện Hương Thủy.",
-    descriptionEn: "Thanh Toan Bridge is an ancient bridge built in the 18th century in Hue, located in Thanh Thuy Chanh commune, Huong Thuy district.",
-    thumbnailUrl: "https://placehold.co/600x400/EEE/31343C?text=C%E1%BA%A7u+Ng%C3%B3i+Thanh+To%C3%A0n",
-    panoramaUrl: "https://placehold.co/1200x800/EEE/31343C?text=Panorama+C%E1%BA%A7u+Ng%C3%B3i+Thanh+To%C3%A0n",
-    model3dUrl: "https://placehold.co/600x400/EEE/31343C?text=3D+Model+C%E1%BA%A7u+Ng%C3%B3i+Thanh+To%C3%A0n",
-    category: "architecture",
-    createPeriod: "1776",
-    dynasty: "Nguyễn",
-    location: "Hương Thủy, Thừa Thiên Huế",
-    virtualTourAvailable: true,
-    arAvailable: false,
-    historyInfo: "Cầu Ngói Thanh Toàn được xây dựng vào năm 1776 dưới triều vua Lê Hiển Tông, bởi bà Trần Thị Đạo, vợ của một vị quan triều Lê. Cầu được xây nhằm tạo điều kiện thuận lợi cho việc đi lại và trao đổi hàng hóa của người dân trong vùng.",
-    architectureInfo: "Cầu Ngói Thanh Toàn có kiến trúc đặc trưng của một cây cầu ngói truyền thống Việt Nam, với mái ngói cong và những cột gỗ chắc chắn. Cầu dài khoảng 17m, rộng 4m và có mái che toàn bộ, tạo thành một không gian trú mưa nắng cho người dân và khách du lịch.",
-    restorationInfo: "Cầu Ngói Thanh Toàn đã trải qua nhiều đợt trùng tu vào các năm 1925, 1957, 1995 và gần đây nhất là năm 2016 để bảo tồn giá trị lịch sử và kiến trúc của nó.",
-    artifacts: [
-      {
-        name: "Bia đá",
-        description: "Bia đá ghi lại lịch sử xây dựng cầu và công đức của bà Trần Thị Đạo.",
-        imageUrl: "https://placehold.co/600x400/EEE/31343C?text=Bia+%C4%91%C3%A1"
-      },
-      {
-        name: "Bảo tàng nông cụ",
-        description: "Bảo tàng nhỏ gần cầu trưng bày các nông cụ truyền thống của người dân địa phương.",
-        imageUrl: "https://placehold.co/600x400/EEE/31343C?text=B%E1%BA%A3o+t%C3%A0ng+n%C3%B4ng+c%E1%BB%A5"
-      }
-    ]
   }
 ];
 
@@ -249,7 +155,7 @@ const ExhibitionFilter = ({
 // Exhibition card component
 const ExhibitionCard = ({ item }: { item: typeof exhibitionItems[0] }) => {
   return (
-    <Card className="hover-translate overflow-hidden">
+    <Card className="overflow-hidden">
       <CardHeader className="p-0">
         <div className="relative h-48 overflow-hidden">
           <img 
@@ -297,25 +203,8 @@ const ExhibitionCard = ({ item }: { item: typeof exhibitionItems[0] }) => {
              item.category === 'temple' ? 'Chùa/Đền' : 'Kiến trúc'}
           </Badge>
         </div>
-        
-        <p className="text-sm text-muted-foreground line-clamp-3">
-          {item.description}
-        </p>
+        <p className="text-sm text-muted-foreground line-clamp-3">{item.description}</p>
       </CardContent>
-      <CardFooter className="p-4 pt-0 flex justify-between items-center">
-        <div className="flex gap-2">
-          <Button variant="ghost" size="sm" className="text-[#B5935A] px-2">
-            <Info className="h-4 w-4" />
-          </Button>
-          <Button variant="ghost" size="sm" className="text-[#B5935A] px-2">
-            <Share2 className="h-4 w-4" />
-          </Button>
-        </div>
-        <Button variant="outline" size="sm" className="gap-1">
-          <Eye className="h-4 w-4" />
-          <span>Khám phá</span>
-        </Button>
-      </CardFooter>
     </Card>
   );
 };
@@ -338,7 +227,7 @@ const ExhibitionDetail = ({ item, onBack }: { item: typeof exhibitionItems[0], o
             onClick={onBack} 
             className="gap-2 bg-[#3A1A1A]/80 hover:bg-[#3A1A1A] text-[#F5E1A4] border-[#8D6A3F]/50 hover:border-[#C49A44]"
           >
-            <span className="text-[#F5E1A4]">←</span>
+            <ChevronLeft className="h-4 w-4" />
             <span>Quay lại</span>
           </Button>
           
@@ -432,174 +321,225 @@ const ExhibitionDetail = ({ item, onBack }: { item: typeof exhibitionItems[0], o
                   <RotateCw className="h-4 w-4" />
                   <span>Xoay</span>
                 </Button>
-              <Button variant="secondary" size="sm" className="gap-1 bg-black/50 hover:bg-black/70 text-white">
-                <Maximize className="h-4 w-4" />
-                <span>Toàn màn hình</span>
+                <Button 
+                  variant="secondary" 
+                  size="sm" 
+                  className="gap-1 bg-[#3A1A1A]/90 hover:bg-[#3A1A1A] text-[#F5E1A4] border border-[#8D6A3F]/50"
+                >
+                  <Maximize className="h-4 w-4" />
+                  <span>Toàn màn hình</span>
+                </Button>
+                <Button 
+                  variant="secondary" 
+                  size="sm" 
+                  className="gap-1 bg-[#3A1A1A]/90 hover:bg-[#3A1A1A] text-[#F5E1A4] border border-[#8D6A3F]/50"
+                >
+                  <Camera className="h-4 w-4" />
+                  <span>Chụp ảnh</span>
+                </Button>
+              </div>
+              <div className="absolute top-4 left-4">
+                <Badge 
+                  variant="secondary" 
+                  className="bg-[#3A1A1A]/90 text-[#F5E1A4] border border-[#8D6A3F]/50"
+                >
+                  Nhấn và kéo để xoay góc nhìn
+                </Badge>
+              </div>
+            </div>
+            <div className="flex justify-between">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="gap-1 bg-[#3A1A1A]/80 hover:bg-[#3A1A1A] text-[#F5E1A4] border-[#8D6A3F]/50"
+              >
+                <Download className="h-4 w-4" />
+                <span>Tải xuống hình ảnh</span>
               </Button>
-              <Button variant="secondary" size="sm" className="gap-1 bg-black/50 hover:bg-black/70 text-white">
-                <Camera className="h-4 w-4" />
-                <span>Chụp ảnh</span>
+              <Button 
+                variant="default" 
+                size="sm" 
+                className="gap-1 bg-[#6B2B2B] hover:bg-[#6B2B2B]/80 text-[#F5E1A4]"
+              >
+                <PanelLeft className="h-4 w-4" />
+                <span>Bật thuyết minh</span>
               </Button>
             </div>
-            <div className="absolute top-4 left-4">
-              <Badge variant="secondary" className="bg-black/50 text-white">
-                Nhấn và kéo để xoay góc nhìn
-              </Badge>
-            </div>
-          </div>
-          <div className="flex justify-between">
-            <Button variant="outline" size="sm" className="gap-1">
-              <Download className="h-4 w-4" />
-              <span>Tải xuống hình ảnh</span>
-            </Button>
-            <Button variant="default" size="sm" className="gap-1 bg-[#B5935A] hover:bg-[#9F8054]">
-              <PanelLeft className="h-4 w-4" />
-              <span>Bật thuyết minh</span>
-            </Button>
-          </div>
-        </TabsContent>
+          </TabsContent>
 
-        <TabsContent value="3d" className="space-y-4">
-          <div className="relative h-[70vh] bg-muted rounded-lg overflow-hidden">
-            <div className="absolute inset-0">
-              <img 
-                src={item.model3dUrl} 
-                alt={`3D Model ${item.title}`} 
-                className="w-full h-full object-cover"
-              />
+          <TabsContent value="3d" className="space-y-4">
+            <div className="relative h-[70vh] bg-[#3A1A1A]/30 rounded-lg overflow-hidden border border-[#8D6A3F]/40">
+              <div className="absolute inset-0">
+                <img 
+                  src={item.model3dUrl} 
+                  alt={`3D Model ${item.title}`} 
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="absolute bottom-4 right-4 flex gap-2">
+                <Button 
+                  variant="secondary" 
+                  size="sm" 
+                  className="gap-1 bg-[#3A1A1A]/90 hover:bg-[#3A1A1A] text-[#F5E1A4] border border-[#8D6A3F]/50"
+                >
+                  <RotateCw className="h-4 w-4" />
+                  <span>Xoay mô hình</span>
+                </Button>
+                <Button 
+                  variant="secondary" 
+                  size="sm" 
+                  className="gap-1 bg-[#3A1A1A]/90 hover:bg-[#3A1A1A] text-[#F5E1A4] border border-[#8D6A3F]/50"
+                >
+                  <Maximize className="h-4 w-4" />
+                  <span>Toàn màn hình</span>
+                </Button>
+              </div>
+              <div className="absolute top-4 left-4">
+                <Badge 
+                  variant="secondary" 
+                  className="bg-[#3A1A1A]/90 text-[#F5E1A4] border border-[#8D6A3F]/50"
+                >
+                  Nhấn và kéo để xoay mô hình
+                </Badge>
+              </div>
             </div>
-            <div className="absolute bottom-4 right-4 flex gap-2">
-              <Button variant="secondary" size="sm" className="gap-1 bg-black/50 hover:bg-black/70 text-white">
-                <RotateCw className="h-4 w-4" />
-                <span>Xoay mô hình</span>
-              </Button>
-              <Button variant="secondary" size="sm" className="gap-1 bg-black/50 hover:bg-black/70 text-white">
-                <Maximize className="h-4 w-4" />
-                <span>Toàn màn hình</span>
-              </Button>
-            </div>
-            <div className="absolute top-4 left-4">
-              <Badge variant="secondary" className="bg-black/50 text-white">
-                Nhấn và kéo để xoay mô hình
-              </Badge>
-            </div>
-          </div>
-          
-          {item.arAvailable && (
-            <div className="flex justify-center">
-              <Button variant="default" size="sm" className="gap-1 bg-emerald-600 hover:bg-emerald-700">
-                <Box className="h-4 w-4" />
-                <span>Xem bằng AR</span>
-              </Button>
-            </div>
-          )}
-        </TabsContent>
+            
+            {item.arAvailable && (
+              <div className="flex justify-center">
+                <Button 
+                  variant="default" 
+                  size="sm" 
+                  className="gap-1 bg-[#6B2B2B] hover:bg-[#6B2B2B]/80 text-[#F5E1A4]"
+                >
+                  <Box className="h-4 w-4" />
+                  <span>Xem bằng AR</span>
+                </Button>
+              </div>
+            )}
+          </TabsContent>
 
-        <TabsContent value="info" className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="md:col-span-2 space-y-4">
-              <div className="bg-card p-4 rounded-lg">
-                <div className="flex items-center mb-3">
-                  <History className="h-5 w-5 text-[#B5935A] mr-2" />
-                  <h3 className="text-lg font-medium">Lịch sử</h3>
+          <TabsContent value="info" className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="md:col-span-2 space-y-4">
+                <div className="bg-[#F5E1A4]/50 dark:bg-[#3A1A1A]/70 p-4 rounded-lg border border-[#8D6A3F]/30">
+                  <div className="flex items-center mb-3">
+                    <History className="h-5 w-5 text-[#B5935A] mr-2" />
+                    <h3 className="text-lg font-medium text-[#6B2B2B] dark:text-[#F5E1A4]">Lịch sử</h3>
+                  </div>
+                  <p className="text-muted-foreground">{item.historyInfo}</p>
                 </div>
-                <p className="text-muted-foreground">{item.historyInfo}</p>
-              </div>
 
-              <div className="bg-card p-4 rounded-lg">
-                <div className="flex items-center mb-3">
-                  <Layers3 className="h-5 w-5 text-[#B5935A] mr-2" />
-                  <h3 className="text-lg font-medium">Kiến trúc</h3>
+                <div className="bg-[#F5E1A4]/50 dark:bg-[#3A1A1A]/70 p-4 rounded-lg border border-[#8D6A3F]/30">
+                  <div className="flex items-center mb-3">
+                    <Layers3 className="h-5 w-5 text-[#B5935A] mr-2" />
+                    <h3 className="text-lg font-medium text-[#6B2B2B] dark:text-[#F5E1A4]">Kiến trúc</h3>
+                  </div>
+                  <p className="text-muted-foreground">{item.architectureInfo}</p>
                 </div>
-                <p className="text-muted-foreground">{item.architectureInfo}</p>
-              </div>
 
-              <div className="bg-card p-4 rounded-lg">
-                <div className="flex items-center mb-3">
-                  <RotateCw className="h-5 w-5 text-[#B5935A] mr-2" />
-                  <h3 className="text-lg font-medium">Trùng tu và bảo tồn</h3>
+                <div className="bg-[#F5E1A4]/50 dark:bg-[#3A1A1A]/70 p-4 rounded-lg border border-[#8D6A3F]/30">
+                  <div className="flex items-center mb-3">
+                    <RotateCw className="h-5 w-5 text-[#B5935A] mr-2" />
+                    <h3 className="text-lg font-medium text-[#6B2B2B] dark:text-[#F5E1A4]">Trùng tu và bảo tồn</h3>
+                  </div>
+                  <p className="text-muted-foreground">{item.restorationInfo}</p>
                 </div>
-                <p className="text-muted-foreground">{item.restorationInfo}</p>
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <div className="bg-card p-4 rounded-lg">
-                <h3 className="text-lg font-medium mb-3">Thông tin cơ bản</h3>
-                <dl className="space-y-2">
-                  <div className="flex justify-between">
-                    <dt className="text-muted-foreground">Phân loại:</dt>
-                    <dd className="font-medium">
-                      {item.category === 'palace' ? 'Cung điện' :
-                       item.category === 'tomb' ? 'Lăng tẩm' :
-                       item.category === 'temple' ? 'Chùa/Đền' : 'Kiến trúc'}
-                    </dd>
-                  </div>
-                  <Separator />
-                  <div className="flex justify-between">
-                    <dt className="text-muted-foreground">Thời kỳ xây dựng:</dt>
-                    <dd className="font-medium">{item.createPeriod}</dd>
-                  </div>
-                  <Separator />
-                  <div className="flex justify-between">
-                    <dt className="text-muted-foreground">Triều đại:</dt>
-                    <dd className="font-medium">{item.dynasty}</dd>
-                  </div>
-                  <Separator />
-                  <div className="flex justify-between">
-                    <dt className="text-muted-foreground">Vị trí:</dt>
-                    <dd className="font-medium">{item.location}</dd>
-                  </div>
-                </dl>
               </div>
 
-              <div className="bg-card p-4 rounded-lg">
-                <h3 className="text-lg font-medium mb-3">Trải nghiệm khác</h3>
-                <div className="space-y-2">
-                  <Button variant="outline" size="sm" className="w-full justify-start gap-2">
-                    <MapPin className="h-4 w-4 text-[#B5935A]" />
-                    <span>Xem trên bản đồ</span>
-                  </Button>
-                  {item.arAvailable && (
-                    <Button variant="outline" size="sm" className="w-full justify-start gap-2">
-                      <Box className="h-4 w-4 text-[#B5935A]" />
-                      <span>Trải nghiệm thực tế ảo tăng cường</span>
+              <div className="space-y-4">
+                <div className="bg-[#F5E1A4]/50 dark:bg-[#3A1A1A]/70 p-4 rounded-lg border border-[#8D6A3F]/30">
+                  <h3 className="text-lg font-medium mb-3 text-[#6B2B2B] dark:text-[#F5E1A4]">Thông tin cơ bản</h3>
+                  <dl className="space-y-2">
+                    <div className="flex justify-between">
+                      <dt className="text-muted-foreground">Phân loại:</dt>
+                      <dd className="font-medium">
+                        {item.category === 'palace' ? 'Cung điện' :
+                         item.category === 'tomb' ? 'Lăng tẩm' :
+                         item.category === 'temple' ? 'Chùa/Đền' : 'Kiến trúc'}
+                      </dd>
+                    </div>
+                    <Separator className="bg-[#8D6A3F]/30" />
+                    <div className="flex justify-between">
+                      <dt className="text-muted-foreground">Thời kỳ xây dựng:</dt>
+                      <dd className="font-medium">{item.createPeriod}</dd>
+                    </div>
+                    <Separator className="bg-[#8D6A3F]/30" />
+                    <div className="flex justify-between">
+                      <dt className="text-muted-foreground">Triều đại:</dt>
+                      <dd className="font-medium">{item.dynasty}</dd>
+                    </div>
+                    <Separator className="bg-[#8D6A3F]/30" />
+                    <div className="flex justify-between">
+                      <dt className="text-muted-foreground">Vị trí:</dt>
+                      <dd className="font-medium">{item.location}</dd>
+                    </div>
+                  </dl>
+                </div>
+
+                <div className="bg-[#F5E1A4]/50 dark:bg-[#3A1A1A]/70 p-4 rounded-lg border border-[#8D6A3F]/30">
+                  <h3 className="text-lg font-medium mb-3 text-[#6B2B2B] dark:text-[#F5E1A4]">Trải nghiệm khác</h3>
+                  <div className="space-y-2">
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="w-full justify-start gap-2 border-[#8D6A3F]/50 hover:border-[#C49A44] hover:bg-[#F5E1A4]/20"
+                    >
+                      <MapPin className="h-4 w-4 text-[#B5935A]" />
+                      <span>Xem trên bản đồ</span>
                     </Button>
-                  )}
-                  <Button variant="outline" size="sm" className="w-full justify-start gap-2">
-                    <Download className="h-4 w-4 text-[#B5935A]" />
-                    <span>Tải xuống thông tin</span>
-                  </Button>
-                  <Button variant="outline" size="sm" className="w-full justify-start gap-2">
-                    <Share2 className="h-4 w-4 text-[#B5935A]" />
-                    <span>Chia sẻ</span>
-                  </Button>
+                    {item.arAvailable && (
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        className="w-full justify-start gap-2 border-[#8D6A3F]/50 hover:border-[#C49A44] hover:bg-[#F5E1A4]/20"
+                      >
+                        <Box className="h-4 w-4 text-[#B5935A]" />
+                        <span>Trải nghiệm thực tế ảo tăng cường</span>
+                      </Button>
+                    )}
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="w-full justify-start gap-2 border-[#8D6A3F]/50 hover:border-[#C49A44] hover:bg-[#F5E1A4]/20"
+                    >
+                      <Download className="h-4 w-4 text-[#B5935A]" />
+                      <span>Tải xuống thông tin</span>
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="w-full justify-start gap-2 border-[#8D6A3F]/50 hover:border-[#C49A44] hover:bg-[#F5E1A4]/20"
+                    >
+                      <Share2 className="h-4 w-4 text-[#B5935A]" />
+                      <span>Chia sẻ</span>
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </TabsContent>
+          </TabsContent>
 
-        <TabsContent value="artifacts" className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {item.artifacts.map((artifact, index) => (
-              <Card key={index} className="overflow-hidden">
-                <div className="relative h-48">
-                  <img 
-                    src={artifact.imageUrl} 
-                    alt={artifact.name} 
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <CardContent className="p-4">
-                  <CardTitle className="text-lg mb-2">{artifact.name}</CardTitle>
-                  <p className="text-sm text-muted-foreground">{artifact.description}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </TabsContent>
-      </Tabs>
+          <TabsContent value="artifacts" className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {item.artifacts.map((artifact, index) => (
+                <Card key={index} className="overflow-hidden border border-[#8D6A3F]/30 bg-[#F5E1A4]/30 dark:bg-[#3A1A1A]/70">
+                  <div className="relative h-48">
+                    <img 
+                      src={artifact.imageUrl} 
+                      alt={artifact.name} 
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <CardContent className="p-4">
+                    <CardTitle className="text-lg mb-2 text-[#6B2B2B] dark:text-[#F5E1A4]">{artifact.name}</CardTitle>
+                    <p className="text-sm text-muted-foreground">{artifact.description}</p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </TabsContent>
+        </Tabs>
+      </div>
     </div>
   );
 };

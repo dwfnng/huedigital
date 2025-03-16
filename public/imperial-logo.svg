@@ -1,41 +1,39 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120">
+<svg width="200" height="100" viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" style="stop-color:#8D6A3F;stop-opacity:1" />
-      <stop offset="50%" style="stop-color:#B5935A;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#F5E1A4;stop-opacity:1" />
       <stop offset="100%" style="stop-color:#C49A44;stop-opacity:1" />
     </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="1" dy="1" stdDeviation="1" flood-color="#000" flood-opacity="0.3"/>
+    </filter>
   </defs>
+
+  <!-- Imperial emblem background -->
+  <path d="M30,20 C30,10 100,10 100,20 L100,80 C100,90 30,90 30,80 Z" 
+        fill="#6B2B2B" stroke="url(#goldGradient)" stroke-width="1" filter="url(#shadow)"/>
   
-  <!-- Outer circular border -->
-  <circle cx="60" cy="60" r="58" fill="none" stroke="url(#goldGradient)" stroke-width="4"/>
+  <!-- Imperial center circle -->
+  <circle cx="65" cy="50" r="20" fill="none" stroke="url(#goldGradient)" stroke-width="1.5" opacity="0.9" />
   
-  <!-- Decorative pattern around the edge -->
-  <g fill="url(#goldGradient)" opacity="0.8">
-    <path d="M60,10 L63,16 L57,16 Z" />
-    <path d="M85,17 L82,24 L77,19 Z" />
-    <path d="M103,42 L96,45 L96,39 Z" />
-    <path d="M110,70 L103,67 L107,62 Z" />
-    <path d="M85,103 L82,96 L87,91 Z" />
-    <path d="M60,110 L57,104 L63,104 Z" />
-    <path d="M35,103 L38,96 L33,91 Z" />
-    <path d="M10,70 L17,67 L13,62 Z" />
-    <path d="M17,42 L24,45 L24,39 Z" />
-    <path d="M35,17 L38,24 L43,19 Z" />
-  </g>
+  <!-- Stylized imperial dragon -->
+  <path d="M60,40 C70,35 75,45 65,50 C75,55 70,65 60,60 C55,70 45,70 40,60 C30,65 25,55 35,50 C25,45 30,35 40,40 C45,30 55,30 60,40Z" 
+        fill="url(#goldGradient)" opacity="0.9"/>
   
-  <!-- Central geometric imperial pattern -->
-  <g fill="url(#goldGradient)">
-    <!-- Centered lotus/circular motif -->
-    <circle cx="60" cy="60" r="25" fill="#F5E1A4" stroke="url(#goldGradient)" stroke-width="2"/>
-    
-    <!-- Dragon-like shapes -->
-    <path d="M60,40 C70,50 80,45 90,40 C80,55 80,70 60,80 C40,70 40,55 30,40 C40,45 50,50 60,40" 
-          fill="url(#goldGradient)" stroke="#8D6A3F" stroke-width="1"/>
-  </g>
+  <!-- Center detail -->
+  <circle cx="65" cy="50" r="5" fill="#6B2B2B" stroke="url(#goldGradient)" stroke-width="0.5" />
   
-  <!-- Central Vietnamese character "Huế" stylized -->
-  <text x="60" y="65" font-family="Arial, sans-serif" font-size="20" font-weight="bold" 
-        text-anchor="middle" fill="#6B2B2B">HUẾ</text>
+  <!-- Text section -->
+  <text x="110" y="45" font-family="serif" font-weight="bold" font-size="18" fill="url(#goldGradient)" filter="url(#shadow)">
+    HUẾ HERITAGE
+  </text>
+  <text x="110" y="65" font-family="serif" font-size="12" fill="#F5E1A4" opacity="0.9">
+    DIGITAL TOUR GUIDE
+  </text>
+  
+  <!-- Decorative lines -->
+  <line x1="105" y1="30" x2="195" y2="30" stroke="url(#goldGradient)" stroke-width="0.5" opacity="0.8" />
+  <line x1="105" y1="70" x2="195" y2="70" stroke="url(#goldGradient)" stroke-width="0.5" opacity="0.8" />
 </svg>
