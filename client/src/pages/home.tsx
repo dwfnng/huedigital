@@ -92,31 +92,76 @@ const culturalElements = [
 export default function Home() {
   return (
     <div className="min-h-screen">
-      {/* Hero Section with gold gradient overlay and pattern */}
-      <div className="relative bg-gradient-to-b from-[#F9F5E7] to-background overflow-hidden">
+      {/* Hero Section with imperial theme inspired by the reference image */}
+      <div className="relative bg-[#F5E1A4] overflow-hidden">
+        {/* Imperial decorative corners */}
+        <div className="absolute top-0 left-0 w-32 h-32 opacity-90">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+            <path d="M0,0 L70,0 C50,15 35,35 30,70 L0,70 Z" fill="#8D6A3F" fillOpacity="0.15"/>
+            <path d="M0,0 L50,0 C40,20 20,40 15,50 L0,50 Z" fill="#8D6A3F" fillOpacity="0.25"/>
+            <circle cx="15" cy="15" r="6" fill="#9F8054"/>
+            <path d="M15,15 L40,5 L45,25 Z" fill="#B5935A" fillOpacity="0.5"/>
+          </svg>
+        </div>
+        <div className="absolute top-0 right-0 w-32 h-32 opacity-90 transform scale-x-[-1]">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+            <path d="M0,0 L70,0 C50,15 35,35 30,70 L0,70 Z" fill="#8D6A3F" fillOpacity="0.15"/>
+            <path d="M0,0 L50,0 C40,20 20,40 15,50 L0,50 Z" fill="#8D6A3F" fillOpacity="0.25"/>
+            <circle cx="15" cy="15" r="6" fill="#9F8054"/>
+            <path d="M15,15 L40,5 L45,25 Z" fill="#B5935A" fillOpacity="0.5"/>
+          </svg>
+        </div>
+        <div className="absolute bottom-0 left-0 w-32 h-32 opacity-90 transform scale-y-[-1]">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+            <path d="M0,0 L70,0 C50,15 35,35 30,70 L0,70 Z" fill="#8D6A3F" fillOpacity="0.15"/>
+            <path d="M0,0 L50,0 C40,20 20,40 15,50 L0,50 Z" fill="#8D6A3F" fillOpacity="0.25"/>
+            <circle cx="15" cy="15" r="6" fill="#9F8054"/>
+            <path d="M15,15 L40,5 L45,25 Z" fill="#B5935A" fillOpacity="0.5"/>
+          </svg>
+        </div>
+        <div className="absolute bottom-0 right-0 w-32 h-32 opacity-90 transform scale-x-[-1] scale-y-[-1]">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+            <path d="M0,0 L70,0 C50,15 35,35 30,70 L0,70 Z" fill="#8D6A3F" fillOpacity="0.15"/>
+            <path d="M0,0 L50,0 C40,20 20,40 15,50 L0,50 Z" fill="#8D6A3F" fillOpacity="0.25"/>
+            <circle cx="15" cy="15" r="6" fill="#9F8054"/>
+            <path d="M15,15 L40,5 L45,25 Z" fill="#B5935A" fillOpacity="0.5"/>
+          </svg>
+        </div>
+        
+        {/* Background patterns */}
         <div className="absolute inset-0 dragon-pattern opacity-20"></div>
-        <div className="container mx-auto px-4 py-16 relative z-10">
+        <div className="absolute inset-0 lotus-pattern opacity-30"></div>
+        
+        {/* Main hero content */}
+        <div className="container mx-auto px-4 py-16 pt-24 relative z-10">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
             className="text-center max-w-3xl mx-auto"
           >
-            <div className="inline-block mb-6">
-              <div className="flex items-center justify-center w-20 h-20 mx-auto rounded-full royal-gradient p-0.5">
-                <div className="flex items-center justify-center w-full h-full bg-white/90 rounded-full">
-                  <Crown className="h-10 w-10 text-[#D4AF37]" />
+            <div className="inline-block mb-8">
+              <div className="p-2 border-2 border-[#8D6A3F] rounded-full royal-gradient shadow-lg">
+                <div className="w-24 h-24 mx-auto rounded-full flex items-center justify-center bg-[#F5E1A4] p-2">
+                  <img src="/imperial-logo.svg" alt="Huế Digital" className="h-16 w-16" onError={(e) => {
+                    e.currentTarget.src = '';
+                    e.currentTarget.style.display = 'none';
+                    document.getElementById('fallback-logo')!.style.display = 'block';
+                  }} />
+                  <div id="fallback-logo" style={{display: 'none'}} className="h-16 w-16 flex items-center justify-center">
+                    <Crown className="h-16 w-16 text-[#8D6A3F]" />
+                  </div>
                 </div>
               </div>
             </div>
             
-            <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
-              Khám phá di sản văn hóa Huế
-              <br />
-              <span className="gold-gradient bg-clip-text text-transparent">trong thời đại số</span>
+            <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight text-[#6B2B2B]">
+              HUẾ DIGITAL
+              <div className="w-full h-1 my-2 bg-gradient-to-r from-transparent via-[#9F8054] to-transparent"></div>
+              <span className="text-3xl md:text-4xl block mt-2 text-[#8D6A3F]">Di sản văn hóa cố đô</span>
             </h1>
             
-            <p className="text-xl text-muted-foreground mb-8">
+            <p className="text-xl text-[#6D4C41] mb-8 max-w-2xl mx-auto">
               Nền tảng tương tác kỹ thuật số toàn diện giúp bạn tìm hiểu, khám phá và
               bảo tồn di sản văn hóa độc đáo của cố đô Huế
             </p>
@@ -125,7 +170,7 @@ export default function Home() {
               <Button 
                 asChild 
                 size="lg" 
-                className="royal-gradient text-white hover:opacity-90 imperial-border hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] transition-all duration-300"
+                className="royal-gradient text-white hover:opacity-90 imperial-border hover:shadow-[0_0_20px_rgba(181,147,90,0.4)] transition-all duration-300"
               >
                 <Link href="/library">Khám phá ngay</Link>
               </Button>
@@ -133,19 +178,57 @@ export default function Home() {
                 asChild 
                 variant="outline" 
                 size="lg"
-                className="border-[#D4AF37]/50 hover:border-[#D4AF37] hover:bg-[#D4AF37]/5"
+                className="border-[#8D6A3F] hover:border-[#8D6A3F] hover:bg-[#8D6A3F]/5 text-[#6B2B2B]"
               >
                 <Link href="/map">Xem bản đồ</Link>
               </Button>
             </div>
           </motion.div>
+          
+          {/* Imperial illustration */}
+          <div className="max-w-5xl mx-auto mt-12 relative">
+            <div className="w-full h-4 bg-[#8D6A3F] rounded-t-lg"></div>
+            <div className="w-full h-64 md:h-80 bg-gradient-to-b from-[#F5E1A4] to-[#DBC790] rounded-b-lg relative overflow-hidden shadow-lg">
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="w-full max-w-3xl flex justify-center">
+                  {/* This would be the central citadel illustration - fallback to decorative elements */}
+                  <div className="w-64 h-52 relative">
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-40 h-40 bg-[#C49A44] rounded-t-lg relative">
+                        <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 w-20 h-6 bg-[#8D6A3F] rounded-t-lg"></div>
+                        <div className="absolute bottom-0 left-0 right-0 h-10 flex items-center justify-center">
+                          <div className="w-16 h-full bg-[#6B2B2B] flex items-center justify-center">
+                            <div className="w-8 h-6 bg-[#3A1A1A] rounded-t-lg"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="absolute bottom-0 left-0 right-0 h-12 bg-[#8D6A3F]"></div>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Lotus decorations */}
+              <div className="absolute bottom-4 left-4">
+                <svg width="60" height="60" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="50" cy="50" r="20" fill="#F3DBA8" />
+                  <path d="M50,30 C60,40 70,35 80,30 C70,45 70,60 50,70 C30,60 30,45 20,30 C30,35 40,40 50,30" fill="#C49A44" />
+                </svg>
+              </div>
+              <div className="absolute bottom-4 right-4">
+                <svg width="60" height="60" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="50" cy="50" r="20" fill="#F3DBA8" />
+                  <path d="M50,30 C60,40 70,35 80,30 C70,45 70,60 50,70 C30,60 30,45 20,30 C30,35 40,40 50,30" fill="#C49A44" />
+                </svg>
+              </div>
+            </div>
+          </div>
         </div>
         
-        {/* Decorative elements */}
-        <div className="absolute -bottom-4 left-0 right-0 h-16 bg-gradient-to-b from-transparent to-background z-10"></div>
-        <div className="absolute bottom-0 left-0 w-full">
-          <svg viewBox="0 0 1920 250" xmlns="http://www.w3.org/2000/svg" className="fill-[#D4AF37]/10">
-            <path d="M1920 250H0V0s126.707 78.536 349.975 80.05c177.852 1.203 362.805-63.874 553.803-63.874 290.517 0 383.458 57.712 603.992 61.408 220.527 3.696 412.23-71.408 412.23-71.408V250z" />
+        {/* Wave decorative element */}
+        <div className="absolute -bottom-1 left-0 right-0">
+          <svg viewBox="0 0 1440 120" xmlns="http://www.w3.org/2000/svg" className="fill-background w-full">
+            <path d="M0,64 C288,89.3 576,97.3 864,88 C1152,78.7 1296,53.3 1440,12L1440,120L0,120Z" />
           </svg>
         </div>
       </div>

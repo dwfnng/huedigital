@@ -117,49 +117,110 @@ const navigationItems = {
 
 function MainNav() {
   const [, setLocation] = useLocation();
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 10);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-md shadow-sm border-b border-[#B5935A]/15">
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      scrolled 
+        ? "bg-[#F5E1A4]/95 backdrop-blur-md shadow-md border-b border-[#8D6A3F]/30" 
+        : "bg-transparent"
+    }`}>
+      {/* Imperial decorative header patterns */}
+      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#8D6A3F] via-[#C49A44] to-[#8D6A3F]"></div>
+      
       <nav className="container mx-auto">
         <div className="flex h-16 items-center px-4">
-          <Link href="/" className="flex items-center gap-2 group">
-            <div className="w-8 h-8 royal-gradient rounded-full flex items-center justify-center transition-all duration-300 group-hover:shadow-[0_0_10px_rgba(181,147,90,0.3)]">
-              <Crown className="h-4 w-4 text-white" />
+          <Link href="/" className="flex items-center gap-2 group relative">
+            <div className="w-10 h-10 royal-gradient rounded-full flex items-center justify-center transition-all duration-300 group-hover:shadow-[0_0_15px_rgba(196,154,68,0.5)]">
+              {/* Use the SVG logo we created */}
+              <img 
+                src="/imperial-logo.svg" 
+                alt="Huế Digital" 
+                className="h-7 w-7 transition-transform duration-300 group-hover:scale-110" 
+                onError={(e) => {
+                  e.currentTarget.style.display = 'none';
+                  const fallbackLogo = document.getElementById('fallback-nav-logo');
+                  if (fallbackLogo) {
+                    fallbackLogo.style.display = 'block';
+                  }
+                }}
+              />
+              <div id="fallback-nav-logo" style={{display: 'none'}} className="h-7 w-7">
+                <Crown className="h-7 w-7 text-white" />
+              </div>
             </div>
-            <span className="text-xl font-bold text-[#B5935A] transition-colors duration-300 group-hover:text-[#9F8054]">
-              Huế Digital
-            </span>
+            <div className="flex flex-col">
+              <span className="text-xl font-bold text-[#6B2B2B] transition-colors duration-300 group-hover:text-[#9F8054]">
+                Huế Digital
+              </span>
+              <span className="text-xs text-[#8D6A3F] -mt-1">Di sản trong tay bạn</span>
+            </div>
+            
+            {/* Decorative hover effect */}
+            <div className="absolute -bottom-1 left-0 right-0 h-0.5 bg-[#C49A44] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
           </Link>
 
           <NavigationMenu className="ml-8 hidden md:block">
-            <NavigationMenuList>
+            <NavigationMenuList className="gap-1">
               {Object.entries(navigationItems).map(([key, section]) => (
                 <NavigationMenuItem key={key}>
-                  <NavigationMenuTrigger className="h-9 hover:text-[#B5935A] data-[state=open]:text-[#B5935A] transition-colors">
-                    {section.icon}
-                    <span className="ml-2">{section.label}</span>
+                  <NavigationMenuTrigger 
+                    className="h-10 px-4 font-medium hover:text-[#6B2B2B] data-[state=open]:text-[#6B2B2B] transition-all 
+                             data-[state=open]:bg-[#C49A44]/10 hover:bg-[#C49A44]/5 rounded-md group"
+                  >
+                    <div className="flex items-center gap-2 relative">
+                      <div className="text-[#8D6A3F] group-hover:text-[#6B2B2B] group-data-[state=open]:text-[#6B2B2B] transition-colors">
+                        {section.icon}
+                      </div>
+                      <span className="transition-all">{section.label}</span>
+                      
+                      {/* Decorative underline that shows on hover */}
+                      <div className="absolute -bottom-1 left-0 right-0 h-0.5 bg-[#8D6A3F] transform scale-x-0 
+                                      group-hover:scale-x-100 group-data-[state=open]:scale-x-100 
+                                      transition-transform duration-300 origin-left"></div>
+                    </div>
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
-                    <div className="w-[500px] p-4 bg-background/95 backdrop-blur-md border border-[#B5935A]/15 rounded-lg shadow-md">
-                      <div className="mb-3">
-                        <p className="text-sm text-muted-foreground">{section.description}</p>
+                    <div className="w-[500px] p-5 bg-[#F5E1A4]/95 backdrop-blur-md border border-[#8D6A3F]/20 rounded-lg shadow-lg">
+                      <div className="mb-4 pb-3 border-b border-[#8D6A3F]/20">
+                        <h4 className="text-[#6B2B2B] font-medium">{section.label}</h4>
+                        <p className="text-sm text-[#6D4C41]">{section.description}</p>
                       </div>
                       <div className="grid gap-3 md:grid-cols-2">
-                        {section.items.map((item) => (
+                        {section.items.map((item, idx) => (
                           <Link key={item.href} href={item.href}>
                             <NavigationMenuLink asChild>
                               <a
-                                className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-all hover:bg-[#B5935A]/5 hover:border-[#B5935A]/15 hover:shadow-sm hover:text-[#B5935A]"
+                                className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none 
+                                           transition-all hover:bg-[#8D6A3F]/10 hover:border-[#8D6A3F]/20
+                                           hover:shadow-md hover:text-[#6B2B2B] imperial-card group animate-fade-in"
+                                style={{ animationDelay: `${idx * 50}ms` }}
                                 onClick={(e) => {
                                   e.preventDefault();
                                   setLocation(item.href);
                                 }}
                               >
                                 <div className="flex items-center gap-2">
-                                  <div className="text-[#B5935A]">{item.icon}</div>
-                                  <span className="text-sm font-medium leading-none">{item.title}</span>
+                                  <div className="w-8 h-8 rounded-full bg-[#C49A44]/10 flex items-center justify-center
+                                                 group-hover:bg-[#8D6A3F]/20 transition-colors">
+                                    <div className="text-[#8D6A3F] group-hover:text-[#6B2B2B] transition-colors">
+                                      {item.icon}
+                                    </div>
+                                  </div>
+                                  <span className="text-sm font-medium leading-none group-hover:text-[#6B2B2B]">
+                                    {item.title}
+                                  </span>
                                 </div>
-                                <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                                <p className="line-clamp-2 text-sm leading-snug text-[#6D4C41] mt-2 group-hover:text-[#6D4C41]/90">
                                   {item.description}
                                 </p>
                               </a>
@@ -174,60 +235,93 @@ function MainNav() {
             </NavigationMenuList>
           </NavigationMenu>
           
-          <div className="ml-auto flex items-center gap-2">
+          <div className="ml-auto flex items-center gap-3">
             <Button 
               variant="ghost" 
               size="sm"
-              className="text-[#B5935A] hover:text-[#9F8054] hover:bg-[#B5935A]/5 hidden sm:flex"
+              className="text-[#8D6A3F] hover:text-[#6B2B2B] hover:bg-[#C49A44]/10 hidden sm:flex transition-all"
               onClick={() => setLocation("/contribute")}
             >
-              <Upload className="h-4 w-4 mr-1" />
+              <Upload className="h-4 w-4 mr-1.5" />
               Đóng góp
             </Button>
             <Button 
               size="sm"
-              className="royal-gradient text-white hover:opacity-90 transition-all duration-300"
+              className="royal-gradient text-white hover:opacity-90 transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-0.5"
               onClick={() => setLocation("/library")}
             >
+              <Library className="h-4 w-4 mr-1.5" />
               Khám phá
             </Button>
           </div>
         </div>
       </nav>
       
-      {/* Decorative element - thin gold line */}
-      <div className="h-0.5 bg-gradient-to-r from-transparent via-[#B5935A]/25 to-transparent"></div>
+      {/* Decorative element - imperial pattern line */}
+      <div className="relative h-1">
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#8D6A3F]/30 to-transparent"></div>
+        <div className="absolute bottom-0 left-1/4 right-1/4 h-0.5 bg-gradient-to-r from-transparent via-[#6B2B2B]/20 to-transparent"></div>
+      </div>
     </header>
   );
 }
 
 function ChatButton() {
   const [, setLocation] = useLocation();
+  const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <div className="fixed bottom-4 right-4 z-50 flex flex-col gap-2">
+    <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-3">
+      <div 
+        className={`absolute inset-0 bg-[#C49A44]/10 rounded-full transition-all duration-500 ease-in-out ${
+          isHovered ? "scale-[2.5] opacity-100" : "scale-0 opacity-0"
+        }`}
+      />
+      
       <Button
         variant="outline"
         size="icon"
-        className="rounded-full royal-shadow border-[#B5935A]/20 bg-background/80 backdrop-blur-sm hover:border-[#B5935A]/40 hover:bg-[#B5935A]/5 transition-all duration-300 soft-glow"
+        className="rounded-full bg-[#F5E1A4]/90 backdrop-blur-sm border-[#8D6A3F]/30 shadow-lg 
+                 hover:border-[#8D6A3F] hover:bg-[#F5E1A4] hover:-translate-y-1 
+                 transition-all duration-300 w-12 h-12 group"
         onClick={() => setLocation("/chat")}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
       >
-        <MessageSquare className="h-5 w-5 text-[#B5935A]" />
+        <div className="absolute inset-0 rounded-full royal-gradient opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+        <div className="relative h-full w-full flex items-center justify-center">
+          <div className="absolute w-8 h-8 rounded-full bg-[#C49A44]/10 animate-ping opacity-70"></div>
+          <MessageSquare className="h-5 w-5 text-[#8D6A3F] relative z-10 group-hover:text-[#6B2B2B] transition-colors" />
+        </div>
       </Button>
+      
       <Button
         variant="outline"
         size="icon"
-        className="rounded-full royal-shadow border-[#B5935A]/20 bg-background/80 backdrop-blur-sm hover:border-[#B5935A]/40 hover:bg-[#B5935A]/5 transition-all duration-300 soft-glow"
+        className="rounded-full bg-[#F5E1A4]/90 backdrop-blur-sm border-[#8D6A3F]/30 shadow-lg 
+                 hover:border-[#8D6A3F] hover:bg-[#F5E1A4] hover:-translate-y-1 
+                 transition-all duration-300 w-12 h-12 group"
         onClick={() => window.open('tel:+84234123456')}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
       >
-        <MessageCircle className="h-5 w-5 text-[#B5935A]" />
+        <div className="absolute inset-0 rounded-full royal-gradient opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+        <MessageCircle className="h-5 w-5 text-[#8D6A3F] group-hover:text-[#6B2B2B] transition-colors" />
       </Button>
+      
+      {/* Decorative lotus pattern */}
+      <div className="absolute -bottom-3 -right-3 w-16 h-16 opacity-20 pointer-events-none">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <path d="M50,20 C65,35 85,25 95,15 C80,40 75,65 50,80 C25,65 20,40 5,15 C15,25 35,35 50,20Z" fill="#8D6A3F" />
+        </svg>
+      </div>
     </div>
   );
 }
 
 function BackToTop() {
   const [show, setShow] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -243,17 +337,33 @@ function BackToTop() {
   };
 
   return (
-    <Button
-      variant="outline"
-      size="icon"
-      className={cn(
-        "fixed bottom-4 right-24 z-50 rounded-full royal-shadow border-[#B5935A]/20 bg-background/80 backdrop-blur-sm hover:border-[#B5935A]/40 hover:bg-[#B5935A]/5 transition-all duration-300 soft-glow",
-        show ? "opacity-100" : "opacity-0 pointer-events-none"
-      )}
-      onClick={scrollToTop}
-    >
-      <ChevronUp className="h-4 w-4 text-[#B5935A]" />
-    </Button>
+    <div className="fixed bottom-6 right-24 z-50">
+      <div 
+        className={`absolute inset-0 bg-[#C49A44]/10 rounded-full transition-all duration-500 ease-in-out ${
+          isHovered ? "scale-[2.5] opacity-100" : "scale-0 opacity-0"
+        }`}
+      />
+      
+      <Button
+        variant="outline"
+        size="icon"
+        className={cn(
+          "rounded-full bg-[#F5E1A4]/90 backdrop-blur-sm border-[#8D6A3F]/30 shadow-lg hover:border-[#8D6A3F] hover:bg-[#F5E1A4] hover:-translate-y-1 transition-all duration-500 w-12 h-12 group",
+          show ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10 pointer-events-none"
+        )}
+        onClick={scrollToTop}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        <div className="absolute inset-0 rounded-full royal-gradient opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+        <ChevronUp className="h-5 w-5 text-[#8D6A3F] group-hover:text-[#6B2B2B] transition-colors" />
+        
+        {/* Small animated arrow to hint at scroll action */}
+        <div className="absolute -top-6 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <div className="w-1 h-3 bg-[#8D6A3F] rounded-full animate-bounce"></div>
+        </div>
+      </Button>
+    </div>
   );
 }
 
