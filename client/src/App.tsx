@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/navigation-menu"
 import {
   GraduationCap, MapPin, Users, MessageSquare,
-  ChevronUp, Library, Gamepad2,
+  ChevronUp, Library, Gamepad2, 
   MapPinned, Cloud, Ticket,
   MessageCircle, Upload, BookText
 } from 'lucide-react';
@@ -32,7 +32,6 @@ import ContributePage from "@/pages/contribute";
 import LiveDataPage from "@/pages/live-data";
 import NotFound from "@/pages/not-found";
 import { useState, useEffect } from "react";
-import ParticleBackground from "@/components/ParticleBackground";
 
 // Optimized navigation structure
 const navigationItems = {
@@ -107,14 +106,14 @@ function MainNav() {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm border-b">
       <nav className="container mx-auto">
-        <div className="flex h-16 items-center px-4 justify-between">
+        <div className="flex h-16 items-center px-4">
           <Link href="/" className="flex items-center gap-2">
             <span className="text-xl font-bold bg-gradient-to-r from-primary via-primary/80 to-primary bg-clip-text text-transparent">
               Huế Digital
             </span>
           </Link>
 
-          <NavigationMenu className="hidden md:flex">
+          <NavigationMenu className="ml-8">
             <NavigationMenuList>
               {Object.entries(navigationItems).map(([key, section]) => (
                 <NavigationMenuItem key={key}>
@@ -123,16 +122,16 @@ function MainNav() {
                     <span className="ml-2">{section.label}</span>
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
-                    <div className="w-[600px] p-6">
-                      <div className="mb-4">
+                    <div className="w-[500px] p-4">
+                      <div className="mb-3">
                         <p className="text-sm text-muted-foreground">{section.description}</p>
                       </div>
-                      <div className="grid gap-4 md:grid-cols-2">
+                      <div className="grid gap-3 md:grid-cols-2">
                         {section.items.map((item) => (
                           <Link key={item.href} href={item.href}>
                             <NavigationMenuLink asChild>
                               <a
-                                className="block select-none space-y-1 rounded-md p-4 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                                className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
                                 onClick={(e) => {
                                   e.preventDefault();
                                   setLocation(item.href);
@@ -142,7 +141,7 @@ function MainNav() {
                                   {item.icon}
                                   <span className="text-sm font-medium leading-none">{item.title}</span>
                                 </div>
-                                <p className="line-clamp-2 text-sm leading-snug text-muted-foreground mt-2">
+                                <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
                                   {item.description}
                                 </p>
                               </a>
@@ -156,16 +155,6 @@ function MainNav() {
               ))}
             </NavigationMenuList>
           </NavigationMenu>
-
-          {/* Mobile Menu */}
-          <Button
-            variant="outline"
-            size="icon"
-            className="md:hidden"
-            onClick={() => setLocation("/mobile-menu")}
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
-          </Button>
         </div>
       </nav>
     </header>
@@ -180,7 +169,7 @@ function ChatButton() {
       <Button
         variant="outline"
         size="icon"
-        className="rounded-full shadow-lg hover:shadow-xl transition-all duration-200 bg-background/80 backdrop-blur-sm"
+        className="rounded-full shadow-lg hover:shadow-xl transition-all duration-200"
         onClick={() => setLocation("/chat")}
       >
         <MessageSquare className="h-5 w-5" />
@@ -188,7 +177,7 @@ function ChatButton() {
       <Button
         variant="outline"
         size="icon"
-        className="rounded-full shadow-lg hover:shadow-xl transition-all duration-200 bg-background/80 backdrop-blur-sm"
+        className="rounded-full shadow-lg hover:shadow-xl transition-all duration-200"
         onClick={() => window.open('tel:+84234123456')}
       >
         <MessageCircle className="h-5 w-5" />
@@ -218,7 +207,7 @@ function BackToTop() {
       variant="outline"
       size="icon"
       className={cn(
-        "fixed bottom-4 right-24 z-50 rounded-full transition-all duration-300 bg-background/80 backdrop-blur-sm",
+        "fixed bottom-4 right-24 z-50 rounded-full transition-all duration-300",
         show ? "opacity-100" : "opacity-0 pointer-events-none"
       )}
       onClick={scrollToTop}
@@ -248,16 +237,9 @@ function Router() {
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="min-h-screen bg-background relative">
-        <div className="absolute inset-0 z-0">
-          <ParticleBackground />
-          <div
-            className="absolute inset-0 bg-[url('/images/hue-bg.jpg')] bg-cover bg-center opacity-10"
-            style={{ backgroundBlendMode: 'overlay' }}
-          />
-        </div>
+      <div className="min-h-screen bg-background">
         <MainNav />
-        <main className="relative z-10 pt-20 pb-6 fade-in container mx-auto px-4">
+        <main className="pt-20 pb-6 fade-in">
           <Router />
         </main>
         <BackToTop />

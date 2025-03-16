@@ -9,21 +9,22 @@ import { toast } from "@/hooks/use-toast";
 
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.3 } }
+  visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
 };
 
-function TicketCard({ title, price, description, imageSrc }: {
+function TicketCard({
+  title,
+  price,
+  description,
+  imageSrc,
+}: {
   title: string;
   price: string;
   description: string;
   imageSrc: string;
 }) {
   return (
-    <motion.div
-      variants={fadeIn}
-      initial="hidden"
-      animate="visible"
-    >
+    <motion.div variants={fadeIn} initial="hidden" animate="visible">
       <Card className="overflow-hidden transition-all hover:shadow-lg">
         <div className="relative h-48">
           <img
@@ -43,14 +44,17 @@ function TicketCard({ title, price, description, imageSrc }: {
         </div>
         <CardContent className="p-4">
           <p className="text-sm text-muted-foreground mb-4">{description}</p>
-          <Button className="w-full" onClick={() => {
-            // Since we don't have a real booking system yet, show a message
-            toast({
-              title: "Thông báo",
-              description: "Tính năng đặt vé sẽ sớm được ra mắt!",
-              duration: 3000
-            });
-          }}>
+          <Button
+            className="w-full"
+            onClick={() => {
+              // Since we don't have a real booking system yet, show a message
+              toast({
+                title: "Thông báo",
+                description: "Tính năng đặt vé sẽ sớm được ra mắt!",
+                duration: 3000,
+              });
+            }}
+          >
             <Ticket className="mr-2 h-4 w-4" />
             Đặt vé
           </Button>
@@ -60,23 +64,24 @@ function TicketCard({ title, price, description, imageSrc }: {
   );
 }
 
-function SouvenirCard({ name, price, image, description }: {
+function SouvenirCard({
+  name,
+  price,
+  image,
+  description,
+}: {
   name: string;
   price: string;
   image: string;
   description: string;
 }) {
   return (
-    <motion.div
-      variants={fadeIn}
-      initial="hidden"
-      animate="visible"
-    >
+    <motion.div variants={fadeIn} initial="hidden" animate="visible">
       <Card className="overflow-hidden transition-all hover:shadow-lg">
         <div className="relative h-48">
-          <img 
-            src={image} 
-            alt={name} 
+          <img
+            src={image}
+            alt={name}
             className="w-full h-full object-cover"
             onError={(e) => {
               const imgEl = e.currentTarget;
@@ -91,13 +96,17 @@ function SouvenirCard({ name, price, image, description }: {
         <CardContent className="p-4">
           <h3 className="font-semibold mb-2">{name}</h3>
           <p className="text-sm text-muted-foreground mb-4">{description}</p>
-          <Button className="w-full" variant="secondary" onClick={() => {
-            toast({
-              title: "Thông báo",
-              description: "Tính năng mua sắm sẽ sớm được ra mắt!",
-              duration: 3000
-            });
-          }}>
+          <Button
+            className="w-full"
+            variant="secondary"
+            onClick={() => {
+              toast({
+                title: "Thông báo",
+                description: "Tính năng mua sắm sẽ sớm được ra mắt!",
+                duration: 3000,
+              });
+            }}
+          >
             <Gift className="mr-2 h-4 w-4" />
             Mua ngay
           </Button>
@@ -119,11 +128,12 @@ export default function TicketPage() {
         >
           <h1 className="text-3xl font-bold mb-3">Đặt vé & Quà lưu niệm</h1>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Trải nghiệm văn hóa Huế qua các gói tham quan độc đáo và bộ sưu tập quà lưu niệm đặc trưng
+            Trải nghiệm văn hóa Huế qua các gói tham quan độc đáo và bộ sưu tập
+            quà lưu niệm đặc trưng
           </p>
         </motion.div>
 
-        <motion.div 
+        <motion.div
           className="bg-gradient-to-r from-primary/5 to-primary/10 rounded-lg p-6 mb-8"
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -134,9 +144,13 @@ export default function TicketPage() {
               <Star className="h-6 w-6 text-primary" />
             </div>
             <div>
-              <h2 className="text-xl font-semibold mb-1">Chương trình thành viên</h2>
+              <h2 className="text-xl font-semibold mb-1">
+                Chương trình thành viên
+              </h2>
               <p className="text-sm text-muted-foreground">
-                Tích điểm qua mỗi lần đặt vé để nhận ưu đãi hấp dẫn. Điểm tích lũy của bạn: <span className="font-semibold text-primary">100 điểm</span>
+                Tích điểm qua mỗi lần đặt vé để nhận ưu đãi hấp dẫn. Điểm tích
+                lũy của bạn:{" "}
+                <span className="font-semibold text-primary">100 điểm</span>
               </p>
             </div>
           </div>
@@ -144,8 +158,12 @@ export default function TicketPage() {
 
         <Tabs defaultValue="tickets" className="space-y-8">
           <TabsList className="w-full">
-            <TabsTrigger value="tickets" className="flex-1">Vé tham quan</TabsTrigger>
-            <TabsTrigger value="souvenirs" className="flex-1">Quà lưu niệm</TabsTrigger>
+            <TabsTrigger value="tickets" className="flex-1">
+              Vé tham quan
+            </TabsTrigger>
+            <TabsTrigger value="souvenirs" className="flex-1">
+              Quà lưu niệm
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="tickets" className="space-y-6">
@@ -154,13 +172,13 @@ export default function TicketPage() {
                 title="Vé tham quan Đại Nội"
                 price="200.000đ"
                 description="Khám phá kiến trúc độc đáo của Hoàng thành Huế, nơi lưu giữ những giá trị lịch sử và văn hóa của triều Nguyễn"
-                imageSrc="/images/tickets/dai-noi.jpg"
+                imageSrc="https://statics.vinpearl.com/dai-noi-hue-1_1690354434.jpg"
               />
               <TicketCard
                 title="Vé tham quan Lăng Tự Đức"
                 price="150.000đ"
                 description="Chiêm ngưỡng quần thể kiến trúc tráng lệ của lăng Tự Đức, một trong những công trình đẹp nhất của kiến trúc cung đình Huế"
-                imageSrc="/images/tickets/lang-tu-duc.jpg"
+                imageSrc="https://disantrangan.vn/wp-content/uploads/2021/11/lang_tu_duc_hue-03.jpg"
               />
               <TicketCard
                 title="Combo 3 điểm tham quan"
@@ -172,7 +190,7 @@ export default function TicketPage() {
                 title="Vé xem biểu diễn Nhã nhạc"
                 price="300.000đ"
                 description="Thưởng thức nghệ thuật Nhã nhạc cung đình Huế - Di sản văn hóa phi vật thể của nhân loại"
-                imageSrc="/images/tickets/nha-nhac.jpg"
+                imageSrc="https://th.bing.com/th/id/OIP.DQTzlP7Qv6QmD_ofCj9mhQHaE8?rs=1&pid=ImgDetMain"
               />
             </div>
           </TabsContent>
@@ -182,37 +200,37 @@ export default function TicketPage() {
               <SouvenirCard
                 name="Nón lá Huế thêu hoa"
                 price="120.000đ"
-                image="/images/souvenirs/non-la.jpg"
+                image="https://madebymaries.com/wp-content/uploads/2021/10/6-2.jpg"
                 description="Nón lá truyền thống Huế với họa tiết hoa văn thêu tay tinh xảo"
               />
               <SouvenirCard
                 name="Tranh thủy mặc Huế"
                 price="250.000đ"
-                image="/images/souvenirs/tranh-thuy-mac.jpg"
+                image="https://th.bing.com/th/id/OIP.3UC4Rb91wcZj2hSdIF_ohwHaEK?rs=1&pid=ImgDetMain"
                 description="Tranh thủy mặc vẽ cảnh Huế, thể hiện nét đẹp trầm mặc của Cố đô"
               />
               <SouvenirCard
                 name="Áo dài truyền thống"
                 price="850.000đ"
-                image="/images/souvenirs/ao-dai.jpg"
+                image="https://th.bing.com/th/id/OIP.21w3HodtpyqBx3i5m2ST6QHaLH?rs=1&pid=ImgDetMain"
                 description="Áo dài may thủ công với chất liệu lụa cao cấp và họa tiết truyền thống"
               />
               <SouvenirCard
                 name="Trầm hương Huế"
                 price="180.000đ"
-                image="/images/souvenirs/tram-huong.jpg"
+                image="https://vn-test-11.slatic.net/shop/678c0c37a404e2bfff06181065820513.png"
                 description="Trầm hương nguyên chất từ rừng Trường Sơn, được chế tác thủ công"
               />
               <SouvenirCard
                 name="Mứt Huế truyền thống"
                 price="150.000đ"
-                image="/c"
+                image="https://th.bing.com/th/id/R.3ed9c88d734517e49cdcec87d3077f02?rik=88roNnDPw%2bgbXA&pid=ImgRaw&r=0"
                 description="Bộ sưu tập các loại mứt đặc sản Huế, đóng gói sang trọng"
               />
               <SouvenirCard
                 name="Đồ gốm Phước Tích"
                 price="280.000đ"
-                image="/images/souvenirs/gom.jpg"
+                image="https://media-cdn-v2.laodong.vn/Storage/NewsPortal/2023/3/19/1159295/Hue-94.jpg"
                 description="Sản phẩm gốm từ làng nghề truyền thống Phước Tích"
               />
             </div>
@@ -230,10 +248,19 @@ export default function TicketPage() {
             <div>
               <h3 className="font-semibold mb-2">Lưu ý khi đặt vé</h3>
               <ul className="text-sm text-muted-foreground space-y-2">
-                <li>• Vé có giá trị trong ngày, vui lòng đặt vé trước ít nhất 1 ngày</li>
+                <li>
+                  • Vé có giá trị trong ngày, vui lòng đặt vé trước ít nhất 1
+                  ngày
+                </li>
                 <li>• Trẻ em dưới 7 tuổi được miễn phí vé vào cổng</li>
-                <li>• Đặt vé theo nhóm (trên 20 người) sẽ được giảm 10% tổng giá trị</li>
-                <li>• Quý khách có thể đổi hoặc hủy vé trước 24 giờ so với giờ tham quan</li>
+                <li>
+                  • Đặt vé theo nhóm (trên 20 người) sẽ được giảm 10% tổng giá
+                  trị
+                </li>
+                <li>
+                  • Quý khách có thể đổi hoặc hủy vé trước 24 giờ so với giờ
+                  tham quan
+                </li>
               </ul>
             </div>
           </div>
