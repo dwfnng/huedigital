@@ -26,7 +26,7 @@ import {
   Search,
   Layers3,
   History,
-  Box as Cube,
+  Box,
   ImageIcon
 } from "lucide-react";
 
@@ -340,7 +340,7 @@ const ExhibitionCard = ({ item }: { item: typeof exhibitionItems[0] }) => {
             )}
             {item.arAvailable && (
               <Badge variant="secondary" className="bg-emerald-600/90 text-white">
-                <Cube className="h-3 w-3 mr-1" /> AR
+                <Box className="h-3 w-3 mr-1" /> AR
               </Badge>
             )}
           </div>
@@ -415,7 +415,7 @@ const ExhibitionDetail = ({ item, onBack }: { item: typeof exhibitionItems[0], o
             <span>Panorama 360°</span>
           </TabsTrigger>
           <TabsTrigger value="3d" className="gap-2">
-            <Cube className="h-4 w-4" />
+            <Box className="h-4 w-4" />
             <span>Mô hình 3D</span>
           </TabsTrigger>
           <TabsTrigger value="info" className="gap-2">
@@ -498,7 +498,7 @@ const ExhibitionDetail = ({ item, onBack }: { item: typeof exhibitionItems[0], o
           {item.arAvailable && (
             <div className="flex justify-center">
               <Button variant="default" size="sm" className="gap-1 bg-emerald-600 hover:bg-emerald-700">
-                <Cube className="h-4 w-4" />
+                <Box className="h-4 w-4" />
                 <span>Xem bằng AR</span>
               </Button>
             </div>
@@ -572,7 +572,7 @@ const ExhibitionDetail = ({ item, onBack }: { item: typeof exhibitionItems[0], o
                   </Button>
                   {item.arAvailable && (
                     <Button variant="outline" size="sm" className="w-full justify-start gap-2">
-                      <Cube className="h-4 w-4 text-[#B5935A]" />
+                      <Box className="h-4 w-4 text-[#B5935A]" />
                       <span>Trải nghiệm thực tế ảo tăng cường</span>
                     </Button>
                   )}
