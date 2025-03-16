@@ -50,8 +50,52 @@
     @apply bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm border border-[#B5935A]/20 rounded-lg shadow-md hover:imperial-border transition-all duration-300;
   }
   
+  .elegant-card {
+    @apply bg-[#FEF8E8]/90 backdrop-blur-sm border border-[#B5935A]/30 rounded-lg shadow-md;
+    background-image: var(--lotus-pattern);
+    background-position: center;
+    background-repeat: repeat;
+  }
+  
+  .dragon-card {
+    @apply bg-[#FEF8E8]/90 backdrop-blur-sm border border-[#B5935A]/30 rounded-lg shadow-md;
+    background-image: var(--dragon-pattern);
+    background-position: center;
+    background-repeat: repeat;
+  }
+  
+  .lattice-card {
+    @apply bg-[#FEF8E8]/90 backdrop-blur-sm border border-[#B5935A]/30 rounded-lg shadow-md;
+    background-image: var(--lattice-pattern);
+    background-position: center;
+    background-repeat: repeat;
+  }
+  
   .elegant-pattern {
     background-image: var(--imperial-pattern);
+  }
+  
+  .lotus-pattern {
+    background-image: var(--lotus-pattern);
+  }
+  
+  .dragon-pattern {
+    background-image: var(--dragon-pattern);
+  }
+  
+  .lattice-pattern {
+    background-image: var(--lattice-pattern);
+  }
+  
+  /* Imperial decorative divider */
+  .imperial-divider {
+    @apply h-0.5 my-4;
+    background: linear-gradient(to right, transparent, rgba(181, 147, 90, 0.3), transparent);
+  }
+  
+  .imperial-divider-vertical {
+    @apply w-0.5 mx-4 h-full;
+    background: linear-gradient(to bottom, transparent, rgba(181, 147, 90, 0.3), transparent);
   }
   
   /* Add new subtle animations */
@@ -108,10 +152,10 @@
 
 body {
   @apply font-sans antialiased text-foreground;
-  background-color: #F7F3EA; /* Warm light yellowish/brown tone */
-  background-image: var(--imperial-pattern), var(--background-pattern-texture);
-  background-position: center;
-  background-repeat: repeat;
+  background-color: #F5E1A4; /* Imperial-themed soft brownish-yellow */
+  background-image: var(--imperial-pattern), var(--lotus-pattern), var(--background-pattern-texture);
+  background-position: center, top left, center;
+  background-repeat: repeat, repeat, repeat;
   background-attachment: fixed;
   background-blend-mode: overlay;
   @apply dark:bg-zinc-900;

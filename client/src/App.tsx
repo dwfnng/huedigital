@@ -279,9 +279,30 @@ function Router() {
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen">
         <MainNav />
         <main className="pt-20 pb-6 fade-in">
+          {/* Imperial corner decorations */}
+          <div className="fixed top-0 left-0 w-16 h-16 pointer-events-none opacity-25">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+              <path d="M0 0 L100 0 L100 20 L20 20 L20 100 L0 100 Z" fill="#B5935A" fillOpacity="0.5"/>
+            </svg>
+          </div>
+          <div className="fixed top-0 right-0 w-16 h-16 pointer-events-none opacity-25">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+              <path d="M0 0 L100 0 L100 100 L80 100 L80 20 L0 20 Z" fill="#B5935A" fillOpacity="0.5"/>
+            </svg>
+          </div>
+          <div className="fixed bottom-0 left-0 w-16 h-16 pointer-events-none opacity-25">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+              <path d="M0 0 L20 0 L20 80 L100 80 L100 100 L0 100 Z" fill="#B5935A" fillOpacity="0.5"/>
+            </svg>
+          </div>
+          <div className="fixed bottom-0 right-0 w-16 h-16 pointer-events-none opacity-25">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+              <path d="M80 0 L100 0 L100 100 L0 100 L0 80 L80 80 Z" fill="#B5935A" fillOpacity="0.5"/>
+            </svg>
+          </div>
           <Router />
         </main>
         <BackToTop />
