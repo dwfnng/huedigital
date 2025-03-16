@@ -17,13 +17,14 @@ import {
   GraduationCap, MapPin, Users, MessageSquare,
   ChevronUp, Library, Gamepad2, 
   MapPinned, Cloud, Ticket,
-  MessageCircle, Upload, BookText
+  MessageCircle, Upload, BookText,
+  Crown
 } from 'lucide-react';
 
 // Pages
 import Home from "@/pages/home";
 import Chat from "@/pages/chat";
-import MapPage from "@/pages/map";
+import MapPage from "@/pages/Map";
 import GamePage from "@/pages/game";
 import ForumPage from "@/pages/forum";
 import DigitalLibrary from "@/pages/DigitalLibrary";
@@ -104,11 +105,14 @@ function MainNav() {
   const [, setLocation] = useLocation();
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm border-b">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-md shadow-md border-b border-[#D4AF37]/20">
       <nav className="container mx-auto">
         <div className="flex h-16 items-center px-4">
           <Link href="/" className="flex items-center gap-2">
-            <span className="text-xl font-bold bg-gradient-to-r from-primary via-primary/80 to-primary bg-clip-text text-transparent">
+            <div className="w-8 h-8 royal-gradient rounded-full flex items-center justify-center">
+              <Crown className="h-4 w-4 text-white" />
+            </div>
+            <span className="text-xl font-bold gold-gradient bg-clip-text text-transparent">
               Huế Digital
             </span>
           </Link>
@@ -117,12 +121,12 @@ function MainNav() {
             <NavigationMenuList>
               {Object.entries(navigationItems).map(([key, section]) => (
                 <NavigationMenuItem key={key}>
-                  <NavigationMenuTrigger className="h-9">
+                  <NavigationMenuTrigger className="h-9 hover:text-[#D4AF37] data-[state=open]:text-[#D4AF37] transition-colors">
                     {section.icon}
                     <span className="ml-2">{section.label}</span>
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
-                    <div className="w-[500px] p-4">
+                    <div className="w-[500px] p-4 bg-background/95 backdrop-blur-md border border-[#D4AF37]/20 rounded-lg shadow-lg">
                       <div className="mb-3">
                         <p className="text-sm text-muted-foreground">{section.description}</p>
                       </div>
@@ -131,14 +135,14 @@ function MainNav() {
                           <Link key={item.href} href={item.href}>
                             <NavigationMenuLink asChild>
                               <a
-                                className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                                className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-all hover:bg-[#D4AF37]/5 hover:border-[#D4AF37]/20 hover:shadow-sm hover:text-[#D4AF37] focus:bg-[#D4AF37]/10 focus:text-[#D4AF37]"
                                 onClick={(e) => {
                                   e.preventDefault();
                                   setLocation(item.href);
                                 }}
                               >
                                 <div className="flex items-center gap-2">
-                                  {item.icon}
+                                  <div className="text-[#D4AF37]">{item.icon}</div>
                                   <span className="text-sm font-medium leading-none">{item.title}</span>
                                 </div>
                                 <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
@@ -155,8 +159,30 @@ function MainNav() {
               ))}
             </NavigationMenuList>
           </NavigationMenu>
+          
+          <div className="ml-auto flex items-center gap-2">
+            <Button 
+              variant="ghost" 
+              size="sm"
+              className="text-[#D4AF37] hover:text-[#BF953F] hover:bg-[#D4AF37]/5"
+              onClick={() => setLocation("/contribute")}
+            >
+              <Upload className="h-4 w-4 mr-1" />
+              Đóng góp
+            </Button>
+            <Button 
+              size="sm"
+              className="royal-gradient text-white hover:opacity-90"
+              onClick={() => setLocation("/library")}
+            >
+              Khám phá
+            </Button>
+          </div>
         </div>
       </nav>
+      
+      {/* Decorative element - thin gold line */}
+      <div className="h-0.5 bg-gradient-to-r from-transparent via-[#D4AF37]/50 to-transparent"></div>
     </header>
   );
 }
@@ -169,18 +195,18 @@ function ChatButton() {
       <Button
         variant="outline"
         size="icon"
-        className="rounded-full shadow-lg hover:shadow-xl transition-all duration-200"
+        className="rounded-full royal-shadow border-[#D4AF37]/30 bg-background/80 backdrop-blur-sm hover:border-[#D4AF37] hover:bg-[#D4AF37]/5 transition-all duration-200"
         onClick={() => setLocation("/chat")}
       >
-        <MessageSquare className="h-5 w-5" />
+        <MessageSquare className="h-5 w-5 text-[#D4AF37]" />
       </Button>
       <Button
         variant="outline"
         size="icon"
-        className="rounded-full shadow-lg hover:shadow-xl transition-all duration-200"
+        className="rounded-full royal-shadow border-[#D4AF37]/30 bg-background/80 backdrop-blur-sm hover:border-[#D4AF37] hover:bg-[#D4AF37]/5 transition-all duration-200"
         onClick={() => window.open('tel:+84234123456')}
       >
-        <MessageCircle className="h-5 w-5" />
+        <MessageCircle className="h-5 w-5 text-[#D4AF37]" />
       </Button>
     </div>
   );
@@ -207,12 +233,12 @@ function BackToTop() {
       variant="outline"
       size="icon"
       className={cn(
-        "fixed bottom-4 right-24 z-50 rounded-full transition-all duration-300",
+        "fixed bottom-4 right-24 z-50 rounded-full royal-shadow border-[#D4AF37]/30 bg-background/80 backdrop-blur-sm hover:border-[#D4AF37] hover:bg-[#D4AF37]/5 transition-all duration-300",
         show ? "opacity-100" : "opacity-0 pointer-events-none"
       )}
       onClick={scrollToTop}
     >
-      <ChevronUp className="h-4 w-4" />
+      <ChevronUp className="h-4 w-4 text-[#D4AF37]" />
     </Button>
   );
 }

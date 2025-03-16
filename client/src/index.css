@@ -2,17 +2,54 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --imperial-red: #CC0000;
+  --royal-gold: #D4AF37;
+  --wooden-brown: #8B4513;
+  --deep-red: #8B0000;
+  --background-pattern-overlay: linear-gradient(to right, rgba(212, 175, 55, 0.05), rgba(204, 0, 0, 0.05));
+  --background-pattern-texture: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d4af37' fill-opacity='0.07'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
 @layer components {
   .glass-card {
     @apply bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg border border-white/20 rounded-lg shadow-lg;
   }
   
   .royal-gradient {
-    @apply bg-gradient-to-r from-amber-600 to-purple-800;
+    @apply bg-gradient-to-r from-amber-600 via-[#D4AF37] to-[#8B0000];
+  }
+
+  .gold-gradient {
+    @apply bg-gradient-to-r from-[#BF953F] via-[#D4AF37] to-[#F0C75E];
+  }
+
+  .wooden-gradient {
+    @apply bg-gradient-to-r from-[#8B4513] to-[#A0522D];
+  }
+
+  .imperial-border {
+    @apply border-2 border-[#D4AF37]/80 shadow-[0_0_15px_rgba(212,175,55,0.3)];
   }
 
   .page-transition {
     @apply transition-all duration-300 ease-in-out;
+  }
+  
+  .hover-scale {
+    @apply transition-transform duration-200 hover:scale-105;
+  }
+  
+  .royal-shadow {
+    @apply shadow-[0_4px_15px_rgba(212,175,55,0.3)];
+  }
+  
+  .imperial-card {
+    @apply bg-white/90 dark:bg-gray-800/90 backdrop-blur-lg border border-[#D4AF37]/30 rounded-lg shadow-lg hover:imperial-border transition-all duration-300;
+  }
+  
+  .dragon-pattern {
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d4af37' fill-opacity='0.1'%3E%3Cpath d='M30 30c-5.523 0-10-4.477-10-10s4.477-10 10-10 10 4.477 10 10-4.477 10-10 10zm0-5c2.761 0 5-2.239 5-5s-2.239-5-5-5-5 2.239-5 5 2.239 5 5 5z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
   }
 }
 
@@ -23,6 +60,15 @@
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
+}
+
+.animate-slide-up {
+  animation: slideUp 0.5s ease-out;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
 }
 
 @layer base {
