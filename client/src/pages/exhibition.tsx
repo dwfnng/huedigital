@@ -220,36 +220,14 @@ const exhibitionItems = [
   }
 ];
 
-// Filter component
+// Filter component - Simplified version with only search function
 const ExhibitionFilter = ({ 
-  onCategoryChange, 
-  onPeriodChange,
   onSearch,
-  selectedCategory,
-  selectedPeriod,
   searchTerm
 }: { 
-  onCategoryChange: (category: string | null) => void,
-  onPeriodChange: (period: string | null) => void,
   onSearch: (term: string) => void,
-  selectedCategory: string | null,
-  selectedPeriod: string | null,
   searchTerm: string
 }) => {
-  const categories = [
-    { id: "palace", name: "Cung điện" },
-    { id: "tomb", name: "Lăng tẩm" },
-    { id: "temple", name: "Chùa/Đền" },
-    { id: "architecture", name: "Kiến trúc" }
-  ];
-
-  const periods = [
-    { id: "1700s", name: "Thế kỷ 18" },
-    { id: "1800-1850", name: "1800-1850" },
-    { id: "1850-1900", name: "1850-1900" },
-    { id: "1900s", name: "Thế kỷ 20" }
-  ];
-
   return (
     <div className="bg-card rounded-lg p-4 mb-6">
       <div className="mb-4">
@@ -262,54 +240,6 @@ const ExhibitionFilter = ({
             value={searchTerm}
             onChange={(e) => onSearch(e.target.value)}
           />
-        </div>
-      </div>
-
-      <div className="space-y-4">
-        <div>
-          <h3 className="text-sm font-medium mb-2">Loại di tích</h3>
-          <div className="flex flex-wrap gap-2">
-            <Badge 
-              variant={selectedCategory === null ? "default" : "outline"}
-              className="cursor-pointer"
-              onClick={() => onCategoryChange(null)}
-            >
-              Tất cả
-            </Badge>
-            {categories.map(category => (
-              <Badge 
-                key={category.id}
-                variant={selectedCategory === category.id ? "default" : "outline"}
-                className="cursor-pointer"
-                onClick={() => onCategoryChange(category.id)}
-              >
-                {category.name}
-              </Badge>
-            ))}
-          </div>
-        </div>
-
-        <div>
-          <h3 className="text-sm font-medium mb-2">Thời kỳ</h3>
-          <div className="flex flex-wrap gap-2">
-            <Badge 
-              variant={selectedPeriod === null ? "default" : "outline"}
-              className="cursor-pointer"
-              onClick={() => onPeriodChange(null)}
-            >
-              Tất cả
-            </Badge>
-            {periods.map(period => (
-              <Badge 
-                key={period.id}
-                variant={selectedPeriod === period.id ? "default" : "outline"}
-                className="cursor-pointer"
-                onClick={() => onPeriodChange(period.id)}
-              >
-                {period.name}
-              </Badge>
-            ))}
-          </div>
         </div>
       </div>
     </div>
@@ -616,21 +546,17 @@ const ExhibitionDetail = ({ item, onBack }: { item: typeof exhibitionItems[0], o
 
 // Main exhibition page
 export default function ExhibitionPage() {
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [selectedPeriod, setSelectedPeriod] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedItem, setSelectedItem] = useState<typeof exhibitionItems[0] | null>(null);
 
-  // Filter items based on search and filters
+  // Filter items based on search only
   const filteredItems = exhibitionItems.filter(item => {
-    const matchesCategory = selectedCategory ? item.category === selectedCategory : true;
-    const matchesPeriod = selectedPeriod ? item.createPeriod.includes(selectedPeriod) : true;
     const matchesSearch = searchTerm ? 
       item.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
       item.description.toLowerCase().includes(searchTerm.toLowerCase()) : 
       true;
 
-    return matchesCategory && matchesPeriod && matchesSearch;
+    return matchesSearch;
   });
 
   return (
@@ -645,11 +571,7 @@ export default function ExhibitionPage() {
       {!selectedItem ? (
         <>
           <ExhibitionFilter 
-            onCategoryChange={setSelectedCategory}
-            onPeriodChange={setSelectedPeriod}
             onSearch={setSearchTerm}
-            selectedCategory={selectedCategory}
-            selectedPeriod={selectedPeriod}
             searchTerm={searchTerm}
           />
 
@@ -667,12 +589,10 @@ export default function ExhibitionPage() {
               <Button 
                 variant="link" 
                 onClick={() => {
-                  setSelectedCategory(null);
-                  setSelectedPeriod(null);
                   setSearchTerm('');
                 }}
               >
-                Xóa bộ lọc
+                Xóa tìm kiếm
               </Button>
             </div>
           )}

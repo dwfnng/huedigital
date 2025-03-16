@@ -55,6 +55,12 @@ const navigationItems = {
         href: "/game",
         description: "Học qua các trò chơi tương tác",
       },
+      {
+        icon: <Box className="h-4 w-4" />,
+        title: "Triển lãm 3D/AR",
+        href: "/exhibition",
+        description: "Trải nghiệm di sản Huế qua mô hình 3D và công nghệ thực tế ảo tăng cường",
+      },
     ],
   },
   tourism: {
@@ -85,12 +91,6 @@ const navigationItems = {
         title: "Ẩm thực Huế",
         href: "/culinary",
         description: "Khám phá ẩm thực đặc sắc và lịch sử ẩm thực Huế",
-      },
-      {
-        icon: <Box className="h-4 w-4" />,
-        title: "Triển lãm 3D/AR",
-        href: "/exhibition",
-        description: "Trải nghiệm di sản Huế qua mô hình 3D và công nghệ thực tế ảo tăng cường",
       },
     ],
   },
