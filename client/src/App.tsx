@@ -105,28 +105,28 @@ function MainNav() {
   const [, setLocation] = useLocation();
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-md shadow-md border-b border-[#D4AF37]/20">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-md shadow-sm border-b border-[#B5935A]/15">
       <nav className="container mx-auto">
         <div className="flex h-16 items-center px-4">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 royal-gradient rounded-full flex items-center justify-center">
+          <Link href="/" className="flex items-center gap-2 group">
+            <div className="w-8 h-8 royal-gradient rounded-full flex items-center justify-center transition-all duration-300 group-hover:shadow-[0_0_10px_rgba(181,147,90,0.3)]">
               <Crown className="h-4 w-4 text-white" />
             </div>
-            <span className="text-xl font-bold gold-gradient bg-clip-text text-transparent">
+            <span className="text-xl font-bold text-[#B5935A] transition-colors duration-300 group-hover:text-[#9F8054]">
               Huế Digital
             </span>
           </Link>
 
-          <NavigationMenu className="ml-8">
+          <NavigationMenu className="ml-8 hidden md:block">
             <NavigationMenuList>
               {Object.entries(navigationItems).map(([key, section]) => (
                 <NavigationMenuItem key={key}>
-                  <NavigationMenuTrigger className="h-9 hover:text-[#D4AF37] data-[state=open]:text-[#D4AF37] transition-colors">
+                  <NavigationMenuTrigger className="h-9 hover:text-[#B5935A] data-[state=open]:text-[#B5935A] transition-colors">
                     {section.icon}
                     <span className="ml-2">{section.label}</span>
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
-                    <div className="w-[500px] p-4 bg-background/95 backdrop-blur-md border border-[#D4AF37]/20 rounded-lg shadow-lg">
+                    <div className="w-[500px] p-4 bg-background/95 backdrop-blur-md border border-[#B5935A]/15 rounded-lg shadow-md">
                       <div className="mb-3">
                         <p className="text-sm text-muted-foreground">{section.description}</p>
                       </div>
@@ -135,14 +135,14 @@ function MainNav() {
                           <Link key={item.href} href={item.href}>
                             <NavigationMenuLink asChild>
                               <a
-                                className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-all hover:bg-[#D4AF37]/5 hover:border-[#D4AF37]/20 hover:shadow-sm hover:text-[#D4AF37] focus:bg-[#D4AF37]/10 focus:text-[#D4AF37]"
+                                className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-all hover:bg-[#B5935A]/5 hover:border-[#B5935A]/15 hover:shadow-sm hover:text-[#B5935A]"
                                 onClick={(e) => {
                                   e.preventDefault();
                                   setLocation(item.href);
                                 }}
                               >
                                 <div className="flex items-center gap-2">
-                                  <div className="text-[#D4AF37]">{item.icon}</div>
+                                  <div className="text-[#B5935A]">{item.icon}</div>
                                   <span className="text-sm font-medium leading-none">{item.title}</span>
                                 </div>
                                 <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
@@ -164,7 +164,7 @@ function MainNav() {
             <Button 
               variant="ghost" 
               size="sm"
-              className="text-[#D4AF37] hover:text-[#BF953F] hover:bg-[#D4AF37]/5"
+              className="text-[#B5935A] hover:text-[#9F8054] hover:bg-[#B5935A]/5 hidden sm:flex"
               onClick={() => setLocation("/contribute")}
             >
               <Upload className="h-4 w-4 mr-1" />
@@ -172,7 +172,7 @@ function MainNav() {
             </Button>
             <Button 
               size="sm"
-              className="royal-gradient text-white hover:opacity-90"
+              className="royal-gradient text-white hover:opacity-90 transition-all duration-300"
               onClick={() => setLocation("/library")}
             >
               Khám phá
@@ -182,7 +182,7 @@ function MainNav() {
       </nav>
       
       {/* Decorative element - thin gold line */}
-      <div className="h-0.5 bg-gradient-to-r from-transparent via-[#D4AF37]/50 to-transparent"></div>
+      <div className="h-0.5 bg-gradient-to-r from-transparent via-[#B5935A]/25 to-transparent"></div>
     </header>
   );
 }
@@ -195,18 +195,18 @@ function ChatButton() {
       <Button
         variant="outline"
         size="icon"
-        className="rounded-full royal-shadow border-[#D4AF37]/30 bg-background/80 backdrop-blur-sm hover:border-[#D4AF37] hover:bg-[#D4AF37]/5 transition-all duration-200"
+        className="rounded-full royal-shadow border-[#B5935A]/20 bg-background/80 backdrop-blur-sm hover:border-[#B5935A]/40 hover:bg-[#B5935A]/5 transition-all duration-300 soft-glow"
         onClick={() => setLocation("/chat")}
       >
-        <MessageSquare className="h-5 w-5 text-[#D4AF37]" />
+        <MessageSquare className="h-5 w-5 text-[#B5935A]" />
       </Button>
       <Button
         variant="outline"
         size="icon"
-        className="rounded-full royal-shadow border-[#D4AF37]/30 bg-background/80 backdrop-blur-sm hover:border-[#D4AF37] hover:bg-[#D4AF37]/5 transition-all duration-200"
+        className="rounded-full royal-shadow border-[#B5935A]/20 bg-background/80 backdrop-blur-sm hover:border-[#B5935A]/40 hover:bg-[#B5935A]/5 transition-all duration-300 soft-glow"
         onClick={() => window.open('tel:+84234123456')}
       >
-        <MessageCircle className="h-5 w-5 text-[#D4AF37]" />
+        <MessageCircle className="h-5 w-5 text-[#B5935A]" />
       </Button>
     </div>
   );
@@ -233,12 +233,12 @@ function BackToTop() {
       variant="outline"
       size="icon"
       className={cn(
-        "fixed bottom-4 right-24 z-50 rounded-full royal-shadow border-[#D4AF37]/30 bg-background/80 backdrop-blur-sm hover:border-[#D4AF37] hover:bg-[#D4AF37]/5 transition-all duration-300",
+        "fixed bottom-4 right-24 z-50 rounded-full royal-shadow border-[#B5935A]/20 bg-background/80 backdrop-blur-sm hover:border-[#B5935A]/40 hover:bg-[#B5935A]/5 transition-all duration-300 soft-glow",
         show ? "opacity-100" : "opacity-0 pointer-events-none"
       )}
       onClick={scrollToTop}
     >
-      <ChevronUp className="h-4 w-4 text-[#D4AF37]" />
+      <ChevronUp className="h-4 w-4 text-[#B5935A]" />
     </Button>
   );
 }
