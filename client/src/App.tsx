@@ -18,7 +18,7 @@ import {
   ChevronUp, Library, Gamepad2, 
   MapPinned, Cloud, Ticket,
   MessageCircle, Upload, BookText,
-  Crown
+  Crown, Utensils
 } from 'lucide-react';
 
 // Pages
@@ -31,6 +31,7 @@ import DigitalLibrary from "@/pages/DigitalLibrary";
 import TicketPage from "@/pages/ticket";
 import ContributePage from "@/pages/contribute";
 import LiveDataPage from "@/pages/live-data";
+import CulinaryPage from "@/pages/culinary";
 import NotFound from "@/pages/not-found";
 import { useState, useEffect } from "react";
 
@@ -77,6 +78,12 @@ const navigationItems = {
         title: "Đặt vé",
         href: "/ticket",
         description: "Mua vé tham quan các điểm di tích",
+      },
+      {
+        icon: <Utensils className="h-4 w-4" />,
+        title: "Ẩm thực Huế",
+        href: "/culinary",
+        description: "Khám phá ẩm thực đặc sắc và lịch sử ẩm thực Huế",
       },
     ],
   },
@@ -255,6 +262,7 @@ function Router() {
       <Route path="/ticket" component={TicketPage} />
       <Route path="/contribute" component={ContributePage} />
       <Route path="/live-data" component={LiveDataPage} />
+      <Route path="/culinary" component={CulinaryPage} />
       <Route component={NotFound} />
     </Switch>
   );

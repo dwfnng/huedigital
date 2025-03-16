@@ -1,0 +1,48 @@
+Thêm tính năng **"Ẩm thực"** vào phần du lịch là một ý tưởng tuyệt vời vì ẩm thực Huế là một phần không thể thiếu trong trải nghiệm văn hóa.  
+
+Còn về **thư viện (triển lãm) pano 3D/AR**, nếu tập trung vào góc độ nghiên cứu, giáo dục về di sản thì nó nên nằm trong phần **"Giáo dục"**. Nếu mục đích chính là trải nghiệm trực quan, phục vụ khách du lịch, thì nên đưa vào **"Du lịch"**. Bạn muốn hướng nó theo chiều nào?  
+
+Sau đây là prompt tối ưu cho Replit Agent AI, tích hợp tất cả những điều bạn mong muốn:  
+
+---
+
+**Prompt cho Replit Agent AI:**  
+
+💡 *Objective:* Optimize and enhance the **Hue Digital Tour Guide** website with a visually appealing and efficient design using **Tailwind CSS**.  
+
+### ✨ **UI/UX Enhancements:**  
+1. **Color Scheme Optimization**:  
+   - Replace the current bright white background with a **warm light brown/yellowish tone** to reduce eye strain and match the **Imperial Hue** theme.  
+   - Ensure that all pages, including sub-pages, adopt this theme.  
+2. **Background Patterns:**  
+   - Add subtle **imperial patterns** or **bronze drum motifs** as a background texture (ensure it does not overwhelm text readability).  
+3. **Smooth Animations & Transitions:**  
+   - Implement **hover effects, fade-in, and slide-in animations** to improve interactivity.  
+   - Ensure **soft page transitions** for a seamless experience.  
+4. **Navigation Bar Upgrade:**  
+   - Improve the **icons, hover effects, and layout** for a more modern and polished look.  
+5. **Mobile Optimization:**  
+   - Ensure the UI is fully responsive with **optimized layouts for smaller screens**.  
+   - Improve button placements and text sizes for **better accessibility on touch devices**.  
+6. **Performance Optimization:**  
+   - Remove unnecessary files and scripts to **reduce load time**.  
+   - Minify and optimize assets for **faster page speed**.  
+
+### 🍜 **New Features & Sections:**  
+1. **Food & Culinary Section (Under “Tourism”)**  
+   - Add a new **“Hue Cuisine”** category to highlight **local dishes, food history, and recommended places to eat**.  
+   - Implement **high-quality images** and potential **user reviews/ratings**.  
+
+2. **3D/AR Exhibition Library (Under “Education” or “Tourism”)**  
+   - Create a **digital exhibition space** where users can explore **panoramic (3D/AR) images** of cultural sites.  
+   - Allow for **interactive experiences** (click to rotate, zoom into artifacts, etc.).  
+   - Ensure a smooth **loading experience for mobile users**.  
+
+### 🎯 **Final Deliverables:**  
+- Implement the **new UI improvements** across all pages.  
+- Add **Culinary & Digital Exhibition features**.  
+- Ensure **optimal performance & mobile responsiveness**.  
+
+---
+
+Bạn có muốn điều chỉnh gì thêm không? 😊
