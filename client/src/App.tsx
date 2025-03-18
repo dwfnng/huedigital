@@ -35,7 +35,7 @@ import {
 // Pages
 import Home from "@/pages/home";
 import Chat from "@/pages/chat";
-import MapPage from "@/pages/Map";
+import MapPage from "@/pages/map";
 import GamePage from "@/pages/game";
 import ForumPage from "@/pages/forum";
 import DigitalLibrary from "@/pages/DigitalLibrary";
@@ -106,9 +106,9 @@ const navigationItems = {
       },
     ],
   },
-  community: {
-    icon: <Users className="h-4 w-4" />,
-    label: "Cộng đồng",
+  contribute: {
+    icon: <Upload className="h-4 w-4" />,
+    label: "Đóng góp",
     description: "Tham gia và đóng góp cùng cộng đồng",
     items: [
       {
@@ -122,6 +122,13 @@ const navigationItems = {
         title: "Đóng góp",
         href: "/contribute",
         description: "Đóng góp tài liệu và hình ảnh",
+      },
+      {
+        icon: <Users className="h-4 w-4" />,
+        title: "Cộng đồng Facebook",
+        href: "https://www.facebook.com/groups/618595794333990",
+        description: "Tham gia nhóm cộng đồng trên Facebook",
+        external: true,
       },
     ],
   },
@@ -208,37 +215,67 @@ function MainNav() {
                       </div>
                       <div className="grid gap-3 md:grid-cols-2">
                         {section.items.map((item, idx) => (
-                          <Link key={item.href} href={item.href}>
-                            <NavigationMenuLink asChild>
-                              <a
-                                className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none
-                                            transition-all hover:bg-[#8D6A3F]/10 hover:border-[#8D6A3F]/20
-                                            hover:shadow-md hover:text-[#6B2B2B] imperial-card group animate-fade-in"
-                                style={{ animationDelay: `${idx * 50}ms` }}
-                                onClick={(e) => {
-                                  e.preventDefault();
-                                  setLocation(item.href);
-                                }}
-                              >
-                                <div className="flex items-center gap-2">
-                                  <div
-                                    className="w-8 h-8 rounded-full bg-[#C49A44]/10 flex items-center justify-center
-                                                 group-hover:bg-[#8D6A3F]/20 transition-colors"
-                                  >
-                                    <div className="text-[#8D6A3F] group-hover:text-[#6B2B2B] transition-colors">
-                                      {item.icon}
-                                    </div>
+                          item.external ? (
+                            <a 
+                              key={item.href} 
+                              href={item.href}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none
+                                        transition-all hover:bg-[#8D6A3F]/10 hover:border-[#8D6A3F]/20
+                                        hover:shadow-md hover:text-[#6B2B2B] imperial-card group animate-fade-in"
+                              style={{ animationDelay: `${idx * 50}ms` }}
+                            >
+                              <div className="flex items-center gap-2">
+                                <div
+                                  className="w-8 h-8 rounded-full bg-[#C49A44]/10 flex items-center justify-center
+                                             group-hover:bg-[#8D6A3F]/20 transition-colors"
+                                >
+                                  <div className="text-[#8D6A3F] group-hover:text-[#6B2B2B] transition-colors">
+                                    {item.icon}
                                   </div>
-                                  <span className="text-sm font-medium leading-none group-hover:text-[#6B2B2B]">
-                                    {item.title}
-                                  </span>
                                 </div>
-                                <p className="line-clamp-2 text-sm leading-snug text-[#6D4C41] mt-2 group-hover:text-[#6D4C41]/90">
-                                  {item.description}
-                                </p>
-                              </a>
-                            </NavigationMenuLink>
-                          </Link>
+                                <span className="text-sm font-medium leading-none group-hover:text-[#6B2B2B]">
+                                  {item.title}
+                                </span>
+                              </div>
+                              <p className="line-clamp-2 text-sm leading-snug text-[#6D4C41] mt-2 group-hover:text-[#6D4C41]/90">
+                                {item.description}
+                              </p>
+                            </a>
+                          ) : (
+                            <Link key={item.href} href={item.href}>
+                              <NavigationMenuLink asChild>
+                                <a
+                                  className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none
+                                              transition-all hover:bg-[#8D6A3F]/10 hover:border-[#8D6A3F]/20
+                                              hover:shadow-md hover:text-[#6B2B2B] imperial-card group animate-fade-in"
+                                  style={{ animationDelay: `${idx * 50}ms` }}
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    setLocation(item.href);
+                                  }}
+                                >
+                                  <div className="flex items-center gap-2">
+                                    <div
+                                      className="w-8 h-8 rounded-full bg-[#C49A44]/10 flex items-center justify-center
+                                                   group-hover:bg-[#8D6A3F]/20 transition-colors"
+                                    >
+                                      <div className="text-[#8D6A3F] group-hover:text-[#6B2B2B] transition-colors">
+                                        {item.icon}
+                                      </div>
+                                    </div>
+                                    <span className="text-sm font-medium leading-none group-hover:text-[#6B2B2B]">
+                                      {item.title}
+                                    </span>
+                                  </div>
+                                  <p className="line-clamp-2 text-sm leading-snug text-[#6D4C41] mt-2 group-hover:text-[#6D4C41]/90">
+                                    {item.description}
+                                  </p>
+                                </a>
+                              </NavigationMenuLink>
+                            </Link>
+                          )
                         ))}
                       </div>
                     </div>

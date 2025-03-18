@@ -119,10 +119,10 @@ export default function LiveDataPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Weather Card */}
           <motion.div variants={item}>
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <CloudRain className="h-5 w-5 text-primary" />
+            <Card className="bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-100">
+              <CardHeader className="bg-gradient-to-r from-blue-500/10 to-indigo-500/10 rounded-t-lg">
+                <CardTitle className="flex items-center gap-2 text-blue-700">
+                  <CloudRain className="h-5 w-5 text-blue-600" />
                   Thời tiết
                 </CardTitle>
               </CardHeader>
@@ -136,24 +136,24 @@ export default function LiveDataPage() {
                         className="w-16 h-16"
                       />
                       <div>
-                        <p className="text-2xl font-semibold">
+                        <p className="text-2xl font-semibold text-blue-800">
                           {Math.round(weather.temp)}°C
                         </p>
-                        <p className="capitalize text-muted-foreground">
+                        <p className="capitalize text-blue-600">
                           {weather.description}
                         </p>
                       </div>
                     </div>
-                    <div className="mt-4 space-y-2 text-sm text-muted-foreground">
+                    <div className="mt-4 space-y-2 text-sm text-blue-700">
                       <p>Độ ẩm: {weather.humidity}%</p>
                       <p>Gió: {Math.round(weather.windSpeed * 3.6)} km/h</p>
-                      <p className="text-xs">
+                      <p className="text-xs text-blue-500">
                         Cập nhật: {new Date(weather.lastUpdated).toLocaleTimeString('vi-VN')}
                       </p>
                     </div>
                   </div>
                 ) : (
-                  <div className="text-muted-foreground">
+                  <div className="text-blue-500">
                     {weatherError ? "Không thể lấy dữ liệu thời tiết" : "Đang cập nhật..."}
                   </div>
                 )}

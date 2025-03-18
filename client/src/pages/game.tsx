@@ -14,15 +14,15 @@ function GameCard({ icon: Icon, title, description, onClick }: {
   onClick: () => void;
 }) {
   return (
-    <Card className="cursor-pointer hover:bg-accent transition-colors" onClick={onClick}>
+    <Card className="cursor-pointer hover:bg-cyan-50 transition-colors shadow-sm hover:shadow-md" onClick={onClick}>
       <CardContent className="p-6">
         <div className="flex items-start gap-4">
-          <div className="p-2 bg-primary/10 rounded-lg">
-            <Icon className="h-6 w-6 text-primary" />
+          <div className="p-2 bg-cyan-500/10 rounded-lg">
+            <Icon className="h-6 w-6 text-cyan-700" />
           </div>
           <div>
-            <h3 className="font-semibold mb-2">{title}</h3>
-            <p className="text-sm text-muted-foreground">{description}</p>
+            <h3 className="font-semibold mb-2 text-cyan-900">{title}</h3>
+            <p className="text-sm text-cyan-700/80">{description}</p>
           </div>
         </div>
       </CardContent>
