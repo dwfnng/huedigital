@@ -1,0 +1,61 @@
+Dưới đây là prompt chi tiết (bằng tiếng Việt) mà bạn có thể gửi cho Replit Agent AI để thực hiện các thay đổi theo yêu cầu:
+
+---
+
+**Tiêu đề:** Cập nhật chức năng diễn đàn, chỉnh màu chữ game giáo dục, nổi bật tiêu đề trang, phân tách khu vực nội dung và điều chỉnh màu nền dữ liệu thực
+
+**Nội dung yêu cầu:**
+
+1. **Xóa chức năng diễn đàn hiện tại và thay bằng liên kết Facebook Group:**
+   - Loại bỏ hoặc ẩn toàn bộ phần diễn đàn cũ (bao gồm các trang, nút điều hướng liên quan).
+   - Thay vào đó, thêm một nút hoặc liên kết “Diễn đàn” nằm cạnh nút “Đóng góp” trên thanh điều hướng chính.
+   - Nút/ liên kết này dẫn trực tiếp đến nhóm Facebook mà tôi đã cung cấp (thay thế đường link giả bên dưới bằng link thật của bạn):
+     - Ví dụ: `https://www.facebook.com/groups/tennhomcuaban`
+   - Chú ý đảm bảo phong cách thiết kế (màu sắc, kích thước nút) nhất quán với các nút khác trên thanh điều hướng.
+
+2. **Chỉnh màu sắc chữ ở Game giáo dục về màu đen đơn giản:**
+   - Ở trang “Game giáo dục” (game lịch sử, nhập vai, v.v.), đổi màu chữ của các nội dung, nút, tiêu đề trong khu vực này về màu đen (hoặc màu xám đậm #333333) để dễ đọc hơn.
+   - Bảo đảm giữ nguyên phông chữ và kích thước, chỉ thay đổi màu chữ.
+
+3. **Nổi bật tiêu đề trang, phân tách rõ từng khu vực nội dung:**
+   - Ở các trang như:
+     - **Game giáo dục**  
+     - **Dữ liệu thời gian thực**  
+     - **Ẩm thực Huế**  
+     - Và các trang khác tương tự
+   - Thêm màu nền đậm hơn (hoặc khác biệt) ở phần tiêu đề trang (heading) để làm nổi bật, ví dụ:
+     ```css
+     .page-header {
+       background-color: #F9D77E; /* Ví dụ: màu vàng đậm hơn so với nền */
+       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+       padding: 16px;
+     }
+     .page-header h1 {
+       color: #333; /* hoặc màu đen để dễ đọc */
+     }
+     ```
+   - Phân tách các khối nội dung bằng cách:
+     - Thêm viền hoặc box-shadow cho các thẻ card (hoặc khung nội dung).
+     - Sử dụng màu nền sáng hơn (hoặc tối hơn) để phân biệt với nền tổng thể, ví dụ: #FFF8ED (kem nhạt) cho phần nội dung, trắng (#FFFFFF) cho card, v.v.
+
+4. **Thay đổi màu nền ở Dữ liệu thời gian thực:**
+   - Phần “Dữ liệu thời gian thực” hiện đang có nhiều khung thông tin (thời tiết, giao thông, sự kiện, thống kê). Cần làm cho trang này trực quan hơn:
+     - Dùng màu nền nhẹ nhàng hơn, ví dụ #F0F8FF (xanh nhạt) hoặc #F7F7FD (xám xanh nhạt) cho toàn khu vực “Dữ liệu thời gian thực”.
+     - Mỗi khung thông tin (card) có thể có màu nền khác nhau (nhưng cùng tông pastel) để phân biệt, ví dụ:
+       - Thời tiết: #E0ECFF (xanh dương rất nhạt)
+       - Tình hình giao thông: #E6FFE6 (xanh lá rất nhạt)
+       - Sự kiện sắp diễn ra: #FFF5E6 (cam nhạt)
+       - Thống kê theo điểm: #F3E6FF (tím nhạt)
+     - Điều chỉnh màu chữ để đảm bảo tương phản tốt (thường là màu đen hoặc xám đậm).
+
+5. **Kiểm tra tính nhất quán và responsive:**
+   - Sau khi cập nhật, kiểm tra lại toàn bộ trang trên cả máy tính và di động để đảm bảo bố cục không bị vỡ.
+   - Giữ phong cách màu sắc “Huế” (vàng, kem, nâu nhạt…) nhưng cần tăng độ tương phản ở những chỗ quan trọng.
+
+**Yêu cầu thêm:**
+- Vui lòng cung cấp đoạn mã hoặc hướng dẫn tích hợp cụ thể (CSS/JS) để tôi có thể áp dụng trực tiếp trên Replit.
+- Nếu có vấn đề về xung đột màu sắc, hãy điều chỉnh linh hoạt nhưng vẫn ưu tiên độ tương phản và tính thẩm mỹ.
+
+---
+
+Bạn chỉ cần sao chép nội dung trên và gửi cho Replit Agent AI, kèm đường link nhóm Facebook cụ thể. AI sẽ tự động thực hiện hoặc hướng dẫn bạn thực hiện các thay đổi về giao diện và chức năng theo yêu cầu. Chúc bạn triển khai thành công!
