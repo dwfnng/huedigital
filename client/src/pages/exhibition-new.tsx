@@ -222,7 +222,15 @@ const ExhibitionDetail = ({ item, onBack }: { item: typeof exhibitionItems[0], o
       <div className="animate-fade-in space-y-6 bg-[#F5E1A4]/30 dark:bg-zinc-900/50 backdrop-blur-sm p-6 rounded-lg relative z-10">
         {/* Back button with imperial styling */}
         <div className="flex justify-between items-center mb-4">
-          {/*Removed Back Button */}
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={onBack}
+            className="gap-1 bg-[#B5935A] hover:bg-[#9E7C47] text-black border-[#8D6A3F]/50 hover:border-[#C49A44]"
+          >
+            <ChevronLeft className="h-4 w-4" />
+            <span>Quay lại</span>
+          </Button>
           <div className="flex items-center gap-2">
             <Button 
               variant="outline" 
