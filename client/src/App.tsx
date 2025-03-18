@@ -284,18 +284,17 @@ function ChatButton() {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-3">
+    <div className="fixed bottom-6 right-6 z-50">
       <div
-        className={`absolute inset-0 bg-[#C49A44]/10 rounded-full transition-all duration-500 ease-in-out ${
+        className={`absolute inset-0 bg-[#8D6A3F]/10 rounded-full transition-all duration-500 ease-in-out ${
           isHovered ? "scale-[2.5] opacity-100" : "scale-0 opacity-0"
         }`}
       />
-
       <Button
         variant="outline"
         size="icon"
-        className="rounded-full bg-[#F5E1A4]/90 backdrop-blur-sm border-[#8D6A3F]/30 shadow-lg
-                 hover:border-[#8D6A3F] hover:bg-[#F5E1A4] hover:-translate-y-1
+        className="rounded-full bg-background-soft backdrop-blur-sm border-[#8D6A3F]/30 shadow-lg
+                 hover:border-[#8D6A3F] hover:bg-background hover:-translate-y-1
                  transition-all duration-300 w-12 h-12 group"
         onClick={() => setLocation("/chat")}
         onMouseEnter={() => setIsHovered(true)}
@@ -303,34 +302,10 @@ function ChatButton() {
       >
         <div className="absolute inset-0 rounded-full royal-gradient opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
         <div className="relative h-full w-full flex items-center justify-center">
-          <div className="absolute w-8 h-8 rounded-full bg-[#C49A44]/10 animate-ping opacity-70"></div>
+          <div className="absolute w-8 h-8 rounded-full bg-[#8D6A3F]/10 animate-ping opacity-70"></div>
           <MessageSquare className="h-5 w-5 text-[#8D6A3F] relative z-10 group-hover:text-[#6B2B2B] transition-colors" />
         </div>
       </Button>
-
-      <Button
-        variant="outline"
-        size="icon"
-        className="rounded-full bg-[#F5E1A4]/90 backdrop-blur-sm border-[#8D6A3F]/30 shadow-lg
-                 hover:border-[#8D6A3F] hover:bg-[#F5E1A4] hover:-translate-y-1
-                 transition-all duration-300 w-12 h-12 group"
-        onClick={() => window.open("tel:+84234123456")}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-      >
-        <div className="absolute inset-0 rounded-full royal-gradient opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
-        <MessageCircle className="h-5 w-5 text-[#8D6A3F] group-hover:text-[#6B2B2B] transition-colors" />
-      </Button>
-
-      {/* Decorative lotus pattern */}
-      <div className="absolute -bottom-3 -right-3 w-16 h-16 opacity-20 pointer-events-none">
-        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-          <path
-            d="M50,20 C65,35 85,25 95,15 C80,40 75,65 50,80 C25,65 20,40 5,15 C15,25 35,35 50,20Z"
-            fill="#8D6A3F"
-          />
-        </svg>
-      </div>
     </div>
   );
 }
@@ -397,6 +372,7 @@ function Router() {
       <Route path="/ticket" component={TicketPage} />
       <Route path="/contribute" component={ContributePage} />
       <Route path="/live-data" component={LiveDataPage} />
+      <Route path="/culinary" component={CulinaryPage} />
       <Route path="/exhibition" component={ExhibitionPage} />
       <Route component={NotFound} />
     </Switch>

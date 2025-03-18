@@ -1,14 +1,17 @@
 {
   "variant": "tint",
-  "primary": "#B5935A",
-  "secondary": "#8B0000",
+  "primary": "#8D6A3F",
+  "secondary": "#6B2B2B",
   "accent": "#654321",
   "appearance": "light",
   "radius": 0.75,
   "custom": {
-    "royal-gold": "#B5935A",
-    "deep-red": "#8B0000",
+    "royal-gold": "#8D6A3F",
+    "deep-red": "#6B2B2B",
     "wood-brown": "#654321",
-    "background": "#FFF8E7"
+    "background": "#F5E1A4",
+    "background-soft": "#F8ECD1",
+    "text-primary": "#2D1810",
+    "text-secondary": "#5C4033"
   }
 }
