@@ -106,11 +106,7 @@ const navigationItems = {
       },
     ],
   },
-  forum: {
-    icon: <BookText className="h-4 w-4" />,
-    label: "Diễn đàn",
-    description: "Thảo luận và chia sẻ về văn hóa Huế",
-    items: [
+  // Forum section removedms: [
       {
         icon: <BookText className="h-4 w-4" />,
         title: "Diễn đàn",
