@@ -37,6 +37,7 @@ import Home from "@/pages/home";
 import Chat from "@/pages/chat";
 import MapPage from "@/pages/map";
 import GamePage from "@/pages/game";
+import ForumPage from "@/pages/forum";
 import DigitalLibrary from "@/pages/DigitalLibrary";
 import TicketPage from "@/pages/ticket";
 import ContributePage from "@/pages/contribute";
@@ -102,6 +103,19 @@ const navigationItems = {
         title: "Ẩm thực Huế",
         href: "/culinary",
         description: "Khám phá ẩm thực đặc sắc và lịch sử ẩm thực Huế",
+      },
+    ],
+  },
+  forum: {
+    icon: <BookText className="h-4 w-4" />,
+    label: "Diễn đàn",
+    description: "Thảo luận và chia sẻ về văn hóa Huế",
+    items: [
+      {
+        icon: <BookText className="h-4 w-4" />,
+        title: "Diễn đàn",
+        href: "/forum",
+        description: "Thảo luận và chia sẻ về văn hóa Huế",
       },
     ],
   },
@@ -386,6 +400,7 @@ function Router() {
       <Route path="/chat" component={Chat} />
       <Route path="/map" component={MapPage} />
       <Route path="/game" component={GamePage} />
+      <Route path="/forum" component={ForumPage} />
       <Route path="/library" component={DigitalLibrary} />
       <Route path="/ticket" component={TicketPage} />
       <Route path="/contribute" component={ContributePage} />

@@ -73,10 +73,8 @@ export default function GamePage() {
   return (
     <div className="container mx-auto p-4">
       <div className="max-w-4xl mx-auto">
-        <div className="page-header">
-          <div className="page-header-content">
-            <h1>Game giáo dục</h1>
-            <p className="text-muted-foreground">
+        <h1 className="text-2xl font-bold mb-2">Game giáo dục</h1>
+        <p className="text-muted-foreground mb-6">
           Khám phá lịch sử và văn hóa Huế qua các trò chơi tương tác
         </p>
 
