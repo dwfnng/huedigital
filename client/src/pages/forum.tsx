@@ -248,29 +248,35 @@ export default function ForumPage() {
                 Tạo bài viết mới
               </Button>
             </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
+            <DialogContent className="bg-[#f0f0f0] text-[#333333]">
+              <DialogHeader className="bg-white rounded-lg p-4 mb-4">
                 <DialogTitle>Tạo bài viết mới</DialogTitle>
                 <DialogDescription>
                   Chia sẻ kiến thức, đặt câu hỏi hoặc thảo luận về di sản văn hóa Huế
                 </DialogDescription>
               </DialogHeader>
               <form onSubmit={handleCreateDiscussion} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="title">Tiêu đề</Label>
-                  <Input id="title" name="title" required placeholder="Nhập tiêu đề bài viết..." />
+                <div className="space-y-2 bg-white rounded-lg p-4">
+                  <Label htmlFor="title" className="text-[#333333]">Tiêu đề</Label>
+                  <Input 
+                    id="title" 
+                    name="title" 
+                    required 
+                    placeholder="Nhập tiêu đề bài viết..." 
+                    className="bg-white border-gray-300 text-[#333333]"
+                  />
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="content">Nội dung</Label>
+                <div className="space-y-2 bg-white rounded-lg p-4">
+                  <Label htmlFor="content" className="text-[#333333]">Nội dung</Label>
                   <Textarea
                     id="content"
                     name="content"
                     required
                     placeholder="Nhập nội dung bài viết..."
-                    className="min-h-[200px]"
+                    className="min-h-[200px] bg-white border-gray-300 text-[#333333]"
                   />
                 </div>
-                <div className="flex justify-end gap-2">
+                <div className="flex justify-end gap-2 bg-white rounded-lg p-4">
                   <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)}>
                     Hủy
                   </Button>
