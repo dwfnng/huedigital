@@ -11,10 +11,6 @@ export default function MapPage() {
 
   const handleMarkerClick = (location: Location) => {
     setSelectedLocation(location);
-    toast({
-      title: location.name,
-      description: "Đã chọn địa điểm. Cuộn xuống để xem thông tin chi tiết.",
-    });
   };
 
   // Cập nhật hàm handleImageLoadError với xử lý lỗi tốt hơn
