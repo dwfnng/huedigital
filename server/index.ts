@@ -27,11 +27,6 @@ app.use((req, res, next) => {
       if (capturedJsonResponse) {
         logLine += ` :: ${JSON.stringify(capturedJsonResponse)}`;
       }
-
-      if (logLine.length > 80) {
-        logLine = logLine.slice(0, 79) + "…";
-      }
-
       log(logLine);
     }
   });
@@ -39,101 +34,97 @@ app.use((req, res, next) => {
   next();
 });
 
-const MAX_RETRIES = 3;
-const RETRY_DELAY = 2000; // 2 seconds
+async function checkPort(port: number): Promise<boolean> {
+  try {
+    const { execSync } = require('child_process');
+    const result = execSync(`lsof -i :${port} || echo "Port is free"`).toString();
+    log(`Port ${port} check result: ${result}`);
+    return result.includes("Port is free");
+  } catch (error) {
+    log(`Error checking port ${port}: ${error}`);
+    return false;
+  }
+}
 
-async function startServer(retryCount = 0) {
+async function clearPort(port: number) {
+  try {
+    const { execSync } = require('child_process');
+    log(`Attempting to clear port ${port}...`);
+    execSync(`fuser -k ${port}/tcp || true`);
+    log(`Successfully cleared port ${port}`);
+  } catch (error) {
+    log(`Error clearing port ${port}: ${error}`);
+  }
+}
+
+async function startServer() {
   try {
     log("Starting server initialization...");
     log(`Environment: ${process.env.NODE_ENV}, FAST_START: ${process.env.FAST_START}`);
 
-    // Kill any existing process on port 5000
-    try {
-      const { execSync } = require('child_process');
-      execSync('fuser -k 5000/tcp');
-      log("Cleared port 5000");
-    } catch (e) {
-      // Ignore errors if no process was using the port
+    // Check and clear port 5000 if needed
+    const port = 5000;
+    const isPortFree = await checkPort(port);
+    if (!isPortFree) {
+      log(`Port ${port} is in use, attempting to clear...`);
+      await clearPort(port);
+      await new Promise(resolve => setTimeout(resolve, 1000)); // Wait for port to clear
     }
 
     log("Registering routes...");
-    const server = await registerRoutes(app);
-    log("Routes registered successfully");
+    try {
+      const server = await registerRoutes(app);
+      log("Routes registered successfully");
 
-    // Error handling middleware
-    app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
-      const status = 500;
-      const message = err.message || "Internal Server Error";
-      res.status(status).json({ message });
-      console.error("Server error:", err);
-    });
+      // Error handling middleware
+      app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
+        const status = 500;
+        const message = err.message || "Internal Server Error";
+        res.status(status).json({ message });
+        console.error("Server error:", err);
+      });
 
-    // Setup Vite or static serving based on environment and FAST_START flag
-    const fastStart = process.env.FAST_START === "true";
-    if (app.get("env") === "development" && !fastStart) {
-      log("Setting up Vite development server...");
-      await setupVite(app, server);
-      log("Vite setup complete");
-    } else {
-      log("Setting up static file serving...");
-      serveStatic(app);
-      log("Static serving setup complete");
-    }
-
-    // Try to start on preferred port first
-    const preferredPort = parseInt(process.env.PORT || "5000", 10);
-    const portRange = [preferredPort, 5001, 5002, 5003]; // Fallback ports
-    let port = preferredPort;
-    let started = false;
-
-    for (const tryPort of portRange) {
-      try {
-        log(`Attempting to start server on port ${tryPort}...`);
-
-        await new Promise((resolve, reject) => {
-          const startupTimeout = setTimeout(() => {
-            reject(new Error("Server startup timed out after 10 seconds"));
-          }, 10000);
-
-          server.listen({
-            port: tryPort,
-            host: "0.0.0.0",
-          }, () => {
-            clearTimeout(startupTimeout);
-            port = tryPort;
-            started = true;
-            log(`Server started successfully on port ${port}`);
-            resolve(true);
-          }).on('error', (err: NodeJS.ErrnoException) => {
-            clearTimeout(startupTimeout);
-            if (err.code === 'EADDRINUSE') {
-              log(`Port ${tryPort} is already in use, trying next port...`);
-              resolve(false);
-            } else {
-              reject(err);
-            }
-          });
-        });
-
-        if (started) break;
-      } catch (err) {
-        log(`Failed to start on port ${tryPort}: ${err}`);
+      // Setup Vite or static serving based on environment and FAST_START flag
+      const fastStart = process.env.FAST_START === "true";
+      if (app.get("env") === "development" && !fastStart) {
+        log("Setting up Vite development server...");
+        await setupVite(app, server);
+        log("Vite setup complete");
+      } else {
+        log("Setting up static file serving...");
+        serveStatic(app);
+        log("Static serving setup complete");
       }
-    }
 
-    if (!started) {
-      throw new Error("Failed to start server on any available port");
+      log(`Attempting to start server on port ${port}...`);
+
+      await new Promise((resolve, reject) => {
+        const startupTimeout = setTimeout(() => {
+          reject(new Error("Server startup timed out after 10 seconds"));
+        }, 10000);
+
+        server.listen({
+          port: port,
+          host: "0.0.0.0",
+        }, () => {
+          clearTimeout(startupTimeout);
+          log(`Server started successfully on port ${port}`);
+          resolve(true);
+        }).on('error', (err: NodeJS.ErrnoException) => {
+          clearTimeout(startupTimeout);
+          log(`Server startup error: ${err.message}\n${err.stack}`);
+          reject(err);
+        });
+      });
+
+    } catch (routeError) {
+      log(`Error during route registration: ${routeError}`);
+      throw routeError;
     }
 
   } catch (error) {
     console.error("Fatal error during server startup:", error);
-    if (retryCount < MAX_RETRIES) {
-      log(`Retrying server startup in ${RETRY_DELAY}ms (attempt ${retryCount + 1}/${MAX_RETRIES})...`);
-      setTimeout(() => startServer(retryCount + 1), RETRY_DELAY);
-    } else {
-      log("Maximum retry attempts reached. Server startup failed.");
-      process.exit(1);
-    }
+    process.exit(1);
   }
 }
 
