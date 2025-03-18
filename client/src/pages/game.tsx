@@ -60,12 +60,18 @@ export default function GamePage() {
     return (
       <div className="container mx-auto p-4">
         <button 
-          onClick={() => window.history.back()}
-          className="mb-6 bg-[#B5935A] text-white hover:bg-[#A38147] px-4 py-2 rounded-md flex items-center gap-2 font-medium shadow-sm transition-colors"
+          onClick={() => setSelectedGame(null)}
+          className="mb-6 bg-[#B5935A] text-black hover:bg-[#A38147] px-4 py-2 rounded-md flex items-center gap-2 font-medium shadow-sm transition-colors"
         >
           ← Quay lại
         </button>
-        <div className="bg-[url('/assets/images/hue-pattern-bg.png')] bg-opacity-10 rounded-lg p-6">
+        <div className="bg-[#B5935A] text-black p-4 rounded-t-lg shadow-md">
+          <h2 className="text-xl font-bold">{games[selectedGame as keyof typeof games].title}</h2>
+          <p className="text-black/80 text-sm">
+            {games[selectedGame as keyof typeof games].description}
+          </p>
+        </div>
+        <div className="bg-amber-50/40 rounded-b-lg p-6 border-x border-b border-[#B5935A]/20 shadow-md">
           {games[selectedGame as keyof typeof games].component}
         </div>
       </div>
@@ -89,7 +95,7 @@ export default function GamePage() {
             <TabsTrigger value="treasure" className="flex-1 text-black font-medium">Truy tìm kho báu</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="role-play" className="space-y-4">
+          <TabsContent value="role-play" className="space-y-4 bg-amber-50/40 p-4 rounded-lg border border-[#B5935A]/20">
             <GameCard
               icon={Crown}
               title="Nhập vai vua Gia Long"
@@ -104,7 +110,7 @@ export default function GamePage() {
             />
           </TabsContent>
 
-          <TabsContent value="build" className="space-y-4">
+          <TabsContent value="build" className="space-y-4 bg-amber-50/40 p-4 rounded-lg border border-[#B5935A]/20">
             <GameCard
               icon={Building2}
               title="Điện Cần Chánh"
@@ -113,7 +119,7 @@ export default function GamePage() {
             />
           </TabsContent>
 
-          <TabsContent value="treasure" className="space-y-4">
+          <TabsContent value="treasure" className="space-y-4 bg-amber-50/40 p-4 rounded-lg border border-[#B5935A]/20">
             <GameCard
               icon={Map}
               title="Mật thư của vua Tự Đức"

@@ -595,12 +595,27 @@ export default function CulinaryPage() {
 
   return (
     <div className="container mx-auto px-4 py-6">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-[#B5935A]">Ẩm thực Huế</h1>
-        <p className="text-muted-foreground mt-2">
-          Khám phá tinh hoa ẩm thực xứ Huế với đa dạng hương vị và câu chuyện
-          văn hóa đặc sắc
-        </p>
+      <div className="bg-[#B5935A] rounded-lg px-6 py-4 mb-6 shadow-md">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between">
+          <div>
+            <h1 className="text-2xl font-bold text-black mb-1 flex items-center">
+              <Utensils className="h-6 w-6 mr-2" />
+              Ẩm thực Huế
+            </h1>
+            <p className="text-black/90">
+              Khám phá tinh hoa ẩm thực xứ Huế với đa dạng hương vị và câu chuyện văn hóa đặc sắc
+            </p>
+          </div>
+          <div className="mt-4 md:mt-0">
+            <div className="relative max-w-xs">
+              <input
+                type="text"
+                placeholder="Tìm món ăn..."
+                className="w-full px-4 py-2 border border-amber-300 rounded-lg bg-amber-50/70 text-black placeholder-amber-800/50 focus:outline-none focus:ring-2 focus:ring-[#B5935A]"
+              />
+            </div>
+          </div>
+        </div>
       </div>
 
       <Tabs defaultValue="dishes" className="mb-6">
