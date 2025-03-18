@@ -3,14 +3,14 @@
 @tailwind utilities;
 
 :root {
-  --imperial-red: #6B2B2B;
-  --royal-gold: #8D6A3F;
-  --wooden-brown: #654321;
-  --background-soft: #F8ECD1;
-  --text-primary: #2D1810;
-  --text-secondary: #5C4033;
-  --background-pattern-overlay: linear-gradient(to right, rgba(141, 106, 63, 0.02), rgba(107, 43, 43, 0.02));
-  --background-pattern-texture: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5z' fill='%238D6A3F' fill-opacity='0.03'/%3E%3C/svg%3E");
+  --royal-gold: #D4AF37;
+  --deep-red: #8B0000;
+  --wood-brown: #4A2C2A;
+  --background: #F5E6CC;
+  --text-primary: #3D2B1F;
+  --text-secondary: #5A3E36;
+  --background-pattern-overlay: linear-gradient(to right, rgba(212, 175, 55, 0.02), rgba(139, 0, 0, 0.02));
+  --background-pattern-texture: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5z' fill='%23D4AF37' fill-opacity='0.03'/%3E%3C/svg%3E");
 }
 
 @layer components {
@@ -19,19 +19,19 @@
   }
 
   .royal-gradient {
-    @apply bg-gradient-to-r from-[#8D6A3F] via-[#B5935A] to-[#6B2B2B];
+    @apply bg-gradient-to-r from-[#D4AF37] via-[#E5C158] to-[#8B0000];
   }
 
   .gold-gradient {
-    @apply bg-gradient-to-r from-[#8D6A3F] via-[#B5935A] to-[#D2B48C];
+    @apply bg-gradient-to-r from-[#D4AF37] via-[#E5C158] to-[#F5E6CC];
   }
 
   .wooden-gradient {
-    @apply bg-gradient-to-r from-[#654321] to-[#8D6E63];
+    @apply bg-gradient-to-r from-[#4A2C2A] to-[#5A3E36];
   }
 
   .imperial-border {
-    @apply border border-[#8D6A3F]/40 shadow-[0_0_8px_rgba(141,106,63,0.15)];
+    @apply border border-[#D4AF37]/40 shadow-[0_0_8px_rgba(212,175,55,0.15)];
   }
 
   .hover-lift {
@@ -39,15 +39,20 @@
   }
 
   .royal-shadow {
-    @apply shadow-[0_4px_12px_rgba(141,106,63,0.15)];
+    @apply shadow-[0_4px_12px_rgba(212,175,55,0.15)];
   }
 
   .imperial-card {
-    @apply bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm border border-[#8D6A3F]/20 rounded-lg shadow-md hover:imperial-border transition-all duration-300;
+    @apply bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm border border-[#D4AF37]/20 rounded-lg shadow-md hover:imperial-border transition-all duration-300;
   }
 
-  .elegant-pattern {
-    background-image: var(--background-pattern-texture);
+  .hover-glow {
+    @apply transition-all duration-300;
+    box-shadow: 0 0 0 rgba(212, 175, 55, 0);
+  }
+
+  .hover-glow:hover {
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
   }
 }
 
@@ -57,8 +62,8 @@
   }
 
   body {
-    @apply font-sans antialiased text-[#2D1810];
-    background-color: #F8ECD1;
+    @apply font-sans antialiased text-[#3D2B1F];
+    background-color: #F5E6CC;
     background-image: var(--background-pattern-texture);
     background-position: center;
     background-repeat: repeat;
@@ -84,6 +89,36 @@
 
 .animate-slide-up {
   animation: slideUp 0.5s ease-out;
+}
+
+/* Custom scrollbar */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--royal-gold) transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: var(--royal-gold);
+  opacity: 0.3;
+  border-radius: 20px;
+}
+
+/* Navigation specific styles */
+.nav-item {
+  @apply transition-colors duration-300;
+  @apply hover:text-[#D4AF37] hover:bg-[#4A2C2A]/10;
+}
+
+.nav-item.active {
+  @apply text-[#D4AF37] bg-[#4A2C2A]/20;
 }
 
 /* Leaflet map styles */

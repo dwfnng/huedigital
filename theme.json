@@ -1,17 +1,19 @@
 {
   "variant": "tint",
-  "primary": "#8D6A3F",
-  "secondary": "#6B2B2B",
-  "accent": "#654321",
+  "primary": "#D4AF37",
+  "secondary": "#8B0000",
+  "accent": "#5A3E36",
   "appearance": "light",
   "radius": 0.75,
   "custom": {
-    "royal-gold": "#8D6A3F",
-    "deep-red": "#6B2B2B",
-    "wood-brown": "#654321",
-    "background": "#F5E1A4",
+    "royal-gold": "#D4AF37",
+    "deep-red": "#8B0000",
+    "wood-brown": "#4A2C2A",
+    "background": "#F5E6CC",
     "background-soft": "#F8ECD1",
-    "text-primary": "#2D1810",
-    "text-secondary": "#5C4033"
+    "text-primary": "#3D2B1F",
+    "text-secondary": "#5A3E36",
+    "nav-background": "#4A2C2A",
+    "nav-hover": "#D4AF37"
   }
 }

@@ -94,9 +94,9 @@ const navigationItems = {
       },
       {
         icon: <Ticket className="h-4 w-4" />,
-        title: "Đặt vé",
+        title: "Đặt dịch vụ",
         href: "/ticket",
-        description: "Mua vé tham quan các điểm di tích",
+        description: "Đặt vé tham quan, quà lưu niệm và dịch vụ xe du lịch",
       },
       {
         icon: <Utensils className="h-4 w-4" />,
