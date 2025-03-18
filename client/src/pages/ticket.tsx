@@ -275,9 +275,9 @@ export default function TicketPage() {
               transition={{ duration: 0.5 }}
               className="text-center"
             >
-              <div className="bg-primary text-white p-6 rounded-lg mb-6 shadow-md">
+              <div className="bg-[#B5935A] text-black p-6 rounded-lg mb-6 shadow-md">
                 <h1 className="text-3xl font-bold mb-3">Đặt vé & Dịch vụ</h1>
-                <p className="text-white/90 max-w-2xl mx-auto">
+                <p className="text-black/90 max-w-2xl mx-auto">
                   Trải nghiệm văn hóa Huế qua các gói tham quan độc đáo, dịch vụ xe và bộ sưu tập
                   quà lưu niệm đặc trưng
                 </p>
