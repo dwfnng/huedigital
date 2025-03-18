@@ -32,7 +32,7 @@ const hueDishes = [
       "Món bún bò Huế là một trong những đặc sản nổi tiếng của xứ Huế. Nước dùng được nấu từ xương bò và giò heo trong nhiều giờ, kết hợp với sả, gừng và các gia vị đặc trưng của Huế.",
     descriptionEn:
       "Bun bo Hue is one of the most famous specialties of Hue. The broth is cooked from beef bones and pork knuckles for many hours, combined with lemongrass, ginger and Hue's characteristic spices.",
-    image: "https://example.com/bun-bo-hue.jpg", // Updated image URL
+    image: "https://www.hungryhuy.com/wp-content/uploads/bun-bo-hue-bowl.jpg", // Updated image URL
     type: "main_dish",
     ingredients: [
       "Bún gạo",
@@ -69,7 +69,8 @@ const hueDishes = [
       "Bánh khoái là một món ăn đặc sản của Huế, gần giống với bánh xèo nhưng kích thước nhỏ hơn và cách chế biến cũng khác.",
     descriptionEn:
       "Bánh khoái is a specialty of Hue, similar to bánh xèo but smaller in size and prepared differently.",
-    image: "https://example.com/banh-khoai.jpg", // Updated image URL
+    image:
+      "https://th.bing.com/th/id/OIP._oW4gLImnEu-Nm2mkUmypAHaEK?rs=1&pid=ImgDetMain", // Updated image URL
     type: "appetizer",
     ingredients: ["Bột gạo", "Tôm", "Thịt heo", "Trứng", "Giá đỗ", "Hành lá"],
     places: [
@@ -94,7 +95,8 @@ const hueDishes = [
       "Cơm hến là món ăn dân dã đặc trưng của Huế, được làm từ cơm trộn với hến, rau thơm và nhiều gia vị.",
     descriptionEn:
       "Com hen is a rustic dish characteristic of Hue, made from rice mixed with baby clams, herbs and many spices.",
-    image: "https://example.com/com-hen.jpg", // Updated image URL
+    image:
+      "https://th.bing.com/th/id/OIP.poDw6pANcDBgB5v5uNJ_0AHaE8?rs=1&pid=ImgDetMain", // Updated image URL
     type: "main_dish",
     ingredients: [
       "Gạo",
@@ -127,7 +129,8 @@ const hueDishes = [
       "Bánh bèo là món bánh truyền thống của Huế, có hình dáng giống như lá bèo nổi trên mặt nước.",
     descriptionEn:
       "Banh beo is a traditional Hue cake, shaped like a water fern leaf floating on the water.",
-    image: "https://example.com/banh-beo.jpg", // Updated image URL
+    image:
+      "https://th.bing.com/th/id/R.a82540505b01f87612926604065a979f?rik=SwEmw32v%2bsg%2f%2bw&pid=ImgRaw&r=0&sres=1&sresct=1", // Updated image URL
     type: "appetizer",
     ingredients: ["Bột gạo", "Tôm khô", "Mỡ hành", "Bột tôm", "Ớt", "Nước mắm"],
     places: [
@@ -156,7 +159,8 @@ const hueDishes = [
       "Chè Huế nổi tiếng với nhiều loại khác nhau, từ chè khoai tím, chè bắp đến chè sen. Mỗi loại đều có hương vị đặc trưng và cách chế biến riêng.",
     descriptionEn:
       "Hue sweet soups are famous with many different types, from purple sweet potato, corn to lotus seed. Each has its own distinctive flavor and preparation method.",
-    image: "https://example.com/che-hue.jpg", // Updated image URL
+    image:
+      "https://th.bing.com/th/id/OIP.j-7XsxJ5atYdH0ct-FmHugHaEQ?rs=1&pid=ImgDetMain", // Updated image URL
     type: "dessert",
     ingredients: [
       "Đường",
@@ -185,7 +189,8 @@ const hueDishes = [
       "Bánh lọc là món bánh trong suốt làm từ bột sắn hoặc bột năng, nhân tôm thịt, được gói trong lá chuối và hấp chín.",
     descriptionEn:
       "Banh loc is a transparent cake made from cassava flour or tapioca starch, filled with shrimp and pork, wrapped in banana leaves and steamed.",
-    image: "https://example.com/banh-loc.jpg", // Updated image URL
+    image:
+      "https://beptruong.edu.vn/wp-content/uploads/2019/01/banh-bot-loc.jpg", // Updated image URL
     type: "appetizer",
     ingredients: [
       "Bột sắn",
@@ -383,7 +388,7 @@ const CulinaryHistory = () => {
       <div className="bg-card rounded-lg overflow-hidden">
         <div className="relative h-64 md:h-80">
           <img
-            src="https://example.com/hue-culinary-history.jpg" // Updated image URL
+            src="https://tapchiamthuc.net/wp-content/uploads/2021/04/doc-dao-net-am-thuc-hue-va-nhung-mon-ngon-kho-cuong-02.jpg" // Updated image URL
             alt="Ẩm thực Huế"
             className="w-full h-full object-cover"
           />
