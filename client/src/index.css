@@ -606,7 +606,7 @@
 }
 
 .game-description {
-  @apply text-black text-sm md:text-base;
+  @apply text-gray-700 text-sm md:text-base;
   white-space: pre-line;
   line-height: 1.6;
   margin-bottom: 0.5rem;
