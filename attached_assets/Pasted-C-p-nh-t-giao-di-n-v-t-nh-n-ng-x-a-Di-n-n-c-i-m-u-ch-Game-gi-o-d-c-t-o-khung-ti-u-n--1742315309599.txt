@@ -1,0 +1,60 @@
+Cập nhật giao diện và tính năng: xóa Diễn đàn cũ, đổi màu chữ Game giáo dục, tạo khung tiêu đề đỏ nâu, cập nhật bố cục Dữ liệu thời gian thực, thêm Google Maps, sửa lỗi chữ rời khung, và đổi màu nền trang Ẩm thực.
+
+Nội dung yêu cầu chi tiết
+Xóa tính năng Diễn đàn hiện tại (ảnh 1)
+
+Loại bỏ/ẩn hoàn toàn tính năng Diễn đàn cũ (menu, trang con, nội dung…) hiện đang xuất hiện trên thanh điều hướng và trong trang.
+Xóa hoặc vô hiệu hóa mọi đường dẫn đến tính năng Diễn đàn cũ để người dùng không thể truy cập.
+Thay đổi màu chữ của Game giáo dục (ảnh 2)
+
+Toàn bộ phần nội dung văn bản, nút, tiêu đề trong Game giáo dục (ví dụ: “Nhập vai vua Gia Long”, “Quan thần thời Minh Mạng”…) chuyển sang màu chữ đỏ nâu hoặc đỏ đô trầm (ví dụ: #8B0000 hoặc #7B2B2B), hoặc ít nhất là màu đen đậm (#333) nếu màu đỏ nâu không phù hợp.
+Đảm bảo dễ đọc, tương phản tốt với nền trang.
+Tạo khung phần tiêu đề và phân biệt các vùng nội dung với màu đỏ nâu/đỏ đô trầm
+
+Ở Game giáo dục, Dữ liệu thời gian thực, Ẩm thực (và các trang tương tự), phần tiêu đề (heading) cần được thiết kế rõ ràng:
+Màu nền của thanh tiêu đề: dùng đỏ nâu/đỏ đô trầm (có thể là #8B0000, #7B2B2B, hoặc tông trầm tương tự) để tạo điểm nhấn.
+Chữ trên thanh tiêu đề: màu trắng hoặc kem nhạt (#FFF8ED) để đảm bảo tương phản.
+Áp dụng viền hoặc box-shadow nhẹ nếu cần, để khung tiêu đề tách biệt với nội dung bên dưới.
+Thay đổi màu nền, làm khung tiêu đề/bố cục nội dung dễ phân biệt cho trang Dữ liệu thời gian thực (ảnh 3)
+
+Dùng màu nền có tông nhạt (nhưng vẫn hài hòa với đỏ nâu) cho phần nội dung tổng thể, ví dụ: #FFF5ED hoặc #FCEFE8.
+Tạo các khung (card) riêng cho từng mục (Thời tiết, Tình hình giao thông, Sự kiện đang diễn ra, Thống kê…) với màu nền hơi khác biệt (pastel nhạt) để dễ phân biệt, nhưng vẫn giữ tông ấm phù hợp với chủ đề Huế.
+Chỉnh lại bố cục để các ô thông tin (thời tiết, giao thông, sự kiện…) không bị chồng chéo; có thể sắp xếp dạng lưới (grid) hoặc flexbox gọn gàng.
+Đảm bảo màu chữ tương phản tốt, ví dụ: chữ đen (#333) hoặc nâu đậm trên nền sáng.
+Thêm tính năng chuyển qua Google Maps cho mỗi địa điểm (ảnh 4)
+
+Khi người dùng nhấn vào một địa điểm trong danh sách hoặc trên bản đồ, thêm một nút/link “Dẫn đường” hoặc “Mở Google Maps”.
+Nút này sẽ mở đường dẫn Google Maps tương ứng, ví dụ:
+ruby
+Copy
+Edit
+https://www.google.com/maps/dir/?api=1&destination=LAT,LNG
+(thay LAT,LNG bằng tọa độ thực tế của địa điểm).
+Đảm bảo tính năng này hoạt động trên cả desktop và di động.
+Khắc phục lỗi chữ rời khỏi khung trên trang bản đồ (ảnh 4)
+
+Kiểm tra CSS để đảm bảo phần text hiển thị gói gọn trong khung.
+Có thể cần thêm thuộc tính:
+css
+Copy
+Edit
+.location-card {
+  white-space: normal; 
+  overflow-wrap: break-word; 
+  /* hoặc word-wrap: break-word; */
+}
+Đảm bảo các thẻ hoặc cột không bị co giãn quá mức.
+Thay đổi màu nền và làm khung tiêu đề/bố cục nội dung dễ phân biệt ở trang Ẩm thực
+
+Áp dụng cùng cách thiết kế với Game giáo dục và Dữ liệu thời gian thực:
+Thanh tiêu đề màu đỏ nâu/đỏ đô trầm.
+Nền trang màu kem nhạt hoặc tông ấm (#FFF5ED…).
+Các khung (card) món ăn, đặc sản, công thức… có viền hoặc box-shadow nhẹ, màu nền trắng (#FFFFFF) để thông tin nổi bật.
+Màu chữ nên là màu đen (#333) hoặc nâu đậm, tương phản rõ.
+Tính nhất quán & kiểm tra hiển thị (Responsive)
+
+Sau khi hoàn tất, vui lòng kiểm tra hiển thị trên cả màn hình lớn (desktop) và di động (mobile) để bố cục không bị vỡ.
+Đảm bảo tông màu, font chữ, kích thước tiêu đề, khoảng cách giữa các khối (margin/padding) nhất quán trên toàn trang.
+Hướng dẫn bổ sung (nếu cần)
+Nếu có thể, vui lòng cung cấp đoạn mã CSS hoặc JS mẫu cho mỗi phần thay đổi, hoặc hướng dẫn cách chỉnh sửa file CSS/JS trong Replit để tôi có thể tự thực hiện và kiểm tra.
+Nếu có bất kỳ xung đột nào về màu sắc hoặc lỗi hiển thị, hãy ưu tiên tính dễ đọc và tính nhất quán với phong cách chung của website về Huế.
