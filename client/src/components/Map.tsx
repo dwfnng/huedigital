@@ -438,7 +438,7 @@ export default function Map({ onMarkerClick }: { onMarkerClick?: (location: Loca
               {filteredLocations.map((location, index) => (
                 <div
                   key={location.id}
-                  className={`p-3 cursor-pointer transition-all hover:bg-primary/5 ${
+                  className={`p-3 cursor-pointer transition-all hover:bg-primary/5 bg-white/90 backdrop-blur-sm border border-border/10 rounded-lg mb-2 ${
                     selectedLocation?.id === location.id ? 'bg-primary/10' : ''
                   }`}
                   onClick={() => handleLocationSelect(location)}
