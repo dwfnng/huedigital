@@ -60,6 +60,18 @@ const features = [
     description: "Học về văn hóa Huế qua các trò chơi tương tác",
     href: "/game",
   },
+  {
+    icon: Building,
+    title: "Triển lãm 3D",
+    description: "Tham quan di tích Huế qua mô hình 3D tương tác",
+    href: "/exhibition",
+  },
+  {
+    icon: Globe,
+    title: "Ẩm thực Huế",
+    description: "Khám phá văn hóa ẩm thực đặc sắc của xứ Huế",
+    href: "/culinary",
+  },
 ];
 
 const highlights = [
