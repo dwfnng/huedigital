@@ -155,34 +155,34 @@ const ExhibitionFilter = ({
 // Exhibition card component
 const ExhibitionCard = ({ item }: { item: typeof exhibitionItems[0] }) => {
   return (
-    <Card className="overflow-hidden">
+    <Card className="card-royal group transition-royal">
       <CardHeader className="p-0">
         <div className="relative h-48 overflow-hidden">
           <img 
             src={item.thumbnailUrl} 
             alt={item.title} 
-            className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+            className="w-full h-full object-cover transition-royal group-hover:scale-105"
           />
           <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-t from-black/60 to-transparent"></div>
           <div className="absolute bottom-3 left-3 right-3">
-            <h3 className="text-white font-medium">{item.title}</h3>
-            <p className="text-white/80 text-xs">{item.titleEn}</p>
+            <h3 className="text-white font-medium royal-heading">{item.title}</h3>
+            <p className="text-white/80 text-xs elegant-text">{item.titleEn}</p>
           </div>
           <div className="absolute top-2 right-2 flex gap-1">
             {item.virtualTourAvailable && (
-              <Badge variant="secondary" className="bg-[#B5935A]/90 text-white">
+              <Badge variant="secondary" className="badge-royal">
                 <Eye className="h-3 w-3 mr-1" /> 360°
               </Badge>
             )}
             {item.arAvailable && (
-              <Badge variant="secondary" className="bg-emerald-600/90 text-white">
+              <Badge variant="secondary" className="badge-royal bg-emerald-600/90">
                 <Box className="h-3 w-3 mr-1" /> AR
               </Badge>
             )}
           </div>
         </div>
       </CardHeader>
-      <CardContent className="p-4">
+      <CardContent className="p-4 bg-[#F5E1A4]/10 dark:bg-[#3A1A1A]/70">
         <div className="flex justify-between items-start mb-3">
           <div>
             <div className="flex items-center text-xs text-muted-foreground mb-1">
@@ -196,15 +196,21 @@ const ExhibitionCard = ({ item }: { item: typeof exhibitionItems[0] }) => {
               <span>{item.location}</span>
             </div>
           </div>
-          
+
           <Badge variant="outline" className="text-xs">
             {item.category === 'palace' ? 'Cung điện' :
              item.category === 'tomb' ? 'Lăng tẩm' :
              item.category === 'temple' ? 'Chùa/Đền' : 'Kiến trúc'}
           </Badge>
         </div>
-        <p className="text-sm text-muted-foreground line-clamp-3">{item.description}</p>
+        <p className="text-sm elegant-text line-clamp-3">{item.description}</p>
       </CardContent>
+
+      {/* Imperial corner decorations */}
+      <div className="corner-royal top-0 left-0"></div>
+      <div className="corner-royal top-0 right-0 scale-x-[-1]"></div>
+      <div className="corner-royal bottom-0 left-0 scale-y-[-1]"></div>
+      <div className="corner-royal bottom-0 right-0 scale-x-[-1] scale-y-[-1]"></div>
     </Card>
   );
 };
@@ -219,23 +225,25 @@ const ExhibitionDetail = ({ item, onBack }: { item: typeof exhibitionItems[0], o
       <div className="absolute top-0 left-0 w-24 h-24 bg-[url('/corner-decoration.svg')] bg-no-repeat opacity-20 pointer-events-none"></div>
       <div className="absolute top-0 right-0 w-24 h-24 bg-[url('/corner-decoration.svg')] bg-no-repeat transform scale-x-[-1] opacity-20 pointer-events-none"></div>
       
+
       <div className="animate-fade-in space-y-6 bg-[#F5E1A4]/30 dark:bg-zinc-900/50 backdrop-blur-sm p-6 rounded-lg relative z-10">
         {/* Back button with imperial styling */}
         <div className="flex justify-between items-center mb-4">
           <Button 
-            variant="outline" 
+            variant="royal" 
             onClick={onBack} 
-            className="gap-2 bg-[#3A1A1A]/80 hover:bg-[#3A1A1A] text-[#F5E1A4] border-[#8D6A3F]/50 hover:border-[#C49A44]"
+            className="gap-2"
           >
             <ChevronLeft className="h-4 w-4" />
             <span>Quay lại</span>
           </Button>
           
+
           <div className="flex items-center gap-2">
             <Button 
-              variant="outline" 
+              variant="secondary" 
               size="sm" 
-              className="gap-1 bg-[#3A1A1A]/80 hover:bg-[#3A1A1A] text-[#F5E1A4] border-[#8D6A3F]/50 hover:border-[#C49A44]"
+              className="gap-1"
             >
               <Share2 className="h-4 w-4" />
               <span>Chia sẻ</span>
@@ -249,8 +257,10 @@ const ExhibitionDetail = ({ item, onBack }: { item: typeof exhibitionItems[0], o
             <h1 className="text-2xl md:text-3xl font-bold text-[#F5E1A4] mb-1">{item.title}</h1>
             <p className="text-white/80 text-sm">{item.titleEn}</p>
             
+
             <div className="w-32 h-0.5 bg-gradient-to-r from-transparent via-[#C49A44] to-transparent my-3"></div>
             
+
             <div className="flex flex-wrap gap-3 mt-4 text-sm">
               <Badge className="bg-[#3A1A1A] text-[#F5E1A4] border-[#8D6A3F] hover:bg-[#3A1A1A]/80">
                 <Clock className="h-3 w-3 mr-1" /> {item.createPeriod}
@@ -271,36 +281,46 @@ const ExhibitionDetail = ({ item, onBack }: { item: typeof exhibitionItems[0], o
           onValueChange={setActiveTab} 
           className="space-y-4"
         >
-          <TabsList className="w-full bg-[#3A1A1A]/80 p-1 border border-[#8D6A3F]/50">
+          <TabsList className="tabs-royal">
             <TabsTrigger 
               value="panorama" 
-              className="gap-2 data-[state=active]:bg-[#6B2B2B] data-[state=active]:text-[#F5E1A4]"
+              className="tab-trigger-royal gap-2"
             >
               <Eye className="h-4 w-4" />
               <span>Panorama 360°</span>
             </TabsTrigger>
             <TabsTrigger 
               value="3d" 
-              className="gap-2 data-[state=active]:bg-[#6B2B2B] data-[state=active]:text-[#F5E1A4]"
+              className="tab-trigger-royal gap-2"
             >
               <Box className="h-4 w-4" />
               <span>Mô hình 3D</span>
             </TabsTrigger>
             <TabsTrigger 
               value="info" 
-              className="gap-2 data-[state=active]:bg-[#6B2B2B] data-[state=active]:text-[#F5E1A4]"
+              className="tab-trigger-royal gap-2"
             >
               <BookOpen className="h-4 w-4" />
               <span>Thông tin</span>
             </TabsTrigger>
             <TabsTrigger 
               value="artifacts" 
-              className="gap-2 data-[state=active]:bg-[#6B2B2B] data-[state=active]:text-[#F5E1A4]"
+              className="tab-trigger-royal gap-2"
             >
               <ImageIcon className="h-4 w-4" />
               <span>Hiện vật</span>
             </TabsTrigger>
           </TabsList>
+
+          {/* Add royal corner decorations */}
+          <div className="corner-royal top-0 left-0"></div>
+          <div className="corner-royal top-0 right-0 scale-x-[-1]"></div>
+          <div className="corner-royal bottom-0 left-0 scale-y-[-1]"></div>
+          <div className="corner-royal bottom-0 right-0 scale-x-[-1] scale-y-[-1]"></div>
+
+          {/* Add a royal divider */}
+          <div className="divider-royal"></div>
+
 
           {/* Panorama tab content */}
           <TabsContent value="panorama" className="space-y-4">
@@ -316,7 +336,7 @@ const ExhibitionDetail = ({ item, onBack }: { item: typeof exhibitionItems[0], o
                 <Button 
                   variant="secondary" 
                   size="sm" 
-                  className="gap-1 bg-[#3A1A1A]/90 hover:bg-[#3A1A1A] text-[#F5E1A4] border border-[#8D6A3F]/50"
+                  className="gap-1"
                 >
                   <RotateCw className="h-4 w-4" />
                   <span>Xoay</span>
@@ -324,7 +344,7 @@ const ExhibitionDetail = ({ item, onBack }: { item: typeof exhibitionItems[0], o
                 <Button 
                   variant="secondary" 
                   size="sm" 
-                  className="gap-1 bg-[#3A1A1A]/90 hover:bg-[#3A1A1A] text-[#F5E1A4] border border-[#8D6A3F]/50"
+                  className="gap-1"
                 >
                   <Maximize className="h-4 w-4" />
                   <span>Toàn màn hình</span>
@@ -332,7 +352,7 @@ const ExhibitionDetail = ({ item, onBack }: { item: typeof exhibitionItems[0], o
                 <Button 
                   variant="secondary" 
                   size="sm" 
-                  className="gap-1 bg-[#3A1A1A]/90 hover:bg-[#3A1A1A] text-[#F5E1A4] border border-[#8D6A3F]/50"
+                  className="gap-1"
                 >
                   <Camera className="h-4 w-4" />
                   <span>Chụp ảnh</span>
@@ -351,7 +371,7 @@ const ExhibitionDetail = ({ item, onBack }: { item: typeof exhibitionItems[0], o
               <Button 
                 variant="outline" 
                 size="sm" 
-                className="gap-1 bg-[#3A1A1A]/80 hover:bg-[#3A1A1A] text-[#F5E1A4] border-[#8D6A3F]/50"
+                className="gap-1"
               >
                 <Download className="h-4 w-4" />
                 <span>Tải xuống hình ảnh</span>
@@ -359,7 +379,7 @@ const ExhibitionDetail = ({ item, onBack }: { item: typeof exhibitionItems[0], o
               <Button 
                 variant="default" 
                 size="sm" 
-                className="gap-1 bg-[#6B2B2B] hover:bg-[#6B2B2B]/80 text-[#F5E1A4]"
+                className="gap-1"
               >
                 <PanelLeft className="h-4 w-4" />
                 <span>Bật thuyết minh</span>
@@ -380,7 +400,7 @@ const ExhibitionDetail = ({ item, onBack }: { item: typeof exhibitionItems[0], o
                 <Button 
                   variant="secondary" 
                   size="sm" 
-                  className="gap-1 bg-[#3A1A1A]/90 hover:bg-[#3A1A1A] text-[#F5E1A4] border border-[#8D6A3F]/50"
+                  className="gap-1"
                 >
                   <RotateCw className="h-4 w-4" />
                   <span>Xoay mô hình</span>
@@ -388,7 +408,7 @@ const ExhibitionDetail = ({ item, onBack }: { item: typeof exhibitionItems[0], o
                 <Button 
                   variant="secondary" 
                   size="sm" 
-                  className="gap-1 bg-[#3A1A1A]/90 hover:bg-[#3A1A1A] text-[#F5E1A4] border border-[#8D6A3F]/50"
+                  className="gap-1"
                 >
                   <Maximize className="h-4 w-4" />
                   <span>Toàn màn hình</span>
@@ -404,6 +424,7 @@ const ExhibitionDetail = ({ item, onBack }: { item: typeof exhibitionItems[0], o
               </div>
             </div>
             
+
             {item.arAvailable && (
               <div className="flex justify-center">
                 <Button 
@@ -419,101 +440,63 @@ const ExhibitionDetail = ({ item, onBack }: { item: typeof exhibitionItems[0], o
           </TabsContent>
 
           <TabsContent value="info" className="space-y-6">
+            {/* Artifact cards with enhanced royal styling */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="md:col-span-2 space-y-4">
-                <div className="bg-[#F5E1A4]/50 dark:bg-[#3A1A1A]/70 p-4 rounded-lg border border-[#8D6A3F]/30">
+                <div className="bg-[#F5E1A4]/50 dark:bg-[#3A1A1A]/70 p-6 rounded-lg border border-[#8D6A3F]/30 card-royal">
                   <div className="flex items-center mb-3">
                     <History className="h-5 w-5 text-[#B5935A] mr-2" />
-                    <h3 className="text-lg font-medium text-[#6B2B2B] dark:text-[#F5E1A4]">Lịch sử</h3>
+                    <h3 className="text-lg font-medium text-royal-gradient">Lịch sử</h3>
                   </div>
-                  <p className="text-muted-foreground">{item.historyInfo}</p>
+                  <p className="elegant-text">{item.historyInfo}</p>
                 </div>
 
-                <div className="bg-[#F5E1A4]/50 dark:bg-[#3A1A1A]/70 p-4 rounded-lg border border-[#8D6A3F]/30">
+                <div className="bg-[#F5E1A4]/50 dark:bg-[#3A1A1A]/70 p-6 rounded-lg border border-[#8D6A3F]/30 card-royal">
                   <div className="flex items-center mb-3">
                     <Layers3 className="h-5 w-5 text-[#B5935A] mr-2" />
-                    <h3 className="text-lg font-medium text-[#6B2B2B] dark:text-[#F5E1A4]">Kiến trúc</h3>
+                    <h3 className="text-lg font-medium text-royal-gradient">Kiến trúc</h3>
                   </div>
-                  <p className="text-muted-foreground">{item.architectureInfo}</p>
+                  <p className="elegant-text">{item.architectureInfo}</p>
                 </div>
 
-                <div className="bg-[#F5E1A4]/50 dark:bg-[#3A1A1A]/70 p-4 rounded-lg border border-[#8D6A3F]/30">
+                <div className="bg-[#F5E1A4]/50 dark:bg-[#3A1A1A]/70 p-6 rounded-lg border border-[#8D6A3F]/30 card-royal">
                   <div className="flex items-center mb-3">
                     <RotateCw className="h-5 w-5 text-[#B5935A] mr-2" />
-                    <h3 className="text-lg font-medium text-[#6B2B2B] dark:text-[#F5E1A4]">Trùng tu và bảo tồn</h3>
+                    <h3 className="text-lg font-medium text-royal-gradient">Trùng tu và bảo tồn</h3>
                   </div>
-                  <p className="text-muted-foreground">{item.restorationInfo}</p>
+                  <p className="elegant-text">{item.restorationInfo}</p>
                 </div>
               </div>
 
+              {/* Side info with royal styling */}
               <div className="space-y-4">
-                <div className="bg-[#F5E1A4]/50 dark:bg-[#3A1A1A]/70 p-4 rounded-lg border border-[#8D6A3F]/30">
-                  <h3 className="text-lg font-medium mb-3 text-[#6B2B2B] dark:text-[#F5E1A4]">Thông tin cơ bản</h3>
+                <div className="bg-[#F5E1A4]/50 dark:bg-[#3A1A1A]/70 p-6 rounded-lg border border-[#8D6A3F]/30 card-royal">
+                  <h3 className="text-lg font-medium mb-3 text-royal-gradient">Thông tin cơ bản</h3>
                   <dl className="space-y-2">
                     <div className="flex justify-between">
                       <dt className="text-muted-foreground">Phân loại:</dt>
-                      <dd className="font-medium">
+                      <dd className="font-medium elegant-text">
                         {item.category === 'palace' ? 'Cung điện' :
                          item.category === 'tomb' ? 'Lăng tẩm' :
                          item.category === 'temple' ? 'Chùa/Đền' : 'Kiến trúc'}
                       </dd>
                     </div>
-                    <Separator className="bg-[#8D6A3F]/30" />
+                    <div className="divider-royal"></div>
                     <div className="flex justify-between">
                       <dt className="text-muted-foreground">Thời kỳ xây dựng:</dt>
-                      <dd className="font-medium">{item.createPeriod}</dd>
+                      <dd className="font-medium elegant-text">{item.createPeriod}</dd>
                     </div>
-                    <Separator className="bg-[#8D6A3F]/30" />
+                    <div className="divider-royal"></div>
                     <div className="flex justify-between">
                       <dt className="text-muted-foreground">Triều đại:</dt>
-                      <dd className="font-medium">{item.dynasty}</dd>
+                      <dd className="font-medium elegant-text">{item.dynasty}</dd>
                     </div>
-                    <Separator className="bg-[#8D6A3F]/30" />
+                    <div className="divider-royal"></div>
                     <div className="flex justify-between">
                       <dt className="text-muted-foreground">Vị trí:</dt>
-                      <dd className="font-medium">{item.location}</dd>
+                      <dd className="font-medium elegant-text">{item.location}</dd>
                     </div>
                   </dl>
-                </div>
-
-                <div className="bg-[#F5E1A4]/50 dark:bg-[#3A1A1A]/70 p-4 rounded-lg border border-[#8D6A3F]/30">
-                  <h3 className="text-lg font-medium mb-3 text-[#6B2B2B] dark:text-[#F5E1A4]">Trải nghiệm khác</h3>
-                  <div className="space-y-2">
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      className="w-full justify-start gap-2 border-[#8D6A3F]/50 hover:border-[#C49A44] hover:bg-[#F5E1A4]/20"
-                    >
-                      <MapPin className="h-4 w-4 text-[#B5935A]" />
-                      <span>Xem trên bản đồ</span>
-                    </Button>
-                    {item.arAvailable && (
-                      <Button 
-                        variant="outline" 
-                        size="sm" 
-                        className="w-full justify-start gap-2 border-[#8D6A3F]/50 hover:border-[#C49A44] hover:bg-[#F5E1A4]/20"
-                      >
-                        <Box className="h-4 w-4 text-[#B5935A]" />
-                        <span>Trải nghiệm thực tế ảo tăng cường</span>
-                      </Button>
-                    )}
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      className="w-full justify-start gap-2 border-[#8D6A3F]/50 hover:border-[#C49A44] hover:bg-[#F5E1A4]/20"
-                    >
-                      <Download className="h-4 w-4 text-[#B5935A]" />
-                      <span>Tải xuống thông tin</span>
-                    </Button>
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      className="w-full justify-start gap-2 border-[#8D6A3F]/50 hover:border-[#C49A44] hover:bg-[#F5E1A4]/20"
-                    >
-                      <Share2 className="h-4 w-4 text-[#B5935A]" />
-                      <span>Chia sẻ</span>
-                    </Button>
-                  </div>
                 </div>
               </div>
             </div>
@@ -522,17 +505,18 @@ const ExhibitionDetail = ({ item, onBack }: { item: typeof exhibitionItems[0], o
           <TabsContent value="artifacts" className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {item.artifacts.map((artifact, index) => (
-                <Card key={index} className="overflow-hidden border border-[#8D6A3F]/30 bg-[#F5E1A4]/30 dark:bg-[#3A1A1A]/70">
+                <Card key={index} className="group card-royal transition-all duration-300 overflow-hidden">
                   <div className="relative h-48">
                     <img 
                       src={artifact.imageUrl} 
                       alt={artifact.name} 
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover transition-royal group-hover:scale-105"
                     />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                   </div>
-                  <CardContent className="p-4">
-                    <CardTitle className="text-lg mb-2 text-[#6B2B2B] dark:text-[#F5E1A4]">{artifact.name}</CardTitle>
-                    <p className="text-sm text-muted-foreground">{artifact.description}</p>
+                  <CardContent className="p-4 bg-[#F5E1A4]/10 dark:bg-[#3A1A1A]/70">
+                    <CardTitle className="text-lg mb-2 text-royal-gradient">{artifact.name}</CardTitle>
+                    <p className="text-sm elegant-text">{artifact.description}</p>
                   </CardContent>
                 </Card>
               ))}
@@ -565,13 +549,15 @@ export default function ExhibitionPage() {
       {/* Background pattern overlay */}
       <div className="absolute inset-0 bg-[url('/imperial-pattern.svg')] bg-repeat opacity-10 pointer-events-none"></div>
       
+
       {/* Imperial corner decorations */}
       <div className="absolute top-0 left-0 w-48 h-48 bg-[url('/corner-decoration.svg')] bg-no-repeat opacity-30 pointer-events-none"></div>
       <div className="absolute top-0 right-0 w-48 h-48 bg-[url('/corner-decoration.svg')] bg-no-repeat transform scale-x-[-1] opacity-30 pointer-events-none"></div>
       <div className="absolute bottom-0 left-0 w-48 h-48 bg-[url('/corner-decoration.svg')] bg-no-repeat transform scale-y-[-1] opacity-30 pointer-events-none"></div>
       <div className="absolute bottom-0 right-0 w-48 h-48 bg-[url('/corner-decoration.svg')] bg-no-repeat transform scale-x-[-1] scale-y-[-1] opacity-30 pointer-events-none"></div>
       
-      <div className="container mx-auto px-4 py-6 relative z-10">
+
+      <div className="container mx-auto px-4py-6 relative z-10">
         {!selectedItem ? (
           <div className="bg-[#F5E1A4]/30 dark:bg-zinc-900/50 backdrop-blur-sm py-8 rounded-lg">
             {/* Imperial-style header */}
@@ -588,6 +574,7 @@ export default function ExhibitionPage() {
               </div>
             </div>
             
+
             {/* Filter section */}
             <div className="bg-[#F5E1A4]/80 dark:bg-zinc-800/80 backdrop-blur-md py-4 px-6 border-x border-[#8D6A3F]/30">
               <ExhibitionFilter 
@@ -596,6 +583,7 @@ export default function ExhibitionPage() {
               />
             </div>
             
+
             {/* Exhibition categories */}
             <div className="bg-[#6B2B2B]/90 backdrop-blur-md text-center p-6 border-x border-b border-[#8D6A3F]/30 rounded-b-xl shadow-lg mb-10">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
@@ -610,6 +598,7 @@ export default function ExhibitionPage() {
                   </p>
                 </div>
                 
+
                 <div 
                   className="bg-[#3A1A1A]/60 hover:bg-[#3A1A1A]/80 transition-all p-5 rounded-lg border border-[#8D6A3F]/40 hover:border-[#C49A44] hover:shadow-md cursor-pointer group"
                   onClick={() => setSelectedTab('3d-360')}
@@ -621,6 +610,7 @@ export default function ExhibitionPage() {
                   </p>
                 </div>
                 
+
                 <div 
                   className="bg-[#3A1A1A]/60 hover:bg-[#3A1A1A]/80 transition-all p-5 rounded-lg border border-[#8D6A3F]/40 hover:border-[#C49A44] hover:shadow-md cursor-pointer group"
                   onClick={() => setSelectedTab('3d-model')}
@@ -633,6 +623,7 @@ export default function ExhibitionPage() {
                 </div>
               </div>
               
+
               <div className="mt-6">
                 <Button 
                   variant="outline" 
@@ -644,6 +635,7 @@ export default function ExhibitionPage() {
               </div>
             </div>
             
+
             {/* Items Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredItems.map(item => (

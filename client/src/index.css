@@ -169,6 +169,212 @@
     @apply w-0.5 mx-4 h-full;
     background: linear-gradient(to bottom, transparent, rgba(181, 147, 90, 0.3), transparent);
   }
+
+  /* Enhanced TabsList styling */
+  .tabs-royal {
+    @apply bg-[#3A1A1A]/80 p-1 border border-[#8D6A3F]/50 rounded-lg;
+  }
+
+  .tab-trigger-royal {
+    @apply data-[state=active]:bg-[#6B2B2B] data-[state=active]:text-[#F5E1A4] 
+           hover:bg-[#6B2B2B]/70 hover:text-[#F5E1A4]/90
+           transition-all duration-300;
+  }
+
+  /* Enhanced Badge styling */
+  .badge-royal {
+    @apply bg-[#3A1A1A] text-[#F5E1A4] border-[#8D6A3F] 
+           hover:bg-[#3A1A1A]/80 transition-colors duration-300;
+  }
+
+  /* Enhanced Card effects */
+  .card-royal {
+    @apply bg-[#F5E1A4]/30 dark:bg-zinc-900/50 backdrop-blur-sm 
+           border border-[#8D6A3F]/30 shadow-lg
+           hover:border-[#B5935A]/50 hover:shadow-xl 
+           transition-all duration-300;
+    &:hover .corner-royal {
+      opacity: 0.25;
+    }
+    &:hover .royal-heading {
+      text-shadow: 0 2px 8px rgba(181, 147, 90, 0.2);
+    }
+  }
+
+  /* Royal corner decorations with enhanced opacity */
+  .corner-royal {
+    @apply absolute w-24 h-24 pointer-events-none;
+    opacity: 0.15;
+    background-image: url('/corner-decoration.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    transition: opacity 0.3s ease-in-out;
+  }
+
+  .corner-royal-hover {
+    opacity: 0.25;
+  }
+
+  /* Enhanced transitions */
+  .transition-royal {
+    @apply transition-all duration-300 ease-in-out;
+  }
+
+  /* Gradient text effect */
+  .text-royal-gradient {
+    @apply text-transparent bg-clip-text;
+    background-image: linear-gradient(45deg, #B5935A, #8D6A3F);
+  }
+
+  /* Imperial divider with enhanced gradient */
+  .divider-royal {
+    @apply h-0.5 my-4 w-full;
+    background: linear-gradient(
+      90deg, 
+      transparent 0%, 
+      rgba(181, 147, 90, 0.1) 15%,
+      rgba(181, 147, 90, 0.3) 50%,
+      rgba(181, 147, 90, 0.1) 85%,
+      transparent 100%
+    );
+  }
+
+  /* Focus styles */
+  .focus-royal {
+    @apply focus:outline-none focus:ring-2 focus:ring-[#B5935A]/50 focus:ring-offset-2 
+           focus:ring-offset-[#F5E1A4]/10;
+  }
+
+  /* Game-specific backgrounds with enhanced gradients */
+  .heritage-section {
+    @apply relative bg-gradient-to-br from-red-50/95 to-orange-50/95 dark:from-red-950/95 dark:to-orange-950/95;
+    background-image: radial-gradient(circle at center, rgba(var(--primary-rgb), 0.05) 0%, transparent 70%),
+                      var(--background-pattern-texture);
+  }
+
+  .historical-section {
+    @apply relative bg-gradient-to-br from-emerald-50/95 to-teal-50/95 dark:from-emerald-950/95 dark:to-teal-950/95;
+    background-image: radial-gradient(circle at center, rgba(var(--primary-rgb), 0.05) 0%, transparent 70%),
+                      var(--background-pattern-texture);
+  }
+
+  .cultural-section {
+    @apply relative bg-gradient-to-br from-purple-50/95 to-indigo-50/95 dark:from-purple-950/95 dark:to-indigo-950/95;
+    background-image: radial-gradient(circle at center, rgba(var(--primary-rgb), 0.05) 0%, transparent 70%),
+                      var(--background-pattern-texture);
+  }
+
+  /* Enhanced transitions and animations */
+  .transition-smooth {
+    @apply transition-all duration-300 ease-in-out;
+  }
+
+  .hover-lift {
+    @apply hover:-translate-y-1 transition-transform duration-200;
+  }
+
+  .hover-glow {
+    @apply hover:shadow-lg hover:shadow-primary/10 transition-shadow duration-200;
+  }
+
+  .hover-scale {
+    @apply hover:scale-105 transition-transform duration-200;
+  }
+
+  .fade-in {
+    @apply opacity-0 animate-[fadeIn_0.5s_ease-in-out_forwards];
+  }
+
+  .slide-in {
+    @apply translate-y-4 opacity-0 animate-[slideIn_0.5s_ease-out_forwards];
+  }
+
+  .pop-in {
+    @apply scale-95 opacity-0 animate-[popIn_0.3s_ease-out_forwards];
+  }
+
+  .floating {
+    animation: floating 3s ease-in-out infinite;
+  }
+
+  /* Game content formatting */
+  .game-text {
+    @apply text-sm md:text-base;
+    white-space: pre-line;
+    line-height: 1.6;
+  }
+
+  .game-description {
+    @apply text-sm md:text-base;
+    white-space: pre-line;
+    line-height: 1.6;
+  }
+
+  .game-result {
+    @apply text-sm md:text-base;
+    white-space: pre-line;
+    line-height: 1.6;
+    margin-bottom: 0.5rem;
+  }
+
+  .game-historical-info {
+    @apply text-xs md:text-sm text-muted-foreground;
+    white-space: pre-line;
+    line-height: 1.6;
+  }
+
+  /* Enhanced user interaction styles */
+  .interactive-element {
+    @apply transition-all duration-200;
+    @apply hover:bg-[#B5935A]/10 active:bg-[#B5935A]/20;
+    @apply focus:outline-none focus:ring-2 focus:ring-[#B5935A]/20;
+  }
+
+  /* Text styles */
+  .royal-heading {
+    @apply text-[#B5935A] font-bold;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .elegant-text {
+    @apply text-[#6B2B2B] dark:text-[#F5E1A4];
+  }
+
+  /* Enhanced badge animations */
+  .badge-royal {
+    @apply bg-[#3A1A1A] text-[#F5E1A4] border-[#8D6A3F] 
+           hover:bg-[#3A1A1A]/80 transition-colors duration-300
+           hover:border-[#B5935A] hover:shadow-[0_0_10px_rgba(181,147,90,0.2)];
+  }
+
+  /* Smooth transitions */
+  .transition-royal {
+    @apply transition-all duration-300 ease-out;
+  }
+
+  /* Text gradient effects */
+  .text-royal-gradient {
+    @apply text-transparent bg-clip-text;
+    background-image: linear-gradient(45deg, 
+      rgba(181, 147, 90, 1) 0%,
+      rgba(141, 106, 63, 1) 50%,
+      rgba(107, 43, 43, 1) 100%
+    );
+  }
+
+  /* Hover lift effect */
+  .hover-lift {
+    @apply transition-transform duration-200 ease-out;
+    &:hover {
+      transform: translateY(-2px);
+    }
+  }
+
+  /* Royal shadow effect */
+  .shadow-royal {
+    box-shadow: 0 4px 12px rgba(181, 147, 90, 0.1),
+                0 8px 24px rgba(181, 147, 90, 0.05);
+  }
 }
 
 /* Enhanced keyframe animations */
@@ -434,6 +640,174 @@ body {
   animation: floating 3s ease-in-out infinite;
 }
 
+/* Game content formatting */
+.game-text {
+  @apply text-sm md:text-base;
+  white-space: pre-line;
+  line-height: 1.6;
+}
+
+.game-description {
+  @apply text-sm md:text-base;
+  white-space: pre-line;
+  line-height: 1.6;
+}
+
+.game-result {
+  @apply text-sm md:text-base;
+  white-space: pre-line;
+  line-height: 1.6;
+  margin-bottom: 0.5rem;
+}
+
+.game-historical-info {
+  @apply text-xs md:text-sm text-muted-foreground;
+  white-space: pre-line;
+  line-height: 1.6;
+}
+
+/* Enhanced user interaction styles */
+.interactive-element {
+  @apply transition-all duration-200;
+  @apply hover:bg-[#B5935A]/10 active:bg-[#B5935A]/20;
+  @apply focus:outline-none focus:ring-2 focus:ring-[#B5935A]/20;
+}
+
+/* Text styles */
+.royal-heading {
+  @apply text-[#B5935A] font-bold;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.elegant-text {
+  @apply text-[#6B2B2B] dark:text-[#F5E1A4];
+}
+
+/* Custom scrollbar for game containers */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--primary)) transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: hsl(var(--primary)/0.3);
+  border-radius: 20px;
+}
+
+/* Game image hover effects */
+.game-image {
+  @apply transition-transform duration-300 ease-in-out;
+  @apply hover:scale-105;
+}
+
+/* Choice cards in games */
+.choice-card {
+  @apply transition-all duration-200;
+  @apply hover:bg-primary/5;
+  @apply active:bg-primary/10;
+  @apply border border-transparent;
+  @apply hover:border-primary/20;
+  @apply rounded-lg p-4;
+}
+
+/* Game result animations */
+.result-appear {
+  animation: resultAppear 0.5s ease-out forwards;
+}
+
+@keyframes resultAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Game background patterns */
+.pattern-grid {
+  background-image: linear-gradient(to right, rgba(var(--primary-rgb), 0.1) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(var(--primary-rgb), 0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.pattern-dots {
+  background-image: radial-gradient(rgba(var(--primary-rgb), 0.2) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+/* Game content formatting */
+.game-text {
+  white-space: pre-line;
+  line-height: 1.6;
+}
+
+.game-description {
+  @apply text-sm md:text-base;
+  white-space: pre-line;
+  line-height: 1.6;
+}
+
+.game-result {
+  @apply text-sm md:text-base;
+  white-space: pre-line;
+  line-height: 1.6;
+  margin-bottom: 0.5rem;
+}
+
+.game-historical-info {
+  @apply text-xs md:text-sm text-muted-foreground;
+  white-space: pre-line;
+  line-height: 1.6;
+}
+
+/* Enhanced user interaction styles */
+.interactive-element {
+  @apply transition-all duration-200;
+  @apply hover:bg-[#B5935A]/10 active:bg-[#B5935A]/20;
+  @apply focus:outline-none focus:ring-2 focus:ring-[#B5935A]/20;
+}
+
+/* Text styles */
+.royal-heading {
+  @apply text-[#B5935A] font-bold;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.elegant-text {
+  @apply text-[#6B2B2B] dark:text-[#F5E1A4];
+}
+
+/* Custom scrollbar */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--royal-gold) transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: var(--royal-gold);
+  opacity: 0.3;
+  border-radius: 20px;
+}
+
 /* Animation Keyframes */
 @keyframes fadeIn {
   from {
@@ -624,5 +998,4 @@ body {
   background-color: var(--royal-gold);
   opacity: 0.3;
   border-radius: 20px;
-}
 }
