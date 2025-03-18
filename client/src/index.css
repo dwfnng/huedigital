@@ -17,7 +17,7 @@
   .glass-card {
     @apply bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg border border-white/20 rounded-lg shadow-lg;
   }
-  
+
   .royal-gradient {
     @apply bg-gradient-to-r from-[#8D6A3F] via-[#B5935A] to-[#6B2B2B];
   }
@@ -37,78 +37,45 @@
   .page-transition {
     @apply transition-all duration-300 ease-in-out;
   }
-  
-  .hover-scale {
+
+  .hover-lift {
     @apply transition-transform duration-300 hover:scale-105;
   }
-  
+
   .royal-shadow {
     @apply shadow-[0_4px_12px_rgba(181,147,90,0.2)];
   }
-  
+
   .imperial-card {
     @apply bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm border border-[#B5935A]/20 rounded-lg shadow-md hover:imperial-border transition-all duration-300;
   }
-  
+
   .elegant-card {
     @apply bg-[#FEF8E8]/90 backdrop-blur-sm border border-[#B5935A]/30 rounded-lg shadow-md;
     background-image: var(--lotus-pattern);
     background-position: center;
     background-repeat: repeat;
   }
-  
-  .dragon-card {
-    @apply bg-[#FEF8E8]/90 backdrop-blur-sm border border-[#B5935A]/30 rounded-lg shadow-md;
-    background-image: var(--dragon-pattern);
-    background-position: center;
-    background-repeat: repeat;
-  }
-  
-  .lattice-card {
-    @apply bg-[#FEF8E8]/90 backdrop-blur-sm border border-[#B5935A]/30 rounded-lg shadow-md;
-    background-image: var(--lattice-pattern);
-    background-position: center;
-    background-repeat: repeat;
-  }
-  
+
   .elegant-pattern {
     background-image: var(--imperial-pattern);
   }
-  
+
   .lotus-pattern {
     background-image: var(--lotus-pattern);
   }
-  
-  .dragon-pattern {
-    background-image: var(--dragon-pattern);
-  }
-  
-  .lattice-pattern {
-    background-image: var(--lattice-pattern);
-  }
-  
-  /* Imperial decorative divider */
-  .imperial-divider {
-    @apply h-0.5 my-4;
-    background: linear-gradient(to right, transparent, rgba(181, 147, 90, 0.3), transparent);
-  }
-  
-  .imperial-divider-vertical {
-    @apply w-0.5 mx-4 h-full;
-    background: linear-gradient(to bottom, transparent, rgba(181, 147, 90, 0.3), transparent);
-  }
-  
+
   /* Add new subtle animations */
   .hover-translate {
     @apply transition-all duration-300 ease-out;
     @apply hover:-translate-y-1 hover:shadow-md;
   }
-  
+
   .soft-glow {
     @apply transition-all duration-300;
     box-shadow: 0 0 0 rgba(181, 147, 90, 0);
   }
-  
+
   .soft-glow:hover {
     box-shadow: 0 0 15px rgba(181, 147, 90, 0.15);
   }
@@ -133,32 +100,20 @@
 }
 
 @layer base {
-  :root {
-    /* Subtle background patterns */
-    --background-pattern-overlay: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23B5935A' fill-opacity='0.03'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z'%3E%3C/path%3E%3C/g%3E%3C/svg%3E");
-    --background-pattern-texture: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23B5935A' fill-opacity='0.02'%3E%3Cpath d='M50 50c0-5.523 4.477-10 10-10s10 4.477 10 10-4.477 10-10 10c0 5.523-4.477 10-10 10s-10-4.477-10-10 4.477-10 10-10zM10 10c0-5.523 4.477-10 10-10s10 4.477 10 10-4.477 10-10 10c0 5.523-4.477 10-10 10S0 25.523 0 20s4.477-10 10-10zm10 8c4.418 0 8-3.582 8-8s-3.582-8-8-8-8 3.582-8 8 3.582 8 8 8zm40 40c4.418 0 8-3.582 8-8s-3.582-8-8-8-8 3.582-8 8 3.582 8 8 8z' /%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-    
-    /* Imperial patterns */
-    --imperial-pattern: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='%23B5935A' fill-opacity='0.05' d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z'%3E%3C/path%3E%3C/svg%3E");
-    --lotus-pattern: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='%23B5935A' fill-opacity='0.04'%3E%3Cpath d='M0 0h8v8H0zm40 40h8v8h-8zm40-40h8v8h-8zM0 40h8v8H0zm54.5-18.5l4.5 4.5-4.5 4.5-4.5-4.5zm-30 0l4.5 4.5-4.5 4.5-4.5-4.5zm30 30l4.5 4.5-4.5 4.5-4.5-4.5zm-30 0l4.5 4.5-4.5 4.5-4.5-4.5zM18.5 18.5l4.5 4.5-4.5 4.5-4.5-4.5z'/%3E%3C/g%3E%3C/svg%3E");
-    --dragon-pattern: url("data:image/svg+xml,%3Csvg width='52' height='26' viewBox='0 0 52 26' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23B5935A' fill-opacity='0.03'%3E%3Cpath d='M10 10c0-2.21-1.79-4-4-4-3.314 0-6-2.686-6-6h2c0 2.21 1.79 4 4 4 3.314 0 6 2.686 6 6 0 2.21 1.79 4 4 4 3.314 0 6 2.686 6 6 0 2.21 1.79 4 4 4v2c-3.314 0-6-2.686-6-6 0-2.21-1.79-4-4-4-3.314 0-6-2.686-6-6zm25.464-1.95l8.486 8.486-1.414 1.414-8.486-8.486 1.414-1.414z' /%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-    --lattice-pattern: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23B5935A' fill-opacity='0.03' fill-rule='evenodd'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E");
+  * {
+    @apply border-border;
   }
-}
 
-* {
-  @apply border-border;
-}
-
-body {
-  @apply font-sans antialiased text-foreground;
-  background-color: #F5E1A4; /* Imperial-themed soft brownish-yellow */
-  background-image: var(--imperial-pattern), var(--lotus-pattern), var(--background-pattern-texture);
-  background-position: center, top left, center;
-  background-repeat: repeat, repeat, repeat;
-  background-attachment: fixed;
-  background-blend-mode: overlay;
-  @apply dark:bg-zinc-900;
+  body {
+    @apply font-sans antialiased text-foreground;
+    background-color: #F5E1A4; /* Imperial-themed soft brownish-yellow */
+    background-image: var(--imperial-pattern), var(--lotus-pattern), var(--background-pattern-texture);
+    background-position: center, top left, center;
+    background-repeat: repeat, repeat, repeat;
+    background-attachment: fixed;
+    background-blend-mode: overlay;
+    @apply dark:bg-zinc-900;
+  }
 }
 
 /* Leaflet map styles */

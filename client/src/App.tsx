@@ -136,12 +136,12 @@ function MainNav() {
     }`}>
       {/* Imperial decorative header patterns */}
       <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#8D6A3F] via-[#C49A44] to-[#8D6A3F]"></div>
-      
+
       <nav className="container mx-auto">
         <div className="flex h-16 items-center px-4">
           <Link href="/" className="flex items-center gap-2 group relative">
             <div className="w-10 h-10 royal-gradient rounded-full flex items-center justify-center transition-all duration-300 group-hover:shadow-[0_0_15px_rgba(196,154,68,0.5)]">
-              {/* Use the SVG logo we created */}
+              {/* Use the new logo */}
               <img 
                 src="/imperial-logo.svg" 
                 alt="Huế Digital" 
@@ -164,7 +164,7 @@ function MainNav() {
               </span>
               <span className="text-xs text-[#8D6A3F] -mt-1">Di sản trong tay bạn</span>
             </div>
-            
+
             {/* Decorative hover effect */}
             <div className="absolute -bottom-1 left-0 right-0 h-0.5 bg-[#C49A44] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
           </Link>
@@ -182,7 +182,7 @@ function MainNav() {
                         {section.icon}
                       </div>
                       <span className="transition-all">{section.label}</span>
-                      
+
                       {/* Decorative underline that shows on hover */}
                       <div className="absolute -bottom-1 left-0 right-0 h-0.5 bg-[#8D6A3F] transform scale-x-0 
                                       group-hover:scale-x-100 group-data-[state=open]:scale-x-100 
@@ -201,8 +201,8 @@ function MainNav() {
                             <NavigationMenuLink asChild>
                               <a
                                 className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none 
-                                           transition-all hover:bg-[#8D6A3F]/10 hover:border-[#8D6A3F]/20
-                                           hover:shadow-md hover:text-[#6B2B2B] imperial-card group animate-fade-in"
+                                            transition-all hover:bg-[#8D6A3F]/10 hover:border-[#8D6A3F]/20
+                                            hover:shadow-md hover:text-[#6B2B2B] imperial-card group animate-fade-in"
                                 style={{ animationDelay: `${idx * 50}ms` }}
                                 onClick={(e) => {
                                   e.preventDefault();
@@ -234,7 +234,7 @@ function MainNav() {
               ))}
             </NavigationMenuList>
           </NavigationMenu>
-          
+
           <div className="ml-auto flex items-center gap-3">
             <Button 
               variant="ghost" 
@@ -256,7 +256,7 @@ function MainNav() {
           </div>
         </div>
       </nav>
-      
+
       {/* Decorative element - imperial pattern line */}
       <div className="relative h-1">
         <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#8D6A3F]/30 to-transparent"></div>
