@@ -196,7 +196,7 @@ const ExhibitionCard = ({ item }: { item: typeof exhibitionItems[0] }) => {
               <span>{item.location}</span>
             </div>
           </div>
-          
+
           <Badge variant="outline" className="text-xs">
             {item.category === 'palace' ? 'Cung điện' :
              item.category === 'tomb' ? 'Lăng tẩm' :
@@ -218,19 +218,11 @@ const ExhibitionDetail = ({ item, onBack }: { item: typeof exhibitionItems[0], o
       {/* Imperial corner decorations for detail view */}
       <div className="absolute top-0 left-0 w-24 h-24 bg-[url('/corner-decoration.svg')] bg-no-repeat opacity-20 pointer-events-none"></div>
       <div className="absolute top-0 right-0 w-24 h-24 bg-[url('/corner-decoration.svg')] bg-no-repeat transform scale-x-[-1] opacity-20 pointer-events-none"></div>
-      
+
       <div className="animate-fade-in space-y-6 bg-[#F5E1A4]/30 dark:bg-zinc-900/50 backdrop-blur-sm p-6 rounded-lg relative z-10">
         {/* Back button with imperial styling */}
         <div className="flex justify-between items-center mb-4">
-          <Button 
-            variant="outline" 
-            onClick={onBack} 
-            className="gap-2 bg-[#3A1A1A]/80 hover:bg-[#3A1A1A] text-[#F5E1A4] border-[#8D6A3F]/50 hover:border-[#C49A44]"
-          >
-            <ChevronLeft className="h-4 w-4" />
-            <span>Quay lại</span>
-          </Button>
-          
+          {/*Removed Back Button */}
           <div className="flex items-center gap-2">
             <Button 
               variant="outline" 
@@ -248,9 +240,9 @@ const ExhibitionDetail = ({ item, onBack }: { item: typeof exhibitionItems[0], o
           <div className="max-w-3xl mx-auto">
             <h1 className="text-2xl md:text-3xl font-bold text-[#F5E1A4] mb-1">{item.title}</h1>
             <p className="text-white/80 text-sm">{item.titleEn}</p>
-            
+
             <div className="w-32 h-0.5 bg-gradient-to-r from-transparent via-[#C49A44] to-transparent my-3"></div>
-            
+
             <div className="flex flex-wrap gap-3 mt-4 text-sm">
               <Badge className="bg-[#3A1A1A] text-[#F5E1A4] border-[#8D6A3F] hover:bg-[#3A1A1A]/80">
                 <Clock className="h-3 w-3 mr-1" /> {item.createPeriod}
@@ -403,7 +395,7 @@ const ExhibitionDetail = ({ item, onBack }: { item: typeof exhibitionItems[0], o
                 </Badge>
               </div>
             </div>
-            
+
             {item.arAvailable && (
               <div className="flex justify-center">
                 <Button 
@@ -564,13 +556,13 @@ export default function ExhibitionPage() {
     <div className="min-h-screen relative">
       {/* Background pattern overlay */}
       <div className="absolute inset-0 bg-[url('/imperial-pattern.svg')] bg-repeat opacity-10 pointer-events-none"></div>
-      
+
       {/* Imperial corner decorations */}
       <div className="absolute top-0 left-0 w-48 h-48 bg-[url('/corner-decoration.svg')] bg-no-repeat opacity-30 pointer-events-none"></div>
       <div className="absolute top-0 right-0 w-48 h-48 bg-[url('/corner-decoration.svg')] bg-no-repeat transform scale-x-[-1] opacity-30 pointer-events-none"></div>
       <div className="absolute bottom-0 left-0 w-48 h-48 bg-[url('/corner-decoration.svg')] bg-no-repeat transform scale-y-[-1] opacity-30 pointer-events-none"></div>
       <div className="absolute bottom-0 right-0 w-48 h-48 bg-[url('/corner-decoration.svg')] bg-no-repeat transform scale-x-[-1] scale-y-[-1] opacity-30 pointer-events-none"></div>
-      
+
       <div className="container mx-auto px-4 py-6 relative z-10">
         {!selectedItem ? (
           <div className="bg-[#F5E1A4]/30 dark:bg-zinc-900/50 backdrop-blur-sm py-8 rounded-lg">
@@ -587,7 +579,7 @@ export default function ExhibitionPage() {
                 </p>
               </div>
             </div>
-            
+
             {/* Filter section */}
             <div className="bg-[#F5E1A4]/80 dark:bg-zinc-800/80 backdrop-blur-md py-4 px-6 border-x border-[#8D6A3F]/30">
               <ExhibitionFilter 
@@ -595,7 +587,7 @@ export default function ExhibitionPage() {
                 searchTerm={searchTerm}
               />
             </div>
-            
+
             {/* Exhibition categories */}
             <div className="bg-[#6B2B2B]/90 backdrop-blur-md text-center p-6 border-x border-b border-[#8D6A3F]/30 rounded-b-xl shadow-lg mb-10">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
@@ -609,7 +601,7 @@ export default function ExhibitionPage() {
                     Trải nghiệm thực tế ảo tăng cường giúp bạn khám phá di tích ngay tại vị trí của mình
                   </p>
                 </div>
-                
+
                 <div 
                   className="bg-[#3A1A1A]/60 hover:bg-[#3A1A1A]/80 transition-all p-5 rounded-lg border border-[#8D6A3F]/40 hover:border-[#C49A44] hover:shadow-md cursor-pointer group"
                   onClick={() => setSelectedTab('3d-360')}
@@ -620,7 +612,7 @@ export default function ExhibitionPage() {
                     Khám phá không gian 360 độ của các di tích, đền đài và cung điện của cố đô Huế
                   </p>
                 </div>
-                
+
                 <div 
                   className="bg-[#3A1A1A]/60 hover:bg-[#3A1A1A]/80 transition-all p-5 rounded-lg border border-[#8D6A3F]/40 hover:border-[#C49A44] hover:shadow-md cursor-pointer group"
                   onClick={() => setSelectedTab('3d-model')}
@@ -632,18 +624,10 @@ export default function ExhibitionPage() {
                   </p>
                 </div>
               </div>
-              
-              <div className="mt-6">
-                <Button 
-                  variant="outline" 
-                  className="bg-[#C49A44]/10 border-[#C49A44]/30 text-[#F5E1A4] hover:bg-[#C49A44]/20 hover:text-white"
-                  onClick={() => window.history.back()}
-                >
-                  BACK
-                </Button>
-              </div>
+
+              {/*Removed BACK button*/}
             </div>
-            
+
             {/* Items Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredItems.map(item => (
