@@ -199,10 +199,10 @@ export default function LiveDataPage() {
 
           {/* Events Card */}
           <motion.div variants={item}>
-            <Card className="bg-gradient-to-br from-amber-50 to-orange-50 border-amber-100">
+            <Card className="border border-amber-100">
               <CardHeader className="bg-gradient-to-r from-amber-500/10 to-orange-500/10 rounded-t-lg">
-                <CardTitle className="flex items-center gap-2 text-amber-700">
-                  <Calendar className="h-5 w-5 text-amber-600" />
+                <CardTitle className="flex items-center gap-2">
+                  <Calendar className="h-5 w-5 text-primary" />
                   Sự kiện sắp diễn ra
                 </CardTitle>
               </CardHeader>
@@ -210,9 +210,9 @@ export default function LiveDataPage() {
                 {events ? (
                   <div className="space-y-4">
                     {events.map(event => (
-                      <div key={event.id} className="border-b border-amber-100 pb-3 last:border-0 last:pb-0">
-                        <h3 className="font-medium text-amber-800">{event.title}</h3>
-                        <div className="text-sm text-amber-700 mt-1">
+                      <div key={event.id} className="border-b pb-3 last:border-0 last:pb-0">
+                        <h3 className="font-medium">{event.title}</h3>
+                        <div className="text-sm text-muted-foreground mt-1">
                           <p>Địa điểm: {event.location}</p>
                           <p>Thời gian: {new Date(event.startDate).toLocaleDateString('vi-VN')} - {new Date(event.endDate).toLocaleDateString('vi-VN')}</p>
                           <p className="mt-1">{event.description}</p>
@@ -221,7 +221,7 @@ export default function LiveDataPage() {
                     ))}
                   </div>
                 ) : (
-                  <p className="text-amber-500">Đang cập nhật...</p>
+                  <p className="text-muted-foreground">Đang cập nhật...</p>
                 )}
               </CardContent>
             </Card>
@@ -229,10 +229,10 @@ export default function LiveDataPage() {
 
           {/* Location Stats Card */}
           <motion.div variants={item}>
-            <Card className="bg-gradient-to-br from-purple-50 to-violet-50 border-purple-100">
+            <Card className="border border-purple-100">
               <CardHeader className="bg-gradient-to-r from-purple-500/10 to-violet-500/10 rounded-t-lg">
-                <CardTitle className="flex items-center gap-2 text-purple-700">
-                  <BarChart2 className="h-5 w-5 text-purple-600" />
+                <CardTitle className="flex items-center gap-2">
+                  <BarChart2 className="h-5 w-5 text-primary" />
                   Thống kê theo điểm
                 </CardTitle>
               </CardHeader>
@@ -242,25 +242,25 @@ export default function LiveDataPage() {
                     {locationStats.map((location) => (
                       <div key={location.id} className="flex justify-between items-center">
                         <div>
-                          <span className="font-medium text-purple-800">{location.name}</span>
-                          <div className="text-sm text-purple-600">
+                          <span className="font-medium">{location.name}</span>
+                          <div className="text-sm text-muted-foreground">
                             {getTrafficStatusIcon(location.trafficLevel)}
                           </div>
                         </div>
-                        <span className="font-semibold text-purple-800">
+                        <span className="font-semibold">
                           {location.visitorCount.toLocaleString('vi-VN')} khách
                         </span>
                       </div>
                     ))}
-                    <p className="text-xs text-purple-500 mt-4">
+                    <p className="text-xs text-muted-foreground mt-4">
                       Cập nhật tự động mỗi 30 giây
                     </p>
                   </div>
                 ) : (
                   <div className="animate-pulse space-y-4">
-                    <div className="h-4 bg-purple-200 rounded w-3/4"></div>
-                    <div className="h-4 bg-purple-200 rounded w-1/2"></div>
-                    <div className="h-4 bg-purple-200 rounded w-2/3"></div>
+                    <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+                    <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+                    <div className="h-4 bg-gray-200 rounded w-2/3"></div>
                   </div>
                 )}
               </CardContent>

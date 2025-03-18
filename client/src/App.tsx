@@ -283,6 +283,15 @@ function MainNav() {
               Đóng góp
             </Button>
             <Button
+              variant="ghost"
+              size="sm"
+              className="text-[#8D6A3F] hover:text-[#6B2B2B] hover:bg-[#C49A44]/10 hidden sm:flex transition-all"
+              onClick={() => window.open("https://www.facebook.com/groups/618595794333990", "_blank")}
+            >
+              <Users className="h-4 w-4 mr-1.5" />
+              Cộng đồng
+            </Button>
+            <Button
               size="sm"
               className="royal-gradient text-white hover:opacity-90 transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-0.5"
               onClick={() => setLocation("/library")}
