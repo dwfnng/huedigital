@@ -240,7 +240,7 @@ export default function Home() {
             </h1>
 
             <p className="text-xl text-[#6D4C41] mb-8 max-w-2xl mx-auto">
-              Nền tảng tương tác kỹ thuật số toàn diện giúp bạn tìm hipa�u, khám
+              Nền tảng tương tác kỹ thuật số toàn diện giúp bạn tìm hiểu, khám
               phá và bảo tồn di sản văn hóa độc đáo của cố đô Huế
             </p>
 
@@ -262,8 +262,6 @@ export default function Home() {
               </Button>
             </div>
           </motion.div>
-
-          
         </div>
 
         {/* Wave decorative element */}
