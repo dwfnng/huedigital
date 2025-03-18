@@ -358,9 +358,9 @@ export default function Map({ onMarkerClick }: { onMarkerClick?: (location: Loca
 
   return (
     <div className="grid md:grid-cols-3 gap-4 h-full">
-      <Card className="md:col-span-1 h-full overflow-hidden glass">
-        <CardContent className="p-0 h-full">
-          <div className="p-4 border-b">
+      <Card className="md:col-span-1 h-full overflow-hidden bg-white/95 backdrop-blur-sm border border-border/10">
+        <CardContent className="p-0">
+          <div className="p-4 border-b bg-white">
             <div className="flex gap-2">
               <div className="relative flex-1">
                 <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -474,7 +474,7 @@ export default function Map({ onMarkerClick }: { onMarkerClick?: (location: Loca
         </CardContent>
       </Card>
 
-      <Card className="md:col-span-2 h-full overflow-hidden glass">
+      <Card className="md:col-span-2 h-full overflow-hidden bg-white/95 backdrop-blur-sm border border-border/10">
         <CardContent className="p-0 h-full relative">
           <MapContainer
             center={DEFAULT_CENTER}
