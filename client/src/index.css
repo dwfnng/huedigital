@@ -600,27 +600,27 @@
 }
 
 .game-text {
-  @apply text-[#333333];
+  @apply text-black;
   white-space: pre-line;
   line-height: 1.6;
 }
 
 .game-description {
-  @apply text-[#333333] text-sm md:text-base;
+  @apply text-black text-sm md:text-base;
   white-space: pre-line;
   line-height: 1.6;
   margin-bottom: 0.5rem;
 }
 
 .game-result {
-  @apply text-[#333333] text-sm md:text-base;
+  @apply text-black text-sm md:text-base;
   white-space: pre-line;
   line-height: 1.6;
   margin-bottom: 0.5rem;
 }
 
 .game-historical-info {
-  @apply text-[#333333] text-xs md:text-sm;
+  @apply text-black text-xs md:text-sm;
   white-space: pre-line;
   line-height: 1.6;
 }
