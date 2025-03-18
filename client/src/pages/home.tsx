@@ -424,24 +424,14 @@ export default function Home() {
       </div>
 
       {/* Call to Action */}
-      <div className="royal-gradient text-white py-16">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-6">
-            Tham gia vào hành trình khám phá
-          </h2>
-          <p className="text-lg mb-8 max-w-2xl mx-auto">
-            Đóng góp vào việc bảo tồn và phát huy di sản văn hóa Huế thông qua
-            nền tảng kỹ thuật số
-          </p>
-          <Button
-            asChild
-            size="lg"
-            variant="outline"
-            className="bg-white/10 backdrop-blur-sm border-white/20 hover:bg-white/20 hover:border-white/30 royal-shadow"
-          >
-            <Link href="/contribute">Đóng góp ngay</Link>
-          </Button>
-        </div>
+      <div className="bg-gradient-to-r from-[#5B3A29] via-[#8B4513] to-[#D4AF37] py-16 text-center">
+        <h2 className="text-3xl font-bold text-white mb-4">Tham gia vào hành trình khám phá</h2>
+        <p className="text-white/90 mb-8">
+          Đóng góp vào việc bảo tồn và phát huy di sản văn hóa Huế thông qua nền tảng kỹ thuật số
+        </p>
+        <Button variant="outline" className="bg-white/10 text-white hover:bg-white/20 border-white/30">
+          Đóng góp ngay
+        </Button>
       </div>
 
       {/* Footer with imperial decoration */}
