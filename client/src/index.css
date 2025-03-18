@@ -115,6 +115,33 @@
   @apply transition-all duration-200;
 }
 
+.enhanced-input {
+  @apply bg-white border-amber-100 focus:border-amber-300 focus:ring-amber-200;
+  @apply transition-all duration-200;
+}
+
+.enhanced-textarea {
+  @apply bg-white border-amber-100 focus:border-amber-300 focus:ring-amber-200;
+  @apply transition-all duration-200 min-h-[120px];
+}
+
+.royal-button {
+  @apply bg-gradient-to-r from-[#DAA520] to-[#B5935A] text-white;
+  @apply hover:from-[#B5935A] hover:to-[#8B4513];
+  @apply shadow-md shadow-amber-900/10;
+  @apply transition-all duration-200;
+}
+
+.dialog-gradient {
+  @apply bg-gradient-to-br from-[#FFF8ED] to-[#F9F3E5];
+  @apply shadow-lg shadow-amber-900/10;
+  @apply border border-amber-100;
+}
+
+.dialog-header {
+  @apply bg-[#F9D77E]/30 border-b border-amber-100;
+}
+
 /* Animation keyframes */
 @keyframes fadeIn {
   from {

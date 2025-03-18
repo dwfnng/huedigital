@@ -63,21 +63,23 @@ export default function DigitalLibrary() {
 
   return (
     <div className="container mx-auto py-8 space-y-8">
-      <div className="flex flex-col md:flex-row justify-between md:items-center gap-4">
-        <div>
-          <h1 className="text-3xl font-bold text-[#B5935A]">Kho Tàng Di Sản Huế</h1>
-          <p className="text-muted-foreground mt-1">
-            Khám phá kho tàng di sản văn hóa Huế qua tư liệu số
-          </p>
-        </div>
-        <div className="relative w-full md:w-[300px]">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" />
-          <Input
-            placeholder="Tìm kiếm tư liệu..."
-            className="pl-10"
-            value={filters.searchQuery}
-            onChange={(e) => setFilters(prev => ({ ...prev, searchQuery: e.target.value }))}
-          />
+      <div className="page-header">
+        <div className="page-header-content flex flex-col md:flex-row justify-between md:items-center gap-4">
+          <div>
+            <h1 className="text-3xl font-bold">Kho Tàng Di Sản Huế</h1>
+            <p className="mt-1">
+              Khám phá kho tàng di sản văn hóa Huế qua tư liệu số
+            </p>
+          </div>
+          <div className="relative w-full md:w-[300px]">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-amber-900" />
+            <Input
+              placeholder="Tìm kiếm tư liệu..."
+              className="pl-10 enhanced-search"
+              value={filters.searchQuery}
+              onChange={(e) => setFilters(prev => ({ ...prev, searchQuery: e.target.value }))}
+            />
+          </div>
         </div>
       </div>
       
