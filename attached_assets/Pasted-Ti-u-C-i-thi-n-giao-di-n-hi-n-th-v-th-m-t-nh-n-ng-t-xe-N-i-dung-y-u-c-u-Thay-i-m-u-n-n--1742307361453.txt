@@ -1,0 +1,35 @@
+Tiêu đề: Cải thiện giao diện hiển thị và thêm tính năng đặt xe
+
+Nội dung yêu cầu:
+
+Thay đổi màu nền và cải thiện khả năng đọc:
+
+Chức năng kho học liệu số:
+
+Khi người dùng ấn vào bất kỳ tài liệu nào, hãy thay đổi màu nền của trang hiển thị nội dung tài liệu.
+Mục tiêu là làm cho văn bản dễ nhìn và dễ đọc hơn. Có thể áp dụng một trong những cách sau:
+Chuyển sang nền màu sáng (ví dụ: #f0f0f0 hoặc một màu pastel nhẹ) và đảm bảo chữ có màu tối (ví dụ: #333333).
+Hoặc giảm độ đậm của nền tối bằng cách dùng rgba với opacity thấp (ví dụ: background-color: rgba(0, 0, 0, 0.3);).
+Kiểm tra lại tính tương phản giữa nền và chữ để đảm bảo phù hợp với tiêu chuẩn WCAG về độ tương phản.
+Chức năng tạo bài viết mới (trong tab cộng đồng):
+
+Áp dụng thay đổi tương tự như ở kho học liệu số: khi người dùng mở giao diện tạo bài viết mới, hãy đảm bảo nền của khung nhập liệu được điều chỉnh để hiển thị văn bản rõ ràng, dễ đọc.
+Chức năng biển dẫn đường trong bản đồ số:
+
+Thay đổi màu nền của biển dẫn để chữ hiển thị rõ ràng. Có thể áp dụng màu nền sáng hoặc điều chỉnh opacity của nền tối, tương tự như các phần trên.
+Thêm tính năng đặt xe trong chức năng đặt dịch vụ:
+
+Giao diện người dùng:
+Tạo một giao diện đặt xe trong phần đặt dịch vụ. Giao diện này cần có các thành phần cơ bản như:
+Ô nhập địa chỉ: Người dùng nhập điểm đón và điểm đến.
+Chọn thời gian: Cung cấp chức năng chọn thời gian đặt xe.
+Chọn loại xe: Dropdown hoặc các nút chọn loại xe (ví dụ: xe tiêu chuẩn, xe sang, v.v.).
+Nút "Đặt xe": Nút kích hoạt quá trình đặt xe.
+Tính năng bổ sung:
+Xác nhận thông tin đặt xe trước khi gửi yêu cầu.
+Cung cấp phản hồi cho người dùng (ví dụ: thông báo “Đặt xe thành công” hoặc “Có lỗi xảy ra, vui lòng thử lại”).
+Đảm bảo giao diện nhất quán với tổng thể trang web, bao gồm cả kiểu dáng, màu sắc và font chữ.
+Yêu cầu thêm:
+
+Sau khi cập nhật, vui lòng kiểm tra toàn bộ các chức năng để đảm bảo rằng giao diện được cải thiện và tính năng đặt xe hoạt động mượt mà trên mọi trang liên quan.
+Cung cấp đoạn mã mẫu hoặc hướng dẫn cụ thể nếu có thể, nhằm dễ dàng tích hợp vào dự án hiện tại trên Replit.
