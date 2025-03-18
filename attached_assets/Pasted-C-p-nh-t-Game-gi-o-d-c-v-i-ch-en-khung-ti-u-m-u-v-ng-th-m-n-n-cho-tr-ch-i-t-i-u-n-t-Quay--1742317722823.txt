@@ -1,0 +1,32 @@
+Cập nhật Game giáo dục với chữ đen, khung tiêu đề màu vàng, thêm nền cho trò chơi, tối ưu nút “Quay lại”, sửa khung trang Đặt dịch vụ
+
+Nội dung yêu cầu
+Thay đổi màu chữ và khung tiêu đề trong Game giáo dục
+
+Màu chữ nội dung (text): đổi về màu đen (#000) hoặc xám đậm (#333) cho toàn bộ phần nội dung, mô tả, nút bên trong Game giáo dục.
+Khung tiêu đề phía trên: chuyển sang màu vàng (có thể là #FFD700, #FFC107, hoặc tông vàng Huế) để tạo điểm nhấn.
+Đảm bảo độ tương phản giữa tiêu đề (vàng) và chữ (đen hoặc nâu đậm) để người dùng dễ đọc.
+Thêm nền khi nhấn vào trò chơi
+
+Khi người dùng nhấn chọn một trò chơi (ví dụ “Nhập vai vua Gia Long” hay “Quan thần thời Minh Mạng”), hãy thêm một lớp nền hoặc hiệu ứng nền phía sau giao diện trò chơi để bớt đơn điệu.
+Gợi ý: có thể dùng hình ảnh mờ (background image) liên quan đến văn hóa Huế (cổng thành, hoa văn cung đình…) với độ trong suốt thấp, hoặc dùng màu gradient nhẹ.
+Đảm bảo chữ và nút trong phần này vẫn rõ ràng, không bị chìm vào hình nền.
+Tối ưu giao diện các nút, ví dụ “Quay lại trò chơi”
+
+Thiết kế các nút (button) bắt mắt hơn:
+Có thể thêm màu nền đậm (vàng, đỏ nâu, hoặc màu nổi) và màu chữ trắng.
+Sử dụng bo góc (border-radius) nhẹ, hoặc hiệu ứng hover (đổi màu nền, thêm bóng).
+Khi người dùng nhấn Back trên trình duyệt (hoặc nhấn nút “Quay lại”), trở về trang trước đó thay vì nhảy về trang mặc định.
+Triển khai bằng cách sử dụng window.history.back() hoặc các kỹ thuật điều hướng tương đương trong React/Vue/JS (nếu cần).
+Sửa khung ở trang Đặt dịch vụ
+
+Khung tiêu đề “Đặt vé & Dịch vụ” (ảnh 3) đang bị màu quá tối, chữ khó đọc. Cần tối ưu lại:
+Màu nền khung: giữ tông vàng/kem nhưng sáng hơn để chữ bên trong nổi bật.
+Chữ: màu đen (#000) hoặc nâu đậm (#4A2C2A) để tương phản tốt.
+Điều chỉnh kích thước khung hoặc margin/padding để thông tin không bị chồng lấn.
+Đảm bảo bố cục các nút (Vé tham quan, Dịch vụ xe, Quà lưu niệm…) gọn gàng, rõ ràng.
+Kiểm tra hiển thị trên mobile để khung không bị cắt xén.
+Kiểm tra toàn bộ tính năng
+
+Sau khi thay đổi, kiểm tra Game giáo dục, trang Đặt dịch vụ, và thao tác Back trình duyệt để đảm bảo hoạt động như mong muốn.
+Đảm bảo màu sắc, font chữ, và kích thước đều nhất quán, không gây lỗi hiển thị trên các kích thước màn hình khác nhau.
