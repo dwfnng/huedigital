@@ -102,17 +102,25 @@ export default function LiveDataPage() {
   };
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto p-4 relative">
+      {/* Họa tiết nền */}
+      <div className="absolute inset-0 bg-[url('/imperial-pattern.svg')] bg-repeat opacity-5 pointer-events-none"></div>
+      <div className="absolute top-0 left-0 w-32 h-32 bg-[url('/corner-decoration.svg')] bg-no-repeat opacity-10 pointer-events-none"></div>
+      <div className="absolute top-0 right-0 w-32 h-32 bg-[url('/corner-decoration.svg')] bg-no-repeat transform scale-x-[-1] opacity-10 pointer-events-none"></div>
+      
       <motion.div
-        className="max-w-5xl mx-auto"
+        className="max-w-5xl mx-auto relative z-10"
         variants={container}
         initial="hidden"
         animate="show"
       >
         <motion.div variants={item} className="mb-8">
-          <div className="bg-[#7B2B2B] text-white p-4 rounded-lg mb-6 shadow-md">
-            <h1 className="text-3xl font-bold mb-2">Dữ liệu thời gian thực</h1>
-            <p className="text-white/90">
+          <div className="bg-[#B5935A] text-black p-4 rounded-lg mb-6 shadow-md">
+            <h1 className="text-3xl font-bold mb-2 flex items-center">
+              <BarChart2 className="h-7 w-7 mr-2" />
+              Dữ liệu thời gian thực
+            </h1>
+            <p className="text-black/90">
               Thông tin cập nhật về thời tiết, lượng khách tham quan và tình hình giao thông tại các điểm di tích Huế
             </p>
           </div>
@@ -121,10 +129,10 @@ export default function LiveDataPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Weather Card */}
           <motion.div variants={item}>
-            <Card className="border border-[#7B2B2B]/30 shadow-md hover:shadow-lg transition-shadow">
-              <CardHeader className="bg-gradient-to-r from-[#7B2B2B]/10 to-[#8B0000]/10 rounded-t-lg border-b border-[#7B2B2B]/10">
-                <CardTitle className="flex items-center gap-2 text-[#7B2B2B]">
-                  <CloudRain className="h-5 w-5 text-[#8B0000]" />
+            <Card className="border border-[#B5935A]/30 shadow-md hover:shadow-lg transition-shadow">
+              <CardHeader className="bg-gradient-to-r from-[#B5935A]/10 to-[#B5935A]/20 rounded-t-lg border-b border-[#B5935A]/10">
+                <CardTitle className="flex items-center gap-2 text-[#B5935A]">
+                  <CloudRain className="h-5 w-5 text-[#B5935A]" />
                   Thời tiết
                 </CardTitle>
               </CardHeader>
@@ -138,15 +146,15 @@ export default function LiveDataPage() {
                         className="w-16 h-16"
                       />
                       <div>
-                        <p className="text-2xl font-semibold text-[#7B2B2B]">
+                        <p className="text-2xl font-semibold text-[#B5935A]">
                           {Math.round(weather.temp)}°C
                         </p>
-                        <p className="capitalize text-[#7B2B2B]/70">
+                        <p className="capitalize text-[#B5935A]/70">
                           {weather.description}
                         </p>
                       </div>
                     </div>
-                    <div className="mt-4 space-y-2 text-sm text-[#7B2B2B]/80">
+                    <div className="mt-4 space-y-2 text-sm text-[#B5935A]/80">
                       <p>Độ ẩm: {weather.humidity}%</p>
                       <p>Gió: {Math.round(weather.windSpeed * 3.6)} km/h</p>
                       <p className="text-xs">
@@ -155,7 +163,7 @@ export default function LiveDataPage() {
                     </div>
                   </div>
                 ) : (
-                  <div className="text-[#7B2B2B]/70">
+                  <div className="text-[#B5935A]/70">
                     {weatherError ? "Không thể lấy dữ liệu thời tiết" : "Đang cập nhật..."}
                   </div>
                 )}
@@ -165,10 +173,10 @@ export default function LiveDataPage() {
 
           {/* Traffic Card */}
           <motion.div variants={item}>
-            <Card className="border border-[#7B2B2B]/30 shadow-md hover:shadow-lg transition-shadow">
-              <CardHeader className="bg-gradient-to-r from-[#7B2B2B]/10 to-[#8B0000]/10 rounded-t-lg border-b border-[#7B2B2B]/10">
-                <CardTitle className="flex items-center gap-2 text-[#7B2B2B]">
-                  <Car className="h-5 w-5 text-[#8B0000]" />
+            <Card className="border border-[#B5935A]/30 shadow-md hover:shadow-lg transition-shadow">
+              <CardHeader className="bg-gradient-to-r from-[#B5935A]/10 to-[#B5935A]/20 rounded-t-lg border-b border-[#B5935A]/10">
+                <CardTitle className="flex items-center gap-2 text-[#B5935A]">
+                  <Car className="h-5 w-5 text-[#B5935A]" />
                   Tình hình giao thông
                 </CardTitle>
               </CardHeader>
@@ -201,10 +209,10 @@ export default function LiveDataPage() {
 
           {/* Events Card */}
           <motion.div variants={item}>
-            <Card className="border border-[#7B2B2B]/30 shadow-md hover:shadow-lg transition-shadow">
-              <CardHeader className="bg-gradient-to-r from-[#7B2B2B]/10 to-[#8B0000]/10 rounded-t-lg border-b border-[#7B2B2B]/10">
-                <CardTitle className="flex items-center gap-2 text-[#7B2B2B]">
-                  <Calendar className="h-5 w-5 text-[#8B0000]" />
+            <Card className="border border-[#B5935A]/30 shadow-md hover:shadow-lg transition-shadow">
+              <CardHeader className="bg-gradient-to-r from-[#B5935A]/10 to-[#B5935A]/20 rounded-t-lg border-b border-[#B5935A]/10">
+                <CardTitle className="flex items-center gap-2 text-[#B5935A]">
+                  <Calendar className="h-5 w-5 text-[#B5935A]" />
                   Sự kiện sắp diễn ra
                 </CardTitle>
               </CardHeader>
@@ -231,10 +239,10 @@ export default function LiveDataPage() {
 
           {/* Location Stats Card */}
           <motion.div variants={item}>
-            <Card className="border border-[#7B2B2B]/30 shadow-md hover:shadow-lg transition-shadow">
-              <CardHeader className="bg-gradient-to-r from-[#7B2B2B]/10 to-[#8B0000]/10 rounded-t-lg border-b border-[#7B2B2B]/10">
-                <CardTitle className="flex items-center gap-2 text-[#7B2B2B]">
-                  <BarChart2 className="h-5 w-5 text-[#8B0000]" />
+            <Card className="border border-[#B5935A]/30 shadow-md hover:shadow-lg transition-shadow">
+              <CardHeader className="bg-gradient-to-r from-[#B5935A]/10 to-[#B5935A]/20 rounded-t-lg border-b border-[#B5935A]/10">
+                <CardTitle className="flex items-center gap-2 text-[#B5935A]">
+                  <BarChart2 className="h-5 w-5 text-[#B5935A]" />
                   Thống kê theo điểm
                 </CardTitle>
               </CardHeader>
