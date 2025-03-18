@@ -383,7 +383,7 @@ export default function Home() {
       <div className="relative bg-background py-16">
         <div className="absolute inset-0 dragon-pattern opacity-10"></div>
         <div className="container mx-auto px-4 relative z-10">
-          <h2 className="text-3xl font-bold mb-10 text-center gold-gradient bg-clip-text text-transparent">
+          <h2 className="text-3xl font-bold mb-10 text-center text-[#8B4513]">
             Khám phá nền tảng
           </h2>
 
