@@ -110,23 +110,25 @@ export default function LiveDataPage() {
         animate="show"
       >
         <motion.div variants={item} className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">Dữ liệu thời gian thực</h1>
-          <p className="text-muted-foreground">
-            Thông tin cập nhật về thời tiết, lượng khách tham quan và tình hình giao thông tại các điểm di tích Huế
-          </p>
+          <div className="bg-[#7B2B2B] text-white p-4 rounded-lg mb-6 shadow-md">
+            <h1 className="text-3xl font-bold mb-2">Dữ liệu thời gian thực</h1>
+            <p className="text-white/90">
+              Thông tin cập nhật về thời tiết, lượng khách tham quan và tình hình giao thông tại các điểm di tích Huế
+            </p>
+          </div>
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Weather Card */}
           <motion.div variants={item}>
-            <Card className="border border-blue-100">
-              <CardHeader className="bg-gradient-to-r from-blue-500/10 to-indigo-500/10 rounded-t-lg">
-                <CardTitle className="flex items-center gap-2">
-                  <CloudRain className="h-5 w-5 text-primary" />
+            <Card className="border border-[#7B2B2B]/30 shadow-md hover:shadow-lg transition-shadow">
+              <CardHeader className="bg-gradient-to-r from-[#7B2B2B]/10 to-[#8B0000]/10 rounded-t-lg border-b border-[#7B2B2B]/10">
+                <CardTitle className="flex items-center gap-2 text-[#7B2B2B]">
+                  <CloudRain className="h-5 w-5 text-[#8B0000]" />
                   Thời tiết
                 </CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="pt-4">
                 {weather && !weatherError ? (
                   <div>
                     <div className="flex items-center gap-4">
@@ -136,15 +138,15 @@ export default function LiveDataPage() {
                         className="w-16 h-16"
                       />
                       <div>
-                        <p className="text-2xl font-semibold">
+                        <p className="text-2xl font-semibold text-[#7B2B2B]">
                           {Math.round(weather.temp)}°C
                         </p>
-                        <p className="capitalize text-muted-foreground">
+                        <p className="capitalize text-[#7B2B2B]/70">
                           {weather.description}
                         </p>
                       </div>
                     </div>
-                    <div className="mt-4 space-y-2 text-sm text-muted-foreground">
+                    <div className="mt-4 space-y-2 text-sm text-[#7B2B2B]/80">
                       <p>Độ ẩm: {weather.humidity}%</p>
                       <p>Gió: {Math.round(weather.windSpeed * 3.6)} km/h</p>
                       <p className="text-xs">
@@ -153,7 +155,7 @@ export default function LiveDataPage() {
                     </div>
                   </div>
                 ) : (
-                  <div className="text-muted-foreground">
+                  <div className="text-[#7B2B2B]/70">
                     {weatherError ? "Không thể lấy dữ liệu thời tiết" : "Đang cập nhật..."}
                   </div>
                 )}
@@ -163,34 +165,34 @@ export default function LiveDataPage() {
 
           {/* Traffic Card */}
           <motion.div variants={item}>
-            <Card className="border border-green-100">
-              <CardHeader className="bg-gradient-to-r from-green-500/10 to-emerald-500/10 rounded-t-lg">
-                <CardTitle className="flex items-center gap-2">
-                  <Car className="h-5 w-5 text-primary" />
+            <Card className="border border-[#7B2B2B]/30 shadow-md hover:shadow-lg transition-shadow">
+              <CardHeader className="bg-gradient-to-r from-[#7B2B2B]/10 to-[#8B0000]/10 rounded-t-lg border-b border-[#7B2B2B]/10">
+                <CardTitle className="flex items-center gap-2 text-[#7B2B2B]">
+                  <Car className="h-5 w-5 text-[#8B0000]" />
                   Tình hình giao thông
                 </CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="pt-4">
                 {traffic ? (
                   <div className="space-y-4">
                     {traffic.routes.map(route => (
-                      <div key={route.id} className="border-b pb-3 last:border-0 last:pb-0">
+                      <div key={route.id} className="border-b border-[#7B2B2B]/10 pb-3 last:border-0 last:pb-0">
                         <div className="flex justify-between items-center mb-1">
-                          <h3 className="font-medium">{route.name}</h3>
+                          <h3 className="font-medium text-[#7B2B2B]">{route.name}</h3>
                           {getTrafficStatusIcon(route.status)}
                         </div>
-                        <p className="text-sm text-muted-foreground">{route.description}</p>
+                        <p className="text-sm text-[#7B2B2B]/70">{route.description}</p>
                       </div>
                     ))}
-                    <p className="text-xs text-muted-foreground mt-2">
+                    <p className="text-xs text-[#7B2B2B]/70 mt-2">
                       Cập nhật lúc: {new Date(traffic.lastUpdated).toLocaleTimeString('vi-VN')}
                     </p>
                   </div>
                 ) : (
                   <div className="animate-pulse space-y-4">
-                    <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-                    <div className="h-4 bg-gray-200 rounded w-1/2"></div>
-                    <div className="h-4 bg-gray-200 rounded w-2/3"></div>
+                    <div className="h-4 bg-[#7B2B2B]/10 rounded w-3/4"></div>
+                    <div className="h-4 bg-[#7B2B2B]/10 rounded w-1/2"></div>
+                    <div className="h-4 bg-[#7B2B2B]/10 rounded w-2/3"></div>
                   </div>
                 )}
               </CardContent>
@@ -199,20 +201,20 @@ export default function LiveDataPage() {
 
           {/* Events Card */}
           <motion.div variants={item}>
-            <Card className="border border-amber-100">
-              <CardHeader className="bg-gradient-to-r from-amber-500/10 to-orange-500/10 rounded-t-lg">
-                <CardTitle className="flex items-center gap-2">
-                  <Calendar className="h-5 w-5 text-primary" />
+            <Card className="border border-[#7B2B2B]/30 shadow-md hover:shadow-lg transition-shadow">
+              <CardHeader className="bg-gradient-to-r from-[#7B2B2B]/10 to-[#8B0000]/10 rounded-t-lg border-b border-[#7B2B2B]/10">
+                <CardTitle className="flex items-center gap-2 text-[#7B2B2B]">
+                  <Calendar className="h-5 w-5 text-[#8B0000]" />
                   Sự kiện sắp diễn ra
                 </CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="pt-4">
                 {events ? (
                   <div className="space-y-4">
                     {events.map(event => (
-                      <div key={event.id} className="border-b pb-3 last:border-0 last:pb-0">
-                        <h3 className="font-medium">{event.title}</h3>
-                        <div className="text-sm text-muted-foreground mt-1">
+                      <div key={event.id} className="border-b border-[#7B2B2B]/10 pb-3 last:border-0 last:pb-0">
+                        <h3 className="font-medium text-[#7B2B2B]">{event.title}</h3>
+                        <div className="text-sm text-[#7B2B2B]/70 mt-1">
                           <p>Địa điểm: {event.location}</p>
                           <p>Thời gian: {new Date(event.startDate).toLocaleDateString('vi-VN')} - {new Date(event.endDate).toLocaleDateString('vi-VN')}</p>
                           <p className="mt-1">{event.description}</p>
@@ -221,7 +223,7 @@ export default function LiveDataPage() {
                     ))}
                   </div>
                 ) : (
-                  <p className="text-muted-foreground">Đang cập nhật...</p>
+                  <p className="text-[#7B2B2B]/70">Đang cập nhật...</p>
                 )}
               </CardContent>
             </Card>
@@ -229,38 +231,38 @@ export default function LiveDataPage() {
 
           {/* Location Stats Card */}
           <motion.div variants={item}>
-            <Card className="border border-purple-100">
-              <CardHeader className="bg-gradient-to-r from-purple-500/10 to-violet-500/10 rounded-t-lg">
-                <CardTitle className="flex items-center gap-2">
-                  <BarChart2 className="h-5 w-5 text-primary" />
+            <Card className="border border-[#7B2B2B]/30 shadow-md hover:shadow-lg transition-shadow">
+              <CardHeader className="bg-gradient-to-r from-[#7B2B2B]/10 to-[#8B0000]/10 rounded-t-lg border-b border-[#7B2B2B]/10">
+                <CardTitle className="flex items-center gap-2 text-[#7B2B2B]">
+                  <BarChart2 className="h-5 w-5 text-[#8B0000]" />
                   Thống kê theo điểm
                 </CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="pt-4">
                 {locationStats.length > 0 ? (
                   <div className="space-y-4">
                     {locationStats.map((location) => (
-                      <div key={location.id} className="flex justify-between items-center">
+                      <div key={location.id} className="flex justify-between items-center border-b border-[#7B2B2B]/10 pb-3 last:border-0 last:pb-0">
                         <div>
-                          <span className="font-medium">{location.name}</span>
-                          <div className="text-sm text-muted-foreground">
+                          <span className="font-medium text-[#7B2B2B]">{location.name}</span>
+                          <div className="text-sm">
                             {getTrafficStatusIcon(location.trafficLevel)}
                           </div>
                         </div>
-                        <span className="font-semibold">
+                        <span className="font-semibold text-[#7B2B2B]">
                           {location.visitorCount.toLocaleString('vi-VN')} khách
                         </span>
                       </div>
                     ))}
-                    <p className="text-xs text-muted-foreground mt-4">
+                    <p className="text-xs text-[#7B2B2B]/70 mt-4">
                       Cập nhật tự động mỗi 30 giây
                     </p>
                   </div>
                 ) : (
                   <div className="animate-pulse space-y-4">
-                    <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-                    <div className="h-4 bg-gray-200 rounded w-1/2"></div>
-                    <div className="h-4 bg-gray-200 rounded w-2/3"></div>
+                    <div className="h-4 bg-[#7B2B2B]/10 rounded w-3/4"></div>
+                    <div className="h-4 bg-[#7B2B2B]/10 rounded w-1/2"></div>
+                    <div className="h-4 bg-[#7B2B2B]/10 rounded w-2/3"></div>
                   </div>
                 )}
               </CardContent>

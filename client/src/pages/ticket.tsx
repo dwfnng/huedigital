@@ -29,7 +29,7 @@ function TicketCard({
 }) {
   return (
     <motion.div variants={fadeIn} initial="hidden" animate="visible">
-      <Card className="overflow-hidden transition-all hover:shadow-lg">
+      <Card className="overflow-hidden transition-all hover:shadow-lg border border-[#7B2B2B]/30 shadow-md">
         <div className="relative h-48">
           <img
             src={imageSrc}
@@ -40,16 +40,16 @@ function TicketCard({
               imgEl.src = "/images/placeholder-ticket.jpg";
             }}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#7B2B2B]/90 to-transparent" />
           <div className="absolute bottom-0 left-0 p-4 text-white">
             <h3 className="text-lg font-semibold mb-1">{title}</h3>
             <p className="text-2xl font-bold">{price}</p>
           </div>
         </div>
-        <CardContent className="p-4">
-          <p className="text-sm text-muted-foreground mb-4">{description}</p>
+        <CardContent className="p-4 bg-[#7B2B2B]/5">
+          <p className="text-sm text-[#7B2B2B]/90 mb-4">{description}</p>
           <Button
-            className="w-full"
+            className="w-full bg-[#7B2B2B] hover:bg-[#8B0000] text-white"
             onClick={() => {
               // Since we don't have a real booking system yet, show a message
               toast({
@@ -275,47 +275,52 @@ export default function TicketPage() {
               transition={{ duration: 0.5 }}
               className="text-center"
             >
-              <h1 className="text-3xl font-bold mb-3">Đặt vé & Dịch vụ</h1>
-              <p className="text-muted-foreground max-w-2xl mx-auto">
-                Trải nghiệm văn hóa Huế qua các gói tham quan độc đáo, dịch vụ xe và bộ sưu tập
-                quà lưu niệm đặc trưng
-              </p>
+              <div className="bg-[#7B2B2B] text-white p-6 rounded-lg mb-6 shadow-md">
+                <h1 className="text-3xl font-bold mb-3">Đặt vé & Dịch vụ</h1>
+                <p className="text-white/90 max-w-2xl mx-auto">
+                  Trải nghiệm văn hóa Huế qua các gói tham quan độc đáo, dịch vụ xe và bộ sưu tập
+                  quà lưu niệm đặc trưng
+                </p>
+              </div>
             </motion.div>
           </div>
         </div>
 
         <motion.div
-          className="bg-gradient-to-r from-primary/5 to-primary/10 rounded-lg p-6 mb-8"
+          className="bg-gradient-to-r from-[#7B2B2B]/5 to-[#8B0000]/10 rounded-lg p-6 mb-8 border border-[#7B2B2B]/20 shadow-md"
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5 }}
         >
           <div className="flex items-center gap-4">
-            <div className="p-3 bg-primary/20 rounded-full">
-              <Star className="h-6 w-6 text-primary" />
+            <div className="p-3 bg-[#7B2B2B]/20 rounded-full">
+              <Star className="h-6 w-6 text-[#7B2B2B]" />
             </div>
             <div>
-              <h2 className="text-xl font-semibold mb-1">
+              <h2 className="text-xl font-semibold mb-1 text-[#7B2B2B]">
                 Chương trình thành viên
               </h2>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-[#7B2B2B]/70">
                 Tích điểm qua mỗi lần đặt vé để nhận ưu đãi hấp dẫn. Điểm tích
                 lũy của bạn:{" "}
-                <span className="font-semibold text-primary">100 điểm</span>
+                <span className="font-semibold text-[#8B0000]">100 điểm</span>
               </p>
             </div>
           </div>
         </motion.div>
 
         <Tabs defaultValue="tickets" className="space-y-8">
-          <TabsList className="w-full">
-            <TabsTrigger value="tickets" className="flex-1">
+          <TabsList className="w-full bg-[#7B2B2B]/5 border border-[#7B2B2B]/20 p-1">
+            <TabsTrigger value="tickets" className="flex-1 text-[#7B2B2B] data-[state=active]:bg-[#7B2B2B] data-[state=active]:text-white">
+              <Ticket className="h-4 w-4 mr-2" />
               Vé tham quan
             </TabsTrigger>
-            <TabsTrigger value="car" className="flex-1">
+            <TabsTrigger value="car" className="flex-1 text-[#7B2B2B] data-[state=active]:bg-[#7B2B2B] data-[state=active]:text-white">
+              <Car className="h-4 w-4 mr-2" />
               Dịch vụ xe
             </TabsTrigger>
-            <TabsTrigger value="souvenirs" className="flex-1">
+            <TabsTrigger value="souvenirs" className="flex-1 text-[#7B2B2B] data-[state=active]:bg-[#7B2B2B] data-[state=active]:text-white">
+              <Gift className="h-4 w-4 mr-2" />
               Quà lưu niệm
             </TabsTrigger>
           </TabsList>
@@ -426,16 +431,18 @@ export default function TicketPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
           <motion.div
-            className="p-6 bg-card rounded-lg border"
+            className="p-6 bg-[#7B2B2B]/5 rounded-lg border border-[#7B2B2B]/20 shadow-md"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5 }}
           >
             <div className="flex items-start gap-4">
-              <Info className="h-5 w-5 text-primary mt-1" />
+              <div className="p-3 bg-[#7B2B2B]/10 rounded-full">
+                <Info className="h-5 w-5 text-[#8B0000]" />
+              </div>
               <div>
-                <h3 className="font-semibold mb-2">Lưu ý khi đặt vé</h3>
-                <ul className="text-sm text-muted-foreground space-y-2">
+                <h3 className="font-semibold mb-2 text-[#7B2B2B]">Lưu ý khi đặt vé</h3>
+                <ul className="text-sm text-[#7B2B2B]/80 space-y-2">
                   <li>
                     • Vé có giá trị trong ngày, vui lòng đặt vé trước ít nhất 1
                     ngày
@@ -455,16 +462,18 @@ export default function TicketPage() {
           </motion.div>
           
           <motion.div
-            className="p-6 bg-card rounded-lg border"
+            className="p-6 bg-[#7B2B2B]/5 rounded-lg border border-[#7B2B2B]/20 shadow-md"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.6 }}
           >
             <div className="flex items-start gap-4">
-              <Car className="h-5 w-5 text-primary mt-1" />
+              <div className="p-3 bg-[#7B2B2B]/10 rounded-full">
+                <Car className="h-5 w-5 text-[#8B0000]" />
+              </div>
               <div>
-                <h3 className="font-semibold mb-2">Thông tin dịch vụ xe</h3>
-                <ul className="text-sm text-muted-foreground space-y-2">
+                <h3 className="font-semibold mb-2 text-[#7B2B2B]">Thông tin dịch vụ xe</h3>
+                <ul className="text-sm text-[#7B2B2B]/80 space-y-2">
                   <li>
                     • Xe được bảo dưỡng thường xuyên và sạch sẽ, đảm bảo an toàn cho hành khách
                   </li>
