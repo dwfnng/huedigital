@@ -534,8 +534,6 @@ export default function Map({ onMarkerClick }: { onMarkerClick?: (location: Loca
           </MapContainer>
         </CardContent>
       </Card>
-      </div>
-    </div>
 
       <Dialog open={isSaveRouteDialogOpen} onOpenChange={setIsSaveRouteDialogOpen}>
         <DialogContent>
