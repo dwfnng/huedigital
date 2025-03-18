@@ -26,7 +26,6 @@ import {
   Ticket,
   MessageCircle,
   Upload,
-  BookText,
   Crown,
   Utensils,
   Box,
@@ -35,9 +34,8 @@ import {
 // Pages
 import Home from "@/pages/home";
 import Chat from "@/pages/chat";
-import MapPage from "@/pages/map";
+import MapPage from "@/pages/Map";
 import GamePage from "@/pages/game";
-import ForumPage from "@/pages/forum";
 import DigitalLibrary from "@/pages/DigitalLibrary";
 import TicketPage from "@/pages/ticket";
 import ContributePage from "@/pages/contribute";
@@ -106,19 +104,7 @@ const navigationItems = {
       },
     ],
   },
-  forum: {
-    icon: <BookText className="h-4 w-4" />,
-    label: "Diễn đàn",
-    description: "Thảo luận và chia sẻ về văn hóa Huế",
-    items: [
-      {
-        icon: <BookText className="h-4 w-4" />,
-        title: "Diễn đàn",
-        href: "/forum",
-        description: "Thảo luận và chia sẻ về văn hóa Huế",
-      },
-    ],
-  },
+
 };
 
 function MainNav() {
@@ -202,35 +188,6 @@ function MainNav() {
                       </div>
                       <div className="grid gap-3 md:grid-cols-2">
                         {section.items.map((item, idx) => (
-                          item.external ? (
-                            <a 
-                              key={item.href} 
-                              href={item.href}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none
-                                        transition-all hover:bg-[#8D6A3F]/10 hover:border-[#8D6A3F]/20
-                                        hover:shadow-md hover:text-[#6B2B2B] imperial-card group animate-fade-in"
-                              style={{ animationDelay: `${idx * 50}ms` }}
-                            >
-                              <div className="flex items-center gap-2">
-                                <div
-                                  className="w-8 h-8 rounded-full bg-[#C49A44]/10 flex items-center justify-center
-                                             group-hover:bg-[#8D6A3F]/20 transition-colors"
-                                >
-                                  <div className="text-[#8D6A3F] group-hover:text-[#6B2B2B] transition-colors">
-                                    {item.icon}
-                                  </div>
-                                </div>
-                                <span className="text-sm font-medium leading-none group-hover:text-[#6B2B2B]">
-                                  {item.title}
-                                </span>
-                              </div>
-                              <p className="line-clamp-2 text-sm leading-snug text-[#6D4C41] mt-2 group-hover:text-[#6D4C41]/90">
-                                {item.description}
-                              </p>
-                            </a>
-                          ) : (
                             <Link key={item.href} href={item.href}>
                               <NavigationMenuLink asChild>
                                 <a
@@ -262,7 +219,6 @@ function MainNav() {
                                 </a>
                               </NavigationMenuLink>
                             </Link>
-                          )
                         ))}
                       </div>
                     </div>
@@ -400,7 +356,6 @@ function Router() {
       <Route path="/chat" component={Chat} />
       <Route path="/map" component={MapPage} />
       <Route path="/game" component={GamePage} />
-      <Route path="/forum" component={ForumPage} />
       <Route path="/library" component={DigitalLibrary} />
       <Route path="/ticket" component={TicketPage} />
       <Route path="/contribute" component={ContributePage} />
