@@ -49,6 +49,72 @@
   transform: scaleX(-1);
 }
 
+/* Page heading styles */
+.page-header {
+  @apply bg-[#F9D77E] relative rounded-lg p-6 mb-6;
+  @apply shadow-md shadow-amber-800/10;
+  box-shadow: 0 2px 8px rgba(138, 76, 9, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.page-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: linear-gradient(to right, rgba(218, 165, 32, 0.2), rgba(139, 0, 0, 0.05));
+  z-index: 0;
+}
+
+.page-header-content {
+  @apply relative z-10;
+}
+
+.page-header h1 {
+  @apply text-2xl font-bold text-[#4A2C2A] mb-1;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);
+}
+
+.page-header p {
+  @apply text-[#5A3E36] max-w-2xl;
+}
+
+/* Content section styles */
+.content-section {
+  @apply bg-[#FFF8ED] rounded-lg p-6 shadow-sm;
+  border: 1px solid rgba(218, 165, 32, 0.15);
+}
+
+/* Card styles for better contrast */
+.enhanced-card {
+  @apply bg-white rounded-lg shadow-sm;
+  @apply border border-amber-100;
+  @apply transition-all duration-300;
+  @apply hover:shadow-md;
+}
+
+/* Tab styles for better contrast */
+.enhanced-tabs {
+  @apply bg-[#F9D77E]/50 p-2 rounded-lg;
+  border: 1px solid rgba(218, 165, 32, 0.2);
+}
+
+.enhanced-tabs .tabs-trigger {
+  @apply bg-white text-[#4A2C2A] shadow-sm;
+  @apply data-[state=active]:bg-amber-100 data-[state=active]:text-amber-900;
+  @apply transition-colors;
+}
+
+/* Search bar enhancement */
+.enhanced-search {
+  @apply bg-white border-amber-200 shadow-inner;
+  @apply focus-within:border-amber-400 focus-within:ring-1 focus-within:ring-amber-300;
+  @apply transition-all duration-200;
+}
+
 /* Animation keyframes */
 @keyframes fadeIn {
   from {

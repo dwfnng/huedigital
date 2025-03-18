@@ -1,0 +1,45 @@
+Tiêu đề: Cải thiện giao diện và thêm màu sắc, khung nền cho các phần tiêu đề
+
+Nội dung yêu cầu:
+
+Tạo khung nền hoặc màu nền riêng cho phần tiêu đề:
+
+Tại các trang như “Bản đồ số” và “Kho tàng di sản Huế”, phần tiêu đề (bao gồm tiêu đề trang, menu chính) đang không có hoặc rất ít sự phân biệt với nền tổng thể.
+Yêu cầu:
+Thêm màu nền đậm hơn hoặc khác biệt so với nền tổng thể (ví dụ: màu vàng đậm, màu cam nhạt, hoặc thậm chí là màu trắng nhưng có bóng/đường viền) để tiêu đề nổi bật hơn.
+Đảm bảo phần tiêu đề (heading) có chiều cao hợp lý, chữ được căn chỉnh đẹp và rõ ràng.
+Có thể dùng đường viền (border) hoặc bóng đổ (box-shadow) để tạo chiều sâu, ví dụ:
+css
+Copy
+Edit
+.page-header {
+  background-color: #F9D77E; /* Ví dụ: màu vàng nhạt đậm hơn nền tổng thể */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+Giữ phong cách thiết kế thống nhất với tổng thể (màu sắc, font chữ, logo).
+Phân tách rõ từng khu vực nội dung:
+
+Ở các trang như “Kho tàng di sản Huế”, các khung (card) nội dung và phần tiêu đề có màu nền khá giống nhau, làm giảm sự tương phản.
+Yêu cầu:
+Tạo màu nền sáng hơn hoặc tối hơn hẳn cho các khu vực khác nhau. Ví dụ:
+Khu vực tiêu đề: Dùng màu #F9D77E (hoặc tương tự).
+Khu vực nội dung: Dùng màu #FFF8ED (hoặc màu kem rất nhạt).
+Card hiển thị di tích, địa điểm: Dùng màu trắng (#FFFFFF) với viền nhẹ (border hoặc box-shadow) để tạo khối riêng.
+Điều chỉnh màu chữ (tối hoặc sáng) sao cho tương phản tốt với màu nền.
+Điều chỉnh khung nền ở những chỗ bị “trùng màu”:
+
+Một số khung (như khung liệt kê danh sách địa điểm, khung chi tiết nội dung) đang có màu nền gần giống với màu nền trang, khiến thiết kế mờ nhạt.
+Yêu cầu:
+Thêm một lớp nền (có thể là màu trắng hoặc tông sáng hơn/tối hơn) để tách biệt hẳn với nền chính.
+Dùng viền hoặc box-shadow nhẹ để phân tách khu vực này với phần còn lại của trang.
+Kiểm tra tính nhất quán trên toàn trang:
+
+Đảm bảo rằng khi người dùng chuyển qua các tab (Giáo dục, Du lịch, Cộng đồng), màu nền, font chữ, và kích thước khung vẫn thống nhất.
+Ở các khung popup (ví dụ: khi bấm vào một tài liệu cụ thể), cũng nên có nền hoặc viền đủ rõ để không bị chìm vào nội dung phía sau.
+Vẫn duy trì phong cách “màu sắc Huế”:
+
+Tận dụng các gam màu vàng, kem, nâu nhạt… gợi liên tưởng đến Hoàng cung Huế, nhưng vẫn cần sự tương phản để thông tin hiển thị rõ ràng, bắt mắt.
+Yêu cầu thêm:
+
+Sau khi hoàn thành, hãy kiểm tra hiển thị trên cả thiết bị di động và máy tính (responsive design).
+Nếu có thể, cung cấp các đoạn mã CSS mẫu hoặc hướng dẫn tích hợp vào file CSS hiện tại để dễ dàng triển khai trên Replit.

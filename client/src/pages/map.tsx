@@ -15,10 +15,14 @@ export default function MapPage() {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-2">Bản đồ số</h1>
-      <p className="text-muted-foreground mb-6">
-        Khám phá các di tích, danh lam thắng cảnh và địa điểm du lịch tại Huế
-      </p>
+      <div className="page-header">
+        <div className="page-header-content">
+          <h1 className="text-2xl font-bold mb-2">Bản đồ số</h1>
+          <p className="text-muted-foreground">
+            Khám phá các di tích, danh lam thắng cảnh và địa điểm du lịch tại Huế
+          </p>
+        </div>
+      </div>
 
       <div className="grid md:grid-cols-3 gap-4">
         {/* Map area */}
@@ -27,28 +31,33 @@ export default function MapPage() {
         </div>
 
         {/* Location details */}
-        <Card className="md:col-span-1 h-[calc(100vh-16rem)]">
+        <Card className="md:col-span-1 h-[calc(100vh-16rem)] enhanced-card">
           <CardContent className="p-4">
             {selectedLocation ? (
               <div className="space-y-4">
-                <div className="w-full h-48 relative rounded-lg overflow-hidden">
+                <div className="w-full h-48 relative rounded-lg overflow-hidden shadow-md">
                   <img 
                     src={selectedLocation.imageUrl} 
                     alt={selectedLocation.name}
                     className="absolute inset-0 w-full h-full object-cover"
                   />
                 </div>
-                <h2 className="text-xl font-semibold">{selectedLocation.name}</h2>
-                <p className="text-sm text-muted-foreground">{selectedLocation.nameEn}</p>
-                <div className="text-sm text-muted-foreground">
-                  <strong>Loại di tích:</strong> {selectedLocation.type}
+                <div className="content-section">
+                  <h2 className="text-xl font-semibold text-[#4A2C2A]">{selectedLocation.name}</h2>
+                  <p className="text-sm text-muted-foreground">{selectedLocation.nameEn}</p>
+                  <div className="text-sm text-muted-foreground mt-2">
+                    <strong>Loại di tích:</strong> {selectedLocation.type}
+                  </div>
+                  <p className="text-sm mt-3">{selectedLocation.description}</p>
+                  <p className="text-sm text-muted-foreground mt-2">{selectedLocation.descriptionEn}</p>
                 </div>
-                <p className="text-sm">{selectedLocation.description}</p>
-                <p className="text-sm text-muted-foreground">{selectedLocation.descriptionEn}</p>
               </div>
             ) : (
-              <div className="h-full flex items-center justify-center text-muted-foreground">
-                <p>Chọn một địa điểm trên bản đồ để xem thông tin chi tiết</p>
+              <div className="h-full flex items-center justify-center content-section">
+                <div className="text-center">
+                  <MapPin className="h-12 w-12 mx-auto text-amber-500/50 mb-4" />
+                  <p className="text-muted-foreground">Chọn một địa điểm trên bản đồ để xem thông tin chi tiết</p>
+                </div>
               </div>
             )}
           </CardContent>
