@@ -656,13 +656,7 @@ export default function CulinaryPage() {
                 onClick={() => setSelectedDish(null)}
                 className="mb-4"
               >
-                <Button
-  variant="outline"
-  className="mb-4 text-[#8D6A3F] hover:bg-[#8D6A3F]/10"
-  asChild
->
-  <Link href="#dishes">← Quay lại danh sách</Link>
-</Button>
+                ← Quay lại danh sách
               </Button>
               <FoodDetail dish={selectedDish} />
             </div>
