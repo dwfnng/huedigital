@@ -111,7 +111,7 @@ export default function Home() {
   return (
     <div className="min-h-screen">
       {/* Hero Section with imperial theme inspired by the reference image */}
-      <div className="relative bg-[#F5E1A4] overflow-hidden">
+      <div className="relative bg-[#F5E1A4] bg-[url('/bg-pattern.jpg')] bg-cover bg-center bg-opacity-50 overflow-hidden">
         {/* Imperial decorative corners */}
         <div className="absolute top-0 left-0 w-32 h-32 opacity-90">
           <svg
