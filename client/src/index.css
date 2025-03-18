@@ -1,16 +1,82 @@
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --royal-gold: #D4AF37;
+  --royal-gold: #DAA520;
   --deep-red: #8B0000;
   --wood-brown: #4A2C2A;
   --background: #F5E6CC;
   --text-primary: #3D2B1F;
   --text-secondary: #5A3E36;
-  --background-pattern-overlay: linear-gradient(to right, rgba(212, 175, 55, 0.02), rgba(139, 0, 0, 0.02));
-  --background-pattern-texture: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5z' fill='%23D4AF37' fill-opacity='0.03'/%3E%3C/svg%3E");
+  --background-pattern-overlay: linear-gradient(to right, rgba(218, 165, 32, 0.02), rgba(139, 0, 0, 0.02));
+  --background-pattern-texture: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5z' fill='%23DAA520' fill-opacity='0.03'/%3E%3C/svg%3E");
+}
+
+/* Font families */
+.font-eb-garamond {
+  font-family: 'EB Garamond', serif;
+}
+
+/* Header specific styles */
+.header-gradient {
+  @apply bg-gradient-to-r from-[#DAA520] to-[#8B0000];
+}
+
+.header-decoration {
+  position: relative;
+}
+
+.header-decoration::before,
+.header-decoration::after {
+  content: '';
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  background-image: url("data:image/svg+xml,%3Csvg width='30' height='30' viewBox='0 0 30 30' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M15 0L18.5 11.5H28.5L20.5 18.5L23.5 28.5L15 22L6.5 28.5L9.5 18.5L1.5 11.5H11.5L15 0Z' fill='%23DAA520' fill-opacity='0.5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.header-decoration::before {
+  left: 0;
+}
+
+.header-decoration::after {
+  right: 0;
+  transform: scaleX(-1);
+}
+
+/* Animation keyframes */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Animation classes */
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-in forwards;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.5s ease-out forwards;
 }
 
 @layer components {
@@ -19,11 +85,11 @@
   }
 
   .royal-gradient {
-    @apply bg-gradient-to-r from-[#D4AF37] via-[#E5C158] to-[#8B0000];
+    @apply bg-gradient-to-r from-[#DAA520] via-[#E5C158] to-[#8B0000];
   }
 
   .gold-gradient {
-    @apply bg-gradient-to-r from-[#D4AF37] via-[#E5C158] to-[#F5E6CC];
+    @apply bg-gradient-to-r from-[#DAA520] via-[#E5C158] to-[#F5E6CC];
   }
 
   .wooden-gradient {
@@ -31,7 +97,7 @@
   }
 
   .imperial-border {
-    @apply border border-[#D4AF37]/40 shadow-[0_0_8px_rgba(212,175,55,0.15)];
+    @apply border border-[#DAA520]/40 shadow-[0_0_8px_rgba(212,175,55,0.15)];
   }
 
   .hover-lift {
@@ -43,7 +109,7 @@
   }
 
   .imperial-card {
-    @apply bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm border border-[#D4AF37]/20 rounded-lg shadow-md hover:imperial-border transition-all duration-300;
+    @apply bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm border border-[#DAA520]/20 rounded-lg shadow-md hover:imperial-border transition-all duration-300;
   }
 
   .hover-glow {
@@ -72,26 +138,6 @@
   }
 }
 
-/* Animation keyframes */
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes slideUp {
-  from { transform: translateY(20px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
-
-.animate-fade-in {
-  animation: fadeIn 0.5s ease-in;
-}
-
-.animate-slide-up {
-  animation: slideUp 0.5s ease-out;
-}
-
-/* Custom scrollbar */
 .custom-scrollbar {
   scrollbar-width: thin;
   scrollbar-color: var(--royal-gold) transparent;
@@ -111,17 +157,15 @@
   border-radius: 20px;
 }
 
-/* Navigation specific styles */
 .nav-item {
   @apply transition-colors duration-300;
-  @apply hover:text-[#D4AF37] hover:bg-[#4A2C2A]/10;
+  @apply hover:text-[#DAA520] hover:bg-[#4A2C2A]/10;
 }
 
 .nav-item.active {
-  @apply text-[#D4AF37] bg-[#4A2C2A]/20;
+  @apply text-[#DAA520] bg-[#4A2C2A]/20;
 }
 
-/* Leaflet map styles */
 .leaflet-container {
   width: 100%;
   height: 100%;
@@ -147,6 +191,7 @@
 .leaflet-control-zoom-in,
 .leaflet-control-zoom-out {
   @apply bg-background/95 hover:bg-accent text-foreground border-border;
+}
 
 .wave-transition {
   transition: opacity 0.3s ease-in-out;
@@ -167,8 +212,6 @@
   }
 }
 
-}
-
 .leaflet-marker-icon {
   @apply transition-transform duration-200;
 }
@@ -187,7 +230,6 @@
   );
 }
 
-/* Enhanced Leaflet map styles */
 .leaflet-container {
   width: 100%;
   height: 100%;
@@ -255,7 +297,6 @@
   @apply bg-primary/5 !important;
 }
 
-/* Custom popup enhancements */
 .custom-popup .leaflet-popup-content-wrapper {
   @apply bg-background/95 backdrop-blur-sm border border-border shadow-lg rounded-lg;
   padding: 8px 12px;
@@ -279,8 +320,6 @@
           drop-shadow(0 2px 2px rgb(0 0 0 / 0.06));
 }
 
-
-/* Game-specific backgrounds with enhanced gradients */
 .heritage-section {
   @apply relative bg-gradient-to-br from-red-50/95 to-orange-50/95 dark:from-red-950/95 dark:to-orange-950/95;
   background-image: radial-gradient(circle at center, rgba(var(--primary-rgb), 0.05) 0%, transparent 70%),
@@ -299,7 +338,6 @@
                     var(--background-pattern-texture);
 }
 
-/* Enhanced transitions and animations */
 .transition-smooth {
   @apply transition-all duration-300 ease-in-out;
 }
@@ -332,7 +370,6 @@
   animation: floating 3s ease-in-out infinite;
 }
 
-/* Animation Keyframes */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -378,7 +415,6 @@
   }
 }
 
-/* Game card hover effects */
 .game-card {
   @apply transition-all duration-300 ease-in-out;
   @apply hover:shadow-lg hover:shadow-primary/10;
@@ -386,21 +422,18 @@
   @apply active:translate-y-0 active:shadow-md;
 }
 
-/* Glass effect for game overlays */
 .glass {
   @apply bg-background/80 backdrop-blur-sm;
   @apply border border-white/20;
   @apply shadow-xl shadow-black/5;
 }
 
-/* Interactive elements */
 .interactive-element {
   @apply transition-colors duration-200;
   @apply hover:bg-primary/10 active:bg-primary/20;
   @apply focus:outline-none focus:ring-2 focus:ring-primary/20;
 }
 
-/* Custom scrollbar for game containers */
 .custom-scrollbar {
   scrollbar-width: thin;
   scrollbar-color: var(--royal-gold) transparent;
@@ -420,13 +453,11 @@
   border-radius: 20px;
 }
 
-/* Game image hover effects */
 .game-image {
   @apply transition-transform duration-300 ease-in-out;
   @apply hover:scale-105;
 }
 
-/* Choice cards in games */
 .choice-card {
   @apply transition-all duration-200;
   @apply hover:bg-primary/5;
@@ -436,7 +467,6 @@
   @apply rounded-lg p-4;
 }
 
-/* Game result animations */
 .result-appear {
   animation: resultAppear 0.5s ease-out forwards;
 }
@@ -452,7 +482,6 @@
   }
 }
 
-/* Game background patterns */
 .pattern-grid {
   background-image: linear-gradient(to right, rgba(var(--primary-rgb), 0.1) 1px, transparent 1px),
                     linear-gradient(to bottom, rgba(var(--primary-rgb), 0.1) 1px, transparent 1px);
@@ -464,7 +493,6 @@
   background-size: 20px 20px;
 }
 
-/* Game content formatting */
 .game-text {
   white-space: pre-line;
   line-height: 1.6;
