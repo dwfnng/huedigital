@@ -138,7 +138,7 @@ function CarServiceCard({
   
   return (
     <motion.div variants={fadeIn} initial="hidden" animate="visible">
-      <Card className="overflow-hidden transition-all hover:shadow-lg">
+      <Card className="overflow-hidden transition-all hover:shadow-lg enhanced-card">
         <div className="relative h-48">
           <img
             src={imageSrc}
@@ -164,8 +164,8 @@ function CarServiceCard({
                 Đặt xe
               </Button>
             </DialogTrigger>
-            <DialogContent className="dialog-gradient sm:max-w-[600px]">
-              <DialogHeader className="dialog-header rounded-lg p-4 mb-4">
+            <DialogContent className="dialog-gradient sm:max-w-[450px]">
+              <DialogHeader className="dialog-header rounded-lg p-3 mb-3">
                 <DialogTitle>Đặt xe {title}</DialogTitle>
                 <DialogDescription>
                   Điền thông tin để đặt xe tham quan các điểm di tích tại Huế
