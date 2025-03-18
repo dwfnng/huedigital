@@ -567,7 +567,7 @@ export default function ExhibitionPage() {
         {!selectedItem ? (
           <div className="bg-[#F5E1A4]/30 dark:bg-zinc-900/50 backdrop-blur-sm py-8 rounded-lg">
             {/* Imperial-style header */}
-            <div className="bg-[#3A1A1A]/90 backdrop-blur-md text-white p-6 rounded-t-xl border border-[#8D6A3F]/50 shadow-lg">
+            <div className="bg-[#3A1A1A]/90 text-white p-6 rounded-t-xl border border-[#8D6A3F]/50 shadow-lg">
               <div className="max-w-3xl mx-auto text-center">
                 <h1 className="text-4xl md:text-5xl font-bold mb-2 text-[#F5E1A4]">
                   3D/AR EXHIBITION
@@ -576,6 +576,41 @@ export default function ExhibitionPage() {
                 <div className="w-32 h-0.5 bg-gradient-to-r from-transparent via-[#C49A44] to-transparent mx-auto my-4"></div>
                 <p className="mt-4 text-white/80">
                   Khám phá không gian 3D và thực tế ảo tăng cường của các di tích lịch sử và kiến trúc Huế
+                </p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto p-6">
+              <div 
+                className="bg-[#3A1A1A]/60 hover:bg-[#3A1A1A]/80 transition-all p-5 rounded-lg border border-[#8D6A3F]/40 hover:border-[#C49A44] hover:shadow-md cursor-pointer group"
+                onClick={() => setSelectedTab('3d-ar')}
+              >
+                <div className="text-[#F5E1A4] font-bold text-xl md:text-2xl mb-1 group-hover:text-[#F5E1A4]">3D-AR</div>
+                <div className="text-xs text-white/60 uppercase tracking-wider mb-3">EXHIBITION</div>
+                <p className="text-sm text-white/70 line-clamp-3">
+                  Trải nghiệm thực tế ảo tăng cường giúp bạn khám phá di tích ngay tại vị trí của mình
+                </p>
+              </div>
+
+              <div 
+                className="bg-[#3A1A1A]/60 hover:bg-[#3A1A1A]/80 transition-all p-5 rounded-lg border border-[#8D6A3F]/40 hover:border-[#C49A44] hover:shadow-md cursor-pointer group"
+                onClick={() => setSelectedTab('3d-360')}
+              >
+                <div className="text-[#F5E1A4] font-bold text-xl md:text-2xl mb-1 group-hover:text-[#F5E1A4]">3D 360°</div>
+                <div className="text-xs text-white/60 uppercase tracking-wider mb-3">PANORAMIC VIEW</div>
+                <p className="text-sm text-white/70 line-clamp-3">
+                  Khám phá không gian 360 độ của các di tích, đền đài và cung điện của cố đô Huế
+                </p>
+              </div>
+
+              <div 
+                className="bg-[#3A1A1A]/60 hover:bg-[#3A1A1A]/80 transition-all p-5 rounded-lg border border-[#8D6A3F]/40 hover:border-[#C49A44] hover:shadow-md cursor-pointer group"
+                onClick={() => setSelectedTab('3d-model')}
+              >
+                <div className="text-[#F5E1A4] font-bold text-xl md:text-2xl mb-1 group-hover:text-[#F5E1A4]">3D Model</div>
+                <div className="text-xs text-white/60 uppercase tracking-wider mb-3">EXHIBITION</div>
+                <p className="text-sm text-white/70 line-clamp-3">
+                  Mô hình 3D chi tiết của các công trình kiến trúc lịch sử, giúp bạn hiểu rõ hơn về cấu trúc
                 </p>
               </div>
             </div>
@@ -589,44 +624,6 @@ export default function ExhibitionPage() {
             </div>
 
             {/* Exhibition categories */}
-            <div className="bg-[#6B2B2B]/90 backdrop-blur-md text-center p-6 border-x border-b border-[#8D6A3F]/30 rounded-b-xl shadow-lg mb-10">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-                <div 
-                  className="bg-[#3A1A1A]/60 hover:bg-[#3A1A1A]/80 transition-all p-5 rounded-lg border border-[#8D6A3F]/40 hover:border-[#C49A44] hover:shadow-md cursor-pointer group"
-                  onClick={() => setSelectedTab('3d-ar')}
-                >
-                  <div className="text-[#F5E1A4] font-bold text-xl md:text-2xl mb-1 group-hover:text-[#F5E1A4]">3D-AR</div>
-                  <div className="text-xs text-white/60 uppercase tracking-wider mb-3">EXHIBITION</div>
-                  <p className="text-sm text-white/70 line-clamp-3">
-                    Trải nghiệm thực tế ảo tăng cường giúp bạn khám phá di tích ngay tại vị trí của mình
-                  </p>
-                </div>
-
-                <div 
-                  className="bg-[#3A1A1A]/60 hover:bg-[#3A1A1A]/80 transition-all p-5 rounded-lg border border-[#8D6A3F]/40 hover:border-[#C49A44] hover:shadow-md cursor-pointer group"
-                  onClick={() => setSelectedTab('3d-360')}
-                >
-                  <div className="text-[#F5E1A4] font-bold text-xl md:text-2xl mb-1 group-hover:text-[#F5E1A4]">3D 360°</div>
-                  <div className="text-xs text-white/60 uppercase tracking-wider mb-3">PANORAMIC VIEW</div>
-                  <p className="text-sm text-white/70 line-clamp-3">
-                    Khám phá không gian 360 độ của các di tích, đền đài và cung điện của cố đô Huế
-                  </p>
-                </div>
-
-                <div 
-                  className="bg-[#3A1A1A]/60 hover:bg-[#3A1A1A]/80 transition-all p-5 rounded-lg border border-[#8D6A3F]/40 hover:border-[#C49A44] hover:shadow-md cursor-pointer group"
-                  onClick={() => setSelectedTab('3d-model')}
-                >
-                  <div className="text-[#F5E1A4] font-bold text-xl md:text-2xl mb-1 group-hover:text-[#F5E1A4]">3D Model</div>
-                  <div className="text-xs text-white/60 uppercase tracking-wider mb-3">EXHIBITION</div>
-                  <p className="text-sm text-white/70 line-clamp-3">
-                    Mô hình 3D chi tiết của các công trình kiến trúc lịch sử, giúp bạn hiểu rõ hơn về cấu trúc
-                  </p>
-                </div>
-              </div>
-
-              {/*Removed BACK button*/}
-            </div>
 
             {/* Items Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
