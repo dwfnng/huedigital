@@ -57,7 +57,8 @@ const exhibitionItems = [
         name: "Ngai vàng",
         description:
           "Ngai vàng của các vị vua triều Nguyễn, được làm từ gỗ quý và dát vàng.",
-        imageUrl: "https://th.bing.com/th/id/OIP.qbQbv9pGqI50w1rUioaZRAHaE8?rs=1&pid=ImgDetMain",
+        imageUrl:
+          "https://th.bing.com/th/id/OIP.qbQbv9pGqI50w1rUioaZRAHaE8?rs=1&pid=ImgDetMain",
       },
       {
         name: "Cửu đỉnh",
@@ -77,7 +78,7 @@ const exhibitionItems = [
     descriptionEn:
       "Tu Duc Tomb is the mausoleum of Emperor Tu Duc, the 4th emperor of the Nguyen Dynasty, built from 1864 to 1867.",
     thumbnailUrl:
-      "https://placehold.co/600x400/EEE/31343C?text=L%C4%83ng+T%E1%BB%B1+%C4%90%E1%BB%A9c",
+      "https://th.bing.com/th/id/OIP.CD_KZoRMlZWMBsIXfq0JFQHaE8?rs=1&pid=ImgDetMain",
     panoramaUrl:
       "https://placehold.co/1200x800/EEE/31343C?text=Panorama+L%C4%83ng+T%E1%BB%B1+%C4%90%E1%BB%A9c",
     model3dUrl:
@@ -100,14 +101,14 @@ const exhibitionItems = [
         description:
           "Bia đá ghi lại tiểu sử và công đức của vua Tự Đức, do chính vua soạn trước khi băng hà.",
         imageUrl:
-          "https://placehold.co/600x400/EEE/31343C?text=Bia+C%C3%A1o+M%E1%BB%87nh",
+          "https://1.bp.blogspot.com/-UYV0DW7nIQg/X14pjMm9loI/AAAAAAABPhg/iuxnRzp7qmcWAxF3trD5o6lRjFiS0FL9QCPcBGAsYHg/s0/WP_20190321_14_37_58_Pro.jpg",
       },
       {
         name: "Tịnh Khiêm Các",
         description:
           "Thư viện của vua Tự Đức, nơi vua thường đọc sách và sáng tác thơ văn.",
         imageUrl:
-          "https://placehold.co/600x400/EEE/31343C?text=T%E1%BB%8Bnh+Khi%C3%AAm+C%C3%A1c",
+          "https://th.bing.com/th/id/OIP.FSFN0DKn_47HMxXoJD7yDQHaE6?rs=1&pid=ImgDetMain",
       },
     ],
   },
@@ -120,7 +121,7 @@ const exhibitionItems = [
     descriptionEn:
       "Thien Mu Pagoda, also known as Linh Mu Pagoda, is an ancient temple located on Ha Khe Hill, on the banks of the Perfume River, about 5km west of Hue city center.",
     thumbnailUrl:
-      "https://placehold.co/600x400/EEE/31343C?text=Ch%C3%B9a+Thi%C3%AAn+M%E1%BB%A5",
+      "https://th.bing.com/th/id/OIP.to0Q_BRXfkmm5gSgxzbuHAHaE8?rs=1&pid=ImgDetMain",
     panoramaUrl:
       "https://placehold.co/1200x800/EEE/31343C?text=Panorama+Ch%C3%B9a+Thi%C3%AAn+M%E1%BB%A5",
     model3dUrl:
@@ -143,13 +144,13 @@ const exhibitionItems = [
         description:
           "Tháp 7 tầng cao 21m, được xây dựng năm 1844 dưới triều vua Thiệu Trị.",
         imageUrl:
-          "https://placehold.co/600x400/EEE/31343C?text=Th%C3%A1p+Ph%C6%B0%E1%BB%9Bc+Duy%C3%AAn",
+          "https://th.bing.com/th/id/OIP.UkS06zOmEPfMg_xDhykeFwHaJc?rs=1&pid=ImgDetMain",
       },
       {
         name: "Đại Hồng Chung",
         description: "Quả chuông đồng lớn đúc năm 1710, nặng khoảng 2,5 tấn.",
         imageUrl:
-          "https://placehold.co/600x400/EEE/31343C?text=%C4%90%E1%BA%A1i+H%E1%BB%93ng+Chung",
+          "https://image.bnews.vn/MediaUpload/Org/2020/10/01/155735-thua-thien-hue-chua-thien-mu-noi-luu-giu-2-bao-vat-quoc-gia.jpg",
       },
     ],
   },
@@ -373,7 +374,7 @@ const ExhibitionDetail = ({
                   className="gap-1 bg-[#3A1A1A]/90 hover:bg-[#3A1A1A] text-[#F5E1A4] border border-[#8D6A3F]/50"
                 >
                   <Maximize className="h-4 w-4" />
-                  <span>Toàn màn h �nh</span>
+                  <span>Toàn màn hình</span>
                 </Button>
                 <Button
                   variant="secondary"
