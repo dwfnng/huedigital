@@ -3,17 +3,18 @@
 <svg width="1920" height="150" viewBox="0 0 1920 150" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <linearGradient id="waveGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" style="stop-color:#B5935A;stop-opacity:0.8"/>
+      <stop offset="0%" style="stop-color:#8B0000;stop-opacity:0.8"/>
       <stop offset="50%" style="stop-color:#D4AF37;stop-opacity:0.8"/>
-      <stop offset="100%" style="stop-color:#B5935A;stop-opacity:0.8"/>
+      <stop offset="100%" style="stop-color:#8B0000;stop-opacity:0.8"/>
     </linearGradient>
     <pattern id="imperialPattern" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
-      <path d="M0,10 Q5,0 10,10 T20,10" fill="none" stroke="#D4AF37" stroke-width="0.5" opacity="0.3"/>
+      <path d="M0,10 Q5,0 10,10 T20,10" fill="none" stroke="#D4AF37" stroke-width="1" opacity="0.4"/>
+      <circle cx="10" cy="10" r="1" fill="#D4AF37" opacity="0.3"/>
     </pattern>
   </defs>
 
   <path d="M0,150 L1920,150 L1920,75 C1653,107 1352,40 1215,40 C1024,40 939,82 715,82 C566,82 481,40 290,40 C153,40 248,107 0,75 L0,150 Z" 
         fill="url(#waveGradient)"/>
   <path d="M0,150 L1920,150 L1920,75 C1653,107 1352,40 1215,40 C1024,40 939,82 715,82 C566,82 481,40 290,40 C153,40 248,107 0,75 L0,150 Z" 
-        fill="url(#imperialPattern)" fill-opacity="0.1"/>
+        fill="url(#imperialPattern)" fill-opacity="0.15"/>
 </svg>
