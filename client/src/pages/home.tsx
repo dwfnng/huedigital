@@ -263,60 +263,7 @@ export default function Home() {
             </div>
           </motion.div>
 
-          {/* Imperial illustration */}
-          <div className="max-w-5xl mx-auto mt-12 relative">
-            <div className="w-full h-4 bg-[#8D6A3F] rounded-t-lg"></div>
-            <div className="w-full h-64 md:h-80 bg-gradient-to-b from-[#F5E1A4] to-[#DBC790] rounded-b-lg relative overflow-hidden shadow-lg">
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-full max-w-3xl flex justify-center">
-                  {/* This would be the central citadel illustration - fallback to decorative elements */}
-                  <div className="w-64 h-52 relative">
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="w-40 h-40 bg-[#C49A44] rounded-t-lg relative">
-                        <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 w-20 h-6 bg-[#8D6A3F] rounded-t-lg"></div>
-                        <div className="absolute bottom-0 left-0 right-0 h-10 flex items-center justify-center">
-                          <div className="w-16 h-full bg-[#6B2B2B] flex items-center justify-center">
-                            <div className="w-8 h-6 bg-[#3A1A1A] rounded-t-lg"></div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="absolute bottom-0 left-0 right-0 h-12 bg-[#8D6A3F]"></div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Lotus decorations */}
-              <div className="absolute bottom-4 left-4">
-                <svg
-                  width="60"
-                  height="60"
-                  viewBox="0 0 100 100"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <circle cx="50" cy="50" r="20" fill="#F3DBA8" />
-                  <path
-                    d="M50,30 C60,40 70,35 80,30 C70,45 70,60 50,70 C30,60 30,45 20,30 C30,35 40,40 50,30"
-                    fill="#C49A44"
-                  />
-                </svg>
-              </div>
-              <div className="absolute bottom-4 right-4">
-                <svg
-                  width="60"
-                  height="60"
-                  viewBox="0 0 100 100"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <circle cx="50" cy="50" r="20" fill="#F3DBA8" />
-                  <path
-                    d="M50,30 C60,40 70,35 80,30 C70,45 70,60 50,70 C30,60 30,45 20,30 C30,35 40,40 50,30"
-                    fill="#C49A44"
-                  />
-                </svg>
-              </div>
-            </div>
-          </div>
+          
         </div>
 
         {/* Wave decorative element */}
