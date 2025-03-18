@@ -12,14 +12,25 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-} from "@/components/ui/navigation-menu"
+} from "@/components/ui/navigation-menu";
 import {
-  GraduationCap, MapPin, Users, MessageSquare,
-  ChevronUp, Library, Gamepad2,
-  MapPinned, Cloud, Ticket,
-  MessageCircle, Upload, BookText,
-  Crown, Utensils, Box
-} from 'lucide-react';
+  GraduationCap,
+  MapPin,
+  Users,
+  MessageSquare,
+  ChevronUp,
+  Library,
+  Gamepad2,
+  MapPinned,
+  Cloud,
+  Ticket,
+  MessageCircle,
+  Upload,
+  BookText,
+  Crown,
+  Utensils,
+  Box,
+} from "lucide-react";
 
 // Pages
 import Home from "@/pages/home";
@@ -59,7 +70,8 @@ const navigationItems = {
         icon: <Box className="h-4 w-4" />,
         title: "Triển lãm 3D/AR",
         href: "/exhibition",
-        description: "Trải nghiệm di sản Huế qua mô hình 3D và công nghệ thực tế ảo tăng cường",
+        description:
+          "Trải nghiệm di sản Huế qua mô hình 3D và công nghệ thực tế ảo tăng cường",
       },
     ],
   },
@@ -124,16 +136,18 @@ function MainNav() {
       setScrolled(window.scrollY > 10);
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-      scrolled
-        ? "bg-[#F5E1A4]/95 backdrop-blur-md shadow-md border-b border-[#8D6A3F]/30"
-        : "bg-transparent"
-    }`}>
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled
+          ? "bg-[#F5E1A4]/95 backdrop-blur-md shadow-md border-b border-[#8D6A3F]/30"
+          : "bg-transparent"
+      }`}
+    >
       {/* Imperial decorative header patterns */}
       <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#8D6A3F] via-[#C49A44] to-[#8D6A3F]"></div>
 
@@ -142,7 +156,7 @@ function MainNav() {
           <Link href="/" className="flex items-center gap-2 group relative">
             <div className="w-10 h-10 royal-gradient rounded-full flex items-center justify-center transition-all duration-300 group-hover:shadow-[0_0_15px_rgba(196,154,68,0.5)]">
               <img
-                src="/hue-logo.png"
+                src="https://i.postimg.cc/YSzbWv3P/Screenshot-17-3-2025-22521-chatgpt-com-removebg-preview.png"
                 alt="Huế Digital"
                 className="h-7 w-7 transition-transform duration-300 group-hover:scale-110"
               />
@@ -151,7 +165,9 @@ function MainNav() {
               <span className="text-xl font-bold text-[#6B2B2B] transition-colors duration-300 group-hover:text-[#9F8054]">
                 Huế Digital
               </span>
-              <span className="text-xs text-[#8D6A3F] -mt-1">Di sản trong tay bạn</span>
+              <span className="text-xs text-[#8D6A3F] -mt-1">
+                Di sản trong tay bạn
+              </span>
             </div>
 
             {/* Decorative hover effect */}
@@ -173,16 +189,22 @@ function MainNav() {
                       <span className="transition-all">{section.label}</span>
 
                       {/* Decorative underline that shows on hover */}
-                      <div className="absolute -bottom-1 left-0 right-0 h-0.5 bg-[#8D6A3F] transform scale-x-0
+                      <div
+                        className="absolute -bottom-1 left-0 right-0 h-0.5 bg-[#8D6A3F] transform scale-x-0
                                       group-hover:scale-x-100 group-data-[state=open]:scale-x-100
-                                      transition-transform duration-300 origin-left"></div>
+                                      transition-transform duration-300 origin-left"
+                      ></div>
                     </div>
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
                     <div className="w-[500px] p-5 bg-[#F5E1A4]/95 backdrop-blur-md border border-[#8D6A3F]/20 rounded-lg shadow-lg">
                       <div className="mb-4 pb-3 border-b border-[#8D6A3F]/20">
-                        <h4 className="text-[#6B2B2B] font-medium">{section.label}</h4>
-                        <p className="text-sm text-[#6D4C41]">{section.description}</p>
+                        <h4 className="text-[#6B2B2B] font-medium">
+                          {section.label}
+                        </h4>
+                        <p className="text-sm text-[#6D4C41]">
+                          {section.description}
+                        </p>
                       </div>
                       <div className="grid gap-3 md:grid-cols-2">
                         {section.items.map((item, idx) => (
@@ -199,8 +221,10 @@ function MainNav() {
                                 }}
                               >
                                 <div className="flex items-center gap-2">
-                                  <div className="w-8 h-8 rounded-full bg-[#C49A44]/10 flex items-center justify-center
-                                                 group-hover:bg-[#8D6A3F]/20 transition-colors">
+                                  <div
+                                    className="w-8 h-8 rounded-full bg-[#C49A44]/10 flex items-center justify-center
+                                                 group-hover:bg-[#8D6A3F]/20 transition-colors"
+                                  >
                                     <div className="text-[#8D6A3F] group-hover:text-[#6B2B2B] transition-colors">
                                       {item.icon}
                                     </div>
@@ -290,7 +314,7 @@ function ChatButton() {
         className="rounded-full bg-[#F5E1A4]/90 backdrop-blur-sm border-[#8D6A3F]/30 shadow-lg
                  hover:border-[#8D6A3F] hover:bg-[#F5E1A4] hover:-translate-y-1
                  transition-all duration-300 w-12 h-12 group"
-        onClick={() => window.open('tel:+84234123456')}
+        onClick={() => window.open("tel:+84234123456")}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
@@ -301,7 +325,10 @@ function ChatButton() {
       {/* Decorative lotus pattern */}
       <div className="absolute -bottom-3 -right-3 w-16 h-16 opacity-20 pointer-events-none">
         <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-          <path d="M50,20 C65,35 85,25 95,15 C80,40 75,65 50,80 C25,65 20,40 5,15 C15,25 35,35 50,20Z" fill="#8D6A3F" />
+          <path
+            d="M50,20 C65,35 85,25 95,15 C80,40 75,65 50,80 C25,65 20,40 5,15 C15,25 35,35 50,20Z"
+            fill="#8D6A3F"
+          />
         </svg>
       </div>
     </div>
@@ -317,12 +344,12 @@ function BackToTop() {
       setShow(window.scrollY > 200);
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
@@ -338,7 +365,9 @@ function BackToTop() {
         size="icon"
         className={cn(
           "rounded-full bg-[#F5E1A4]/90 backdrop-blur-sm border-[#8D6A3F]/30 shadow-lg hover:border-[#8D6A3F] hover:bg-[#F5E1A4] hover:-translate-y-1 transition-all duration-500 w-12 h-12 group",
-          show ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10 pointer-events-none"
+          show
+            ? "opacity-100 translate-y-0"
+            : "opacity-0 translate-y-10 pointer-events-none",
         )}
         onClick={scrollToTop}
         onMouseEnter={() => setIsHovered(true)}
