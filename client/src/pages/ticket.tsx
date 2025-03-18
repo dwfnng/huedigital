@@ -164,8 +164,8 @@ function CarServiceCard({
                 Đặt xe
               </Button>
             </DialogTrigger>
-            <DialogContent className="bg-[#f0f0f0] text-[#333333] sm:max-w-[600px]">
-              <DialogHeader className="bg-white rounded-lg p-4 mb-4">
+            <DialogContent className="dialog-gradient sm:max-w-[600px]">
+              <DialogHeader className="dialog-header rounded-lg p-4 mb-4">
                 <DialogTitle>Đặt xe {title}</DialogTitle>
                 <DialogDescription>
                   Điền thông tin để đặt xe tham quan các điểm di tích tại Huế
@@ -183,76 +183,76 @@ function CarServiceCard({
                 }}
                 className="space-y-4"
               >
-                <div className="space-y-2 bg-white rounded-lg p-4">
-                  <Label htmlFor="fullname" className="text-[#333333]">Họ và tên</Label>
-                  <Input id="fullname" required placeholder="Nhập họ và tên..." className="bg-white border-gray-300 text-[#333333]" />
+                <div className="space-y-2 content-section rounded-lg p-4">
+                  <Label htmlFor="fullname">Họ và tên</Label>
+                  <Input id="fullname" required placeholder="Nhập họ và tên..." className="enhanced-input" />
                 </div>
                 
-                <div className="space-y-2 bg-white rounded-lg p-4">
-                  <Label htmlFor="phone" className="text-[#333333]">Số điện thoại</Label>
-                  <Input id="phone" required placeholder="Nhập số điện thoại..." className="bg-white border-gray-300 text-[#333333]" />
+                <div className="space-y-2 content-section rounded-lg p-4">
+                  <Label htmlFor="phone">Số điện thoại</Label>
+                  <Input id="phone" required placeholder="Nhập số điện thoại..." className="enhanced-input" />
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2 bg-white rounded-lg p-4">
-                    <Label htmlFor="pickup-date" className="text-[#333333]">Ngày đón</Label>
+                  <div className="space-y-2 content-section rounded-lg p-4">
+                    <Label htmlFor="pickup-date">Ngày đón</Label>
                     <div className="flex items-center">
                       <Input 
                         id="pickup-date" 
                         type="date" 
                         required 
-                        className="bg-white border-gray-300 text-[#333333]" 
+                        className="enhanced-input" 
                       />
-                      <Calendar className="ml-2 h-5 w-5 text-gray-500" />
+                      <Calendar className="ml-2 h-5 w-5 text-amber-700" />
                     </div>
                   </div>
                   
-                  <div className="space-y-2 bg-white rounded-lg p-4">
-                    <Label htmlFor="pickup-time" className="text-[#333333]">Giờ đón</Label>
+                  <div className="space-y-2 content-section rounded-lg p-4">
+                    <Label htmlFor="pickup-time">Giờ đón</Label>
                     <div className="flex items-center">
                       <Input 
                         id="pickup-time" 
                         type="time" 
                         required 
-                        className="bg-white border-gray-300 text-[#333333]" 
+                        className="enhanced-input" 
                       />
-                      <Clock className="ml-2 h-5 w-5 text-gray-500" />
+                      <Clock className="ml-2 h-5 w-5 text-amber-700" />
                     </div>
                   </div>
                 </div>
                 
-                <div className="space-y-2 bg-white rounded-lg p-4">
-                  <Label htmlFor="pickup-location" className="text-[#333333]">Địa điểm đón</Label>
+                <div className="space-y-2 content-section rounded-lg p-4">
+                  <Label htmlFor="pickup-location">Địa điểm đón</Label>
                   <div className="flex items-center">
                     <Input 
                       id="pickup-location" 
                       required 
                       placeholder="Nhập địa điểm đón..." 
-                      className="bg-white border-gray-300 text-[#333333]" 
+                      className="enhanced-input" 
                     />
-                    <MapPin className="ml-2 h-5 w-5 text-gray-500" />
+                    <MapPin className="ml-2 h-5 w-5 text-amber-700" />
                   </div>
                 </div>
                 
-                <div className="space-y-2 bg-white rounded-lg p-4">
-                  <Label htmlFor="destinations" className="text-[#333333]">Các điểm đến</Label>
+                <div className="space-y-2 content-section rounded-lg p-4">
+                  <Label htmlFor="destinations">Các điểm đến</Label>
                   <div className="flex items-center">
                     <Input 
                       id="destinations" 
                       required 
                       placeholder="Ví dụ: Đại Nội, Lăng Tự Đức, Chùa Thiên Mụ..." 
-                      className="bg-white border-gray-300 text-[#333333]" 
+                      className="enhanced-input" 
                     />
-                    <Map className="ml-2 h-5 w-5 text-gray-500" />
+                    <Map className="ml-2 h-5 w-5 text-amber-700" />
                   </div>
-                  <p className="text-xs text-gray-500 mt-1">Liệt kê các điểm di tích bạn muốn tham quan</p>
+                  <p className="text-xs text-muted-foreground mt-1">Liệt kê các điểm di tích bạn muốn tham quan</p>
                 </div>
                 
-                <div className="flex justify-end gap-2 bg-white rounded-lg p-4">
+                <div className="flex justify-end gap-2 content-section rounded-lg p-4">
                   <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)}>
                     Hủy
                   </Button>
-                  <Button type="submit">Xác nhận</Button>
+                  <Button type="submit" className="royal-button">Xác nhận</Button>
                 </div>
               </form>
             </DialogContent>
@@ -267,18 +267,22 @@ export default function TicketPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="max-w-5xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-8"
-        >
-          <h1 className="text-3xl font-bold mb-3">Đặt vé & Dịch vụ</h1>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            Trải nghiệm văn hóa Huế qua các gói tham quan độc đáo, dịch vụ xe và bộ sưu tập
-            quà lưu niệm đặc trưng
-          </p>
-        </motion.div>
+        <div className="page-header mb-8">
+          <div className="page-header-content">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="text-center"
+            >
+              <h1 className="text-3xl font-bold mb-3">Đặt vé & Dịch vụ</h1>
+              <p className="text-muted-foreground max-w-2xl mx-auto">
+                Trải nghiệm văn hóa Huế qua các gói tham quan độc đáo, dịch vụ xe và bộ sưu tập
+                quà lưu niệm đặc trưng
+              </p>
+            </motion.div>
+          </div>
+        </div>
 
         <motion.div
           className="bg-gradient-to-r from-primary/5 to-primary/10 rounded-lg p-6 mb-8"
