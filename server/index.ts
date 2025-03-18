@@ -1,6 +1,10 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
+import { exec } from 'child_process';
+import { promisify } from 'util';
+
+const execAsync = promisify(exec);
 
 const app = express();
 app.use(express.json());
@@ -42,19 +46,22 @@ app.use((req, res, next) => {
 const MAX_RETRIES = 3;
 const RETRY_DELAY = 2000; // 2 seconds
 
+async function clearPort(port: number) {
+  try {
+    await execAsync(`fuser -k ${port}/tcp`);
+    log(`Cleared port ${port}`);
+  } catch (e) {
+    // Ignore errors if no process was using the port
+  }
+}
+
 async function startServer(retryCount = 0) {
   try {
     log("Starting server initialization...");
     log(`Environment: ${process.env.NODE_ENV}, FAST_START: ${process.env.FAST_START}`);
 
     // Kill any existing process on port 5000
-    try {
-      const { execSync } = require('child_process');
-      execSync('fuser -k 5000/tcp');
-      log("Cleared port 5000");
-    } catch (e) {
-      // Ignore errors if no process was using the port
-    }
+    await clearPort(5000);
 
     log("Registering routes...");
     const server = await registerRoutes(app);

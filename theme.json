@@ -1,6 +1,14 @@
 {
   "variant": "tint",
   "primary": "#B5935A",
+  "secondary": "#8B0000",
+  "accent": "#654321",
   "appearance": "light",
-  "radius": 0.75
+  "radius": 0.75,
+  "custom": {
+    "royal-gold": "#B5935A",
+    "deep-red": "#8B0000",
+    "wood-brown": "#654321",
+    "background": "#FFF8E7"
+  }
 }
