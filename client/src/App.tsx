@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/navigation-menu"
 import {
   GraduationCap, MapPin, Users, MessageSquare,
-  ChevronUp, Library, Gamepad2, 
+  ChevronUp, Library, Gamepad2,
   MapPinned, Cloud, Ticket,
   MessageCircle, Upload, BookText,
   Crown, Utensils, Box
@@ -130,8 +130,8 @@ function MainNav() {
 
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-      scrolled 
-        ? "bg-[#F5E1A4]/95 backdrop-blur-md shadow-md border-b border-[#8D6A3F]/30" 
+      scrolled
+        ? "bg-[#F5E1A4]/95 backdrop-blur-md shadow-md border-b border-[#8D6A3F]/30"
         : "bg-transparent"
     }`}>
       {/* Imperial decorative header patterns */}
@@ -141,22 +141,11 @@ function MainNav() {
         <div className="flex h-16 items-center px-4">
           <Link href="/" className="flex items-center gap-2 group relative">
             <div className="w-10 h-10 royal-gradient rounded-full flex items-center justify-center transition-all duration-300 group-hover:shadow-[0_0_15px_rgba(196,154,68,0.5)]">
-              {/* Use the new logo */}
-              <img 
-                src="/imperial-logo.svg" 
-                alt="Huế Digital" 
-                className="h-7 w-7 transition-transform duration-300 group-hover:scale-110" 
-                onError={(e) => {
-                  e.currentTarget.style.display = 'none';
-                  const fallbackLogo = document.getElementById('fallback-nav-logo');
-                  if (fallbackLogo) {
-                    fallbackLogo.style.display = 'block';
-                  }
-                }}
+              <img
+                src="/hue-logo.png"
+                alt="Huế Digital"
+                className="h-7 w-7 transition-transform duration-300 group-hover:scale-110"
               />
-              <div id="fallback-nav-logo" style={{display: 'none'}} className="h-7 w-7">
-                <Crown className="h-7 w-7 text-white" />
-              </div>
             </div>
             <div className="flex flex-col">
               <span className="text-xl font-bold text-[#6B2B2B] transition-colors duration-300 group-hover:text-[#9F8054]">
@@ -173,8 +162,8 @@ function MainNav() {
             <NavigationMenuList className="gap-1">
               {Object.entries(navigationItems).map(([key, section]) => (
                 <NavigationMenuItem key={key}>
-                  <NavigationMenuTrigger 
-                    className="h-10 px-4 font-medium hover:text-[#6B2B2B] data-[state=open]:text-[#6B2B2B] transition-all 
+                  <NavigationMenuTrigger
+                    className="h-10 px-4 font-medium hover:text-[#6B2B2B] data-[state=open]:text-[#6B2B2B] transition-all
                              data-[state=open]:bg-[#C49A44]/10 hover:bg-[#C49A44]/5 rounded-md group"
                   >
                     <div className="flex items-center gap-2 relative">
@@ -184,8 +173,8 @@ function MainNav() {
                       <span className="transition-all">{section.label}</span>
 
                       {/* Decorative underline that shows on hover */}
-                      <div className="absolute -bottom-1 left-0 right-0 h-0.5 bg-[#8D6A3F] transform scale-x-0 
-                                      group-hover:scale-x-100 group-data-[state=open]:scale-x-100 
+                      <div className="absolute -bottom-1 left-0 right-0 h-0.5 bg-[#8D6A3F] transform scale-x-0
+                                      group-hover:scale-x-100 group-data-[state=open]:scale-x-100
                                       transition-transform duration-300 origin-left"></div>
                     </div>
                   </NavigationMenuTrigger>
@@ -200,7 +189,7 @@ function MainNav() {
                           <Link key={item.href} href={item.href}>
                             <NavigationMenuLink asChild>
                               <a
-                                className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none 
+                                className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none
                                             transition-all hover:bg-[#8D6A3F]/10 hover:border-[#8D6A3F]/20
                                             hover:shadow-md hover:text-[#6B2B2B] imperial-card group animate-fade-in"
                                 style={{ animationDelay: `${idx * 50}ms` }}
@@ -236,8 +225,8 @@ function MainNav() {
           </NavigationMenu>
 
           <div className="ml-auto flex items-center gap-3">
-            <Button 
-              variant="ghost" 
+            <Button
+              variant="ghost"
               size="sm"
               className="text-[#8D6A3F] hover:text-[#6B2B2B] hover:bg-[#C49A44]/10 hidden sm:flex transition-all"
               onClick={() => setLocation("/contribute")}
@@ -245,7 +234,7 @@ function MainNav() {
               <Upload className="h-4 w-4 mr-1.5" />
               Đóng góp
             </Button>
-            <Button 
+            <Button
               size="sm"
               className="royal-gradient text-white hover:opacity-90 transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-0.5"
               onClick={() => setLocation("/library")}
@@ -272,17 +261,17 @@ function ChatButton() {
 
   return (
     <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-3">
-      <div 
+      <div
         className={`absolute inset-0 bg-[#C49A44]/10 rounded-full transition-all duration-500 ease-in-out ${
           isHovered ? "scale-[2.5] opacity-100" : "scale-0 opacity-0"
         }`}
       />
-      
+
       <Button
         variant="outline"
         size="icon"
-        className="rounded-full bg-[#F5E1A4]/90 backdrop-blur-sm border-[#8D6A3F]/30 shadow-lg 
-                 hover:border-[#8D6A3F] hover:bg-[#F5E1A4] hover:-translate-y-1 
+        className="rounded-full bg-[#F5E1A4]/90 backdrop-blur-sm border-[#8D6A3F]/30 shadow-lg
+                 hover:border-[#8D6A3F] hover:bg-[#F5E1A4] hover:-translate-y-1
                  transition-all duration-300 w-12 h-12 group"
         onClick={() => setLocation("/chat")}
         onMouseEnter={() => setIsHovered(true)}
@@ -294,12 +283,12 @@ function ChatButton() {
           <MessageSquare className="h-5 w-5 text-[#8D6A3F] relative z-10 group-hover:text-[#6B2B2B] transition-colors" />
         </div>
       </Button>
-      
+
       <Button
         variant="outline"
         size="icon"
-        className="rounded-full bg-[#F5E1A4]/90 backdrop-blur-sm border-[#8D6A3F]/30 shadow-lg 
-                 hover:border-[#8D6A3F] hover:bg-[#F5E1A4] hover:-translate-y-1 
+        className="rounded-full bg-[#F5E1A4]/90 backdrop-blur-sm border-[#8D6A3F]/30 shadow-lg
+                 hover:border-[#8D6A3F] hover:bg-[#F5E1A4] hover:-translate-y-1
                  transition-all duration-300 w-12 h-12 group"
         onClick={() => window.open('tel:+84234123456')}
         onMouseEnter={() => setIsHovered(true)}
@@ -308,7 +297,7 @@ function ChatButton() {
         <div className="absolute inset-0 rounded-full royal-gradient opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
         <MessageCircle className="h-5 w-5 text-[#8D6A3F] group-hover:text-[#6B2B2B] transition-colors" />
       </Button>
-      
+
       {/* Decorative lotus pattern */}
       <div className="absolute -bottom-3 -right-3 w-16 h-16 opacity-20 pointer-events-none">
         <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
@@ -338,12 +327,12 @@ function BackToTop() {
 
   return (
     <div className="fixed bottom-6 right-24 z-50">
-      <div 
+      <div
         className={`absolute inset-0 bg-[#C49A44]/10 rounded-full transition-all duration-500 ease-in-out ${
           isHovered ? "scale-[2.5] opacity-100" : "scale-0 opacity-0"
         }`}
       />
-      
+
       <Button
         variant="outline"
         size="icon"
@@ -357,7 +346,7 @@ function BackToTop() {
       >
         <div className="absolute inset-0 rounded-full royal-gradient opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
         <ChevronUp className="h-5 w-5 text-[#8D6A3F] group-hover:text-[#6B2B2B] transition-colors" />
-        
+
         {/* Small animated arrow to hint at scroll action */}
         <div className="absolute -top-6 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <div className="w-1 h-3 bg-[#8D6A3F] rounded-full animate-bounce"></div>
@@ -379,7 +368,6 @@ function Router() {
       <Route path="/ticket" component={TicketPage} />
       <Route path="/contribute" component={ContributePage} />
       <Route path="/live-data" component={LiveDataPage} />
-      <Route path="/culinary" component={CulinaryPage} />
       <Route path="/exhibition" component={ExhibitionPage} />
       <Route component={NotFound} />
     </Switch>
@@ -392,27 +380,6 @@ export default function App() {
       <div className="min-h-screen">
         <MainNav />
         <main className="pt-20 pb-6 fade-in">
-          {/* Imperial corner decorations */}
-          <div className="fixed top-0 left-0 w-16 h-16 pointer-events-none opacity-25">
-            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-              <path d="M0 0 L100 0 L100 20 L20 20 L20 100 L0 100 Z" fill="#B5935A" fillOpacity="0.5"/>
-            </svg>
-          </div>
-          <div className="fixed top-0 right-0 w-16 h-16 pointer-events-none opacity-25">
-            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-              <path d="M0 0 L100 0 L100 100 L80 100 L80 20 L0 20 Z" fill="#B5935A" fillOpacity="0.5"/>
-            </svg>
-          </div>
-          <div className="fixed bottom-0 left-0 w-16 h-16 pointer-events-none opacity-25">
-            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-              <path d="M0 0 L20 0 L20 80 L100 80 L100 100 L0 100 Z" fill="#B5935A" fillOpacity="0.5"/>
-            </svg>
-          </div>
-          <div className="fixed bottom-0 right-0 w-16 h-16 pointer-events-none opacity-25">
-            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-              <path d="M80 0 L100 0 L100 100 L0 100 L0 80 L80 80 Z" fill="#B5935A" fillOpacity="0.5"/>
-            </svg>
-          </div>
           <Router />
         </main>
         <BackToTop />
