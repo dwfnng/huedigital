@@ -1,13 +1,13 @@
 export const ImagePaths = {
   brand: {
-    logo: '/images/brand/imperial-logo.svg',
-    icon: '/images/brand/favicon.svg',
-    pattern: '/images/brand/imperial-pattern.svg'
+    logo: '/images/brand/logo.svg', // Hình 2 - Logo
+    pattern: '/images/brand/pattern.svg', // Hình 3 - Họa tiết
+    illustration: '/images/brand/illustration.svg' // Hình 1 - Ảnh minh họa
   },
   backgrounds: {
     hueLandscape: '/images/backgrounds/hue-landscape.jpg',
     hueAerial: '/images/backgrounds/hue-aerial.jpg',
-    decorativePattern: '/images/backgrounds/decorative-pattern.svg'
+    decorativePattern: '/images/brand/pattern.svg' // Reusing the pattern
   },
   locations: {
     phuXuan: '/images/locations/phu-xuan.jpg',
