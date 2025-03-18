@@ -8,10 +8,10 @@
   --royal-gold: #DAA520;
   --deep-red: #8B0000;
   --wood-brown: #4A2C2A;
-  --background: #FFF3E0;
+  --background: #F5E6CC;
   --text-primary: #3D2B1F;
   --text-secondary: #5A3E36;
-  --background-pattern-overlay: linear-gradient(to right, rgba(218, 165, 32, 0.05), rgba(139, 0, 0, 0.05));
+  --background-pattern-overlay: linear-gradient(to right, rgba(218, 165, 32, 0.02), rgba(139, 0, 0, 0.02));
   --background-pattern-texture: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5z' fill='%23DAA520' fill-opacity='0.03'/%3E%3C/svg%3E");
 }
 
@@ -222,8 +222,8 @@
 
   body {
     @apply font-sans antialiased text-[#3D2B1F];
-    background-color: var(--background);
-    background-image: var(--background-pattern-overlay), var(--background-pattern-texture);
+    background-color: #F5E6CC;
+    background-image: var(--background-pattern-texture);
     background-position: center;
     background-repeat: repeat;
     background-attachment: fixed;
