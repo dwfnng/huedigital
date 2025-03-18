@@ -32,15 +32,9 @@ const features = [
   },
   {
     icon: MapPin,
-    title: "Bản đồ số", 
+    title: "Bản đồ số",
     description: "Khám phá di tích lịch sử qua bản đồ tương tác",
     href: "/map",
-  },
-  {
-    icon: Building,
-    title: "Triển lãm 3D",
-    description: "Tham quan di tích Huế qua mô hình 3D tương tác",
-    href: "/exhibition",
   },
   {
     icon: BookText,
@@ -63,15 +57,6 @@ const features = [
   {
     icon: Gamepad2,
     title: "Game giáo dục",
-    description: "Học về văn hóa Huế qua các trò chơi tương tác",
-    href: "/game",
-  },
-  {
-    icon: Globe,
-    title: "Ẩm thực Huế",
-    description: "Khám phá văn hóa ẩm thực đặc sắc của xứ Huế",
-    href: "/culinary",
-  }le: "Game giáo dục",
     description: "Học về văn hóa Huế qua các trò chơi tương tác",
     href: "/game",
   },
