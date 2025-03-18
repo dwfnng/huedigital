@@ -3,14 +3,6 @@ export const ImagePaths = {
     hueLandscape: '/images/backgrounds/hue-landscape.jpg',
     hueAerial: '/images/backgrounds/hue-aerial.jpg',
   },
-  culinary: {
-    bunBo: '/images/culinary/bun-bo.jpg',
-    banhKhoai: '/images/culinary/banh-khoai.jpg',
-    comHen: '/images/culinary/com-hen.jpg',
-    banhBeo: '/images/culinary/banh-beo.jpg',
-    cheHue: '/images/culinary/che-hue.jpg',
-    banhLoc: '/images/culinary/banh-loc.jpg'
-  },
   locations: {
     phuXuan: '/images/locations/phu-xuan.jpg',
     thangLong: '/images/locations/thang-long.jpg',
