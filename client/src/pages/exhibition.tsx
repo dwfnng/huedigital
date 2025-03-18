@@ -34,9 +34,9 @@ import {
 const exhibitionItems = [
   {
     id: 1,
-    title: "Điện Thái Hòa",
-    titleEn: "Thai Hoa Palace",
-    description: "Điện Thái Hòa là công trình kiến trúc chính trong Hoàng thành Huế, nơi diễn ra các nghi lễ quan trọng của triều đình nhà Nguyễn.",
+    title: "Cầu Ngói Thanh Toàn",
+    titleEn: "Thanh Toan Tile-Roofed Bridge",
+    description: "Cầu ngói Thanh Toàn là một cây cầu gỗ với mái ngói độc đáo, mang nét kiến trúc truyền thống Việt Nam. Cầu có thiết kế uốn cong mềm mại, mái lợp ngói che nắng mưa, bên trong có ghế dài để người qua đường nghỉ ngơi. Với các chi tiết chạm khắc tinh xảo, cầu không chỉ là nơi giao thông mà còn là điểm giao lưu văn hóa và là một di sản quý giá ở Huế.",
     descriptionEn: "Thai Hoa Palace is the main architectural structure in Hue Imperial City, where important court ceremonies of the Nguyen Dynasty took place.",
     thumbnailUrl: "https://placehold.co/600x400/EEE/31343C?text=Di%E1%BB%87n+Th%C3%A1i+H%C3%B2a",
     panoramaUrl: "https://placehold.co/1200x800/EEE/31343C?text=Panorama+Di%E1%BB%87n+Th%C3%A1i+H%C3%B2a",

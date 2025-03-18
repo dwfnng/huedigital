@@ -4,10 +4,35 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { motion } from "framer-motion";
-import { Ticket, Gift, Star, ArrowUpRight, Info, Car, Calendar, Map, MapPin, Clock } from "lucide-react";
+import {
+  Ticket,
+  Gift,
+  Star,
+  ArrowUpRight,
+  Info,
+  Car,
+  Calendar,
+  Map,
+  MapPin,
+  Clock,
+} from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { useState } from "react";
 
@@ -135,7 +160,7 @@ function CarServiceCard({
   carType: string;
 }) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  
+
   return (
     <motion.div variants={fadeIn} initial="hidden" animate="visible">
       <Card className="overflow-hidden transition-all hover:shadow-lg enhanced-card">
@@ -177,7 +202,8 @@ function CarServiceCard({
                   setIsDialogOpen(false);
                   toast({
                     title: "Đặt xe thành công",
-                    description: "Chúng tôi sẽ liên hệ với bạn trong thời gian sớm nhất!",
+                    description:
+                      "Chúng tôi sẽ liên hệ với bạn trong thời gian sớm nhất!",
                     duration: 3000,
                   });
                 }}
@@ -185,74 +211,92 @@ function CarServiceCard({
               >
                 <div className="space-y-2 content-section rounded-lg p-4">
                   <Label htmlFor="fullname">Họ và tên</Label>
-                  <Input id="fullname" required placeholder="Nhập họ và tên..." className="enhanced-input" />
+                  <Input
+                    id="fullname"
+                    required
+                    placeholder="Nhập họ và tên..."
+                    className="enhanced-input"
+                  />
                 </div>
-                
+
                 <div className="space-y-2 content-section rounded-lg p-4">
                   <Label htmlFor="phone">Số điện thoại</Label>
-                  <Input id="phone" required placeholder="Nhập số điện thoại..." className="enhanced-input" />
+                  <Input
+                    id="phone"
+                    required
+                    placeholder="Nhập số điện thoại..."
+                    className="enhanced-input"
+                  />
                 </div>
-                
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2 content-section rounded-lg p-4">
                     <Label htmlFor="pickup-date">Ngày đón</Label>
                     <div className="flex items-center">
-                      <Input 
-                        id="pickup-date" 
-                        type="date" 
-                        required 
-                        className="enhanced-input" 
+                      <Input
+                        id="pickup-date"
+                        type="date"
+                        required
+                        className="enhanced-input"
                       />
                       <Calendar className="ml-2 h-5 w-5 text-amber-700" />
                     </div>
                   </div>
-                  
+
                   <div className="space-y-2 content-section rounded-lg p-4">
                     <Label htmlFor="pickup-time">Giờ đón</Label>
                     <div className="flex items-center">
-                      <Input 
-                        id="pickup-time" 
-                        type="time" 
-                        required 
-                        className="enhanced-input" 
+                      <Input
+                        id="pickup-time"
+                        type="time"
+                        required
+                        className="enhanced-input"
                       />
                       <Clock className="ml-2 h-5 w-5 text-amber-700" />
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="space-y-2 content-section rounded-lg p-4">
                   <Label htmlFor="pickup-location">Địa điểm đón</Label>
                   <div className="flex items-center">
-                    <Input 
-                      id="pickup-location" 
-                      required 
-                      placeholder="Nhập địa điểm đón..." 
-                      className="enhanced-input" 
+                    <Input
+                      id="pickup-location"
+                      required
+                      placeholder="Nhập địa điểm đón..."
+                      className="enhanced-input"
                     />
                     <MapPin className="ml-2 h-5 w-5 text-amber-700" />
                   </div>
                 </div>
-                
+
                 <div className="space-y-2 content-section rounded-lg p-4">
                   <Label htmlFor="destinations">Các điểm đến</Label>
                   <div className="flex items-center">
-                    <Input 
-                      id="destinations" 
-                      required 
-                      placeholder="Ví dụ: Đại Nội, Lăng Tự Đức, Chùa Thiên Mụ..." 
-                      className="enhanced-input" 
+                    <Input
+                      id="destinations"
+                      required
+                      placeholder="Ví dụ: Đại Nội, Lăng Tự Đức, Chùa Thiên Mụ..."
+                      className="enhanced-input"
                     />
                     <Map className="ml-2 h-5 w-5 text-amber-700" />
                   </div>
-                  <p className="text-xs text-muted-foreground mt-1">Liệt kê các điểm di tích bạn muốn tham quan</p>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Liệt kê các điểm di tích bạn muốn tham quan
+                  </p>
                 </div>
-                
+
                 <div className="flex justify-end gap-2 content-section rounded-lg p-4">
-                  <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)}>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => setIsDialogOpen(false)}
+                  >
                     Hủy
                   </Button>
-                  <Button type="submit" className="royal-button">Xác nhận</Button>
+                  <Button type="submit" className="royal-button">
+                    Xác nhận
+                  </Button>
                 </div>
               </form>
             </DialogContent>
@@ -278,8 +322,8 @@ export default function TicketPage() {
               <div className="bg-[#B5935A] text-black p-6 rounded-lg mb-6 shadow-md">
                 <h1 className="text-3xl font-bold mb-3">Đặt vé & Dịch vụ</h1>
                 <p className="text-black/90 max-w-2xl mx-auto">
-                  Trải nghiệm văn hóa Huế qua các gói tham quan độc đáo, dịch vụ xe và bộ sưu tập
-                  quà lưu niệm đặc trưng
+                  Trải nghiệm văn hóa Huế qua các gói tham quan độc đáo, dịch vụ
+                  xe và bộ sưu tập quà lưu niệm đặc trưng
                 </p>
               </div>
             </motion.div>
@@ -341,7 +385,7 @@ export default function TicketPage() {
                 title="Combo 3 điểm tham quan"
                 price="400.000đ"
                 description="Trọn gói tham quan Đại Nội, Lăng Tự Đức và Lăng Minh Mạng với giá ưu đãi"
-                imageSrc="/images/tickets/combo.jpg"
+                imageSrc="https://th.bing.com/th/id/OIP.SJk9D7DNvwWk_JwZLxgOmAHaFI?rs=1&pid=ImgDetMain"
               />
               <TicketCard
                 title="Vé xem biểu diễn Nhã nhạc"
@@ -351,35 +395,35 @@ export default function TicketPage() {
               />
             </div>
           </TabsContent>
-          
+
           <TabsContent value="car" className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <CarServiceCard
                 title="Xe 4 chỗ"
                 price="600.000đ/ngày"
                 description="Xe 4 chỗ tiêu chuẩn, phù hợp cho cặp đôi hoặc gia đình nhỏ tham quan các điểm di tích lịch sử Huế"
-                imageSrc="https://img.freepik.com/premium-photo/red-generic-sedan-car-white-background-3d-illustration_101266-15405.jpg"
+                imageSrc="https://th.bing.com/th/id/OIP.v8Xd-woTBpkgD1jC7sD6eAHaEZ?rs=1&pid=ImgDetMain"
                 carType="sedan"
               />
               <CarServiceCard
                 title="Xe 7 chỗ"
                 price="800.000đ/ngày"
                 description="Xe 7 chỗ rộng rãi, phù hợp cho gia đình hoặc nhóm bạn tham quan trọn vẹn di sản Huế"
-                imageSrc="https://media.istockphoto.com/id/1354597522/photo/blue-suv-car-with-sport-and-modern-design-parked-on-concrete-road-by-the-sea-at-sunset-front.jpg?s=612x612&w=0&k=20&c=LSFdE8O-TB5RD0yTRDARKVDCaHMGtLU2jZ4oPzCOVKk="
+                imageSrc="https://th.bing.com/th/id/OIP.ZomjjAN_itLOAzieCQXLsgHaE8?rs=1&pid=ImgDetMain"
                 carType="suv"
               />
               <CarServiceCard
                 title="Xe 16 chỗ"
                 price="1.200.000đ/ngày"
                 description="Xe 16 chỗ tiện nghi, lý tưởng cho đoàn khách tham quan di tích Huế"
-                imageSrc="https://media.istockphoto.com/id/1342279372/photo/van-mockup-on-white-background-3d-illustration.jpg?s=612x612&w=0&k=20&c=MaSLI60dBHxo5Rb3pL_OB0S13Wz2YzlbWznYNXH2qs4="
+                imageSrc="https://th.bing.com/th/id/OIP.5AHlC0LFxP0bL7li_ltFEwHaEK?rs=1&pid=ImgDetMain"
                 carType="minibus"
               />
               <CarServiceCard
                 title="Xe đặc biệt (Xe ngựa)"
                 price="450.000đ/2 giờ"
                 description="Trải nghiệm tham quan Huế bằng xe ngựa truyền thống, mang đến cảm giác hoài cổ và thư thái"
-                imageSrc="https://images.pexels.com/photos/1395958/pexels-photo-1395958.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                imageSrc="https://th.bing.com/th/id/OIP.ru55yIQRvpm0SKG2i3hvYQHaEr?rs=1&pid=ImgDetMain"
                 carType="horse"
               />
             </div>
@@ -456,7 +500,7 @@ export default function TicketPage() {
               </div>
             </div>
           </motion.div>
-          
+
           <motion.div
             className="p-6 bg-card rounded-lg border"
             initial={{ opacity: 0 }}
@@ -469,17 +513,24 @@ export default function TicketPage() {
                 <h3 className="font-semibold mb-2">Thông tin dịch vụ xe</h3>
                 <ul className="text-sm text-muted-foreground space-y-2">
                   <li>
-                    • Xe được bảo dưỡng thường xuyên và sạch sẽ, đảm bảo an toàn cho hành khách
-                  </li>
-                  <li>• Tài xế am hiểu lịch sử văn hóa Huế, có thể hỗ trợ thông tin tham quan</li>
-                  <li>
-                    • Giá đã bao gồm xăng dầu, chi phí cầu đường và bảo hiểm du lịch
+                    • Xe được bảo dưỡng thường xuyên và sạch sẽ, đảm bảo an toàn
+                    cho hành khách
                   </li>
                   <li>
-                    • Quý khách nên đặt xe trước ít nhất 1 ngày để đảm bảo xe sẵn sàng
+                    • Tài xế am hiểu lịch sử văn hóa Huế, có thể hỗ trợ thông
+                    tin tham quan
                   </li>
                   <li>
-                    • Có thể tùy chỉnh lộ trình tham quan theo yêu cầu của quý khách
+                    • Giá đã bao gồm xăng dầu, chi phí cầu đường và bảo hiểm du
+                    lịch
+                  </li>
+                  <li>
+                    • Quý khách nên đặt xe trước ít nhất 1 ngày để đảm bảo xe
+                    sẵn sàng
+                  </li>
+                  <li>
+                    • Có thể tùy chỉnh lộ trình tham quan theo yêu cầu của quý
+                    khách
                   </li>
                 </ul>
               </div>
