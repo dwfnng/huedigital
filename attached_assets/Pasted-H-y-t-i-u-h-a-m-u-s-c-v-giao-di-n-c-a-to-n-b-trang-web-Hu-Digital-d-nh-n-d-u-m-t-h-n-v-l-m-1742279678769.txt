@@ -1,0 +1,32 @@
+Hãy tối ưu hóa màu sắc và giao diện của toàn bộ trang web Huế Digital để dễ nhìn, dịu mắt hơn và làm nổi bật nội dung văn bản. Ngoài ra, cần đảm bảo rằng phần đặt vé du lịch cũng bao gồm tính năng đặt xe để thuận tiện hơn cho người dùng.
+
+1. Cải thiện màu sắc & nền:
+Header (Thanh điều hướng trên cùng):
+
+Hiện tại màu vàng nhạt hơi mờ nhạt, thay đổi sang màu vàng hoàng gia (#D4AF37) đậm hơn.
+Chữ trên thanh header đổi sang màu nâu đậm (#5B3A29) để tương phản tốt hơn.
+Background tổng thể:
+
+Hiện tại họa tiết nền hơi rợn và làm chìm chữ, cần chỉnh nền sang màu vàng nhạt (#FAE3B4) với độ tương phản tốt hơn.
+Áp dụng họa tiết trống đồng hoặc hoa văn cung đình Huế nhưng với độ trong suốt cao hơn để tránh rối mắt.
+Nội dung chính (Main Content):
+
+Chữ chính (heading, subheading) đổi thành màu nâu đậm (#5B3A29) hoặc đỏ trầm (#8B0000) để tạo điểm nhấn.
+Các box thông tin hiện có nền trắng, có thể thay đổi thành nền be nhạt (#FFF5E1) để dịu mắt hơn.
+Nút bấm (Buttons):
+
+Nút quan trọng như "Khám phá" hoặc "Đặt vé" nên có gradient từ vàng hoàng gia (#D4AF37) đến đỏ đậm (#8B0000) để tạo sự nổi bật.
+Khi hover, thêm hiệu ứng sáng nhẹ hoặc đổi màu gradient để thu hút hơn.
+2. Cải thiện header của từng trang con
+Header ở mỗi trang tính năng đang bị mờ nhạt, hãy làm nổi bật bằng cách:
+Áp dụng gradient vàng - đỏ trầm để thống nhất phong cách thiết kế.
+Thêm viền dưới header (border-bottom) màu đỏ trầm (#8B0000) để tạo phân cách rõ ràng với nội dung.
+3. Áp dụng chỉnh sửa trên toàn bộ trang web
+Hiện tại chỉ mới có trang chủ được chỉnh sửa, cần đảm bảo tất cả các trang tính năng khác cũng có sự thay đổi đồng bộ về màu sắc, font chữ, và hiệu ứng tương tác.
+4. Bổ sung tính năng đặt xe vào hệ thống đặt vé
+Hiện tại mục "Đặt vé" mới chỉ hỗ trợ đặt tour hoặc vé tham quan, cần tích hợp tùy chọn đặt xe gồm:
+Xe máy, ô tô, xe điện, với tùy chọn chọn điểm đón/trả khách.
+Cho phép chọn thời gian thuê xe theo giờ hoặc ngày.
+Hiển thị giá cả minh bạch.
+Yêu cầu Replit Agent AI thực hiện tất cả các thay đổi trên và đảm bảo mọi trang đều đồng bộ theo phong cách thiết kế mới.
+
