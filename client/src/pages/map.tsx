@@ -14,6 +14,19 @@ export default function MapPage() {
   };
 
   return (
+    <div className="min-h-screen bg-background">
+      <div className="bg-gradient-to-b from-[#F5E6CC] to-[#DAA520]/10 px-6 py-8 border-b border-[#8B4513]/20">
+        <div className="max-w-7xl mx-auto">
+          <h1 className="text-4xl font-eb-garamond font-bold text-[#3D2B1F] mb-3">
+            Bản đồ số
+          </h1>
+          <p className="text-lg text-[#5A3E36]/80">
+            Khám phá các di tích, danh lam thắng cảnh và địa điểm du lịch tại Huế
+          </p>
+        </div>
+      </div>
+
+  return (
     <div className="container mx-auto p-4 relative">
       {/* Họa tiết nền */}
       <div className="absolute inset-0 bg-[url('/imperial-pattern.svg')] bg-repeat opacity-5 pointer-events-none"></div>

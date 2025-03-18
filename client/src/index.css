@@ -624,23 +624,3 @@
   white-space: pre-line;
   line-height: 1.6;
 }
-
-.location-list {
-  max-height: calc(100vh - 200px);
-  overflow-y: auto;
-  padding-right: 10px;
-}
-
-.location-list::-webkit-scrollbar {
-  width: 6px;
-}
-
-.location-list::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.location-list::-webkit-scrollbar-thumb {
-  background-color: var(--royal-gold);
-  opacity: 0.3;
-  border-radius: 20px;
-}
