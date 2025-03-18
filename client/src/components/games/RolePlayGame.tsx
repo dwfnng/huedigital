@@ -44,15 +44,13 @@ const gameSteps: GameStep[] = [
       {
         id: "hue",
         text: "Vùng đất Phú Xuân (Huế)",
-        result: `Một lựa chọn sáng suốt! 
+        result: `Một lựa chọn sáng suốt!
 
-        Vùng đất Phú Xuân nằm ở vị trí trung tâm đất nước, có núi sông bao bọc, địa thế hiểm yếu, thuận lợi cho việc phòng thủ và phát triển.`,
+        Phú Xuân có vị trí trung tâm, địa thế hiểm trở, thuận lợi cho phòng thủ và phát triển.`,
         score: 10,
         icon: <MapPin className="h-5 w-5" />,
-        historicalInfo: `Phú Xuân từng là kinh đô của chúa Nguyễn từ thế kỷ 17. 
-
-        Vị trí này nằm giữa hai miền Nam - Bắc, thuận lợi cho việc kiểm soát toàn bộ lãnh thổ.`,
-        consequence: `Việc chọn Phú Xuân làm kinh đô giúp triều Nguyễn dễ dàng quản lý cả nước và phát triển quan hệ ngoại giao với các nước láng giềng.`,
+        historicalInfo: `Phú Xuân là kinh đô chúa Nguyễn từ thế kỷ 17, có vị trí trung tâm, thuận lợi kiểm soát lãnh thổ.`,
+        consequence: `Phú Xuân được chọn làm kinh đô giúp triều Nguyễn quản lý đất nước hiệu quả và mở rộng ngoại giao.`,
         learnMore: {
           title: "Lịch sử Phú Xuân",
           content: `Phú Xuân là vùng đất địa linh nhân kiệt, nơi hội tụ những giá trị văn hóa độc đáo. 
@@ -64,7 +62,7 @@ const gameSteps: GameStep[] = [
       {
         id: "thanh-hoa",
         text: "Vùng đất Thanh Hóa",
-        result: "Thanh Hóa tuy có truyền thống lịch sử lâu đời và từng là căn cứ của nhiều triều đại, nhưng vị trí này không thuận lợi cho việc kiểm soát toàn bộ lãnh thổ.",
+        result: "Thanh Hóa có lịch sử lâu đời nhưng vị trí không thuận lợi để kiểm soát toàn bộ lãnh thổ.",
         score: 4,
         icon: <Shield className="h-5 w-5" />,
         historicalInfo: "Thanh Hóa là vùng đất có truyền thống văn hóa lâu đời, từng là quê hương của triều Hậu Lê.",
@@ -73,11 +71,11 @@ const gameSteps: GameStep[] = [
       {
         id: "hanoi",
         text: "Giữ nguyên Thăng Long (Hà Nội)",
-        result: `Thăng Long tuy là kinh đô cổ với nhiều lợi thế về văn hóa và kinh tế, nhưng nằm quá xa phương Nam, khó kiểm soát toàn bộ lãnh thổ.`,
+        result: `Thăng Long có lợi thế văn hóa, kinh tế nhưng xa phương Nam, khó kiểm soát toàn bộ lãnh thổ.`,
         score: 5,
         icon: <Building2 className="h-5 w-5" />,
         historicalInfo: `Thăng Long là kinh đô của các triều đại từ thời Lý, với hệ thống thành quách đồ sộ và nền văn hóa lâu đời.`,
-        consequence: `Việc giữ Thăng Long làm kinh đô có thể gây khó khăn trong việc kiểm soát các vùng đất phía Nam và ảnh hưởng đến sự ổn định của triều đại.`,
+        consequence: `Giữ Thăng Long làm kinh đô gây khó khăn trong kiểm soát phía Nam và ảnh hưởng đến sự ổn định triều đại.`,
         learnMore: {
           title: "Di sản Thăng Long",
           content: `Thăng Long - Hà Nội là trung tâm văn hóa, chính trị lâu đời với hơn 1000 năm lịch sử phát triển. 
@@ -89,10 +87,10 @@ const gameSteps: GameStep[] = [
       {
         id: "saigon",
         text: "Chọn Gia Định (Sài Gòn)",
-        result: `Gia Định tuy là vùng đất mới phát triển với tiềm năng thương mại lớn, nhưng vị trí quá xa trung tâm, không thuận lợi cho việc cai quản đất nước.`,
+        result: `Gia Định có tiềm năng thương mại lớn nhưng quá xa trung tâm, gây khó khăn trong việc cai quản đất nước.`,
         score: 3,
         icon: <Anchor className="h-5 w-5" />,
-        historicalInfo: `Gia Định là vùng đất trù phú, có cảng sông thuận lợi cho giao thương, nhưng chưa có cơ sở hạ tầng và truyền thống văn hóa đủ mạnh.`,
+        historicalInfo: `Gia Định có lợi thế giao thương nhưng thiếu cơ sở hạ tầng và truyền thống văn hóa vững chắc.`,
         consequence: `Việc đặt kinh đô ở Gia Định sẽ gây khó khăn trong việc quản lý các vùng miền khác, đặc biệt là khu vực Bắc Bộ.`,
         learnMore: {
           title: "Tiềm năng Gia Định",
@@ -115,7 +113,7 @@ const gameSteps: GameStep[] = [
         text: "Kết hợp phòng thủ truyền thống và hiện đại",
         result: `Sáng suốt! 
 
-        Việc kết hợp hào lũy truyền thống với công sự theo kiểu Vauban sẽ tạo nên hệ thống phòng thủ vững chắc.`,
+        Kết hợp hào lũy truyền thống và công sự Vauban tạo hệ thống phòng thủ vững chắc.`,
         score: 10,
         icon: <Swords className="h-5 w-5" />,
         historicalInfo: `Vua Gia Long đã học hỏi kỹ thuật xây dựng phòng thủ từ các chuyên gia phương Tây.`,
