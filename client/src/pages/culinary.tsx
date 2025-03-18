@@ -220,7 +220,7 @@ const hueDishes = [
 // Component for food cards
 const FoodCard = ({ dish }: { dish: (typeof hueDishes)[0] }) => {
   return (
-    <Card className="hover-translate overflow-hidden border border-[#B5935A]/20 hover:shadow-md hover:shadow-[#B5935A]/10 transition-all">
+    <Card className="hover-translate overflow-hidden">
       <CardHeader className="p-0">
         <div className="relative h-48 overflow-hidden">
           <img
@@ -242,21 +242,21 @@ const FoodCard = ({ dish }: { dish: (typeof hueDishes)[0] }) => {
           </div>
         </div>
       </CardHeader>
-      <CardContent className="p-4 bg-[#B5935A]/5">
+      <CardContent className="p-4">
         <CardTitle className="text-[#B5935A] mb-1">{dish.name}</CardTitle>
-        <CardDescription className="text-xs mb-2 text-[#B5935A]/70">
+        <CardDescription className="text-xs mb-2 text-muted-foreground">
           {dish.nameEn}
         </CardDescription>
         <p className="text-sm text-gray-700 line-clamp-3 dark:text-gray-300">
           {dish.description}
         </p>
       </CardContent>
-      <CardFooter className="p-4 pt-0 flex justify-between bg-[#B5935A]/5">
-        <span className="text-xs text-[#B5935A]/70 flex items-center">
+      <CardFooter className="p-4 pt-0 flex justify-between">
+        <span className="text-xs text-muted-foreground flex items-center">
           <Utensils className="h-3 w-3 mr-1" />
           {dish.ingredients.length} nguyên liệu
         </span>
-        <Button variant="outline" size="sm" className="text-[#B5935A] border-[#B5935A] hover:bg-[#B5935A]/10">
+        <Button variant="ghost" size="sm" className="text-[#B5935A]">
           Chi tiết
         </Button>
       </CardFooter>
@@ -283,42 +283,42 @@ const FoodDetail = ({ dish }: { dish: (typeof hueDishes)[0] }) => {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="md:col-span-2">
-          <div className="bg-[#B5935A]/5 p-4 rounded-lg mb-6 border border-[#B5935A]/20">
+          <div className="bg-card p-4 rounded-lg mb-6">
             <div className="flex items-center mb-3">
               <Soup className="h-5 w-5 text-[#B5935A] mr-2" />
-              <h3 className="text-lg font-medium text-[#B5935A]">Mô tả</h3>
+              <h3 className="text-lg font-medium">Mô tả</h3>
             </div>
-            <p className="text-[#B5935A]/80">{dish.description}</p>
+            <p className="text-muted-foreground">{dish.description}</p>
           </div>
 
-          <div className="bg-[#B5935A]/5 p-4 rounded-lg mb-6 border border-[#B5935A]/20">
+          <div className="bg-card p-4 rounded-lg mb-6">
             <div className="flex items-center mb-3">
               <History className="h-5 w-5 text-[#B5935A] mr-2" />
-              <h3 className="text-lg font-medium text-[#B5935A]">Lịch sử</h3>
+              <h3 className="text-lg font-medium">Lịch sử</h3>
             </div>
-            <p className="text-[#B5935A]/80">{dish.historicalContext}</p>
+            <p className="text-muted-foreground">{dish.historicalContext}</p>
           </div>
 
-          <div className="bg-[#B5935A]/5 p-4 rounded-lg border border-[#B5935A]/20">
+          <div className="bg-card p-4 rounded-lg">
             <div className="flex items-center mb-3">
               <ChefHat className="h-5 w-5 text-[#B5935A] mr-2" />
-              <h3 className="text-lg font-medium text-[#B5935A]">Cách chế biến</h3>
+              <h3 className="text-lg font-medium">Cách chế biến</h3>
             </div>
-            <p className="text-[#B5935A]/80">{dish.preparation}</p>
+            <p className="text-muted-foreground">{dish.preparation}</p>
           </div>
         </div>
 
         <div className="space-y-6">
-          <div className="bg-[#B5935A]/5 p-4 rounded-lg border border-[#B5935A]/20">
+          <div className="bg-card p-4 rounded-lg">
             <div className="flex items-center mb-3">
               <Utensils className="h-5 w-5 text-[#B5935A] mr-2" />
-              <h3 className="text-lg font-medium text-[#B5935A]">Nguyên liệu</h3>
+              <h3 className="text-lg font-medium">Nguyên liệu</h3>
             </div>
             <ul className="space-y-1">
               {dish.ingredients.map((ingredient, index) => (
                 <li
                   key={index}
-                  className="text-[#B5935A]/80 text-sm flex items-center"
+                  className="text-muted-foreground text-sm flex items-center"
                 >
                   <span className="h-1.5 w-1.5 rounded-full bg-[#B5935A] mr-2"></span>
                   {ingredient}
@@ -327,15 +327,15 @@ const FoodDetail = ({ dish }: { dish: (typeof hueDishes)[0] }) => {
             </ul>
           </div>
 
-          <div className="bg-[#B5935A]/5 p-4 rounded-lg border border-[#B5935A]/20">
+          <div className="bg-card p-4 rounded-lg">
             <div className="flex items-center mb-3">
               <Map className="h-5 w-5 text-[#B5935A] mr-2" />
-              <h3 className="text-lg font-medium text-[#B5935A]">Địa điểm nổi tiếng</h3>
+              <h3 className="text-lg font-medium">Địa điểm nổi tiếng</h3>
             </div>
             {dish.places.map((place, index) => (
               <div key={index} className="mb-3 last:mb-0">
-                <p className="font-medium text-sm text-[#B5935A]">{place.name}</p>
-                <p className="text-xs text-[#B5935A]/70">{place.address}</p>
+                <p className="font-medium text-sm">{place.name}</p>
+                <p className="text-xs text-muted-foreground">{place.address}</p>
                 <div className="flex items-center mt-1">
                   <div className="flex">
                     {[...Array(5)].map((_, i) => (
@@ -349,26 +349,26 @@ const FoodDetail = ({ dish }: { dish: (typeof hueDishes)[0] }) => {
                       </svg>
                     ))}
                   </div>
-                  <span className="text-xs ml-1 text-[#B5935A]/70">
+                  <span className="text-xs ml-1 text-muted-foreground">
                     {place.rating}/5
                   </span>
                 </div>
                 {index < dish.places.length - 1 && (
-                  <Separator className="mt-3 bg-[#B5935A]/20" />
+                  <Separator className="mt-3" />
                 )}
               </div>
             ))}
           </div>
 
           {dish.video && (
-            <div className="bg-[#B5935A]/5 p-4 rounded-lg border border-[#B5935A]/20">
+            <div className="bg-card p-4 rounded-lg">
               <div className="flex items-center mb-3">
                 <Youtube className="h-5 w-5 text-[#B5935A] mr-2" />
-                <h3 className="text-lg font-medium text-[#B5935A]">Video hướng dẫn</h3>
+                <h3 className="text-lg font-medium">Video hướng dẫn</h3>
               </div>
               <Button
                 variant="outline"
-                className="w-full border-[#B5935A] text-[#B5935A] hover:bg-[#B5935A]/10"
+                className="w-full"
                 onClick={() => window.open(dish.video, "_blank")}
               >
                 Xem hướng dẫn
@@ -385,7 +385,7 @@ const FoodDetail = ({ dish }: { dish: (typeof hueDishes)[0] }) => {
 const CulinaryHistory = () => {
   return (
     <div className="space-y-6 animate-fade-in">
-      <div className="bg-[#B5935A]/5 rounded-lg overflow-hidden border border-[#B5935A]/20">
+      <div className="bg-card rounded-lg overflow-hidden">
         <div className="relative h-64 md:h-80">
           <img
             src="https://tapchiamthuc.net/wp-content/uploads/2021/04/doc-dao-net-am-thuc-hue-va-nhung-mon-ngon-kho-cuong-02.jpg" // Updated image URL
@@ -403,23 +403,23 @@ const CulinaryHistory = () => {
 
         <div className="p-6">
           <div className="mb-8">
-            <h3 className="text-lg font-medium flex items-center mb-3 text-[#B5935A]">
+            <h3 className="text-lg font-medium flex items-center mb-3">
               <History className="h-5 w-5 text-[#B5935A] mr-2" />
               Ẩm thực Cung đình Huế
             </h3>
-            <p className="text-[#B5935A]/80 text-sm">
+            <p className="text-muted-foreground text-sm">
               Ẩm thực cung đình Huế được hình thành và phát triển qua nhiều
               triều đại của các vua nhà Nguyễn. Đây là nền ẩm thực mang tính
               chất hoàng gia, được chế biến công phu và cầu kỳ bởi các đầu bếp
               cung đình tài năng nhằm phục vụ vua chúa và hoàng tộc.
             </p>
-            <p className="text-[#B5935A]/80 text-sm mt-2">
+            <p className="text-muted-foreground text-sm mt-2">
               Đặc trưng của ẩm thực cung đình Huế là sự cân bằng giữa hương - vị
               - sắc - hình, thể hiện triết lý âm dương hài hòa. Mỗi món ăn đều
               được đầu tư về mặt thẩm mỹ, từ cách cắt thái nguyên liệu đến việc
               trình bày đẹp mắt.
             </p>
-            <p className="text-[#B5935A]/80 text-sm mt-2">
+            <p className="text-muted-foreground text-sm mt-2">
               Nhiều món ăn ngày nay như bánh bèo, bánh nậm, bánh bột lọc, chè
               Huế... đều có nguồn gốc từ cung đình và sau đó được phổ biến rộng
               rãi trong dân gian.
@@ -427,45 +427,45 @@ const CulinaryHistory = () => {
           </div>
 
           <div className="mb-8">
-            <h3 className="text-lg font-medium flex items-center mb-3 text-[#B5935A]">
+            <h3 className="text-lg font-medium flex items-center mb-3">
               <Utensils className="h-5 w-5 text-[#B5935A] mr-2" />
               Ẩm thực Dân gian Huế
             </h3>
-            <p className="text-[#B5935A]/80 text-sm">
+            <p className="text-muted-foreground text-sm">
               Song song với ẩm thực cung đình, ẩm thực dân gian Huế cũng phát
               triển với những nét đặc trưng riêng. Đây là nền ẩm thực mộc mạc,
               gần gũi, sử dụng nguyên liệu sẵn có trong tự nhiên và mang đậm bản
               sắc văn hóa địa phương.
             </p>
-            <p className="text-[#B5935A]/80 text-sm mt-2">
+            <p className="text-muted-foreground text-sm mt-2">
               Các món ăn dân gian Huế thường đơn giản nhưng không kém phần tinh
               tế, như cơm hến, bún thịt nướng, bánh canh, cháo lươn... Đặc biệt,
               người Huế có xu hướng sử dụng nhiều gia vị cay nồng như ớt, tiêu,
               gừng để tạo nên hương vị đặc trưng.
             </p>
-            <p className="text-[#B5935A]/80 text-sm mt-2">
+            <p className="text-muted-foreground text-sm mt-2">
               Sự giao thoa giữa ẩm thực cung đình và dân gian đã tạo nên nền ẩm
               thực Huế phong phú, đa dạng và độc đáo như ngày nay.
             </p>
           </div>
 
           <div>
-            <h3 className="text-lg font-medium flex items-center mb-3 text-[#B5935A]">
+            <h3 className="text-lg font-medium flex items-center mb-3">
               <Coffee className="h-5 w-5 text-[#B5935A] mr-2" />
               Nghệ thuật Thưởng thức
             </h3>
-            <p className="text-[#B5935A]/80 text-sm">
+            <p className="text-muted-foreground text-sm">
               Ẩm thực Huế không chỉ dừng lại ở việc chế biến món ăn mà còn là cả
               một nghệ thuật thưởng thức. Người Huế coi trọng không gian, thời
               gian và cách thức thưởng thức ẩm thực.
             </p>
-            <p className="text-[#B5935A]/80 text-sm mt-2">
+            <p className="text-muted-foreground text-sm mt-2">
               Nhiều món ăn Huế được thiết kế với kích thước nhỏ nhắn, hương vị
               đậm đà, yêu cầu người ăn phải từ tốn thưởng thức để cảm nhận hết
               hương vị. Đây cũng là phản ánh của tính cách người Huế - nhẹ
               nhàng, tinh tế và sâu sắc.
             </p>
-            <p className="text-[#B5935A]/80 text-sm mt-2">
+            <p className="text-muted-foreground text-sm mt-2">
               Ngày nay, ẩm thực Huế không chỉ là niềm tự hào của người dân xứ
               Huế mà còn trở thành một phần quan trọng trong nền ẩm thực Việt
               Nam, thu hút sự quan tâm của du khách trong và ngoài nước.
@@ -481,102 +481,102 @@ const CulinaryHistory = () => {
 const CulinaryMap = () => {
   return (
     <div className="animate-fade-in">
-      <div className="bg-[#B5935A]/5 rounded-lg overflow-hidden border border-[#B5935A]/20">
+      <div className="bg-card rounded-lg overflow-hidden">
         <div className="p-6">
-          <h3 className="text-xl font-medium flex items-center mb-4 text-[#B5935A]">
+          <h3 className="text-xl font-medium flex items-center mb-4">
             <Map className="h-5 w-5 text-[#B5935A] mr-2" />
             Bản đồ Ẩm thực Huế
           </h3>
 
-          <div className="relative h-[400px] mb-6 bg-[#B5935A]/10 rounded-lg overflow-hidden border border-[#B5935A]/20">
+          <div className="relative h-[400px] mb-6 bg-muted rounded-lg overflow-hidden">
             <div className="absolute inset-0 flex items-center justify-center">
-              <p className="text-[#B5935A]/70">Bản đồ đang được tải...</p>
+              <p className="text-muted-foreground">Bản đồ đang được tải...</p>
             </div>
             <img
-              src="https://infohueblog.com/wp-content/uploads/2020/07/dia-diem-an-uong-noi-tieng-o-hue.png" 
+              src="https://example.com/hue-culinary-map.jpg" // Updated image URL
               alt="Bản đồ ẩm thực Huế"
               className="w-full h-full object-cover"
             />
           </div>
 
           <div className="space-y-4">
-            <h4 className="font-medium text-[#B5935A]">Khu vực nổi tiếng về ẩm thực</h4>
+            <h4 className="font-medium">Khu vực nổi tiếng về ẩm thực</h4>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="p-4 border border-[#B5935A]/20 rounded-lg bg-[#B5935A]/5">
-                <h5 className="font-medium mb-1 text-[#B5935A]">Phố cổ Huế</h5>
-                <p className="text-sm text-[#B5935A]/70 mb-2">
+              <div className="p-4 border border-border rounded-lg">
+                <h5 className="font-medium mb-1">Phố cổ Huế</h5>
+                <p className="text-sm text-muted-foreground mb-2">
                   Khu vực tập trung nhiều quán ăn truyền thống với các món đặc
                   sản Huế.
                 </p>
-                <Badge variant="outline" className="mr-2 mb-2 border-[#B5935A] text-[#B5935A]">
+                <Badge variant="outline" className="mr-2 mb-2">
                   Bánh bèo
                 </Badge>
-                <Badge variant="outline" className="mr-2 mb-2 border-[#B5935A] text-[#B5935A]">
+                <Badge variant="outline" className="mr-2 mb-2">
                   Bánh nậm
                 </Badge>
-                <Badge variant="outline" className="mr-2 mb-2 border-[#B5935A] text-[#B5935A]">
+                <Badge variant="outline" className="mr-2 mb-2">
                   Bánh lọc
                 </Badge>
-                <Badge variant="outline" className="mr-2 mb-2 border-[#B5935A] text-[#B5935A]">
+                <Badge variant="outline" className="mr-2 mb-2">
                   Chè Huế
                 </Badge>
               </div>
 
-              <div className="p-4 border border-[#B5935A]/20 rounded-lg bg-[#B5935A]/5">
-                <h5 className="font-medium mb-1 text-[#B5935A]">Đường Trần Hưng Đạo</h5>
-                <p className="text-sm text-[#B5935A]/70 mb-2">
+              <div className="p-4 border border-border rounded-lg">
+                <h5 className="font-medium mb-1">Đường Trần Hưng Đạo</h5>
+                <p className="text-sm text-muted-foreground mb-2">
                   Con đường với nhiều quán bún bò Huế nổi tiếng.
                 </p>
-                <Badge variant="outline" className="mr-2 mb-2 border-[#B5935A] text-[#B5935A]">
+                <Badge variant="outline" className="mr-2 mb-2">
                   Bún bò Huế
                 </Badge>
-                <Badge variant="outline" className="mr-2 mb-2 border-[#B5935A] text-[#B5935A]">
+                <Badge variant="outline" className="mr-2 mb-2">
                   Bánh khoái
                 </Badge>
-                <Badge variant="outline" className="mr-2 mb-2 border-[#B5935A] text-[#B5935A]">
+                <Badge variant="outline" className="mr-2 mb-2">
                   Nem lụi
                 </Badge>
               </div>
 
-              <div className="p-4 border border-[#B5935A]/20 rounded-lg bg-[#B5935A]/5">
-                <h5 className="font-medium mb-1 text-[#B5935A]">Chợ Đông Ba</h5>
-                <p className="text-sm text-[#B5935A]/70 mb-2">
+              <div className="p-4 border border-border rounded-lg">
+                <h5 className="font-medium mb-1">Chợ Đông Ba</h5>
+                <p className="text-sm text-muted-foreground mb-2">
                   Khu chợ lớn nhất Huế với nhiều quầy bán đồ ăn truyền thống.
                 </p>
-                <Badge variant="outline" className="mr-2 mb-2 border-[#B5935A] text-[#B5935A]">
+                <Badge variant="outline" className="mr-2 mb-2">
                   Bánh ép
                 </Badge>
-                <Badge variant="outline" className="mr-2 mb-2 border-[#B5935A] text-[#B5935A]">
+                <Badge variant="outline" className="mr-2 mb-2">
                   Bún thịt nướng
                 </Badge>
-                <Badge variant="outline" className="mr-2 mb-2 border-[#B5935A] text-[#B5935A]">
+                <Badge variant="outline" className="mr-2 mb-2">
                   Trái cây
                 </Badge>
-                <Badge variant="outline" className="mr-2 mb-2 border-[#B5935A] text-[#B5935A]">
+                <Badge variant="outline" className="mr-2 mb-2">
                   Mè xửng
                 </Badge>
               </div>
 
-              <div className="p-4 border border-[#B5935A]/20 rounded-lg bg-[#B5935A]/5">
-                <h5 className="font-medium mb-1 text-[#B5935A]">Sông Hương</h5>
-                <p className="text-sm text-[#B5935A]/70 mb-2">
+              <div className="p-4 border border-border rounded-lg">
+                <h5 className="font-medium mb-1">Sông Hương</h5>
+                <p className="text-sm text-muted-foreground mb-2">
                   Khu vực ven sông nổi tiếng với các món ăn từ hải sản sông.
                 </p>
-                <Badge variant="outline" className="mr-2 mb-2 border-[#B5935A] text-[#B5935A]">
+                <Badge variant="outline" className="mr-2 mb-2">
                   Cơm hến
                 </Badge>
-                <Badge variant="outline" className="mr-2 mb-2 border-[#B5935A] text-[#B5935A]">
+                <Badge variant="outline" className="mr-2 mb-2">
                   Canh cá rô
                 </Badge>
-                <Badge variant="outline" className="mr-2 mb-2 border-[#B5935A] text-[#B5935A]">
+                <Badge variant="outline" className="mr-2 mb-2">
                   Gỏi cá trích
                 </Badge>
               </div>
             </div>
 
             <div className="mt-6">
-              <Button variant="outline" className="gap-2 border-[#B5935A] text-[#B5935A] hover:bg-[#B5935A]/10">
+              <Button variant="outline" className="gap-2">
                 <ShoppingBag className="h-4 w-4" />
                 <span>Xem tour ẩm thực Huế</span>
               </Button>
@@ -595,31 +595,31 @@ export default function CulinaryPage() {
 
   return (
     <div className="container mx-auto px-4 py-6">
-      <div className="mb-8 bg-[#B5935A]/10 p-6 rounded-lg border border-[#B5935A]/20 shadow-md">
+      <div className="mb-8">
         <h1 className="text-3xl font-bold text-[#B5935A]">Ẩm thực Huế</h1>
-        <p className="text-[#B5935A]/80 mt-2">
+        <p className="text-muted-foreground mt-2">
           Khám phá tinh hoa ẩm thực xứ Huế với đa dạng hương vị và câu chuyện
           văn hóa đặc sắc
         </p>
       </div>
 
       <Tabs defaultValue="dishes" className="mb-6">
-        <TabsList className="mb-6 bg-[#B5935A]/5 border border-[#B5935A]/20 p-1">
-          <TabsTrigger value="dishes" className="gap-2 data-[state=active]:bg-[#B5935A] data-[state=active]:text-white">
+        <TabsList className="mb-6">
+          <TabsTrigger value="dishes" className="gap-2">
             <Soup className="h-4 w-4" />
             <span>Món ăn đặc sản</span>
           </TabsTrigger>
-          <TabsTrigger value="history" className="gap-2 data-[state=active]:bg-[#B5935A] data-[state=active]:text-white">
+          <TabsTrigger value="history" className="gap-2">
             <History className="h-4 w-4" />
             <span>Lịch sử ẩm thực</span>
           </TabsTrigger>
-          <TabsTrigger value="map" className="gap-2 data-[state=active]:bg-[#B5935A] data-[state=active]:text-white">
+          <TabsTrigger value="map" className="gap-2">
             <Map className="h-4 w-4" />
             <span>Bản đồ ẩm thực</span>
           </TabsTrigger>
         </TabsList>
 
-        <TabsContent value="dishes" className="space-y-6 p-6 bg-[#B5935A]/5 rounded-lg border border-[#B5935A]/20">
+        <TabsContent value="dishes" className="space-y-6">
           {!selectedDish ? (
             <>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -637,9 +637,9 @@ export default function CulinaryPage() {
           ) : (
             <div className="space-y-4">
               <Button
-                variant="outline"
+                variant="ghost"
                 onClick={() => setSelectedDish(null)}
-                className="mb-4 border-[#B5935A] text-[#B5935A] hover:bg-[#B5935A]/10"
+                className="mb-4"
               >
                 ← Quay lại danh sách
               </Button>
@@ -648,11 +648,11 @@ export default function CulinaryPage() {
           )}
         </TabsContent>
 
-        <TabsContent value="history" className="p-6 bg-[#B5935A]/5 rounded-lg border border-[#B5935A]/20">
+        <TabsContent value="history">
           <CulinaryHistory />
         </TabsContent>
 
-        <TabsContent value="map" className="p-6 bg-[#B5935A]/5 rounded-lg border border-[#B5935A]/20">
+        <TabsContent value="map">
           <CulinaryMap />
         </TabsContent>
       </Tabs>
