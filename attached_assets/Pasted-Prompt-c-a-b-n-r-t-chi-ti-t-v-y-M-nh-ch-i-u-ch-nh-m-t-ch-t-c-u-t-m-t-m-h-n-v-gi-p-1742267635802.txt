@@ -1,0 +1,71 @@
+Prompt của bạn đã rất chi tiết và đầy đủ. Mình chỉ điều chỉnh một chút để câu từ mượt mà hơn và giúp AI hiểu rõ hơn. Dưới đây là **phiên bản hoàn thiện cuối cùng** của prompt:
+
+---
+
+**Prompt cho Replit AI:**  
+
+*"Hãy cập nhật giao diện và tính năng của trang web/ứng dụng về Cố đô Huế theo các yêu cầu sau:*  
+
+---
+
+### **1. Thay đổi logo và favicon**  
+- Thay thế logo cũ bằng logo mới đã cung cấp.  
+- Cập nhật favicon của trang web để đồng bộ với logo mới.  
+
+---
+
+### **2. Cập nhật giao diện tổng thể**  
+- Thiết kế theo phong cách **hoàng gia Huế** với tông màu **vàng, đỏ trầm, nâu gỗ**.  
+- **Sử dụng họa tiết cung đình hoặc trống đồng** làm background để tránh trống trải, tạo chiều sâu.  
+- Cải thiện hiệu ứng hiển thị:  
+  - **Hover mượt mà** trên các nút và thẻ nội dung.  
+  - **Chuyển trang mềm mại (fade-in, slide-in)**.  
+  - **Hiệu ứng động (animation)** cho các phần nội dung quan trọng.  
+- **Sử dụng Tailwind CSS** để tối ưu hiển thị trên mọi thiết bị.  
+
+---
+
+### **3. Cập nhật trang chủ (Homepage)**  
+- Trong phần **"Khám phá nền tảng"**, **thêm hai mục mới**:  
+  - **Triển lãm 3D/AR**: Trải nghiệm mô hình 3D, thực tế ảo về di tích Huế.  
+  - **Ẩm thực Huế**: Giới thiệu và hướng dẫn trải nghiệm các món ăn đặc trưng.  
+- **Thêm mục trưng bày hình ảnh về Huế trên trang chủ**:  
+  - Thiết kế **slider hình ảnh** với hiệu ứng chuyển động mượt mà (**auto-play và điều khiển bằng nút bấm**).  
+  - **Gợi ý các hình ảnh**: Hoàng thành Huế, Sông Hương, Lăng Tự Đức, Cầu Trường Tiền, các món ăn truyền thống...  
+  - Đặt tiêu đề **"Khám phá Huế qua hình ảnh"**, có mô tả ngắn gọn bên dưới.  
+- Cải thiện thanh điều hướng (navbar):  
+  - Cập nhật **biểu tượng và hiệu ứng hover**.  
+  - Làm rõ các danh mục bằng icon trực quan hơn.  
+- **Hiển thị hình ảnh động hoặc video nền** để tăng tính trực quan.  
+
+---
+
+### **4. Cập nhật trang "3D/AR Exhibition"**  
+- **Xóa nút "BACK"** ở cuối trang.  
+- **Di chuyển thanh tìm kiếm xuống dưới** phần danh sách các mục "3D-AR", "3D 360°", "3D Model" để bố cục hợp lý hơn.  
+
+---
+
+### **5. Cập nhật tính năng "Đặt vé"**  
+- **Thêm tính năng đặt xe** để hỗ trợ di chuyển trong thành phố.  
+- Cho phép người dùng đặt các loại xe sau:  
+  - **Xe điện**  
+  - **Xích lô**  
+  - **Taxi**  
+  - **Thuê xe máy**  
+- Hiển thị **giá cả** và **tùy chọn đặt nhanh** để tối ưu trải nghiệm.  
+
+---
+
+### **6. Cải thiện trải nghiệm người dùng**  
+- Tăng cường **hiệu ứng tương tác** để tạo trải nghiệm tốt hơn.  
+- Đảm bảo thiết kế **phù hợp với phong cách hoàng gia của Huế**.  
+
+---
+
+Hãy triển khai các cập nhật trên một cách chính xác và tối ưu nhất!  
+
+---
+
+✅ **Prompt này đã tổng hợp đầy đủ tất cả yêu cầu của bạn** từ logo, giao diện, trang chủ, triển lãm 3D, đặt vé, đến slider hình ảnh.  
+🚀 Bạn có thể copy & paste vào Replit AI ngay! Nếu cần chỉnh sửa gì thêm, cứ báo mình nhé!
