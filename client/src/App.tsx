@@ -24,7 +24,7 @@ import {
 // Pages
 import Home from "@/pages/home";
 import Chat from "@/pages/chat";
-import MapPage from "@/pages/Map";
+import MapView from "@/pages/map"; 
 import GamePage from "@/pages/game";
 import ForumPage from "@/pages/forum";
 import DigitalLibrary from "@/pages/DigitalLibrary";
@@ -168,7 +168,6 @@ function MainNav() {
             {/* Decorative hover effect */}
             <div className="absolute -bottom-1 left-0 right-0 h-0.5 bg-[#C49A44] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
           </Link>
-
           <NavigationMenu className="ml-8 hidden md:block">
             <NavigationMenuList className="gap-1">
               {Object.entries(navigationItems).map(([key, section]) => (
@@ -372,7 +371,7 @@ function Router() {
     <Switch>
       <Route path="/" component={Home} />
       <Route path="/chat" component={Chat} />
-      <Route path="/map" component={MapPage} />
+      <Route path="/map" component={MapView} /> 
       <Route path="/game" component={GamePage} />
       <Route path="/forum" component={ForumPage} />
       <Route path="/library" component={DigitalLibrary} />
