@@ -1,0 +1,54 @@
+Hãy thiết kế phần đầu mỗi trang (header + mô tả) cho website về Cố Đô Huế, đảm bảo các yêu cầu sau:
+
+📌 1. Yêu cầu chung về giao diện
+Header phải nổi bật và có sự tách biệt rõ ràng với nội dung bên dưới.
+Thiết kế theo phong cách Hoàng Gia Huế:
+Màu sắc:
+Nền header: Gradient từ vàng hoàng gia (#DAA520) sang đỏ trầm (#8B0000).
+Chữ: Trắng (#FFF) hoặc nâu gỗ (#8B4513) tùy nền.
+Font chữ: Cổ điển, sang trọng (EB Garamond, Playfair Display).
+Hiệu ứng mềm mại: Fade-in nhẹ nhàng + slight slide-up.
+Phân tách rõ với nội dung bên dưới bằng họa tiết hoặc viền trang trí.
+📌 2. Cấu trúc của mỗi trang
+🔹 1. Phần đầu trang (Header)
+Tiêu đề lớn (text-4xl, font-bold, letter-spacing rộng).
+Mô tả ngắn gọn (text-lg, font-light, opacity-80).
+Nền header có thể có hiệu ứng video nhẹ hoặc ảnh động để tạo sự thu hút.
+Hiệu ứng khi vào trang: Fade-in + slight slide-up.
+Hover: Đổi màu nhẹ (ánh sáng vàng nhẹ trên chữ).
+🔹 2. Phần phân tách với nội dung dưới
+Họa tiết cung đình/trống đồng/SVG trang trí hoặc hiệu ứng gradient fade-out.
+Có thể dùng viền cong hoặc đường phân cách có họa tiết thay vì đường kẻ đơn giản.
+🔹 3. Nội dung bên dưới
+Mỗi phần nội dung có viền bo tròn nhẹ (rounded-xl).
+Khoảng cách giữa các phần rõ ràng (padding-y-12 hoặc gap-8).
+Sử dụng card layout hoặc khung nổi bật để dễ nhìn.
+📌 3. Yêu cầu riêng cho từng chức năng
+📍 Bản đồ số
+
+Tiêu đề: "📍 Bản đồ số"
+Mô tả: "Khám phá các di tích, danh lam thắng cảnh tại Huế."
+Nền header: Hình bản đồ cổ Huế + overlay màu nâu gỗ.
+🚗 Đặt xe du lịch
+
+Tiêu đề: "🚗 Đặt xe tiện lợi"
+Mô tả: "Dễ dàng đặt xe di chuyển giữa các địa điểm nổi tiếng tại Huế."
+Hiển thị icon xe cổ phong cách xích lô Huế hoặc xe điện.
+🛍️ Mua sắm & Lưu niệm
+
+Tiêu đề: "🛍️ Quà lưu niệm Huế"
+Mô tả: "Những món quà mang đậm nét văn hóa Huế, đặt mua dễ dàng."
+🍲 Ẩm thực Huế
+
+Tiêu đề: "🍲 Ẩm thực Huế"
+Mô tả: "Thưởng thức những món ăn đặc trưng của đất cố đô."
+Background: Họa tiết trống đồng mờ, overlay màu vàng trầm.
+📌 4. Công nghệ yêu cầu
+✅ Tailwind CSS để tối ưu hiển thị.
+✅ Framer Motion hoặc CSS Animation để tạo hiệu ứng mềm mại.
+✅ SVG hoặc Background Pattern làm họa tiết phân tách.
+
+🎬 Output mong muốn
+Một đoạn mã HTML + Tailwind CSS hiển thị phần header đẹp, tối ưu, có hiệu ứng chuyển động nhẹ nhàng khi vào trang, đồng thời phân biệt rõ ràng với nội dung bên dưới.
+
+🚀 Hãy tạo mã nguồn tối ưu và dễ chỉnh sửa để có thể nâng cấp sau này!
