@@ -1,0 +1,50 @@
+Dưới đây là một **prompt chi tiết** để bạn gửi cho **Replit Agent AI**, giúp tạo phần **header** tối ưu và đơn giản nhưng vẫn đẹp, rõ ràng, phù hợp với giao diện chủ đề Huế.  
+
+---
+
+### **🎯 Prompt cho Replit Agent AI**  
+
+Hãy tạo một **phần header** cho mỗi chức năng của website về Cố Đô Huế, đảm bảo các yêu cầu sau:  
+
+---
+
+## **📌 1. Yêu cầu tổng thể**  
+- **Header phải phân biệt rõ ràng với nội dung bên dưới.**  
+- **Thiết kế theo phong cách cung đình Huế**:  
+  - **Màu sắc:** Vàng hoàng gia `#DAA520`, đỏ trầm `#8B0000`, nâu gỗ `#8B4513`.  
+  - **Font chữ:** Cổ điển, sang trọng (gợi ý: **EB Garamond, Playfair Display**).  
+  - **Họa tiết trang trí** (SVG hoặc Background Image) mang nét Huế.  
+
+---
+
+## **📌 2. Cấu trúc header**  
+1. **Tên chức năng** (Ví dụ: "📍 Bản đồ số")  
+   - Font chữ lớn (`text-4xl` trong Tailwind).  
+   - Hiệu ứng **fade-in + slight slide-up** khi tải trang.  
+   - Khi hover: **đổi màu nhẹ (ánh sáng vàng)**.  
+
+2. **Mô tả ngắn** (Ví dụ: "Khám phá các di tích, danh lam thắng cảnh tại Huế.")  
+   - Font chữ nhỏ hơn, màu nâu gỗ `#8B4513`.  
+   - Hiệu ứng **fade-in chậm hơn tiêu đề**.  
+
+3. **Viền phân tách với nội dung bên dưới**  
+   - Dùng **họa tiết trống đồng hoặc cung đình** thay vì đường kẻ đơn giản.  
+   - Nếu chưa có họa tiết, có thể dùng hiệu ứng **gradient fade-out** từ vàng sang nền trắng.  
+
+---
+
+## **📌 3. Công nghệ yêu cầu**  
+✅ **Tailwind CSS** để tối ưu hiển thị.  
+✅ **Framer Motion hoặc CSS Animation** để tạo hiệu ứng mượt mà.  
+✅ **SVG hoặc Background Pattern** làm họa tiết phân tách.  
+
+**Gợi ý:** Nếu muốn làm đơn giản ban đầu, chỉ cần tập trung vào **màu sắc, font chữ và hiệu ứng fade-in**. Sau đó có thể nâng cấp bằng họa tiết SVG hoặc hiệu ứng nâng cao.  
+
+---
+
+### **🎬 Output mong muốn**  
+Một đoạn mã **HTML + Tailwind CSS** hiển thị phần **header đơn giản mà đẹp**, có hiệu ứng chuyển động nhẹ nhàng khi vào trang, đồng thời phân biệt rõ ràng với nội dung bên dưới.  
+
+---
+
+🚀 **Hãy tạo mã nguồn tối ưu và dễ chỉnh sửa để có thể nâng cấp sau này!**
