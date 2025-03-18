@@ -106,7 +106,11 @@ const navigationItems = {
       },
     ],
   },
-  // Forum section removedms: [
+  forum: {
+    icon: <BookText className="h-4 w-4" />,
+    label: "Diễn đàn",
+    description: "Thảo luận và chia sẻ về văn hóa Huế",
+    items: [
       {
         icon: <BookText className="h-4 w-4" />,
         title: "Diễn đàn",
