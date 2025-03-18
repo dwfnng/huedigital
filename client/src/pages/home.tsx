@@ -297,7 +297,7 @@ export default function Home() {
             transition={{ delay: 0.2 }}
             className="max-w-4xl mx-auto text-center"
           >
-            <h2 className="text-3xl font-bold mb-6 gold-gradient bg-clip-text text-transparent inline-block">
+            <h2 className="text-3xl font-bold mb-6 text-[#8B0000] inline-block">
               Về Cố đô Huế
             </h2>
             <p className="text-lg text-muted-foreground mb-8">
