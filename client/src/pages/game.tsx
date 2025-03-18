@@ -14,15 +14,15 @@ function GameCard({ icon: Icon, title, description, onClick }: {
   onClick: () => void;
 }) {
   return (
-    <Card className="cursor-pointer hover:bg-red-50/30 transition-colors shadow-sm hover:shadow-md" onClick={onClick}>
+    <Card className="cursor-pointer hover:bg-amber-50/30 transition-colors shadow-sm hover:shadow-md border-[#B5935A]" onClick={onClick}>
       <CardContent className="p-6">
         <div className="flex items-start gap-4">
-          <div className="p-2 bg-[#7B2B2B]/10 rounded-lg">
-            <Icon className="h-6 w-6 text-[#7B2B2B]" />
+          <div className="p-2 bg-[#B5935A]/10 rounded-lg">
+            <Icon className="h-6 w-6 text-[#B5935A]" />
           </div>
           <div>
-            <h3 className="font-semibold mb-2 text-[#7B2B2B]">{title}</h3>
-            <p className="text-sm text-[#8B0000]">{description}</p>
+            <h3 className="font-semibold mb-2 text-black">{title}</h3>
+            <p className="text-sm text-gray-700">{description}</p>
           </div>
         </div>
       </CardContent>
@@ -60,12 +60,14 @@ export default function GamePage() {
     return (
       <div className="container mx-auto p-4">
         <button 
-          onClick={() => setSelectedGame(null)}
-          className="mb-6 text-[#7B2B2B] hover:underline flex items-center gap-2 font-medium"
+          onClick={() => window.history.back()}
+          className="mb-6 bg-[#B5935A] text-white hover:bg-[#A38147] px-4 py-2 rounded-md flex items-center gap-2 font-medium shadow-sm transition-colors"
         >
-          ← Quay lại danh sách
+          ← Quay lại
         </button>
-        {games[selectedGame as keyof typeof games].component}
+        <div className="bg-[url('/assets/images/hue-pattern-bg.png')] bg-opacity-10 rounded-lg p-6">
+          {games[selectedGame as keyof typeof games].component}
+        </div>
       </div>
     );
   }
@@ -73,18 +75,18 @@ export default function GamePage() {
   return (
     <div className="container mx-auto p-4">
       <div className="max-w-4xl mx-auto">
-        <div className="bg-[#7B2B2B] text-white p-4 rounded-lg mb-6 shadow-md">
+        <div className="bg-[#B5935A] text-black p-4 rounded-lg mb-6 shadow-md">
           <h1 className="text-2xl font-bold mb-2">Game giáo dục</h1>
-          <p className="text-white/90">
+          <p className="text-black/90">
             Khám phá lịch sử và văn hóa Huế qua các trò chơi tương tác
           </p>
         </div>
 
         <Tabs defaultValue="role-play" className="space-y-6">
           <TabsList className="w-full">
-            <TabsTrigger value="role-play" className="flex-1 text-[#7B2B2B] font-medium">Nhập vai lịch sử</TabsTrigger>
-            <TabsTrigger value="build" className="flex-1 text-[#7B2B2B] font-medium">Xây dựng 3D</TabsTrigger>
-            <TabsTrigger value="treasure" className="flex-1 text-[#7B2B2B] font-medium">Truy tìm kho báu</TabsTrigger>
+            <TabsTrigger value="role-play" className="flex-1 text-black font-medium">Nhập vai lịch sử</TabsTrigger>
+            <TabsTrigger value="build" className="flex-1 text-black font-medium">Xây dựng 3D</TabsTrigger>
+            <TabsTrigger value="treasure" className="flex-1 text-black font-medium">Truy tìm kho báu</TabsTrigger>
           </TabsList>
 
           <TabsContent value="role-play" className="space-y-4">
@@ -121,9 +123,9 @@ export default function GamePage() {
           </TabsContent>
         </Tabs>
 
-        <div className="mt-8 text-center p-4 bg-[#7B2B2B]/10 rounded-lg">
-          <p className="text-[#7B2B2B] font-medium">🚧 Các trò chơi khác đang được phát triển và sẽ sớm ra mắt.</p>
-          <p className="text-[#8B0000] text-sm mt-1">Hãy quay lại sau để trải nghiệm thêm nhiều trò chơi mới!</p>
+        <div className="mt-8 text-center p-4 bg-[#B5935A]/10 rounded-lg border border-[#B5935A]/30">
+          <p className="text-black font-medium">🚧 Các trò chơi khác đang được phát triển và sẽ sớm ra mắt.</p>
+          <p className="text-gray-700 text-sm mt-1">Hãy quay lại sau để trải nghiệm thêm nhiều trò chơi mới!</p>
         </div>
       </div>
     </div>
