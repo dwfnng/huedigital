@@ -1,8 +1,0 @@
-<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <pattern id="imperial" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
-      <path d="M0 0h4v4H0V0zm8 8h4v4H8V8z" fill="#B5935A" fill-opacity="0.1"/>
-    </pattern>
-  </defs>
-  <rect width="100" height="100" fill="url(#imperial)"/>
-</svg>

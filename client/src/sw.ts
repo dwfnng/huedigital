@@ -1,6 +1,3 @@
-/// <reference lib="webworker" />
-declare const self: ServiceWorkerGlobalScope & { __WB_MANIFEST: any[] };
-
 import { precacheAndRoute } from 'workbox-precaching';
 import { registerRoute } from 'workbox-routing';
 import { StaleWhileRevalidate } from 'workbox-strategies';

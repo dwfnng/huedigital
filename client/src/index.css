@@ -7,27 +7,17 @@
   --royal-gold: #B5935A;
   --wooden-brown: #6D4C41;
   --deep-red: #6B2B2B;
-  --soft-cream: #F5E1A4;
-
-  /* Updated pattern based on provided image */
-  --background-pattern-overlay: linear-gradient(
-    to right,
-    rgba(181, 147, 90, 0.03),
-    rgba(157, 49, 49, 0.03)
-  );
-
-  /* Traditional Hue pattern from the provided asset */
-  --imperial-pattern: url("/images/brand/pattern.svg");
-
-  /* Decorative illustration */
-  --decorative-illustration: url("/images/brand/illustration.svg");
+  --soft-cream: #F5F0E5;
+  --background-pattern-overlay: linear-gradient(to right, rgba(181, 147, 90, 0.03), rgba(157, 49, 49, 0.03));
+  --background-pattern-texture: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5z' fill='%23B5935A' fill-opacity='0.04'/%3E%3C/svg%3E");
+  --imperial-pattern: url("data:image/svg+xml,%3Csvg width='72' height='72' viewBox='0 0 72 72' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23B5935A' fill-opacity='0.05'%3E%3Cpath d='M36 36c-6.627 0-12-5.373-12-12s5.373-12 12-12 12 5.373 12 12-5.373 12-12 12zm0-6c3.314 0 6-2.686 6-6s-2.686-6-6-6-6 2.686-6 6 2.686 6 6 6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
 }
 
 @layer components {
   .glass-card {
     @apply bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg border border-white/20 rounded-lg shadow-lg;
   }
-
+  
   .royal-gradient {
     @apply bg-gradient-to-r from-[#8D6A3F] via-[#B5935A] to-[#6B2B2B];
   }
@@ -47,399 +37,109 @@
   .page-transition {
     @apply transition-all duration-300 ease-in-out;
   }
-
+  
   .hover-scale {
     @apply transition-transform duration-300 hover:scale-105;
   }
-
+  
   .royal-shadow {
     @apply shadow-[0_4px_12px_rgba(181,147,90,0.2)];
   }
-
-  /* Enhance imperial card design */
+  
   .imperial-card {
-    @apply relative bg-[#F5E1A4]/30 dark:bg-zinc-900/50 backdrop-blur-sm p-6 rounded-lg;
-    @apply border border-[#B5935A]/30 shadow-lg;
-    @apply hover:border-[#B5935A]/50 hover:shadow-xl transition-all duration-300;
+    @apply bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm border border-[#B5935A]/20 rounded-lg shadow-md hover:imperial-border transition-all duration-300;
   }
-
-  /* Imperial corner decorations */
-  .imperial-corner {
-    @apply absolute w-24 h-24 pointer-events-none opacity-20;
-    background-size: contain;
-    background-repeat: no-repeat;
-  }
-
-  .imperial-corner-tl {
-    @apply top-0 left-0;
-    background-image: url('/corner-decoration.svg');
-  }
-
-  .imperial-corner-tr {
-    @apply top-0 right-0 scale-x-[-1];
-    background-image: url('/corner-decoration.svg');
-  }
-
-  .imperial-corner-bl {
-    @apply bottom-0 left-0 scale-y-[-1];
-    background-image: url('/corner-decoration.svg');
-  }
-
-  .imperial-corner-br {
-    @apply bottom-0 right-0 scale-x-[-1] scale-y-[-1];
-    background-image: url('/corner-decoration.svg');
-  }
-
-  .royal-button {
-    @apply bg-[#3A1A1A]/80 hover:bg-[#3A1A1A] text-[#F5E1A4];
-    @apply border border-[#8D6A3F]/50 hover:border-[#C49A44];
-    @apply transition-all duration-300;
-  }
-
-  .fade-in {
-    animation: fadeIn 0.5s ease-out forwards;
-  }
-
-  .slide-up {
-    animation: slideUp 0.5s ease-out forwards;
-  }
-
-  .scale-in {
-    animation: scaleIn 0.3s ease-out forwards;
-  }
-
-
-  .hover-translate {
-    @apply transition-all duration-300 ease-out;
-    @apply hover:-translate-y-1 hover:shadow-md;
-  }
-
-  .soft-glow {
-    @apply transition-all duration-300;
-    box-shadow: 0 0 0 rgba(181, 147, 90, 0);
-  }
-
-  .soft-glow:hover {
-    box-shadow: 0 0 15px rgba(181, 147, 90, 0.15);
-  }
+  
   .elegant-card {
     @apply bg-[#FEF8E8]/90 backdrop-blur-sm border border-[#B5935A]/30 rounded-lg shadow-md;
-    background-image: var(--imperial-pattern);
+    background-image: var(--lotus-pattern);
     background-position: center;
     background-repeat: repeat;
   }
-
+  
   .dragon-card {
     @apply bg-[#FEF8E8]/90 backdrop-blur-sm border border-[#B5935A]/30 rounded-lg shadow-md;
     background-image: var(--dragon-pattern);
     background-position: center;
     background-repeat: repeat;
   }
-
+  
   .lattice-card {
     @apply bg-[#FEF8E8]/90 backdrop-blur-sm border border-[#B5935A]/30 rounded-lg shadow-md;
     background-image: var(--lattice-pattern);
     background-position: center;
     background-repeat: repeat;
   }
-
+  
   .elegant-pattern {
     background-image: var(--imperial-pattern);
   }
-
+  
   .lotus-pattern {
     background-image: var(--lotus-pattern);
   }
-
+  
   .dragon-pattern {
     background-image: var(--dragon-pattern);
   }
-
+  
   .lattice-pattern {
     background-image: var(--lattice-pattern);
   }
-
+  
   /* Imperial decorative divider */
   .imperial-divider {
     @apply h-0.5 my-4;
     background: linear-gradient(to right, transparent, rgba(181, 147, 90, 0.3), transparent);
   }
-
+  
   .imperial-divider-vertical {
     @apply w-0.5 mx-4 h-full;
     background: linear-gradient(to bottom, transparent, rgba(181, 147, 90, 0.3), transparent);
   }
-
-  /* Enhanced TabsList styling */
-  .tabs-royal {
-    @apply bg-[#3A1A1A]/80 p-1 border border-[#8D6A3F]/50 rounded-lg;
-  }
-
-  .tab-trigger-royal {
-    @apply data-[state=active]:bg-[#6B2B2B] data-[state=active]:text-[#F5E1A4] 
-           hover:bg-[#6B2B2B]/70 hover:text-[#F5E1A4]/90
-           transition-all duration-300;
-  }
-
-  /* Enhanced Badge styling */
-  .badge-royal {
-    @apply bg-[#3A1A1A] text-[#F5E1A4] border-[#8D6A3F] 
-           hover:bg-[#3A1A1A]/80 transition-colors duration-300;
-  }
-
-  /* Enhanced Card effects */
-  .card-royal {
-    @apply bg-[#F5E1A4]/30 dark:bg-zinc-900/50 backdrop-blur-sm 
-           border border-[#8D6A3F]/30 shadow-lg
-           hover:border-[#B5935A]/50 hover:shadow-xl 
-           transition-all duration-300;
-    &:hover .corner-royal {
-      opacity: 0.25;
-    }
-    &:hover .royal-heading {
-      text-shadow: 0 2px 8px rgba(181, 147, 90, 0.2);
-    }
-  }
-
-  /* Royal corner decorations with enhanced opacity */
-  .corner-royal {
-    @apply absolute w-24 h-24 pointer-events-none;
-    opacity: 0.15;
-    background-image: url('/corner-decoration.svg');
-    background-size: contain;
-    background-repeat: no-repeat;
-    transition: opacity 0.3s ease-in-out;
-  }
-
-  .corner-royal-hover {
-    opacity: 0.25;
-  }
-
-  /* Enhanced transitions */
-  .transition-royal {
-    @apply transition-all duration-300 ease-in-out;
-  }
-
-  /* Gradient text effect */
-  .text-royal-gradient {
-    @apply text-transparent bg-clip-text;
-    background-image: linear-gradient(45deg, #B5935A, #8D6A3F);
-  }
-
-  /* Imperial divider with enhanced gradient */
-  .divider-royal {
-    @apply h-0.5 my-4 w-full;
-    background: linear-gradient(
-      90deg, 
-      transparent 0%, 
-      rgba(181, 147, 90, 0.1) 15%,
-      rgba(181, 147, 90, 0.3) 50%,
-      rgba(181, 147, 90, 0.1) 85%,
-      transparent 100%
-    );
-  }
-
-  /* Focus styles */
-  .focus-royal {
-    @apply focus:outline-none focus:ring-2 focus:ring-[#B5935A]/50 focus:ring-offset-2 
-           focus:ring-offset-[#F5E1A4]/10;
-  }
-
-  /* Game-specific backgrounds with enhanced gradients */
-  .heritage-section {
-    @apply relative bg-gradient-to-br from-red-50/95 to-orange-50/95 dark:from-red-950/95 dark:to-orange-950/95;
-    background-image: radial-gradient(circle at center, rgba(var(--primary-rgb), 0.05) 0%, transparent 70%),
-                      var(--background-pattern-texture);
-  }
-
-  .historical-section {
-    @apply relative bg-gradient-to-br from-emerald-50/95 to-teal-50/95 dark:from-emerald-950/95 dark:to-teal-950/95;
-    background-image: radial-gradient(circle at center, rgba(var(--primary-rgb), 0.05) 0%, transparent 70%),
-                      var(--background-pattern-texture);
-  }
-
-  .cultural-section {
-    @apply relative bg-gradient-to-br from-purple-50/95 to-indigo-50/95 dark:from-purple-950/95 dark:to-indigo-950/95;
-    background-image: radial-gradient(circle at center, rgba(var(--primary-rgb), 0.05) 0%, transparent 70%),
-                      var(--background-pattern-texture);
-  }
-
-  /* Enhanced transitions and animations */
-  .transition-smooth {
-    @apply transition-all duration-300 ease-in-out;
-  }
-
-  .hover-lift {
-    @apply hover:-translate-y-1 transition-transform duration-200;
-  }
-
-  .hover-glow {
-    @apply hover:shadow-lg hover:shadow-primary/10 transition-shadow duration-200;
-  }
-
-  .hover-scale {
-    @apply hover:scale-105 transition-transform duration-200;
-  }
-
-  .fade-in {
-    @apply opacity-0 animate-[fadeIn_0.5s_ease-in-out_forwards];
-  }
-
-  .slide-in {
-    @apply translate-y-4 opacity-0 animate-[slideIn_0.5s_ease-out_forwards];
-  }
-
-  .pop-in {
-    @apply scale-95 opacity-0 animate-[popIn_0.3s_ease-out_forwards];
-  }
-
-  .floating {
-    animation: floating 3s ease-in-out infinite;
-  }
-
-  /* Game content formatting */
-  .game-text {
-    @apply text-sm md:text-base;
-    white-space: pre-line;
-    line-height: 1.6;
-  }
-
-  .game-description {
-    @apply text-sm md:text-base;
-    white-space: pre-line;
-    line-height: 1.6;
-  }
-
-  .game-result {
-    @apply text-sm md:text-base;
-    white-space: pre-line;
-    line-height: 1.6;
-    margin-bottom: 0.5rem;
-  }
-
-  .game-historical-info {
-    @apply text-xs md:text-sm text-muted-foreground;
-    white-space: pre-line;
-    line-height: 1.6;
-  }
-
-  /* Enhanced user interaction styles */
-  .interactive-element {
-    @apply transition-all duration-200;
-    @apply hover:bg-[#B5935A]/10 active:bg-[#B5935A]/20;
-    @apply focus:outline-none focus:ring-2 focus:ring-[#B5935A]/20;
-  }
-
-  /* Text styles */
-  .royal-heading {
-    @apply text-[#B5935A] font-bold;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-
-  .elegant-text {
-    @apply text-[#6B2B2B] dark:text-[#F5E1A4];
-  }
-
-  /* Enhanced badge animations */
-  .badge-royal {
-    @apply bg-[#3A1A1A] text-[#F5E1A4] border-[#8D6A3F] 
-           hover:bg-[#3A1A1A]/80 transition-colors duration-300
-           hover:border-[#B5935A] hover:shadow-[0_0_10px_rgba(181,147,90,0.2)];
-  }
-
-  /* Smooth transitions */
-  .transition-royal {
+  
+  /* Add new subtle animations */
+  .hover-translate {
     @apply transition-all duration-300 ease-out;
+    @apply hover:-translate-y-1 hover:shadow-md;
   }
-
-  /* Text gradient effects */
-  .text-royal-gradient {
-    @apply text-transparent bg-clip-text;
-    background-image: linear-gradient(45deg, 
-      rgba(181, 147, 90, 1) 0%,
-      rgba(141, 106, 63, 1) 50%,
-      rgba(107, 43, 43, 1) 100%
-    );
+  
+  .soft-glow {
+    @apply transition-all duration-300;
+    box-shadow: 0 0 0 rgba(181, 147, 90, 0);
   }
-
-  /* Hover lift effect */
-  .hover-lift {
-    @apply transition-transform duration-200 ease-out;
-    &:hover {
-      transform: translateY(-2px);
-    }
-  }
-
-  /* Royal shadow effect */
-  .shadow-royal {
-    box-shadow: 0 4px 12px rgba(181, 147, 90, 0.1),
-                0 8px 24px rgba(181, 147, 90, 0.05);
+  
+  .soft-glow:hover {
+    box-shadow: 0 0 15px rgba(181, 147, 90, 0.15);
   }
 }
 
-/* Enhanced keyframe animations */
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-in;
+}
+
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-slide-up {
+  animation: slideUp 0.5s ease-out;
 }
 
 @keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes scaleIn {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-/* Royal hover effects */
-.hover-glow {
-  @apply transition-all duration-300;
-  box-shadow: 0 0 0 rgba(181, 147, 90, 0);
-}
-
-.hover-glow:hover {
-  box-shadow: 0 0 15px rgba(181, 147, 90, 0.2);
-}
-
-body {
-  @apply font-sans antialiased text-foreground;
-  background-color: var(--soft-cream);
-  background-image: var(--imperial-pattern), var(--background-pattern-overlay);
-  background-position: center, center;
-  background-repeat: repeat, repeat;
-  background-attachment: fixed;
-  background-blend-mode: overlay;
-  @apply dark:bg-zinc-900;
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
 }
 
 @layer base {
   :root {
     /* Subtle background patterns */
-    --background-pattern-overlay: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23B5935A' fill-opacity='0.03'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z'%3E%3C/path%3E%3C/g%3E%3C/svg%3E");
+    --background-pattern-overlay: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23B5935A' fill-opacity='0.03'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z'%3E%3C/path%3E%3C/g%3E%3C/svg%3E");
     --background-pattern-texture: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23B5935A' fill-opacity='0.02'%3E%3Cpath d='M50 50c0-5.523 4.477-10 10-10s10 4.477 10 10-4.477 10-10 10c0 5.523-4.477 10-10 10s-10-4.477-10-10 4.477-10 10-10zM10 10c0-5.523 4.477-10 10-10s10 4.477 10 10-4.477 10-10 10c0 5.523-4.477 10-10 10S0 25.523 0 20s4.477-10 10-10zm10 8c4.418 0 8-3.582 8-8s-3.582-8-8-8-8 3.582-8 8 3.582 8 8 8zm40 40c4.418 0 8-3.582 8-8s-3.582-8-8-8-8 3.582-8 8 3.582 8 8 8z' /%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-
+    
     /* Imperial patterns */
-    --imperial-pattern: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='%23B5935A' fill-opacity='0.05' d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z'%3E%3C/path%3E%3C/svg%3E");
+    --imperial-pattern: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='%23B5935A' fill-opacity='0.05' d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z'%3E%3C/path%3E%3C/svg%3E");
     --lotus-pattern: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='%23B5935A' fill-opacity='0.04'%3E%3Cpath d='M0 0h8v8H0zm40 40h8v8h-8zm40-40h8v8h-8zM0 40h8v8H0zm54.5-18.5l4.5 4.5-4.5 4.5-4.5-4.5zm-30 0l4.5 4.5-4.5 4.5-4.5-4.5zm30 30l4.5 4.5-4.5 4.5-4.5-4.5zm-30 0l4.5 4.5-4.5 4.5-4.5-4.5zM18.5 18.5l4.5 4.5-4.5 4.5-4.5-4.5z'/%3E%3C/g%3E%3C/svg%3E");
     --dragon-pattern: url("data:image/svg+xml,%3Csvg width='52' height='26' viewBox='0 0 52 26' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23B5935A' fill-opacity='0.03'%3E%3Cpath d='M10 10c0-2.21-1.79-4-4-4-3.314 0-6-2.686-6-6h2c0 2.21 1.79 4 4 4 3.314 0 6 2.686 6 6 0 2.21 1.79 4 4 4 3.314 0 6 2.686 6 6 0 2.21 1.79 4 4 4v2c-3.314 0-6-2.686-6-6 0-2.21-1.79-4-4-4-3.314 0-6-2.686-6-6zm25.464-1.95l8.486 8.486-1.414 1.414-8.486-8.486 1.414-1.414z' /%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
     --lattice-pattern: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23B5935A' fill-opacity='0.03' fill-rule='evenodd'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E");
@@ -448,6 +148,17 @@ body {
 
 * {
   @apply border-border;
+}
+
+body {
+  @apply font-sans antialiased text-foreground;
+  background-color: #F5E1A4; /* Imperial-themed soft brownish-yellow */
+  background-image: var(--imperial-pattern), var(--lotus-pattern), var(--background-pattern-texture);
+  background-position: center, top left, center;
+  background-repeat: repeat, repeat, repeat;
+  background-attachment: fixed;
+  background-blend-mode: overlay;
+  @apply dark:bg-zinc-900;
 }
 
 /* Leaflet map styles */
@@ -584,9 +295,10 @@ body {
 
 .leaflet-marker-icon:hover {
   @apply scale-110 -translate-y-1;
-  filter: drop-shadow(0 4px 3px rgb(0 0 0 / 0.07))
+  filter: drop-shadow(0 4px 3px rgb(0 0 0 / 0.07)) 
           drop-shadow(0 2px 2px rgb(0 0 0 / 0.06));
 }
+
 
 /* Game-specific backgrounds with enhanced gradients */
 .heritage-section {
@@ -640,174 +352,6 @@ body {
   animation: floating 3s ease-in-out infinite;
 }
 
-/* Game content formatting */
-.game-text {
-  @apply text-sm md:text-base;
-  white-space: pre-line;
-  line-height: 1.6;
-}
-
-.game-description {
-  @apply text-sm md:text-base;
-  white-space: pre-line;
-  line-height: 1.6;
-}
-
-.game-result {
-  @apply text-sm md:text-base;
-  white-space: pre-line;
-  line-height: 1.6;
-  margin-bottom: 0.5rem;
-}
-
-.game-historical-info {
-  @apply text-xs md:text-sm text-muted-foreground;
-  white-space: pre-line;
-  line-height: 1.6;
-}
-
-/* Enhanced user interaction styles */
-.interactive-element {
-  @apply transition-all duration-200;
-  @apply hover:bg-[#B5935A]/10 active:bg-[#B5935A]/20;
-  @apply focus:outline-none focus:ring-2 focus:ring-[#B5935A]/20;
-}
-
-/* Text styles */
-.royal-heading {
-  @apply text-[#B5935A] font-bold;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.elegant-text {
-  @apply text-[#6B2B2B] dark:text-[#F5E1A4];
-}
-
-/* Custom scrollbar for game containers */
-.custom-scrollbar {
-  scrollbar-width: thin;
-  scrollbar-color: hsl(var(--primary)) transparent;
-}
-
-.custom-scrollbar::-webkit-scrollbar {
-  width: 6px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background-color: hsl(var(--primary)/0.3);
-  border-radius: 20px;
-}
-
-/* Game image hover effects */
-.game-image {
-  @apply transition-transform duration-300 ease-in-out;
-  @apply hover:scale-105;
-}
-
-/* Choice cards in games */
-.choice-card {
-  @apply transition-all duration-200;
-  @apply hover:bg-primary/5;
-  @apply active:bg-primary/10;
-  @apply border border-transparent;
-  @apply hover:border-primary/20;
-  @apply rounded-lg p-4;
-}
-
-/* Game result animations */
-.result-appear {
-  animation: resultAppear 0.5s ease-out forwards;
-}
-
-@keyframes resultAppear {
-  from {
-    opacity: 0;
-    transform: scale(0.9) translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
-}
-
-/* Game background patterns */
-.pattern-grid {
-  background-image: linear-gradient(to right, rgba(var(--primary-rgb), 0.1) 1px, transparent 1px),
-                    linear-gradient(to bottom, rgba(var(--primary-rgb), 0.1) 1px, transparent 1px);
-  background-size: 20px 20px;
-}
-
-.pattern-dots {
-  background-image: radial-gradient(rgba(var(--primary-rgb), 0.2) 1px, transparent 1px);
-  background-size: 20px 20px;
-}
-
-/* Game content formatting */
-.game-text {
-  white-space: pre-line;
-  line-height: 1.6;
-}
-
-.game-description {
-  @apply text-sm md:text-base;
-  white-space: pre-line;
-  line-height: 1.6;
-}
-
-.game-result {
-  @apply text-sm md:text-base;
-  white-space: pre-line;
-  line-height: 1.6;
-  margin-bottom: 0.5rem;
-}
-
-.game-historical-info {
-  @apply text-xs md:text-sm text-muted-foreground;
-  white-space: pre-line;
-  line-height: 1.6;
-}
-
-/* Enhanced user interaction styles */
-.interactive-element {
-  @apply transition-all duration-200;
-  @apply hover:bg-[#B5935A]/10 active:bg-[#B5935A]/20;
-  @apply focus:outline-none focus:ring-2 focus:ring-[#B5935A]/20;
-}
-
-/* Text styles */
-.royal-heading {
-  @apply text-[#B5935A] font-bold;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.elegant-text {
-  @apply text-[#6B2B2B] dark:text-[#F5E1A4];
-}
-
-/* Custom scrollbar */
-.custom-scrollbar {
-  scrollbar-width: thin;
-  scrollbar-color: var(--royal-gold) transparent;
-}
-
-.custom-scrollbar::-webkit-scrollbar {
-  width: 6px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background-color: var(--royal-gold);
-  opacity: 0.3;
-  border-radius: 20px;
-}
-
 /* Animation Keyframes */
 @keyframes fadeIn {
   from {
@@ -856,7 +400,8 @@ body {
 
 /* Game card hover effects */
 .game-card {
-  @apply transition-all duration-300 ease-in-out; @apply hover:shadow-lg hover:shadow-primary/10;
+  @apply transition-all duration-300 ease-in-out;
+  @apply hover:shadow-lg hover:shadow-primary/10;
   @apply hover:-translate-y-1;
   @apply active:translate-y-0 active:shadow-md;
 }
@@ -961,41 +506,4 @@ body {
   @apply text-xs md:text-sm text-muted-foreground;
   white-space: pre-line;
   line-height: 1.6;
-}
-
-/* Enhanced user interaction styles */
-.interactive-element {
-  @apply transition-all duration-200;
-  @apply hover:bg-[#B5935A]/10 active:bg-[#B5935A]/20;
-  @apply focus:outline-none focus:ring-2 focus:ring-[#B5935A]/20;
-}
-
-/* Text styles */
-.royal-heading {
-  @apply text-[#B5935A] font-bold;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.elegant-text {
-  @apply text-[#6B2B2B] dark:text-[#F5E1A4];
-}
-
-/* Custom scrollbar */
-.custom-scrollbar {
-  scrollbar-width: thin;
-  scrollbar-color: var(--royal-gold) transparent;
-}
-
-.custom-scrollbar::-webkit-scrollbar {
-  width: 6px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background-color: var(--royal-gold);
-  opacity: 0.3;
-  border-radius: 20px;
 }
