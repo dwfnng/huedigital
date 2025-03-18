@@ -106,29 +106,16 @@ const navigationItems = {
       },
     ],
   },
-  contribute: {
-    icon: <Upload className="h-4 w-4" />,
-    label: "Đóng góp",
-    description: "Tham gia và đóng góp cùng cộng đồng",
+  forum: {
+    icon: <BookText className="h-4 w-4" />,
+    label: "Diễn đàn",
+    description: "Thảo luận và chia sẻ về văn hóa Huế",
     items: [
       {
         icon: <BookText className="h-4 w-4" />,
         title: "Diễn đàn",
         href: "/forum",
         description: "Thảo luận và chia sẻ về văn hóa Huế",
-      },
-      {
-        icon: <Upload className="h-4 w-4" />,
-        title: "Đóng góp",
-        href: "/contribute",
-        description: "Đóng góp tài liệu và hình ảnh",
-      },
-      {
-        icon: <Users className="h-4 w-4" />,
-        title: "Cộng đồng Facebook",
-        href: "https://www.facebook.com/groups/618595794333990",
-        description: "Tham gia nhóm cộng đồng trên Facebook",
-        external: true,
       },
     ],
   },
