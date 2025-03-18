@@ -16,11 +16,32 @@ export default function MapPage() {
   return (
     <div className="container mx-auto p-4">
       <div className="page-header">
-        <div className="page-header-content bg-[#B5935A]/10 p-6 rounded-lg border border-[#B5935A]/20 mb-6">
-          <h1 className="text-2xl font-bold mb-2 text-[#B5935A]">Bản đồ số</h1>
-          <p className="text-[#B5935A]/80">
-            Khám phá các di tích, danh lam thắng cảnh và địa điểm du lịch tại Huế
-          </p>
+        <div className="bg-[#B5935A] rounded-lg px-6 py-4 mb-6 shadow-md">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between">
+            <div>
+              <h1 className="text-2xl font-bold text-black mb-1 flex items-center">
+                <MapPin className="h-6 w-6 mr-2" />
+                Bản đồ số
+              </h1>
+              <p className="text-black/90">
+                Khám phá các di tích, danh lam thắng cảnh và địa điểm du lịch tại Huế
+              </p>
+            </div>
+            <div className="mt-4 md:mt-0">
+              <div className="relative max-w-xs">
+                <div className="flex">
+                  <Input
+                    type="text"
+                    placeholder="Tìm địa điểm..."
+                    className="border border-amber-300 rounded-l-lg bg-amber-50/70 text-black placeholder-amber-800/50 focus:outline-none focus:ring-2 focus:ring-[#B5935A]"
+                  />
+                  <Button className="bg-amber-700 text-white rounded-r-lg hover:bg-amber-800">
+                    <Search className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
