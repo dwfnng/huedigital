@@ -1,33 +1,6 @@
 {
   "variant": "tint",
-  "primary": "#DAA520",
-  "secondary": "#8B0000",
-  "accent": "#5A3E36",
+  "primary": "oklch(70% 0.1 290)",
   "appearance": "light",
-  "radius": 0.75,
-  "custom": {
-    "royal-gold": "#DAA520",
-    "deep-red": "#8B0000",
-    "wood-brown": "#8B4513",
-    "background": "#F5E6CC",
-    "background-soft": "#F8ECD1",
-    "text-primary": "#3D2B1F",
-    "text-secondary": "#5A3E36",
-    "nav-background": "#4A2C2A",
-    "nav-hover": "#DAA520",
-    "header": {
-      "gradient-start": "#DAA520",
-      "gradient-end": "#8B0000",
-      "text-light": "#FFFFFF",
-      "text-dark": "#8B4513",
-      "decoration": "#C49A44"
-    },
-    "imperial": {
-      "gold-light": "#F5E1A4",
-      "gold-medium": "#D4AF37",
-      "red-dark": "#3A1A1A",
-      "brown-light": "#8D6A3F",
-      "brown-dark": "#6B2B2B"
-    }
-  }
+  "radius": 0.75
 }

@@ -85,7 +85,7 @@ const hueDishes = [
       "Bánh khoái được cho là có nguồn gốc từ thời vua Minh Mạng, khi các đầu bếp cung đình chế biến để phục vụ hoàng gia.",
     preparation:
       "Bột gạo được trộn với trứng và nước, sau đó đổ vào chảo nóng. Thêm tôm, thịt heo, giá đỗ và hành lá lên trên. Bánh được ăn kèm với nước chấm đặc biệt làm từ gan heo xay nhuyễn, tương và đậu phộng.",
-    video: "https://www.youtube.com/watch?v=yLZ9h-YoCeQ",
+    video: "https://www.youtube.com/watch?v=3GRCqlbzXcQ",
   },
   {
     id: 3,
@@ -119,7 +119,7 @@ const hueDishes = [
       "Cơm hến là món ăn của tầng lớp bình dân Huế, xuất hiện từ lâu đời khi người dân địa phương tận dụng nguồn hến dồi dào từ sông Hương.",
     preparation:
       "Hến được làm sạch, luộc chín và xé nhỏ. Cơm nguội trộn với hến, thêm các loại rau thơm, lạc rang, da heo chiên giòn, mắm ruốc và ớt tươi.",
-    video: "https://www.youtube.com/watch?v=2Qm-Q7LJMO4",
+    video: "https://www.youtube.com/watch?v=-0ACbNVOWuk",
   },
   {
     id: 4,
@@ -149,7 +149,7 @@ const hueDishes = [
       "Bánh bèo từng là món ăn trong cung đình Huế, được các đầu bếp hoàng gia chế biến tinh tế để phục vụ vua và hoàng tộc.",
     preparation:
       "Bột gạo được hòa với nước, đổ vào từng chiếc chén nhỏ và hấp chín. Bánh sau khi chín được rưới mỡ hành và rắc tôm khô lên trên. Ăn kèm với nước mắm chua ngọt và ớt.",
-    video: "https://www.youtube.com/watch?v=B9hX0sCMv5w",
+    video: "https://www.youtube.com/watch?v=dhSXhSxNCJg",
   },
   {
     id: 5,
@@ -179,7 +179,7 @@ const hueDishes = [
       "Chè Huế phản ánh nét tinh tế trong ẩm thực cung đình, với màu sắc hài hòa và hương vị tinh tế.",
     preparation:
       "Mỗi loại chè đều có cách chế biến riêng, nhưng hầu hết đều sử dụng đường, bột năng và các nguyên liệu tự nhiên. Chè Huế thường được phục vụ mát hoặc ấm tùy loại.",
-    video: "https://www.youtube.com/watch?v=KJ7Nq3zlYnU",
+    video: "https://www.youtube.com/watch?v=Ph_lO4pEdnk",
   },
   {
     id: 6,
@@ -213,7 +213,7 @@ const hueDishes = [
       "Bánh lọc xuất phát từ ẩm thực dân gian Huế, thể hiện sự khéo léo của người phụ nữ xứ Huế.",
     preparation:
       "Bột sắn hoặc bột năng được nhào với nước, sau đó nhân tôm thịt được đặt vào giữa, gói kín và hấp chín. Bánh lọc có hai loại: bánh lọc gói và bánh lọc trần.",
-    video: "https://www.youtube.com/watch?v=QP_fFZLO4cw",
+    video: "https://www.youtube.com/watch?v=8snB5Is-8Lk",
   },
 ];
 
@@ -603,7 +603,8 @@ export default function CulinaryPage() {
               Ẩm thực Huế
             </h1>
             <p className="text-black/90">
-              Khám phá tinh hoa ẩm thực xứ Huế với đa dạng hương vị và câu chuyện văn hóa đặc sắc
+              Khám phá tinh hoa ẩm thực xứ Huế với đa dạng hương vị và câu
+              chuyện văn hóa đặc sắc
             </p>
           </div>
           <div className="mt-4 md:mt-0">
