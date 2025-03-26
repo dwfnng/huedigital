@@ -4,8 +4,9 @@
 
 1. `vite.github.config.js` - Cấu hình Vite cho GitHub Pages
 2. `github-pages-index.html` - Tệp HTML tùy chỉnh cho GitHub Pages
-3. `DEPLOY_GUIDE.md` - Hướng dẫn chi tiết về cách triển khai
-4. `GITHUB_PAGES_DEPLOYMENT.md` - Hướng dẫn về cấu hình dự án
+3. `manifest.github.json` - Tệp manifest đã cấu hình cho GitHub Pages
+4. `DEPLOY_GUIDE.md` - Hướng dẫn chi tiết về cách triển khai
+5. `GITHUB_PAGES_DEPLOYMENT.md` - Hướng dẫn về cấu hình dự án
 
 ## Quy trình ngắn gọn
 
@@ -23,23 +24,28 @@
 
 4. Sao chép `github-pages-index.html` vào thư mục `docs` và đổi tên thành `index.html`
 
-5. Tạo file `.nojekyll` trong thư mục `docs`:
+5. Sao chép manifest cho GitHub Pages:
+   ```bash
+   cp manifest.github.json docs/manifest.json
+   ```
+
+6. Tạo file `.nojekyll` trong thư mục `docs`:
    ```bash
    touch docs/.nojekyll
    ```
 
-6. Đẩy thư mục `docs` lên GitHub:
+7. Đẩy thư mục `docs` lên GitHub:
    ```bash
    git add docs .nojekyll
    git commit -m "Build for GitHub Pages"
    git push origin main
    ```
 
-7. Cấu hình GitHub Pages:
+8. Cấu hình GitHub Pages:
    - Settings > Pages
    - Source: branch "main", folder "/docs"
 
-8. Kiểm tra trang web của bạn tại:
+9. Kiểm tra trang web của bạn tại:
    ```
    https://[username].github.io/huedigital/
    ```

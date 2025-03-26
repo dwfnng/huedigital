@@ -60,7 +60,9 @@ npm run build:github
 
 Kiểm tra xem thư mục `docs` đã được tạo với các file đã build chưa.
 
-## 4. Sửa file index.html
+## 4. Cập nhật các file cần thiết
+
+### a. Sửa file index.html
 
 Sao chép file `github-pages-index.html` vào thư mục `docs` và đổi tên thành `index.html`, thay thế file index.html đã được tạo:
 
@@ -69,6 +71,14 @@ cp github-pages-index.html docs/index.html
 ```
 
 Lưu ý: Nếu tên tệp JS đã được build có dạng "main-[hash].js", hãy điều chỉnh đường dẫn trong file index.html cho phù hợp.
+
+### b. Sao chép manifest.json
+
+Sao chép file `manifest.github.json` vào thư mục `docs` và đổi tên thành `manifest.json`:
+
+```bash
+cp manifest.github.json docs/manifest.json
+```
 
 ## 5. Tạo file `.nojekyll`
 
